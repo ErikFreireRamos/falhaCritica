@@ -619,3 +619,63 @@ O REQ-09 saiu inconclusivo só porque o experimento tem 40.000 partidas e o crit
 - **Mesas só de Heurísticos** com 10.000 partidas por tamanho de mesa. Nelas também é medido o REQ-01, que já estava confirmado: é a primeira medida da equidade de assento com bots que jogam com estratégia.
 - **REQ-11:** a média é sobre as partidas, e o intervalo vem de bootstrap sobre as partidas, porque jogadores da mesma partida não são independentes. "Cheio" quer dizer sistema com o número de cartas do teto (`sistema.teto` do YAML).
 - **Perfis:** os mesmos das Fases 2 e 3 (experiente, blefe moderado, contestação pelo limiar); o Aleatório com explicação 85% e Auditor 95%. Semente mestre 20261114; 4 processos.
+
+### Resultado do experimento `fase4_melhor_estilo`
+
+Execução oficial no commit `ccd5649`, árvore limpa: 140.000 partidas em 2.693 s com 4 processos, nenhuma falha (REQ-09 passa). Relatório em `resultados/fase4_melhor_estilo/20261110-221516-ccd5649/relatorio.md`.
+
+**Primeira execução descartada.** A primeira execução, no commit `0834531` e com a mesma semente, gerou um relatório com dois defeitos de apresentação. A seção da matriz de alvos da v1 (MET-02) aparecia vazia, e o MET-01 listava as 60 células da matriz. O código do relatório foi corrigido (`ccd5649`, com teste) e o experimento rodou de novo. A tabela de partidas das duas execuções é idêntica byte a byte (mesmo SHA-256, `1744a69c…`), o que confirma o determinismo: só o relatório mudou. A pasta da primeira execução não foi guardada.
+
+**Matriz de estilos, 4 jogadores (MET-07).** Taxa de vitória do foco (linha) contra a mesa (coluna); referência 0,250; intervalos de cerca de ±0,02. Em negrito, as melhores respostas a cada mesa.
+
+| Foco \ Mesa | Aleatório | Construtor | Heurístico | Caçador líder | Caçador mais fraco | Caçador ao acaso |
+|---|---|---|---|---|---|---|
+| Aleatório | 0,250 | 0,001 | 0,002 | 0,055 | 0,004 | 0,004 |
+| Construtor | **0,973** | **0,250** | **0,239** | **0,531** | 0,383 | **0,427** |
+| Heurístico | 0,938 | **0,264** | **0,250** | **0,549** | **0,434** | **0,451** |
+| Caçador líder | **0,965** | 0,168 | 0,113 | 0,250 | 0,387 | 0,294 |
+| Caçador mais fraco | 0,925 | 0,134 | 0,083 | 0,202 | 0,250 | 0,203 |
+| Caçador ao acaso | 0,943 | 0,146 | 0,087 | 0,234 | 0,325 | 0,250 |
+
+**Matriz de estilos, 5 jogadores.** Referência 0,200.
+
+| Foco \ Mesa | Aleatório | Construtor | Heurístico | Caçador líder | Caçador mais fraco | Caçador ao acaso |
+|---|---|---|---|---|---|---|
+| Aleatório | 0,200 | 0,000 | 0,002 | 0,066 | 0,005 | 0,002 |
+| Construtor | **0,971** | 0,200 | 0,165 | **0,530** | 0,352 | 0,378 |
+| Heurístico | 0,926 | **0,240** | **0,200** | **0,524** | **0,405** | **0,428** |
+| Caçador líder | 0,948 | 0,145 | 0,085 | 0,200 | 0,357 | 0,253 |
+| Caçador mais fraco | 0,901 | 0,098 | 0,048 | 0,176 | 0,200 | 0,164 |
+| Caçador ao acaso | 0,925 | 0,116 | 0,072 | 0,185 | 0,268 | 0,200 |
+
+**Requisitos**
+
+| Requisito | Resultado |
+|---|---|
+| REQ-03, habilidade importa | **passa**: o Heurístico contra Aleatórios vence 0,938 (0,927 a 0,949) com 4 jogadores e 0,926 (0,913 a 0,937) com 5. Piso: 0,375 e 0,300 |
+| REQ-04, nenhum estilo dominante | **passa** com 4 e com 5 jogadores: nenhum estilo é a melhor resposta contra todas as mesas |
+| REQ-11, os dois estilos aparecem | **passa**: 51,4% (4 jogadores) e 50,8% (5) dos Heurísticos terminam o 1º Planejamento com o sistema cheio. Zona: 10% a 90% |
+| REQ-01, equidade de assento (mesas de Heurísticos) | **inconclusivo**. Com 4 jogadores, o primeiro vence 0,276 (0,268 a 0,285) e o último 0,224 (0,216 a 0,233), para uma zona de 0,230 a 0,270. Com 5, o primeiro vence 0,222 (0,215 a 0,231) e o último 0,181 (0,174 a 0,189), para uma zona de 0,180 a 0,220 |
+
+**Dinâmica do replicador:** termina em 100% Heurísticos, com 4 e com 5 jogadores.
+
+### Observações (cuidado ao ler)
+
+1. **O melhor estilo é o Heurístico.** Ele é melhor resposta, sozinho ou empatado, contra todas as mesas menos a de Aleatórios, onde o Construtor rende mais (0,973 contra 0,938). A dinâmica do replicador termina nele. O Construtor vem logo atrás e empata com o Heurístico em várias mesas.
+2. **Construir vence caçar na v2.2.1.** Nenhum Caçador é melhor resposta a mesa nenhuma, a não ser a de Aleatórios. Numa mesa de Construtores, um Caçador vence de 0,13 a 0,17 com 4 jogadores, para uma referência de 0,25. Isso confirma o sinal das Fases 2 e 3. Mesmo assim, o REQ-11 passa: o próprio Heurístico enche o sistema em metade das vezes e, nas outras, guarda cartas para testar. Os dois estilos aparecem dentro das decisões de um jogador que joga bem, não como dois tipos de jogador.
+3. **O REQ-04 passa só por causa da mesa de Aleatórios.** Sem essa coluna, o Heurístico ficaria "indefinido": nenhum estilo o supera com clareza, mas ele não supera o Construtor com clareza em todas as mesas, e o veredito seria inconclusivo. O critério foi fixado antes e não foi mudado. Vale lembrar também que "nenhum estilo dominante" vale só entre os 6 estilos escritos pelo assistente.
+4. **Política de alvo na v2.2.1 (o MET-02 da v1, agora na v2):** entre os Caçadores, atacar o líder é a melhor resposta contra as três populações de Caçadores, e atacar o mais fraco é a pior. É o contrário da v1, onde o alvo ao acaso era o melhor e atacar o líder alimentava o líder. Na v2.2.1, atacar quem lidera compensa.
+5. **Vantagem do primeiro jogador com bots que jogam bem.** Com Aleatórios, o REQ-01 passou (Fase 1b). Com Heurísticos, o primeiro da ordem vence cerca de 2,5 pontos percentuais acima de 1/N, e o último cerca de 2,5 abaixo, bem na borda da zona de 2 pontos. Não é medida de mudança de regra: fica como pendência para o autor.
+6. **Duração (descrição; o REQ-08 não foi medido aqui):** nas mesas só de Heurísticos, as medianas foram de 42,3 min com 4 jogadores e de 49,7 com 5. Nas células com 5 jogadores, ficaram entre 50,5 e 54,2.
+
+### Decisões do autor para o Experimento 5 (torneio de blefe)
+
+| Assunto | Opções | Escolha |
+|---|---|---|
+| Estilo dos 9 perfis puros de blefe | Heurístico; Construtor; os dois | Heurístico |
+| Tamanho | 1.000 por célula com 4 e 5 jogadores; 2.000 por célula; só 4 jogadores | 1.000 por célula, com 4 e com 5 jogadores, e 2.000 partidas por mesa de perfis iguais |
+| REQ-05 | 0,30 a 0,50 no equilíbrio; só descrição; outra zona | 0,30 a 0,50, com veredito no equilíbrio da dinâmica do replicador do torneio. Se ela terminar num perfil só, vale a mesa desse perfil; se terminar numa mistura, roda depois uma mesa sorteada da mistura. As 9 populações aparecem como faixa, só como descrição |
+
+### Pendências
+
+- REQ-01 com bots que jogam bem: a vantagem do primeiro jogador está na borda da zona.
