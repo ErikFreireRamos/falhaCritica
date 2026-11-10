@@ -16,7 +16,8 @@ Não decida sozinho. Pare, apresente as opções com uma sugestão e deixe o aut
 
 ## Fontes, em ordem de autoridade
 
-1. `docs/Critical_Failure_-_Regras_Completas_2.2.pdf`: fonte da verdade da v2.2, exceto pelas correções do autor (`COR-nn`), que são posteriores ao PDF e valem sobre ele até o PDF ser atualizado. Tudo reescrito em `docs/especificacao_v2_2.md`; as correções estão na seção "Correções do autor" e em `docs/HISTORICO_REGRAS.md`.
+0. `regras/`: o texto das regras em Markdown, um arquivo por versão (`v1.md`, `v2.2.md`, `v2.2.1.md`). Enquanto o jogo estiver em ajuste, é aqui que as regras vivem, e não num PDF. A versão atual é a **v2.2.1**. Uma versão já usada em experimento não é mais editada: mudança de regra cria um arquivo novo (ver `regras/README.md`).
+1. `docs/Critical_Failure_-_Regras_Completas_2.2.pdf`: origem da v2.2, transcrita em `regras/v2.2.md`. As correções do autor (`COR-nn`) são posteriores ao PDF e valem sobre ele. Tudo reescrito como itens numerados em `docs/especificacao_v2_2.md`; as correções estão na seção "Correções do autor" e em `docs/HISTORICO_REGRAS.md`.
 2. `docs/Critical_Failure_Artigo.pdf`: v1 (seções 4.2 a 4.4, Tabelas 2 a 4). Reescrita em `docs/especificacao_v1.md`.
 3. `docs/Briefing_Apresentacao_TCC.md`: **só** os slides 5 e 10 a 13. Os slides 6 a 9 são da versão 2.0 e não valem.
 4. `docs/prompt_claude_code_simulador.md`: especificação do simulador. As mudanças aprovadas em relação a ele estão no diário (entrada de 2026-11-09).
@@ -36,7 +37,7 @@ Não invente regras. Ponto ambíguo ou omisso vai para `docs/AMBIGUIDADES.md` e 
 - **Código por família de regras, YAML por versão:** `regras/v2/` com `configs/regras_v2_2.yaml`. Uma nova iteração das regras é um YAML novo e uma entrada em `docs/HISTORICO_REGRAS.md`, sem copiar código.
 - **Registro do processo.** Atualize `docs/DIARIO_DE_BORDO.md` em toda sessão de trabalho e `docs/HISTORICO_REGRAS.md` em toda mudança de regra ou parâmetro.
 - **Experimento oficial só com a árvore do git limpa.** O cabeçalho e o manifest registram o commit e se havia alteração não commitada.
-- **Git:** um commit por fase, mensagens em português. A identidade do autor está configurada só neste repositório.
+- **Git:** um commit por fase, mensagens em português. A identidade do autor está configurada só neste repositório. **Não acrescentar linha de coautoria** (`Co-Authored-By`) nem outra atribuição ao assistente: o único autor é o Erik.
 
 ## Fases
 

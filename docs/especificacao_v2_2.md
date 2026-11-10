@@ -1,4 +1,6 @@
-# Especificação das regras — Critical Failure v2.2
+# Especificação das regras — Critical Failure v2.2 (revisão atual: v2.2.1)
+
+**Versão especificada:** v2.2.1, que é a v2.2 com as correções COR-01 e COR-02. O texto corrido das regras está em `regras/v2.2.1.md`; o da v2.2 impressa, em `regras/v2.2.md`. Os números de página deste documento são os do PDF da v2.2.
 
 **Fonte:** `docs/Critical_Failure_-_Regras_Completas_2.2.pdf` (35 páginas, atualização de 17 de outubro de 2026). É a fonte da verdade para a v2.2, com uma exceção: as correções do autor listadas na seção "Correções do autor" (`COR-<nn>`) são posteriores ao PDF e valem sobre ele até que o PDF seja atualizado. Em qualquer outro ponto em que este documento e o PDF divergirem, vale o PDF e este documento deve ser corrigido.
 

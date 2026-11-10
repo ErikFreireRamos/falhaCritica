@@ -367,6 +367,9 @@ def conferir_referencias(definidos: set[str]) -> None:
         RAIZ / "CLAUDE.md",
         RAIZ / "docs" / "HISTORICO_REGRAS.md",
         RAIZ / "docs" / "DIARIO_DE_BORDO.md",
+        RAIZ / "regras" / "README.md",
+        RAIZ / "regras" / "v1.md",
+        RAIZ / "regras" / "v2.2.1.md",
     ]
     for caminho in (ESPEC_V2, ESPEC_V1, AMBIGUIDADES, REQUISITOS, *outros):
         if not caminho.exists():

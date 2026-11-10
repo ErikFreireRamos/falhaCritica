@@ -139,3 +139,46 @@ Não mudam regra nem resultado. Ficam aqui para o autor poder discordar.
 ### Commit
 
 Commit único da Fase 0 no ramo `main` (ver `git log`).
+
+---
+
+## 2026-11-09 — Regras em Markdown (pasta `regras/`)
+
+### Pedido do autor
+
+Depois de revisar a Fase 0, o autor respondeu: "Não se coloque como co-author, por enquanto faça o pdf das regras como .md, pois pode ser que esteja sujeita a alterações, crie uma pasta regras contendo arquivos com as versões das regras, não tenho anotação de placar, fase 1 liberada".
+
+### O que foi feito
+
+1. **Coautoria:** a linha `Co-Authored-By` foi retirada do commit da Fase 0 com `git commit --amend` (não havia repositório remoto). Os commits seguintes não levam atribuição ao assistente.
+2. **`regras/v2.2.md`:** transcrição do PDF 2.2 em Markdown. Só a formatação mudou.
+3. **`regras/v2.2.1.md`:** a v2.2 com as correções COR-01 e COR-02 e com 14 esclarecimentos, cada trecho alterado com a sua marca. Gerado por 28 substituições exatas sobre a transcrição.
+4. **`regras/v1.md`:** regras da v1 em português, a partir do artigo, com as decisões AMB-20 a AMB-29 marcadas.
+5. **`regras/README.md`:** tabela de versões e como criar uma versão nova.
+
+### Decisões do autor
+
+| Assunto | Opções | Escolha |
+|---|---|---|
+| Nome dos arquivos de versão e rótulo no registro das partidas | v2.2 e v2.2.1; revisões datadas; um arquivo editado no lugar | v2.2 e v2.2.1 |
+| Arquivo da v1 na pasta | sim, em português; não | Sim, em português |
+| Esclarecimentos AMB no texto das regras | sim, marcados; só as 2 correções | Sim, marcados |
+| Anotações de placar das 6 partidas da v1 | — | Não existem |
+
+### Detalhes escolhidos pelo assistente, sem perguntar
+
+- **Redação dos trechos marcados** em `regras/v2.2.1.md` e de todo o `regras/v1.md`. É proposta e aguarda a revisão do autor.
+- **Três decisões ficaram fora do texto das regras** por só valerem para o simulador: AMB-08, AMB-16 e AMB-17.
+- **Duas linhas novas na tabela de parâmetros a validar** da v2.2.1, uma para cada correção.
+- **O exemplo de dano da seção 8.1** foi reescrito: a segunda frase do PDF dependia da regra revogada. O novo texto diz que, com uma carta da categoria no sistema, Ana devolveria só 1 e terminaria com 0.
+
+### Verificação
+
+- **Transcrição contra o PDF:** de 928 trechos de `regras/v2.2.md`, 888 foram achados literalmente no texto extraído do PDF. Os outros 40 são 32 rótulos de formatação ("Frente - relato", "Verso - gabarito"), o símbolo de severidade da seção 8.1 (anotado no arquivo), 1 linha de fontes em que a extração perde um hífen e 6 células de tabela que a extração embaralha. Todos foram conferidos à mão.
+- **v2.2.1:** as 28 substituições exigem que o trecho original apareça exatamente uma vez na v2.2; todas passaram. As 14 marcas AMB e as marcas COR-01 e COR-02 estão no texto.
+- `py -3.12 scripts/verificar_especificacao.py` passa, agora lendo também a pasta `regras/`.
+
+### Pendências
+
+- **Do autor:** revisar a redação dos trechos marcados em `regras/v2.2.1.md` e o `regras/v1.md`. A atualização do PDF deixa de ser pendência enquanto as regras estiverem em ajuste.
+- O repositório no GitHub continua pendente para a CI.
