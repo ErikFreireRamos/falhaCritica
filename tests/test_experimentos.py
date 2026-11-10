@@ -572,7 +572,7 @@ def test_experimento_do_melhor_estilo_em_miniatura(tmp_path: Path) -> None:
     assert all(c is not None and len(c) == 4 for c in cheios)
     texto = (resultado.pasta / "relatorio.md").read_text(encoding="utf-8")
     for trecho in (
-        "## Matriz de estilos (MET-07 e REQ-04)",
+        "## Matrizes de ganhos entre estilos ou perfis (MET-07 e REQ-04)",
         "### estilos_teste (4 jogadores",
         "### REQ-03",
         "### REQ-04",
@@ -614,3 +614,166 @@ def test_experimento_da_fase_4_melhor_estilo_e_valido() -> None:
         "n4_heuristico_contra_aleatorio",
         "n5_heuristico_contra_aleatorio",
     ]
+
+
+# ---------------------------------------------------------------- Fase 4, Experimento 5: blefe (REQ-05)
+
+
+def test_blefes_contados_evento_a_evento() -> None:
+    from critical_failure.bots.fabrica import criar_bot
+    from critical_failure.regras.familias import carregar_motor
+
+    motor = carregar_motor(RAIZ / "configs" / "regras_v2_2_1.yaml")
+    contagem = {"tentados": 0, "aceitos": 0}
+    aberto = {"blefe": False}
+
+    def ouvinte(evento: Any, _decisao: Any) -> None:
+        if evento.tipo == "defesa" and evento.oculto.get("blefe"):
+            aberto["blefe"] = True
+        if evento.tipo == "fim_da_disputa" and aberto["blefe"]:
+            contagem["tentados"] += 1
+            contagem["aceitos"] += evento.publico["resultado"] == "aceita"
+            aberto["blefe"] = False
+
+    blefadores = [criar_bot("heuristico", {**PERFIL, "blefe": "sempre", "contestacao": "nunca"}) for _ in range(4)]
+    resultado = jogar_partida(motor, blefadores, 11, 0, ouvinte=ouvinte)
+    assert resultado.blefes == contagem["tentados"] > 0
+    assert resultado.blefes_bem_sucedidos == contagem["aceitos"] > 0
+    honestos = [criar_bot("heuristico", {**PERFIL, "blefe": "nunca"}) for _ in range(4)]
+    assert jogar_partida(motor, honestos, 11, 0).blefes == 0
+    v1 = carregar_motor(RAIZ / "configs" / "regras_v1.yaml")
+    assert jogar_partida(v1, [criar_bot("construtor", PERFIL, "v1") for _ in range(4)], 11, 0).blefes == 0
+
+
+def test_intervalo_da_razao() -> None:
+    import numpy as np
+
+    from critical_failure.metricas.estatistica import intervalo_da_razao
+
+    sucessos = np.array([1.0, 2.0, 0.0, 3.0] * 50)
+    tentados = np.array([2.0, 4.0, 1.0, 5.0] * 50)
+    baixo, alto = intervalo_da_razao(sucessos, tentados, np.random.default_rng(3))
+    assert baixo < sucessos.sum() / tentados.sum() < alto
+    with pytest.raises(ValueError):
+        intervalo_da_razao(np.zeros(3), np.zeros(3), np.random.default_rng(3))
+
+
+def _matriz_com_blefes(
+    taxas: dict[tuple[str, str], float], blefes: dict[str, tuple[int, int]]
+) -> tuple[Any, list[dict[str, Any]]]:
+    """Matriz 2 x 2 sintética e as mesas de perfis iguais com (blefes, bem-sucedidos) por partida."""
+    lido, linhas = _matriz_sintetica(taxas)
+    diagonais = [
+        {
+            "nome": f"todos_{perfil}",
+            "regras": "configs/regras_v2_2_1.yaml",
+            "jogadores": 4,
+            "partidas": 100,
+            "matriz": "estilos_teste",
+            "celula": [perfil, perfil],
+            "requisitos": ["REQ-05"],
+            "bots": [ALEATORIO],
+        }
+        for perfil in blefes
+    ]
+    cenarios = [c.model_dump(mode="json") for c in lido.cenarios] + diagonais
+    lido = ler_experimento(experimento(cenarios=cenarios))
+    for perfil, (tentados, aceitos) in blefes.items():
+        for partida in range(100):
+            linhas.append(
+                {
+                    "cenario": f"todos_{perfil}",
+                    "familia": "v2",
+                    "erro": None,
+                    "vencedores": [partida % 4],
+                    "blefes": tentados,
+                    "blefes_bem_sucedidos": aceitos,
+                }
+            )
+    return lido, linhas
+
+
+@pytest.mark.parametrize(
+    ("taxas", "blefes", "esperado", "trecho"),
+    [
+        # a domina: o equilíbrio é a, e na mesa de a 2 de 5 blefes dão certo (0,4).
+        ({("a", "b"): 0.60, ("b", "a"): 0.05}, {"a": (5, 2), "b": (5, 4)}, "passa", "equilíbrio a"),
+        # a domina, mas na mesa de a só 1 de 5 dá certo (0,2).
+        ({("a", "b"): 0.60, ("b", "a"): 0.05}, {"a": (5, 1), "b": (5, 2)}, "falha", "equilíbrio a"),
+        # cada um invade a mesa do outro: equilíbrio misto, sem veredito aqui.
+        ({("a", "b"): 0.60, ("b", "a"): 0.60}, {"a": (5, 2), "b": (5, 2)}, "inconclusivo", "mistura"),
+        # o equilíbrio é a, e na mesa de a ninguém blefa.
+        ({("a", "b"): 0.60, ("b", "a"): 0.05}, {"a": (0, 0), "b": (5, 2)}, "inconclusivo", "ninguém blefa"),
+    ],
+)
+def test_blefes_no_equilibrio(
+    taxas: dict[tuple[str, str], float], blefes: dict[str, tuple[int, int]], esperado: str, trecho: str
+) -> None:
+    from critical_failure.metricas.matrizes import medidas_de_blefe, montar_matrizes
+
+    lido, linhas = _matriz_com_blefes(taxas, blefes)
+    (matriz,) = montar_matrizes(linhas, lido, 0.0)
+    assert matriz.mede_blefes and {p.estilo for p in matriz.populacoes} == {"a", "b"}
+    # A mesa de perfis iguais não vira célula com foco: a diagonal continua exata.
+    assert matriz.celulas[("a", "a")].intervalo is None
+    (medida,) = medidas_de_blefe([matriz], {"minimo": 0.30, "maximo": 0.50})
+    assert medida.requisito == "REQ-05" and medida.veredito == esperado
+    assert trecho in medida.cenario + medida.nota
+
+
+def test_diagonal_da_matriz_e_mesa_de_bots_iguais() -> None:
+    base = {
+        "nome": "todos_a",
+        "regras": "configs/regras_v2_2_1.yaml",
+        "jogadores": 4,
+        "partidas": 2,
+        "matriz": "m",
+        "celula": ["a", "a"],
+        "bots": [ALEATORIO],
+    }
+    ler_experimento(experimento(cenarios=[base]))
+    with pytest.raises(ConfiguracaoInvalida):
+        ler_experimento(experimento(cenarios=[{**base, "bots": [ALEATORIO] * 3 + [{"tipo": "aleatorio"}]}]))
+    with pytest.raises(ConfiguracaoInvalida):
+        ler_experimento(experimento(cenarios=[{**base, "bots": [ALEATORIO] * 4, "rodizio": True}]))
+
+
+def test_torneio_de_blefe_em_miniatura(tmp_path: Path) -> None:
+    perfis = {
+        "honesto": {"tipo": "heuristico", "parametros": {**PERFIL, "blefe": "nunca"}},
+        "blefador": {"tipo": "heuristico", "parametros": {**PERFIL, "blefe": "sempre"}},
+    }
+    cenarios: list[dict[str, Any]] = [
+        celula(f"{a}_contra_{b}", perfis[a], perfis[b], a, b) for a in perfis for b in perfis if a != b
+    ]
+    cenarios += [
+        {
+            "nome": f"todos_{p}",
+            "regras": "configs/regras_v2_2_1.yaml",
+            "jogadores": 4,
+            "partidas": 4,
+            "matriz": "estilos_teste",
+            "celula": [p, p],
+            "requisitos": ["REQ-05"],
+            "bots": [perfis[p]],
+        }
+        for p in perfis
+    ]
+    resultado = rodar(tmp_path, cenarios=cenarios)
+    assert "REQ-05" in resultado.manifest["vereditos"]
+    assert all(linha["blefes"] is not None for linha in resultado.linhas)
+    assert sum(linha["blefes"] for linha in resultado.linhas if linha["cenario"] == "todos_honesto") == 0
+    texto = (resultado.pasta / "relatorio.md").read_text(encoding="utf-8")
+    for trecho in ("### REQ-05", "Mesas de perfis iguais (REQ-05", "| honesto | 4 | 0,00 | — | — |"):
+        assert trecho in texto, trecho
+    assert cli.main(["relatorio", str(resultado.pasta)]) == 0
+    assert (resultado.pasta / "relatorio.md").read_text(encoding="utf-8") == texto
+
+
+def test_experimento_5_e_valido() -> None:
+    lido = carregar_experimento(RAIZ / "experimentos" / "fase4_exp5_blefe.yaml")
+    expandidos = lido.cenarios_expandidos()
+    assert sum(c.partidas for c in expandidos) == 180_000
+    diagonais = [c for c in lido.cenarios if c.celula and c.celula[0] == c.celula[1]]
+    assert len(diagonais) == 18 and all(c.requisitos == ["REQ-05"] and c.partidas == 2000 for c in diagonais)
+    assert all(bot.tipo == "heuristico" for c in lido.cenarios for bot in c.bots)

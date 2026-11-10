@@ -6,6 +6,7 @@ relatorio``), então todo número dele é rastreável até a execução que o ge
 
 from __future__ import annotations
 
+import math
 from typing import Any
 
 from critical_failure.metricas.analise import Analise
@@ -25,6 +26,14 @@ def _faixa(faixa: tuple[float, float] | None, casas: int = 3) -> str:
 
 def _pct(valor: float) -> str:
     return f"{100 * valor:.1f}%".replace(".", ",")
+
+
+def _blefes(descricao: dict[str, Any]) -> str:
+    por_partida = descricao.get("blefes_por_partida")
+    if por_partida is None:
+        return "—"
+    sucesso = descricao.get("blefes_bem_sucedidos")
+    return f"{_num(por_partida, 2)} ({'—' if sucesso is None else _pct(sucesso)})"
 
 
 def _matriz_de_alvos(manifest: dict[str, Any], estilos: list[dict[str, Any]]) -> list[str]:
@@ -67,12 +76,12 @@ def _matrizes_de_estilos(matrizes: list[MatrizDeEstilos]) -> list[str]:
     if not matrizes:
         return []
     saida = [
-        "## Matriz de estilos (MET-07 e REQ-04)",
+        "## Matrizes de ganhos entre estilos ou perfis (MET-07 e REQ-04)",
         "",
-        "Taxa de vitória de 1 bot do estilo da linha (o foco) numa mesa em que os outros N-1 são do estilo da "
-        "coluna, com rodízio de assentos. Na diagonal o foco joga contra bots iguais a ele e vence exatamente 1/N; "
-        "essas mesas não são rodadas. Em negrito, as melhores respostas a cada mesa: os estilos que nenhum outro "
-        "supera com clareza (intervalo de 95% da diferença inteiro acima da diferença mínima do REQ-04).",
+        "Taxa de vitória de 1 bot do estilo ou perfil da linha (o foco) numa mesa em que os outros N-1 são do da "
+        "coluna, com rodízio de assentos. Na diagonal o foco joga contra bots iguais a ele e vence exatamente 1/N. "
+        "Em negrito, as melhores respostas a cada mesa: as linhas que nenhuma outra supera com clareza (intervalo "
+        "de 95% da diferença inteiro acima da diferença mínima do REQ-04).",
         "",
     ]
     for matriz in matrizes:
@@ -113,6 +122,20 @@ def _matrizes_de_estilos(matrizes: list[MatrizDeEstilos]) -> list[str]:
             f"{mistura} ({parada}).",
             "",
         ]
+        if matriz.populacoes:
+            saida += [
+                "Mesas de perfis iguais (REQ-05: blefes bem-sucedidos divididos por blefes tentados).",
+                "",
+                "| Perfil | Partidas | Blefes por partida | Bem-sucedidos | IC 95% |",
+                "|---|---|---|---|---|",
+            ]
+            for populacao in matriz.populacoes:
+                taxa = "—" if populacao.taxa_de_sucesso is None else _num(populacao.taxa_de_sucesso)
+                saida.append(
+                    f"| {populacao.estilo} | {populacao.partidas} | {_num(populacao.blefes_por_partida, 2)} | "
+                    f"{taxa} | {_faixa(populacao.intervalo)} |"
+                )
+            saida.append("")
     return saida
 
 
@@ -160,7 +183,10 @@ def renderizar(manifest: dict[str, Any], analise: Analise) -> str:
             "|---|---|---|---|---|---|---|",
         ]
         for medida in do_requisito:
-            valor = str(int(medida.valor)) if medida.intervalo is None else _num(medida.valor, casas)
+            if math.isnan(medida.valor):
+                valor = "—"
+            else:
+                valor = str(int(medida.valor)) if medida.intervalo is None else _num(medida.valor, casas)
             linhas.append(
                 f"| {medida.cenario} | {medida.o_que} | {valor} | {_faixa(medida.intervalo, casas)} | "
                 f"{_faixa(medida.zona, casas)} | {medida.partidas} | {medida.veredito} |"
@@ -220,13 +246,14 @@ def renderizar(manifest: dict[str, Any], analise: Analise) -> str:
         "",
         "| Cenário | Partidas | Falhas | Testes por partida | Contestações por partida | Vitórias divididas | "
         "Partidas com reembaralhamento | Partidas em que faltou carta | Vantagem do líder | Placar do vencedor | "
-        "Placar médio | Sistema cheio no 1º Planejamento | Duração p10 / mediana / p90 (min) |",
-        "|---|---|---|---|---|---|---|---|---|---|---|---|---|",
+        "Placar médio | Sistema cheio no 1º Planejamento | Blefes por partida (bem-sucedidos) | "
+        "Duração p10 / mediana / p90 (min) |",
+        "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|",
     ]
     for d in descricoes:
         if "testes_por_partida" not in d:
             linhas.append(
-                f"| {d['cenario']} | {d['partidas']} | {d['falhas']} | — | — | — | — | — | — | — | — | — | — |"
+                f"| {d['cenario']} | {d['partidas']} | {d['falhas']} | — | — | — | — | — | — | — | — | — | — | — |"
             )
             continue
         cheios = d.get("sistemas_cheios_no_planejamento_1")
@@ -236,7 +263,7 @@ def renderizar(manifest: dict[str, Any], analise: Analise) -> str:
             f"{_pct(d['partidas_com_reembaralhamento'])} | {_pct(d['partidas_com_compra_impossivel'])} | "
             f"{'—' if d['vantagem_do_lider'] is None else _num(d['vantagem_do_lider'])} | "
             f"{_num(d['fichas_do_vencedor'], 1)} | {_num(d['fichas_medias'], 1)} | "
-            f"{'—' if cheios is None else _pct(cheios)} | "
+            f"{'—' if cheios is None else _pct(cheios)} | {_blefes(d)} | "
             + (
                 "— |"
                 if d["duracao_mediana"] is None

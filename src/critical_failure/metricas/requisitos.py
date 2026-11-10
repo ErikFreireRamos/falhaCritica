@@ -392,6 +392,18 @@ def _unidades_de_descricao(experimento: Experimento) -> dict[str, list[Cenario]]
     return unidades
 
 
+def _blefes_descritos(validas: list[dict[str, Any]]) -> dict[str, float | None]:
+    """Blefes por partida e a fração bem-sucedida (REQ-05). Só a v2 conta blefes."""
+    if validas[0]["familia"] != "v2" or any(linha.get("blefes") is None for linha in validas):
+        return {"blefes_por_partida": None, "blefes_bem_sucedidos": None}
+    tentados = sum(linha["blefes"] for linha in validas)
+    sucessos = sum(linha["blefes_bem_sucedidos"] for linha in validas)
+    return {
+        "blefes_por_partida": tentados / len(validas),
+        "blefes_bem_sucedidos": sucessos / tentados if tentados else None,
+    }
+
+
 def descrever(linhas: list[dict[str, Any]], experimento: Experimento) -> list[dict[str, Any]]:
     """Números descritivos por cenário. Não têm critério de aceite."""
     descricoes: list[dict[str, Any]] = []
@@ -431,6 +443,7 @@ def descrever(linhas: list[dict[str, Any]], experimento: Experimento) -> list[di
                 "duracao_mediana": p50,
                 "duracao_p90": p90,
                 "sistemas_cheios_no_planejamento_1": float(np.mean(cheios)) if cheios else None,
+                **_blefes_descritos(validas),
             }
         )
     return descricoes

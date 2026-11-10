@@ -69,12 +69,16 @@ class Cenario(_Base):
         if self.celula is not None and len(self.celula) != 2:
             raise ValueError(f"cenário {self.nome}: a célula tem 2 nomes (estilo do foco, estilo dos outros)")
         if self.matriz is not None:
-            if self.celula is None or self.celula[0] == self.celula[1]:
-                raise ValueError(
-                    f"cenário {self.nome}: célula de matriz precisa de dois estilos diferentes "
-                    "(na mesa de bots iguais, o foco vence exatamente 1/N e não é preciso rodar)"
-                )
-            if sum(1 for bot in self.bots if bot.rotulo == "foco") != 1:
+            if self.celula is None:
+                raise ValueError(f"cenário {self.nome}: cenário de matriz precisa de célula")
+            if self.celula[0] == self.celula[1]:
+                # Mesa de perfis iguais (diagonal): o foco venceria exatamente 1/N, então ela só serve
+                # para medir o que acontece numa população pura (o REQ-05, por exemplo).
+                if self.rodizio or not self.bots_identicos():
+                    raise ValueError(
+                        f"cenário {self.nome}: a diagonal da matriz é uma mesa de bots iguais, sem rodízio"
+                    )
+            elif sum(1 for bot in self.bots if bot.rotulo == "foco") != 1:
                 raise ValueError(f"cenário {self.nome}: célula de matriz precisa de exatamente 1 bot com rótulo foco")
         if self.partidas < 1:
             raise ValueError("partidas precisa ser pelo menos 1")

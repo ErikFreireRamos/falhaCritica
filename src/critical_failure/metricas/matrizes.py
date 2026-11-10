@@ -27,10 +27,21 @@ import numpy as np
 from numpy.typing import NDArray
 
 from critical_failure.experimentos.config import Cenario, Experimento
-from critical_failure.metricas.estatistica import FALHA, INCONCLUSIVO, PASSA, Intervalo
+from critical_failure.metricas.estatistica import (
+    FALHA,
+    INCONCLUSIVO,
+    PASSA,
+    Intervalo,
+    intervalo_da_razao,
+    veredito,
+)
 from critical_failure.metricas.requisitos import Medida, amostra_do_foco, rng_da_analise
 
 DOMINANCIA = "REQ-04"
+BLEFES = "REQ-05"
+PROPORCAO_PURA = 0.999
+"""A dinâmica do replicador terminou num perfil só quando ele fica com pelo menos esta proporção."""
+CHAVE_DOS_BLEFES = 60_000
 DOMINANTE = "dominante"
 NAO_DOMINANTE = "não dominante"
 INDEFINIDO = "indefinido"
@@ -52,6 +63,18 @@ class Celula:
 
 
 @dataclass(frozen=True, slots=True)
+class Populacao:
+    """Uma mesa de perfis iguais (a diagonal da matriz, quando é rodada): os blefes do REQ-05."""
+
+    estilo: str
+    partidas: int
+    blefes_por_partida: float
+    taxa_de_sucesso: float | None
+    """Blefes bem-sucedidos divididos por blefes tentados; ``None`` se ninguém blefou."""
+    intervalo: Intervalo | None
+
+
+@dataclass(frozen=True, slots=True)
 class MatrizDeEstilos:
     nome: str
     jogadores: int
@@ -66,6 +89,9 @@ class MatrizDeEstilos:
     motivo: dict[str, str]
     replicador: dict[str, float]
     replicador_convergiu: bool
+    populacoes: tuple[Populacao, ...] = ()
+    mede_blefes: bool = False
+    """Alguma mesa de perfis iguais desta matriz pede o REQ-05."""
 
 
 def _medias_por_bootstrap(valores: NDArray[np.float64], rng: np.random.Generator) -> NDArray[np.float64]:
@@ -138,14 +164,22 @@ def montar_matrizes(
     linhas: list[dict[str, Any]], experimento: Experimento, diferenca_minima: float
 ) -> list[MatrizDeEstilos]:
     por_matriz: dict[str, dict[tuple[str, str], list[Cenario]]] = {}
+    diagonais: dict[str, dict[str, list[Cenario]]] = {}
     for cenario in experimento.cenarios_expandidos():
         if cenario.matriz is not None and cenario.celula is not None:
             celula = (cenario.celula[0], cenario.celula[1])
-            por_matriz.setdefault(cenario.matriz, {}).setdefault(celula, []).append(cenario)
+            por_matriz.setdefault(cenario.matriz, {})
+            if celula[0] == celula[1]:
+                diagonais.setdefault(cenario.matriz, {}).setdefault(celula[0], []).append(cenario)
+            else:
+                por_matriz[cenario.matriz].setdefault(celula, []).append(cenario)
     resultado: list[MatrizDeEstilos] = []
     for indice_da_matriz, (nome, celulas_rodadas) in enumerate(por_matriz.items()):
-        jogadores = next(iter(celulas_rodadas.values()))[0].jogadores
-        estilos = tuple(dict.fromkeys([*(i for i, _ in celulas_rodadas), *(j for _, j in celulas_rodadas)]))
+        mesas_iguais = diagonais.get(nome, {})
+        jogadores = next(iter([*celulas_rodadas.values(), *mesas_iguais.values()]))[0].jogadores
+        estilos = tuple(
+            dict.fromkeys([*(i for i, _ in celulas_rodadas), *(j for _, j in celulas_rodadas), *mesas_iguais])
+        )
         referencia = 1 / jogadores
         medias: dict[tuple[str, str], NDArray[np.float64]] = {}
         celulas: dict[tuple[str, str], Celula] = {}
@@ -185,9 +219,92 @@ def montar_matrizes(
                 motivo=motivo,
                 replicador=proporcoes,
                 replicador_convergiu=convergiu,
+                populacoes=_populacoes(linhas, experimento, indice_da_matriz, estilos, mesas_iguais),
+                mede_blefes=any(BLEFES in c.requisitos for grupo in mesas_iguais.values() for c in grupo),
             )
         )
     return resultado
+
+
+def _populacoes(
+    linhas: list[dict[str, Any]],
+    experimento: Experimento,
+    indice_da_matriz: int,
+    estilos: tuple[str, ...],
+    mesas_iguais: dict[str, list[Cenario]],
+) -> tuple[Populacao, ...]:
+    populacoes: list[Populacao] = []
+    for ordem, estilo in enumerate(estilos):
+        nomes = {cenario.nome for cenario in mesas_iguais.get(estilo, [])}
+        validas = [
+            linha
+            for linha in linhas
+            if linha["cenario"] in nomes and linha["erro"] is None and linha.get("blefes") is not None
+        ]
+        if not validas:
+            continue
+        tentados = np.array([linha["blefes"] for linha in validas], dtype=np.float64)
+        sucessos = np.array([linha["blefes_bem_sucedidos"] for linha in validas], dtype=np.float64)
+        taxa: float | None = None
+        intervalo: Intervalo | None = None
+        if tentados.sum() > 0:
+            taxa = float(sucessos.sum() / tentados.sum())
+            rng = rng_da_analise(experimento.semente_mestre, CHAVE_DOS_BLEFES + indice_da_matriz, ordem)
+            intervalo = intervalo_da_razao(sucessos, tentados, rng)
+        populacoes.append(Populacao(estilo, len(validas), float(tentados.mean()), taxa, intervalo))
+    return tuple(populacoes)
+
+
+def medidas_de_blefe(matrizes: list[MatrizDeEstilos], criterio: dict[str, Any]) -> list[Medida]:
+    """REQ-05 no equilíbrio da dinâmica do replicador (autor, 2026-11-10).
+
+    Se a dinâmica termina num perfil só, vale a mesa de perfis iguais dele. Se
+    termina numa mistura, o veredito fica para uma mesa sorteada da mistura, que
+    é outro experimento: aqui a medida sai inconclusiva, com a mistura na nota.
+    """
+    zona = (float(criterio["minimo"]), float(criterio["maximo"]))
+    medidas: list[Medida] = []
+    for matriz in matrizes:
+        if not matriz.completa or not matriz.mede_blefes:
+            continue
+        puros = [e for e, p in matriz.replicador.items() if p >= PROPORCAO_PURA] if matriz.replicador_convergiu else []
+        populacao = next((p for p in matriz.populacoes if puros and p.estilo == puros[0]), None)
+        if not puros or populacao is None or populacao.taxa_de_sucesso is None or populacao.intervalo is None:
+            if not puros:
+                mistura = ", ".join(f"{e} {p:.3f}" for e, p in matriz.replicador.items() if p >= 0.0005)
+                nota = f"o equilíbrio é uma mistura ({mistura}); falta a mesa sorteada da mistura"
+            elif populacao is None:
+                nota = f"o equilíbrio é {puros[0]}, mas a mesa de perfis iguais dele não foi rodada"
+            else:
+                nota = f"o equilíbrio é {puros[0]}, e nessa mesa ninguém blefa"
+            medidas.append(
+                Medida(
+                    requisito=BLEFES,
+                    cenario=matriz.nome,
+                    o_que="blefes bem-sucedidos no equilíbrio",
+                    valor=float("nan"),
+                    intervalo=None,
+                    zona=zona,
+                    veredito=INCONCLUSIVO,
+                    partidas=matriz.partidas,
+                    nota=nota,
+                )
+            )
+            continue
+        medidas.append(
+            Medida(
+                requisito=BLEFES,
+                cenario=f"{matriz.nome}, equilíbrio {populacao.estilo}",
+                o_que="blefes bem-sucedidos / blefes tentados",
+                valor=populacao.taxa_de_sucesso,
+                intervalo=populacao.intervalo,
+                zona=zona,
+                veredito=veredito(populacao.intervalo, zona),
+                partidas=populacao.partidas,
+                nota=f"{matriz.nome}: a dinâmica do replicador termina em {populacao.estilo}",
+            )
+        )
+    return medidas
 
 
 def medidas_de_dominancia(matrizes: list[MatrizDeEstilos], criterio: dict[str, Any]) -> list[Medida]:

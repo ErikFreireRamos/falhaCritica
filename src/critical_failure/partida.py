@@ -54,6 +54,10 @@ class ResultadoPartida:
     depois que todos fizeram o primeiro teste)."""
     sistemas_cheios_no_planejamento: tuple[bool, ...] | None = None
     """REQ-11: quem terminou o Planejamento do ciclo 1 com o sistema no teto (só na v2)."""
+    blefes: int = 0
+    """REQ-05: defesas que nomearam um teste que não estava no sistema (AMB-15; só na v2)."""
+    blefes_bem_sucedidos: int = 0
+    """REQ-05: desses blefes, os que terminaram aceitos, sem Alerta."""
 
     def vezes(self, tipo: str) -> int:
         return dict(self.tipos_de_evento).get(tipo, 0)
@@ -96,9 +100,11 @@ def jogar_partida(
     tipos: Counter[str] = Counter()
     placar_no_corte: tuple[int, ...] | None = None
     cheios: tuple[bool, ...] | None = None
+    blefes = blefes_bem_sucedidos = 0
+    blefe_em_aberto = False
 
     def entregar(eventos: Sequence[Any], decisao: dict[str, Any] | None) -> None:
-        nonlocal total, criterio, placar_no_corte, cheios
+        nonlocal total, criterio, placar_no_corte, cheios, blefes, blefes_bem_sucedidos, blefe_em_aberto
         for posicao, evento in enumerate(eventos):
             if conferir_invariantes:
                 motor.conferir_invariantes(evento.estado, em_repouso=posicao == len(eventos) - 1)
@@ -110,6 +116,13 @@ def jogar_partida(
                 placar_no_corte = motor.ponto_de_corte(evento)
             if cheios is None:
                 cheios = motor.sistemas_cheios_no_planejamento(evento)
+            if motor.blefe_na_defesa(evento):
+                blefe_em_aberto = True
+            aceita = motor.defesa_aceita(evento)
+            if aceita is not None and blefe_em_aberto:
+                blefes += 1
+                blefes_bem_sucedidos += int(aceita)
+                blefe_em_aberto = False
             if evento.tipo == "fim_de_jogo":
                 criterio = evento.publico["criterio"]
             if ouvinte is not None:
@@ -150,4 +163,6 @@ def jogar_partida(
         tipos_de_evento=tuple(sorted(tipos.items())),
         placar_no_corte=placar_no_corte,
         sistemas_cheios_no_planejamento=cheios,
+        blefes=blefes,
+        blefes_bem_sucedidos=blefes_bem_sucedidos,
     )

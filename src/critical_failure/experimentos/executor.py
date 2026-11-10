@@ -63,6 +63,8 @@ ESQUEMA_DA_TABELA = pa.schema(
         ("reposicoes_impossiveis", pa.int16()),
         ("placar_no_corte", pa.list_(pa.int16())),
         ("cheios_no_planejamento_1", pa.list_(pa.bool_())),
+        ("blefes", pa.int16()),
+        ("blefes_bem_sucedidos", pa.int16()),
         ("erro", pa.string()),
         ("aviso", pa.string()),
     ]
@@ -115,6 +117,8 @@ def _linha_de_falha(lote: Lote, partida: int, erro: Exception) -> dict[str, Any]
         "reposicoes_impossiveis": None,
         "placar_no_corte": None,
         "cheios_no_planejamento_1": None,
+        "blefes": None,
+        "blefes_bem_sucedidos": None,
         "erro": f"{type(erro).__name__}: {erro}",
         "aviso": None,
     }
@@ -188,6 +192,8 @@ def rodar_lote(lote: Lote) -> list[dict[str, Any]]:
                     if resultado.sistemas_cheios_no_planejamento is not None
                     else None
                 ),
+                "blefes": resultado.blefes,
+                "blefes_bem_sucedidos": resultado.blefes_bem_sucedidos,
                 "erro": None,
                 "aviso": None,
             }

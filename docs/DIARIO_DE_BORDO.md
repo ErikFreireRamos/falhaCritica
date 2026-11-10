@@ -679,3 +679,27 @@ Execução oficial no commit `ccd5649`, árvore limpa: 140.000 partidas em 2.693
 ### Pendências
 
 - REQ-01 com bots que jogam bem: a vantagem do primeiro jogador está na borda da zona.
+
+## 2026-11-10 — Fase 4, Experimento 5: equilíbrio do blefe
+
+As decisões do autor estão na entrada anterior (estilo Heurístico; 1.000 partidas por célula, com 4 e 5 jogadores; REQ-05 entre 0,30 e 0,50, com veredito no equilíbrio).
+
+### O que foi feito
+
+1. **Blefes contados em toda partida.** O motor da v2 diz quando uma defesa é blefe (AMB-15) e quando uma disputa termina aceita. O laço da partida conta os blefes tentados e os bem-sucedidos, e a tabela de partidas ganhou as colunas `blefes` e `blefes_bem_sucedidos`. Na v1 a contagem é zero: o REQ-05 é da v2.
+2. **Mesas de perfis iguais na matriz.** A diagonal de uma matriz pode ser rodada como mesa de bots iguais, sem rodízio. Ela não entra como célula (a taxa do foco seria exatamente 1/N) e serve para medir a população pura.
+3. **REQ-05 no equilíbrio** (`metricas/matrizes.py`). Se a dinâmica do replicador termina num perfil só (pelo menos 99,9% da população), o veredito sai da mesa de perfis iguais desse perfil. Se termina numa mistura, a medida sai inconclusiva, com a mistura na nota, e fica para uma mesa sorteada da mistura. Se no equilíbrio ninguém blefa, também sai inconclusiva, com nota.
+4. **Relatório:** tabela das mesas de perfis iguais (blefes por partida, fração bem-sucedida e intervalo) e coluna "Blefes por partida (bem-sucedidos)" na descrição. A seção das matrizes passou a se chamar "Matrizes de ganhos entre estilos ou perfis".
+5. **Experimento** `experimentos/fase4_exp5_blefe.yaml`: 180.000 partidas.
+6. **Testes novos:** 9. Conferem a contagem de blefes evento a evento; o intervalo da razão; o REQ-05 em quatro casos montados à mão (passa, falha, equilíbrio misto, ninguém blefa); a diagonal como mesa de bots iguais; um torneio em miniatura com o relatório refeito; e o arquivo do experimento.
+
+### Verificação
+
+- `uv run pytest`: 403 testes passam e 1 é pulado. `ruff` e `mypy` estrito sem apontamentos. Matriz 176 de 176; registros de referência sem mudança.
+
+### Detalhes escolhidos pelo assistente, sem perguntar
+
+- **Nomes dos perfis:** `blefa_<nunca|metade|sempre>_contesta_<nunca|sempre|limiar>`.
+- **Intervalo do REQ-05:** razão das somas (blefes bem-sucedidos sobre blefes tentados), com bootstrap sobre as partidas, porque os blefes de uma mesma partida não são independentes.
+- **"Termina num perfil só":** pelo menos 99,9% da população, com a dinâmica parada.
+- **Semente mestre 20261115; 4 processos.**

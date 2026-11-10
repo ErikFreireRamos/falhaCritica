@@ -480,6 +480,14 @@ class MotorV1:
         """REQ-11 é da v2: a v1 não tem Planejamento nem teto no sistema."""
         return None
 
+    def blefe_na_defesa(self, evento: EventoV1) -> bool:
+        """REQ-05 é medido só na v2."""
+        return False
+
+    def defesa_aceita(self, evento: EventoV1) -> bool | None:
+        """REQ-05 é medido só na v2."""
+        return None
+
     _MANIPULADORES: dict[str, Callable[[MotorV1, _Ctx, int, AcaoV1], None]] = {
         E.MONTAR: _montar,
         E.TESTAR: _testar,

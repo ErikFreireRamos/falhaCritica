@@ -1,0 +1,1971 @@
+# Fase 4, Experimento 5: equilíbrio do blefe (decisões do autor em 2026-11-10).
+#
+# Os 9 perfis puros de blefe (blefar nunca, metade das vezes ou sempre; contestar nunca,
+# sempre ou pelo limiar de R-7.3.5), todos com o estilo Heurístico, que foi o melhor estilo.
+# - REQ-04: matriz 9 x 9. Em cada célula, 1 Heurístico com o perfil da linha (o foco) joga
+#   contra N-1 Heurísticos com o perfil da coluna, com rodízio de assentos: 1.000 partidas
+#   por célula (250 por rotação com 4 jogadores, 200 com 5).
+# - REQ-05: as 9 mesas de perfis iguais (a diagonal), 2.000 partidas cada. O veredito vale
+#   no equilíbrio da dinâmica do replicador; as 9 populações são só descrição.
+#
+# Todos com conhecimento experiente. Os critérios foram fixados em configs/requisitos.yaml
+# antes da execução.
+
+esquema: cf-experimento/1
+nome: fase4_exp5_blefe
+descricao: >
+  Equilíbrio do blefe na v2.2.1, com mesas de 4 e de 5. Matriz 9 x 9 entre os perfis puros
+  de blefe (um Heurístico foco contra N-1 Heurísticos de outro perfil, com rodízio de
+  assentos), análise de perfil dominante e dinâmica do replicador; mesas de perfis iguais
+  para os blefes bem-sucedidos no equilíbrio.
+semente_mestre: 20261115
+duracao: configs/duracao.yaml
+registros_completos_um_a_cada: 1000
+
+cenarios:
+  # ---------------------------------------------------------------- 4 jogadores
+  - nome: n4_todos_blefa_nunca_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_nunca_contesta_nunca, blefa_nunca_contesta_nunca]
+    partidas: 2000
+    requisitos: [REQ-05]
+    bots: [{tipo: heuristico, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}]
+  - nome: n4_blefa_nunca_contesta_nunca_contra_blefa_nunca_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_nunca_contesta_nunca, blefa_nunca_contesta_sempre]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+  - nome: n4_blefa_nunca_contesta_nunca_contra_blefa_nunca_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_nunca_contesta_nunca, blefa_nunca_contesta_limiar]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+  - nome: n4_blefa_nunca_contesta_nunca_contra_blefa_metade_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_nunca_contesta_nunca, blefa_metade_contesta_nunca]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+  - nome: n4_blefa_nunca_contesta_nunca_contra_blefa_metade_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_nunca_contesta_nunca, blefa_metade_contesta_sempre]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+  - nome: n4_blefa_nunca_contesta_nunca_contra_blefa_metade_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_nunca_contesta_nunca, blefa_metade_contesta_limiar]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+  - nome: n4_blefa_nunca_contesta_nunca_contra_blefa_sempre_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_nunca_contesta_nunca, blefa_sempre_contesta_nunca]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+  - nome: n4_blefa_nunca_contesta_nunca_contra_blefa_sempre_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_nunca_contesta_nunca, blefa_sempre_contesta_sempre]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+  - nome: n4_blefa_nunca_contesta_nunca_contra_blefa_sempre_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_nunca_contesta_nunca, blefa_sempre_contesta_limiar]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n4_blefa_nunca_contesta_sempre_contra_blefa_nunca_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_nunca_contesta_sempre, blefa_nunca_contesta_nunca]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+  - nome: n4_todos_blefa_nunca_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_nunca_contesta_sempre, blefa_nunca_contesta_sempre]
+    partidas: 2000
+    requisitos: [REQ-05]
+    bots: [{tipo: heuristico, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}]
+  - nome: n4_blefa_nunca_contesta_sempre_contra_blefa_nunca_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_nunca_contesta_sempre, blefa_nunca_contesta_limiar]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+  - nome: n4_blefa_nunca_contesta_sempre_contra_blefa_metade_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_nunca_contesta_sempre, blefa_metade_contesta_nunca]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+  - nome: n4_blefa_nunca_contesta_sempre_contra_blefa_metade_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_nunca_contesta_sempre, blefa_metade_contesta_sempre]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+  - nome: n4_blefa_nunca_contesta_sempre_contra_blefa_metade_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_nunca_contesta_sempre, blefa_metade_contesta_limiar]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+  - nome: n4_blefa_nunca_contesta_sempre_contra_blefa_sempre_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_nunca_contesta_sempre, blefa_sempre_contesta_nunca]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+  - nome: n4_blefa_nunca_contesta_sempre_contra_blefa_sempre_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_nunca_contesta_sempre, blefa_sempre_contesta_sempre]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+  - nome: n4_blefa_nunca_contesta_sempre_contra_blefa_sempre_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_nunca_contesta_sempre, blefa_sempre_contesta_limiar]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n4_blefa_nunca_contesta_limiar_contra_blefa_nunca_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_nunca_contesta_limiar, blefa_nunca_contesta_nunca]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+  - nome: n4_blefa_nunca_contesta_limiar_contra_blefa_nunca_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_nunca_contesta_limiar, blefa_nunca_contesta_sempre]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+  - nome: n4_todos_blefa_nunca_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_nunca_contesta_limiar, blefa_nunca_contesta_limiar]
+    partidas: 2000
+    requisitos: [REQ-05]
+    bots: [{tipo: heuristico, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}]
+  - nome: n4_blefa_nunca_contesta_limiar_contra_blefa_metade_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_nunca_contesta_limiar, blefa_metade_contesta_nunca]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+  - nome: n4_blefa_nunca_contesta_limiar_contra_blefa_metade_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_nunca_contesta_limiar, blefa_metade_contesta_sempre]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+  - nome: n4_blefa_nunca_contesta_limiar_contra_blefa_metade_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_nunca_contesta_limiar, blefa_metade_contesta_limiar]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+  - nome: n4_blefa_nunca_contesta_limiar_contra_blefa_sempre_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_nunca_contesta_limiar, blefa_sempre_contesta_nunca]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+  - nome: n4_blefa_nunca_contesta_limiar_contra_blefa_sempre_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_nunca_contesta_limiar, blefa_sempre_contesta_sempre]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+  - nome: n4_blefa_nunca_contesta_limiar_contra_blefa_sempre_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_nunca_contesta_limiar, blefa_sempre_contesta_limiar]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n4_blefa_metade_contesta_nunca_contra_blefa_nunca_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_metade_contesta_nunca, blefa_nunca_contesta_nunca]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+  - nome: n4_blefa_metade_contesta_nunca_contra_blefa_nunca_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_metade_contesta_nunca, blefa_nunca_contesta_sempre]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+  - nome: n4_blefa_metade_contesta_nunca_contra_blefa_nunca_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_metade_contesta_nunca, blefa_nunca_contesta_limiar]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+  - nome: n4_todos_blefa_metade_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_metade_contesta_nunca, blefa_metade_contesta_nunca]
+    partidas: 2000
+    requisitos: [REQ-05]
+    bots: [{tipo: heuristico, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}]
+  - nome: n4_blefa_metade_contesta_nunca_contra_blefa_metade_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_metade_contesta_nunca, blefa_metade_contesta_sempre]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+  - nome: n4_blefa_metade_contesta_nunca_contra_blefa_metade_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_metade_contesta_nunca, blefa_metade_contesta_limiar]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+  - nome: n4_blefa_metade_contesta_nunca_contra_blefa_sempre_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_metade_contesta_nunca, blefa_sempre_contesta_nunca]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+  - nome: n4_blefa_metade_contesta_nunca_contra_blefa_sempre_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_metade_contesta_nunca, blefa_sempre_contesta_sempre]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+  - nome: n4_blefa_metade_contesta_nunca_contra_blefa_sempre_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_metade_contesta_nunca, blefa_sempre_contesta_limiar]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n4_blefa_metade_contesta_sempre_contra_blefa_nunca_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_metade_contesta_sempre, blefa_nunca_contesta_nunca]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+  - nome: n4_blefa_metade_contesta_sempre_contra_blefa_nunca_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_metade_contesta_sempre, blefa_nunca_contesta_sempre]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+  - nome: n4_blefa_metade_contesta_sempre_contra_blefa_nunca_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_metade_contesta_sempre, blefa_nunca_contesta_limiar]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+  - nome: n4_blefa_metade_contesta_sempre_contra_blefa_metade_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_metade_contesta_sempre, blefa_metade_contesta_nunca]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+  - nome: n4_todos_blefa_metade_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_metade_contesta_sempre, blefa_metade_contesta_sempre]
+    partidas: 2000
+    requisitos: [REQ-05]
+    bots: [{tipo: heuristico, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}]
+  - nome: n4_blefa_metade_contesta_sempre_contra_blefa_metade_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_metade_contesta_sempre, blefa_metade_contesta_limiar]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+  - nome: n4_blefa_metade_contesta_sempre_contra_blefa_sempre_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_metade_contesta_sempre, blefa_sempre_contesta_nunca]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+  - nome: n4_blefa_metade_contesta_sempre_contra_blefa_sempre_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_metade_contesta_sempre, blefa_sempre_contesta_sempre]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+  - nome: n4_blefa_metade_contesta_sempre_contra_blefa_sempre_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_metade_contesta_sempre, blefa_sempre_contesta_limiar]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n4_blefa_metade_contesta_limiar_contra_blefa_nunca_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_metade_contesta_limiar, blefa_nunca_contesta_nunca]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+  - nome: n4_blefa_metade_contesta_limiar_contra_blefa_nunca_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_metade_contesta_limiar, blefa_nunca_contesta_sempre]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+  - nome: n4_blefa_metade_contesta_limiar_contra_blefa_nunca_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_metade_contesta_limiar, blefa_nunca_contesta_limiar]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+  - nome: n4_blefa_metade_contesta_limiar_contra_blefa_metade_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_metade_contesta_limiar, blefa_metade_contesta_nunca]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+  - nome: n4_blefa_metade_contesta_limiar_contra_blefa_metade_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_metade_contesta_limiar, blefa_metade_contesta_sempre]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+  - nome: n4_todos_blefa_metade_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_metade_contesta_limiar, blefa_metade_contesta_limiar]
+    partidas: 2000
+    requisitos: [REQ-05]
+    bots: [{tipo: heuristico, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}]
+  - nome: n4_blefa_metade_contesta_limiar_contra_blefa_sempre_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_metade_contesta_limiar, blefa_sempre_contesta_nunca]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+  - nome: n4_blefa_metade_contesta_limiar_contra_blefa_sempre_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_metade_contesta_limiar, blefa_sempre_contesta_sempre]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+  - nome: n4_blefa_metade_contesta_limiar_contra_blefa_sempre_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_metade_contesta_limiar, blefa_sempre_contesta_limiar]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n4_blefa_sempre_contesta_nunca_contra_blefa_nunca_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_sempre_contesta_nunca, blefa_nunca_contesta_nunca]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+  - nome: n4_blefa_sempre_contesta_nunca_contra_blefa_nunca_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_sempre_contesta_nunca, blefa_nunca_contesta_sempre]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+  - nome: n4_blefa_sempre_contesta_nunca_contra_blefa_nunca_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_sempre_contesta_nunca, blefa_nunca_contesta_limiar]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+  - nome: n4_blefa_sempre_contesta_nunca_contra_blefa_metade_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_sempre_contesta_nunca, blefa_metade_contesta_nunca]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+  - nome: n4_blefa_sempre_contesta_nunca_contra_blefa_metade_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_sempre_contesta_nunca, blefa_metade_contesta_sempre]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+  - nome: n4_blefa_sempre_contesta_nunca_contra_blefa_metade_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_sempre_contesta_nunca, blefa_metade_contesta_limiar]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+  - nome: n4_todos_blefa_sempre_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_sempre_contesta_nunca, blefa_sempre_contesta_nunca]
+    partidas: 2000
+    requisitos: [REQ-05]
+    bots: [{tipo: heuristico, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}]
+  - nome: n4_blefa_sempre_contesta_nunca_contra_blefa_sempre_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_sempre_contesta_nunca, blefa_sempre_contesta_sempre]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+  - nome: n4_blefa_sempre_contesta_nunca_contra_blefa_sempre_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_sempre_contesta_nunca, blefa_sempre_contesta_limiar]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n4_blefa_sempre_contesta_sempre_contra_blefa_nunca_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_sempre_contesta_sempre, blefa_nunca_contesta_nunca]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+  - nome: n4_blefa_sempre_contesta_sempre_contra_blefa_nunca_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_sempre_contesta_sempre, blefa_nunca_contesta_sempre]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+  - nome: n4_blefa_sempre_contesta_sempre_contra_blefa_nunca_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_sempre_contesta_sempre, blefa_nunca_contesta_limiar]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+  - nome: n4_blefa_sempre_contesta_sempre_contra_blefa_metade_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_sempre_contesta_sempre, blefa_metade_contesta_nunca]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+  - nome: n4_blefa_sempre_contesta_sempre_contra_blefa_metade_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_sempre_contesta_sempre, blefa_metade_contesta_sempre]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+  - nome: n4_blefa_sempre_contesta_sempre_contra_blefa_metade_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_sempre_contesta_sempre, blefa_metade_contesta_limiar]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+  - nome: n4_blefa_sempre_contesta_sempre_contra_blefa_sempre_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_sempre_contesta_sempre, blefa_sempre_contesta_nunca]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+  - nome: n4_todos_blefa_sempre_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_sempre_contesta_sempre, blefa_sempre_contesta_sempre]
+    partidas: 2000
+    requisitos: [REQ-05]
+    bots: [{tipo: heuristico, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}]
+  - nome: n4_blefa_sempre_contesta_sempre_contra_blefa_sempre_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_sempre_contesta_sempre, blefa_sempre_contesta_limiar]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n4_blefa_sempre_contesta_limiar_contra_blefa_nunca_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_sempre_contesta_limiar, blefa_nunca_contesta_nunca]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+  - nome: n4_blefa_sempre_contesta_limiar_contra_blefa_nunca_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_sempre_contesta_limiar, blefa_nunca_contesta_sempre]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+  - nome: n4_blefa_sempre_contesta_limiar_contra_blefa_nunca_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_sempre_contesta_limiar, blefa_nunca_contesta_limiar]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+  - nome: n4_blefa_sempre_contesta_limiar_contra_blefa_metade_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_sempre_contesta_limiar, blefa_metade_contesta_nunca]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+  - nome: n4_blefa_sempre_contesta_limiar_contra_blefa_metade_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_sempre_contesta_limiar, blefa_metade_contesta_sempre]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+  - nome: n4_blefa_sempre_contesta_limiar_contra_blefa_metade_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_sempre_contesta_limiar, blefa_metade_contesta_limiar]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+  - nome: n4_blefa_sempre_contesta_limiar_contra_blefa_sempre_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_sempre_contesta_limiar, blefa_sempre_contesta_nunca]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+  - nome: n4_blefa_sempre_contesta_limiar_contra_blefa_sempre_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_sempre_contesta_limiar, blefa_sempre_contesta_sempre]
+    partidas: 250
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+  - nome: n4_todos_blefa_sempre_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    matriz: blefe_4_jogadores
+    celula: [blefa_sempre_contesta_limiar, blefa_sempre_contesta_limiar]
+    partidas: 2000
+    requisitos: [REQ-05]
+    bots: [{tipo: heuristico, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}]
+  # ---------------------------------------------------------------- 5 jogadores
+  - nome: n5_todos_blefa_nunca_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_nunca_contesta_nunca, blefa_nunca_contesta_nunca]
+    partidas: 2000
+    requisitos: [REQ-05]
+    bots: [{tipo: heuristico, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}]
+  - nome: n5_blefa_nunca_contesta_nunca_contra_blefa_nunca_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_nunca_contesta_nunca, blefa_nunca_contesta_sempre]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+  - nome: n5_blefa_nunca_contesta_nunca_contra_blefa_nunca_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_nunca_contesta_nunca, blefa_nunca_contesta_limiar]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+  - nome: n5_blefa_nunca_contesta_nunca_contra_blefa_metade_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_nunca_contesta_nunca, blefa_metade_contesta_nunca]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+  - nome: n5_blefa_nunca_contesta_nunca_contra_blefa_metade_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_nunca_contesta_nunca, blefa_metade_contesta_sempre]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+  - nome: n5_blefa_nunca_contesta_nunca_contra_blefa_metade_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_nunca_contesta_nunca, blefa_metade_contesta_limiar]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+  - nome: n5_blefa_nunca_contesta_nunca_contra_blefa_sempre_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_nunca_contesta_nunca, blefa_sempre_contesta_nunca]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+  - nome: n5_blefa_nunca_contesta_nunca_contra_blefa_sempre_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_nunca_contesta_nunca, blefa_sempre_contesta_sempre]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+  - nome: n5_blefa_nunca_contesta_nunca_contra_blefa_sempre_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_nunca_contesta_nunca, blefa_sempre_contesta_limiar]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n5_blefa_nunca_contesta_sempre_contra_blefa_nunca_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_nunca_contesta_sempre, blefa_nunca_contesta_nunca]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+  - nome: n5_todos_blefa_nunca_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_nunca_contesta_sempre, blefa_nunca_contesta_sempre]
+    partidas: 2000
+    requisitos: [REQ-05]
+    bots: [{tipo: heuristico, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}]
+  - nome: n5_blefa_nunca_contesta_sempre_contra_blefa_nunca_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_nunca_contesta_sempre, blefa_nunca_contesta_limiar]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+  - nome: n5_blefa_nunca_contesta_sempre_contra_blefa_metade_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_nunca_contesta_sempre, blefa_metade_contesta_nunca]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+  - nome: n5_blefa_nunca_contesta_sempre_contra_blefa_metade_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_nunca_contesta_sempre, blefa_metade_contesta_sempre]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+  - nome: n5_blefa_nunca_contesta_sempre_contra_blefa_metade_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_nunca_contesta_sempre, blefa_metade_contesta_limiar]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+  - nome: n5_blefa_nunca_contesta_sempre_contra_blefa_sempre_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_nunca_contesta_sempre, blefa_sempre_contesta_nunca]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+  - nome: n5_blefa_nunca_contesta_sempre_contra_blefa_sempre_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_nunca_contesta_sempre, blefa_sempre_contesta_sempre]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+  - nome: n5_blefa_nunca_contesta_sempre_contra_blefa_sempre_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_nunca_contesta_sempre, blefa_sempre_contesta_limiar]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n5_blefa_nunca_contesta_limiar_contra_blefa_nunca_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_nunca_contesta_limiar, blefa_nunca_contesta_nunca]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+  - nome: n5_blefa_nunca_contesta_limiar_contra_blefa_nunca_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_nunca_contesta_limiar, blefa_nunca_contesta_sempre]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+  - nome: n5_todos_blefa_nunca_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_nunca_contesta_limiar, blefa_nunca_contesta_limiar]
+    partidas: 2000
+    requisitos: [REQ-05]
+    bots: [{tipo: heuristico, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}]
+  - nome: n5_blefa_nunca_contesta_limiar_contra_blefa_metade_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_nunca_contesta_limiar, blefa_metade_contesta_nunca]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+  - nome: n5_blefa_nunca_contesta_limiar_contra_blefa_metade_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_nunca_contesta_limiar, blefa_metade_contesta_sempre]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+  - nome: n5_blefa_nunca_contesta_limiar_contra_blefa_metade_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_nunca_contesta_limiar, blefa_metade_contesta_limiar]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+  - nome: n5_blefa_nunca_contesta_limiar_contra_blefa_sempre_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_nunca_contesta_limiar, blefa_sempre_contesta_nunca]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+  - nome: n5_blefa_nunca_contesta_limiar_contra_blefa_sempre_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_nunca_contesta_limiar, blefa_sempre_contesta_sempre]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+  - nome: n5_blefa_nunca_contesta_limiar_contra_blefa_sempre_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_nunca_contesta_limiar, blefa_sempre_contesta_limiar]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n5_blefa_metade_contesta_nunca_contra_blefa_nunca_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_metade_contesta_nunca, blefa_nunca_contesta_nunca]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+  - nome: n5_blefa_metade_contesta_nunca_contra_blefa_nunca_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_metade_contesta_nunca, blefa_nunca_contesta_sempre]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+  - nome: n5_blefa_metade_contesta_nunca_contra_blefa_nunca_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_metade_contesta_nunca, blefa_nunca_contesta_limiar]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+  - nome: n5_todos_blefa_metade_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_metade_contesta_nunca, blefa_metade_contesta_nunca]
+    partidas: 2000
+    requisitos: [REQ-05]
+    bots: [{tipo: heuristico, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}]
+  - nome: n5_blefa_metade_contesta_nunca_contra_blefa_metade_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_metade_contesta_nunca, blefa_metade_contesta_sempre]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+  - nome: n5_blefa_metade_contesta_nunca_contra_blefa_metade_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_metade_contesta_nunca, blefa_metade_contesta_limiar]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+  - nome: n5_blefa_metade_contesta_nunca_contra_blefa_sempre_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_metade_contesta_nunca, blefa_sempre_contesta_nunca]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+  - nome: n5_blefa_metade_contesta_nunca_contra_blefa_sempre_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_metade_contesta_nunca, blefa_sempre_contesta_sempre]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+  - nome: n5_blefa_metade_contesta_nunca_contra_blefa_sempre_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_metade_contesta_nunca, blefa_sempre_contesta_limiar]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n5_blefa_metade_contesta_sempre_contra_blefa_nunca_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_metade_contesta_sempre, blefa_nunca_contesta_nunca]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+  - nome: n5_blefa_metade_contesta_sempre_contra_blefa_nunca_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_metade_contesta_sempre, blefa_nunca_contesta_sempre]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+  - nome: n5_blefa_metade_contesta_sempre_contra_blefa_nunca_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_metade_contesta_sempre, blefa_nunca_contesta_limiar]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+  - nome: n5_blefa_metade_contesta_sempre_contra_blefa_metade_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_metade_contesta_sempre, blefa_metade_contesta_nunca]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+  - nome: n5_todos_blefa_metade_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_metade_contesta_sempre, blefa_metade_contesta_sempre]
+    partidas: 2000
+    requisitos: [REQ-05]
+    bots: [{tipo: heuristico, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}]
+  - nome: n5_blefa_metade_contesta_sempre_contra_blefa_metade_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_metade_contesta_sempre, blefa_metade_contesta_limiar]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+  - nome: n5_blefa_metade_contesta_sempre_contra_blefa_sempre_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_metade_contesta_sempre, blefa_sempre_contesta_nunca]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+  - nome: n5_blefa_metade_contesta_sempre_contra_blefa_sempre_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_metade_contesta_sempre, blefa_sempre_contesta_sempre]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+  - nome: n5_blefa_metade_contesta_sempre_contra_blefa_sempre_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_metade_contesta_sempre, blefa_sempre_contesta_limiar]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n5_blefa_metade_contesta_limiar_contra_blefa_nunca_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_metade_contesta_limiar, blefa_nunca_contesta_nunca]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+  - nome: n5_blefa_metade_contesta_limiar_contra_blefa_nunca_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_metade_contesta_limiar, blefa_nunca_contesta_sempre]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+  - nome: n5_blefa_metade_contesta_limiar_contra_blefa_nunca_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_metade_contesta_limiar, blefa_nunca_contesta_limiar]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+  - nome: n5_blefa_metade_contesta_limiar_contra_blefa_metade_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_metade_contesta_limiar, blefa_metade_contesta_nunca]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+  - nome: n5_blefa_metade_contesta_limiar_contra_blefa_metade_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_metade_contesta_limiar, blefa_metade_contesta_sempre]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+  - nome: n5_todos_blefa_metade_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_metade_contesta_limiar, blefa_metade_contesta_limiar]
+    partidas: 2000
+    requisitos: [REQ-05]
+    bots: [{tipo: heuristico, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}]
+  - nome: n5_blefa_metade_contesta_limiar_contra_blefa_sempre_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_metade_contesta_limiar, blefa_sempre_contesta_nunca]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+  - nome: n5_blefa_metade_contesta_limiar_contra_blefa_sempre_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_metade_contesta_limiar, blefa_sempre_contesta_sempre]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+  - nome: n5_blefa_metade_contesta_limiar_contra_blefa_sempre_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_metade_contesta_limiar, blefa_sempre_contesta_limiar]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n5_blefa_sempre_contesta_nunca_contra_blefa_nunca_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_sempre_contesta_nunca, blefa_nunca_contesta_nunca]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+  - nome: n5_blefa_sempre_contesta_nunca_contra_blefa_nunca_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_sempre_contesta_nunca, blefa_nunca_contesta_sempre]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+  - nome: n5_blefa_sempre_contesta_nunca_contra_blefa_nunca_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_sempre_contesta_nunca, blefa_nunca_contesta_limiar]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+  - nome: n5_blefa_sempre_contesta_nunca_contra_blefa_metade_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_sempre_contesta_nunca, blefa_metade_contesta_nunca]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+  - nome: n5_blefa_sempre_contesta_nunca_contra_blefa_metade_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_sempre_contesta_nunca, blefa_metade_contesta_sempre]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+  - nome: n5_blefa_sempre_contesta_nunca_contra_blefa_metade_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_sempre_contesta_nunca, blefa_metade_contesta_limiar]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+  - nome: n5_todos_blefa_sempre_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_sempre_contesta_nunca, blefa_sempre_contesta_nunca]
+    partidas: 2000
+    requisitos: [REQ-05]
+    bots: [{tipo: heuristico, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}]
+  - nome: n5_blefa_sempre_contesta_nunca_contra_blefa_sempre_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_sempre_contesta_nunca, blefa_sempre_contesta_sempre]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+  - nome: n5_blefa_sempre_contesta_nunca_contra_blefa_sempre_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_sempre_contesta_nunca, blefa_sempre_contesta_limiar]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n5_blefa_sempre_contesta_sempre_contra_blefa_nunca_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_sempre_contesta_sempre, blefa_nunca_contesta_nunca]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+  - nome: n5_blefa_sempre_contesta_sempre_contra_blefa_nunca_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_sempre_contesta_sempre, blefa_nunca_contesta_sempre]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+  - nome: n5_blefa_sempre_contesta_sempre_contra_blefa_nunca_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_sempre_contesta_sempre, blefa_nunca_contesta_limiar]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+  - nome: n5_blefa_sempre_contesta_sempre_contra_blefa_metade_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_sempre_contesta_sempre, blefa_metade_contesta_nunca]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+  - nome: n5_blefa_sempre_contesta_sempre_contra_blefa_metade_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_sempre_contesta_sempre, blefa_metade_contesta_sempre]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+  - nome: n5_blefa_sempre_contesta_sempre_contra_blefa_metade_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_sempre_contesta_sempre, blefa_metade_contesta_limiar]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+  - nome: n5_blefa_sempre_contesta_sempre_contra_blefa_sempre_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_sempre_contesta_sempre, blefa_sempre_contesta_nunca]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+  - nome: n5_todos_blefa_sempre_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_sempre_contesta_sempre, blefa_sempre_contesta_sempre]
+    partidas: 2000
+    requisitos: [REQ-05]
+    bots: [{tipo: heuristico, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}]
+  - nome: n5_blefa_sempre_contesta_sempre_contra_blefa_sempre_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_sempre_contesta_sempre, blefa_sempre_contesta_limiar]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n5_blefa_sempre_contesta_limiar_contra_blefa_nunca_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_sempre_contesta_limiar, blefa_nunca_contesta_nunca]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+  - nome: n5_blefa_sempre_contesta_limiar_contra_blefa_nunca_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_sempre_contesta_limiar, blefa_nunca_contesta_sempre]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: sempre}}
+  - nome: n5_blefa_sempre_contesta_limiar_contra_blefa_nunca_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_sempre_contesta_limiar, blefa_nunca_contesta_limiar]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+  - nome: n5_blefa_sempre_contesta_limiar_contra_blefa_metade_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_sempre_contesta_limiar, blefa_metade_contesta_nunca]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: nunca}}
+  - nome: n5_blefa_sempre_contesta_limiar_contra_blefa_metade_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_sempre_contesta_limiar, blefa_metade_contesta_sempre]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: sempre}}
+  - nome: n5_blefa_sempre_contesta_limiar_contra_blefa_metade_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_sempre_contesta_limiar, blefa_metade_contesta_limiar]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+  - nome: n5_blefa_sempre_contesta_limiar_contra_blefa_sempre_contesta_nunca
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_sempre_contesta_limiar, blefa_sempre_contesta_nunca]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+  - nome: n5_blefa_sempre_contesta_limiar_contra_blefa_sempre_contesta_sempre
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_sempre_contesta_limiar, blefa_sempre_contesta_sempre]
+    partidas: 200
+    rodizio: true
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: sempre, contestacao: sempre}}
+  - nome: n5_todos_blefa_sempre_contesta_limiar
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    matriz: blefe_5_jogadores
+    celula: [blefa_sempre_contesta_limiar, blefa_sempre_contesta_limiar]
+    partidas: 2000
+    requisitos: [REQ-05]
+    bots: [{tipo: heuristico, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}]

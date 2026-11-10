@@ -10,7 +10,14 @@ from dataclasses import dataclass
 from typing import Any
 
 from critical_failure.experimentos.config import Experimento
-from critical_failure.metricas.matrizes import DOMINANCIA, MatrizDeEstilos, medidas_de_dominancia, montar_matrizes
+from critical_failure.metricas.matrizes import (
+    BLEFES,
+    DOMINANCIA,
+    MatrizDeEstilos,
+    medidas_de_blefe,
+    medidas_de_dominancia,
+    montar_matrizes,
+)
 from critical_failure.metricas.requisitos import (
     Medida,
     avaliar,
@@ -36,6 +43,9 @@ def analisar(linhas: list[dict[str, Any]], experimento: Experimento, requisitos:
     medidas = avaliar(linhas, experimento, requisitos)
     if criterio is not None:
         medidas += medidas_de_dominancia(matrizes, criterio)
+    criterio_dos_blefes = criterio_confirmado(requisitos, BLEFES)
+    if criterio_dos_blefes is not None:
+        medidas += medidas_de_blefe(matrizes, criterio_dos_blefes)
     return Analise(
         medidas=medidas,
         descricoes=descrever(linhas, experimento),

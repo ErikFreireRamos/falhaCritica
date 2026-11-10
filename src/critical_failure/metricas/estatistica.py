@@ -81,6 +81,27 @@ def intervalo_da_diferenca(
     return float(baixo), float(alto)
 
 
+def intervalo_da_razao(
+    numeradores: NDArray[np.float64],
+    denominadores: NDArray[np.float64],
+    rng: np.random.Generator,
+    reamostras: int = 1000,
+    confianca: float = 0.95,
+) -> Intervalo:
+    """Intervalo percentil por bootstrap para soma(numeradores) / soma(denominadores), reamostrando as partidas."""
+    if numeradores.size == 0 or numeradores.size != denominadores.size or float(denominadores.sum()) <= 0:
+        raise ValueError("não há valores para o bootstrap da razão")
+    razoes: list[float] = []
+    while len(razoes) < reamostras:
+        indices = rng.integers(0, numeradores.size, numeradores.size)
+        abaixo = float(denominadores[indices].sum())
+        if abaixo > 0:
+            razoes.append(float(numeradores[indices].sum()) / abaixo)
+    cauda = (1 - confianca) / 2
+    baixo, alto = np.quantile(np.array(razoes), [cauda, 1 - cauda])
+    return float(baixo), float(alto)
+
+
 def veredito(intervalo: Intervalo, zona: Intervalo) -> str:
     """Compara o intervalo de confiança com a zona de aceite."""
     baixo, alto = intervalo

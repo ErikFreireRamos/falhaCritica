@@ -1028,6 +1028,16 @@ class MotorV2:
             return tuple(len(jogador.sistema) >= teto for jogador in evento.estado.jogadores)
         return None
 
+    def blefe_na_defesa(self, evento: Evento) -> bool:
+        """REQ-05 (AMB-15): a defesa nomeou um teste que não está no sistema do defensor."""
+        return evento.tipo == "defesa" and evento.oculto.get("blefe") is True
+
+    def defesa_aceita(self, evento: Evento) -> bool | None:
+        """REQ-05: no fim de uma disputa, se ela terminou aceita (sem Alerta). ``None`` em outro evento."""
+        if evento.tipo != "fim_da_disputa":
+            return None
+        return bool(evento.publico.get("resultado") == E.ACEITA)
+
     _MANIPULADORES: dict[str, Callable[[MotorV2, _Ctx, int, Acao], None]] = {
         A.COMPRAR: _comprar,
         A.COLOCAR: _colocar,

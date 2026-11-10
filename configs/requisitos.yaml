@@ -99,13 +99,18 @@ requisitos:
     tipo: comportamento
     fonte: "prompt 3.6; PDF 2.2 p. 34 (Contestação)"
     metrica: >
-      Blefes bem-sucedidos divididos por blefes tentados. Blefe tentado é a
-      defesa que nomeia um teste que não está no sistema (AMB-15). É
-      bem-sucedido quando termina sem Alerta: a explicação conferiu e o
-      atacante aceitou. Relatado por população de bots e no equilíbrio
-      empírico de REQ-04.
+      Blefes bem-sucedidos divididos por blefes tentados, somados sobre as
+      partidas (bootstrap sobre as partidas). Blefe tentado é a defesa que
+      nomeia um teste que não está no sistema (AMB-15). É bem-sucedido quando
+      termina sem Alerta: a explicação conferiu e o atacante aceitou. O
+      veredito vale no equilíbrio da dinâmica do replicador do torneio entre
+      os perfis puros de blefe (autor, 2026-11-10): se ela termina num perfil
+      só, vale a mesa de perfis iguais dele; se termina numa mistura, vale uma
+      mesa sorteada da mistura, rodada depois. As populações de perfis iguais
+      aparecem como faixa, só como descrição.
     zona: "entre 0.30 e 0.50"
-    estado: aguardando_decisao
+    criterio: {minimo: 0.30, maximo: 0.50}
+    estado: confirmado  # autor, 2026-11-10
 
   - id: REQ-06
     nome: Distribuição de ataques
