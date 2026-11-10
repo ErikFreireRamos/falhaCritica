@@ -10,6 +10,7 @@ from hypothesis import strategies as st
 
 from critical_failure.auditoria import registro, replay
 from critical_failure.bots.aleatorio import BotAleatorio
+from critical_failure.bots.mesa import mesa_do_motor
 from critical_failure.nucleo.canonico import json_canonico
 from critical_failure.nucleo.erros import AcaoIlegal
 from critical_failure.observacao import observar
@@ -197,7 +198,7 @@ def test_acoes_quaisquer_so_geram_erro_controlado(
     estado, _ = motor.preparar(n, semente, partida)
     bots = [BotAleatorio() for _ in range(n)]
     for assento, bot in enumerate(bots):
-        bot.iniciar(semente, partida, assento)
+        bot.iniciar(semente, partida, assento, mesa_do_motor(motor))
     for _ in range(120):
         if estado.pendente is None:
             break

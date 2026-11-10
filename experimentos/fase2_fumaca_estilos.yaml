@@ -1,0 +1,45 @@
+# Fase 2: fumaça dos estilos de jogo (decisão do autor em 2026-11-10).
+#
+# Confere que os estilos jogam de fato diferente e dá uma primeira taxa de
+# vitória por estilo (MET-07), sem veredito. O experimento com veredito sobre
+# o melhor estilo e o balanceamento fica para a Fase 4.
+#
+# Todos com conhecimento experiente, blefe moderado (metade das vezes) e
+# contestação pelo limiar de R-7.3.5, para isolar o efeito do estilo. O rodízio
+# roda cada mesa em todas as rotações de assento, com as mesmas sementes.
+
+esquema: cf-experimento/1
+nome: fase2_fumaca_estilos
+descricao: >
+  Mesas mistas com um bot de cada estilo (Aleatório, Construtor, Caçador e
+  Heurístico; com 5 jogadores, dois Caçadores com políticas de alvo
+  diferentes), todos experientes, com blefe moderado e contestação pelo
+  limiar. Rodízio de assentos. Primeira taxa de vitória por estilo, sem
+  veredito.
+semente_mestre: 20261111
+duracao: configs/duracao.yaml
+registros_completos_um_a_cada: 500
+
+cenarios:
+  - nome: estilos_com_4_jogadores
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2500   # por rotação: 4 rotações, 10.000 partidas
+    rodizio: true
+    bots:
+      - {tipo: aleatorio, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: construtor, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: cacador, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: heuristico, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+
+  - nome: estilos_com_5_jogadores
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000   # por rotação: 5 rotações, 10.000 partidas
+    rodizio: true
+    bots:
+      - {tipo: aleatorio, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: construtor, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: cacador, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: heuristico, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}

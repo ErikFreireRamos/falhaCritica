@@ -18,7 +18,7 @@ def test_partida_refeita_bate_byte_a_byte_com_o_dourado(
     caminho = gerar_dourados.PASTA / f"{nome}.jsonl"
     gravado = caminho.read_bytes()
     assert b"\r" not in gravado, "o dourado precisa ter fim de linha LF"
-    linhas, _ = gerar_dourados.linhas_do_caso(arquivo, jogadores, partida)
+    linhas, _ = gerar_dourados.linhas_do_caso(arquivo, jogadores, partida, nome)
     refeito = "".join(json_canonico(linha) + "\n" for linha in linhas).encode("utf-8")
     assert refeito == gravado, (
         f"a partida {nome} não gera mais o mesmo registro. Se a mudança foi intencional, "
@@ -43,4 +43,4 @@ def test_narracao_de_exemplo_esta_em_dia(
     if not com_narracao:
         pytest.skip("caso sem narração de exemplo")
     caminho = gerar_dourados.EXEMPLOS / f"narracao_{nome}.txt"
-    assert caminho.read_text(encoding="utf-8") == gerar_dourados.narracao_do_caso(arquivo, jogadores, partida)
+    assert caminho.read_text(encoding="utf-8") == gerar_dourados.narracao_do_caso(arquivo, jogadores, partida, nome)

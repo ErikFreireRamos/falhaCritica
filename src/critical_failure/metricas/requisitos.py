@@ -148,7 +148,7 @@ def avaliar(
 ) -> list[Medida]:
     """Mede os requisitos confirmados que cada cenário pede. A robustez vale para o experimento inteiro."""
     medidas: list[Medida] = []
-    for indice, cenario in enumerate(experimento.cenarios):
+    for indice, cenario in enumerate(experimento.cenarios_expandidos()):
         validas = [linha for linha in linhas if linha["cenario"] == cenario.nome and linha["erro"] is None]
         if not validas:
             continue
@@ -169,7 +169,7 @@ def avaliar(
 def descrever(linhas: list[dict[str, Any]], experimento: Experimento) -> list[dict[str, Any]]:
     """Números descritivos por cenário. Não têm critério de aceite."""
     descricoes: list[dict[str, Any]] = []
-    for cenario in experimento.cenarios:
+    for cenario in experimento.cenarios_expandidos():
         do_cenario = [linha for linha in linhas if linha["cenario"] == cenario.nome]
         validas = [linha for linha in do_cenario if linha["erro"] is None]
         if not validas:
@@ -197,3 +197,48 @@ def descrever(linhas: list[dict[str, Any]], experimento: Experimento) -> list[di
             }
         )
     return descricoes
+
+
+def vitorias_por_bot(linhas: list[dict[str, Any]], experimento: Experimento) -> list[dict[str, Any]]:
+    """MET-07: taxa de vitória de cada bot nos grupos de cenários com bots diferentes.
+
+    Para cada assento ocupado por um bot conta 1 se ele venceu sozinho, 1/k numa
+    vitória dividida por k (AMB-14) e 0 se perdeu; a taxa é a média disso. A
+    referência de quem não leva vantagem nenhuma é 1/N. As rotações de um rodízio
+    são somadas no mesmo grupo. Sem veredito: a métrica aguarda o autor.
+    """
+    grupos: dict[str, list[Cenario]] = {}
+    for cenario in experimento.cenarios_expandidos():
+        if not cenario.bots_identicos():
+            grupos.setdefault(cenario.grupo or cenario.nome, []).append(cenario)
+    resultado: list[dict[str, Any]] = []
+    for indice, (grupo, cenarios) in enumerate(grupos.items()):
+        fatias: dict[str, list[float]] = {}
+        for cenario in cenarios:
+            nomes = [bot.nome() for bot in cenario.bots_por_assento()]
+            for linha in linhas:
+                if linha["cenario"] != cenario.nome or linha["erro"] is not None:
+                    continue
+                vencedores = linha["vencedores"]
+                for assento, nome in enumerate(nomes):
+                    fatias.setdefault(nome, []).append(1 / len(vencedores) if assento in vencedores else 0.0)
+        jogadores = cenarios[0].jogadores
+        for ordem, (nome, valores) in enumerate(sorted(fatias.items())):
+            amostra = np.array(valores, dtype=np.float64)
+            intervalo = intervalo_por_bootstrap(
+                amostra,
+                "media",
+                _rng(experimento.semente_mestre, len(experimento.cenarios_expandidos()) + indice, ordem),
+            )
+            resultado.append(
+                {
+                    "grupo": grupo,
+                    "bot": nome,
+                    "jogadores": jogadores,
+                    "assentos_jogados": len(valores),
+                    "taxa": float(amostra.mean()),
+                    "intervalo": intervalo,
+                    "referencia": 1 / jogadores,
+                }
+            )
+    return resultado

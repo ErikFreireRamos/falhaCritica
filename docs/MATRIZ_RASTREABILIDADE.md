@@ -114,7 +114,7 @@ Para cada item de `docs/especificacao_v2_2.md`: onde o código o cita e quais te
 | R-7.3.2 | regra | `regras/v2/motor.py:615` | `test_defesa_aceita_nada_acontece_e_nada_e_revelado` | coberta |
 | R-7.3.3 | regra | `regras/v2/motor.py:632` | `test_contestou_e_o_defensor_tinha_a_carta` | coberta |
 | R-7.3.4 | regra | `regras/v2/estado.py:31`, `regras/v2/motor.py:649` | `test_contestou_e_era_blefe` | coberta |
-| R-7.3.5 | nota | — | — | não exige teste |
+| R-7.3.5 | nota | `bots/estrategicos.py:7`, `bots/estrategicos.py:165`, `bots/estrategicos.py:228` | — | não exige teste |
 | R-7.4.1 | regra | — | `test_executar_o_teste_gasta_uma_carta_e_define_a_categoria` | coberta |
 | R-7.4.2 | regra | `regras/v2/motor.py:345` | `test_bug_duplicado`, `test_disputas_respeitam_o_bug_duplicado_e_o_auditor_nunca_esta_envolvido` | coberta |
 | R-7.4.2a | regra | — | `test_bug_duplicado` | coberta |

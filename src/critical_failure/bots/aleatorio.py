@@ -41,7 +41,7 @@ class BotAleatorio:
     def parametros(self) -> dict[str, Any]:
         return {"explicacao_correta": self._explicacao, "precisao_auditor": self._precisao}
 
-    def iniciar(self, semente: int, partida: int, assento: int) -> None:
+    def iniciar(self, semente: int, partida: int, assento: int, mesa: object = None) -> None:
         self._rng = gerador(semente, partida, fluxo_do_bot(assento))
 
     def _sortear(self, limite: int) -> int:

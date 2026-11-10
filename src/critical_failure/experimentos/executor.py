@@ -190,7 +190,7 @@ def montar_lotes(experimento: Experimento, pasta_dos_registros: Path) -> tuple[l
     duracao = carregar_duracao(caminho_da_duracao).resolvido()
     lotes: list[Lote] = []
     resumos: list[dict[str, Any]] = []
-    for cenario in experimento.cenarios:
+    for cenario in experimento.cenarios_expandidos():
         dados = aplicar_mudancas(_ler_yaml(RAIZ / cenario.regras), cenario.mudancas)
         regras = ler_regras(dados)
         catalogo = catalogo_das_regras(regras, registro.PASTA_CONFIGS)
@@ -209,6 +209,7 @@ def montar_lotes(experimento: Experimento, pasta_dos_registros: Path) -> tuple[l
                 "jogadores": cenario.jogadores,
                 "partidas": cenario.partidas,
                 "bots": [bot.model_dump(mode="json") for bot in bots],
+                "grupo": cenario.grupo or cenario.nome,
                 "requisitos": cenario.requisitos,
             }
         )
@@ -240,7 +241,7 @@ def executar(
     comando: str = "",
 ) -> Execucao:
     """Roda o experimento inteiro e grava tabela, registros, manifest e relatório."""
-    from critical_failure.metricas.requisitos import avaliar, carregar_requisitos, descrever
+    from critical_failure.metricas.requisitos import avaliar, carregar_requisitos, descrever, vitorias_por_bot
     from critical_failure.relatorios.markdown import renderizar
 
     git = registro.info_git()
@@ -306,7 +307,7 @@ def executar(
             for requisito in sorted({m.requisito for m in medidas})
         },
     }
-    relatorio = renderizar(manifest, medidas, descrever(linhas, experimento))
+    relatorio = renderizar(manifest, medidas, descrever(linhas, experimento), vitorias_por_bot(linhas, experimento))
     (pasta / "relatorio.md").write_text(relatorio, encoding="utf-8", newline="\n")
     manifest["arquivos"] = {
         "partidas.parquet": _hash_do_arquivo(caminho_da_tabela),

@@ -10,6 +10,7 @@ from hypothesis import given, settings
 from hypothesis import strategies as st
 
 from critical_failure.bots.aleatorio import BotAleatorio
+from critical_failure.bots.mesa import mesa_do_motor
 from critical_failure.nucleo.canonico import como_dict, json_canonico
 from critical_failure.observacao import Observacao, observar
 from critical_failure.regras.v2 import estado as E
@@ -112,7 +113,7 @@ def test_o_auditor_julga_a_explicacao_sem_saber_se_o_defensor_tem_a_carta(motor:
 def _estado_no_meio_de_uma_partida(motor: MotorV2, semente: int, partida: int, n: int, passos: int) -> Estado:
     bots = [BotAleatorio() for _ in range(n)]
     for assento, bot in enumerate(bots):
-        bot.iniciar(semente, partida, assento)
+        bot.iniciar(semente, partida, assento, mesa_do_motor(motor))
     estado, _ = motor.preparar(n, semente, partida)
     for _ in range(passos):
         if estado.pendente is None:

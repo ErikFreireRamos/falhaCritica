@@ -344,3 +344,62 @@ Execução oficial no commit `4d14805`, árvore limpa: 90.000 partidas em 685 s 
 
 - Do autor: rever a redação dos trechos marcados em `regras/v2.2.1.md` e o `regras/v1.md`.
 - Decidir se o REQ-08 terá a parte "no máximo 5% das partidas acima de 60 minutos".
+
+---
+
+## 2026-11-10 — Fase 2: bots com estilo de jogo
+
+### Decisões do autor
+
+| Assunto | Opções | Escolha |
+|---|---|---|
+| Construtor | enche e testa com sobras; enche e nunca testa | Enche e testa com sobras: compra e coloca na ordem categoria lida no Agora, no Próximo, categorias novas; testa só com o que não serve ao sistema |
+| Caçador | sistema mínimo; sistema vazio | Sistema mínimo: coloca só 1 carta da categoria lida no incidente Agora, se não tiver; testa com o resto, começando por essa categoria; alvo pela política (líder, mais fraco ou ao acaso) |
+| Heurístico | valor esperado e softmax; regras fixas | Valor esperado e softmax com temperatura de 0,5 ficha, pesos inteiros |
+| Leitura do Radar (MOD-04) | uma vez por incidente; a cada uso | Uma vez por incidente: a mesma leitura vale para o planejamento, o ataque e o diagnóstico |
+| Perfis de blefe | 3 × 3 = 9; 3 perfis | 9: blefar nunca, metade das vezes ou sempre; contestar nunca, sempre ou pelo limiar de R-7.3.5 |
+| Teste nomeado no blefe | o mais provável; ao acaso | O teste da categoria com mais cópias ainda não vistas |
+| Perfis de conhecimento | sugestão; outros valores | Sugestão. Iniciante: explicação 50%, diagnóstico 40%, Auditor 75%. Experiente: 85%, 80%, 95%. Ao errar o diagnóstico, metade cai na secundária, se houver |
+| Variantes do playtest | Fase 4; Fase 2 | Fase 4 |
+| Assento humano | manter na Fase 2; adiar | Resposta livre: "não coloque humanos, pois queremos simular um número maior de partidas". Saiu do escopo |
+| Fumaça da Fase 2 | mesas mistas com 20 mil partidas; só narrações; os dois | Mesas mistas, 20 mil partidas |
+
+### O que foi feito
+
+1. **Perfis** em `configs/perfis.yaml`. Num experimento, um bot pode citar o perfil pelo nome; o registro de auditoria grava sempre os valores resolvidos.
+2. **Mesa pública e Leitor** (`bots/mesa.py`). O bot recebe, ao iniciar a partida, as regras e a composição do baralho (MOD-08). O gabarito dos incidentes fica dentro do Leitor, que só devolve a leitura sorteada (MOD-03, MOD-04). Um teste confere que o código dos bots não consulta o gabarito por outro caminho.
+3. **Estimativas por contagem** (`bots/estimativas.py`, MOD-09): cartas não vistas, chance de um adversário não ter um teste ou uma categoria, teste mais provável de uma categoria.
+4. **Os três estilos** (`bots/estrategicos.py`), sobre uma base comum que cuida do blefe, da contestação, do papel de Auditor, do diagnóstico e da Lição aprendida. Cada decisão grava o motivo; a do Heurístico grava os valores que pesou.
+5. **Executor:** rodízio de assentos (cada mesa mista roda em todas as rotações, com as mesmas sementes) e taxa de vitória por bot no relatório (MET-07, sem veredito).
+6. **Testes novos:** 43. Conferem cada estilo decisão por decisão em partidas inteiras, os perfis de blefe e de contestação, a leitura, as estimativas, o softmax e mesas aleatórias de bots com os invariantes ligados.
+7. **Registro de referência com os quatro estilos** (`tests/dourados/v2_2_1_estilos_mistos.jsonl`) e a narração `docs/exemplos/narracao_v2_2_1_estilos_mistos.txt`. Os três registros antigos não mudaram.
+8. **Especificação:** MOD-04 e MOD-07 detalhados; MOD-08 e MOD-09 novos.
+
+### Detalhes escolhidos pelo assistente, sem perguntar
+
+**Comuns a todos os estilos**
+- Com carta da categoria atacada, o bot nomeia um teste que tem (de preferência um já revelado) e defende com a verdade.
+- Na Lição aprendida, sempre pega a carta, preferindo um teste que ainda não tem.
+- A leitura de cada incidente usa um contador próprio no fluxo do bot. Com isso, bots de estilos diferentes no mesmo assento leem o mesmo relato do mesmo jeito (números aleatórios comuns).
+- Se o bot viu um adversário pegar do Backlog uma carta do teste em questão, supõe que ela está no sistema dele (MOD-09).
+- No Leitor, quando o teste-chave não tem vizinho fora da categoria secundária (é o caso do incidente 13), o resto do erro vai por igual para as demais categorias.
+
+**Construtor:** sem carta útil no Backlog, compra do topo. Entre as sobras, testa com carta e alvo ao acaso.
+
+**Caçador:** compra no Backlog cartas da categoria lida no Agora, para cobrir e como munição; sem elas, compra do topo. Empates na política de alvo são sorteados.
+
+**Heurístico.** Dentro da abordagem aprovada, o modelo de valor é meu:
+- uma carta no sistema vale o dano evitado nos incidentes à frente (Agora com peso 1, Próximo com o desconto), o Critical Failure (categoria sorteada, peso igual ao desconto ao quadrado) e a pontuação final;
+- a chance de uma categoria ser a chave é a do perfil para a categoria lida, e o resto é dividido igualmente entre as outras;
+- a chance de o teste novo ser teste-chave é 1 dividido pelo número de testes da categoria;
+- testar vale a chance estimada de o alvo não ter a categoria vezes o ganho do atacante, mais 1/(N − 1) do dano que o Alerta causa a ele;
+- guardar uma carta para o próximo Planejamento vale o seu valor no sistema vezes o desconto;
+- **desconto do futuro: 0,8.** Número escolhido por mim, em `configs/perfis.yaml`;
+- a exponencial do softmax é calculada só com soma, produto e divisão, para dar o mesmo resultado em qualquer plataforma.
+
+**Fumaça:** com 4 jogadores o Caçador ataca o líder; com 5, entram dois Caçadores, um que ataca o líder e outro que ataca o mais fraco. Todos contestam pelo limiar. O Aleatório entra com os valores do perfil experiente (explicação 85%, Auditor 95%).
+
+### Verificação
+
+- `uv run pytest`: 327 testes passam e 1 é pulado. `ruff` e `mypy` estrito sem apontamentos. Matriz: 148 de 148.
+- Partida narrada com os quatro estilos lida por inteiro: os motivos gravados batem com o que cada estilo deve fazer.

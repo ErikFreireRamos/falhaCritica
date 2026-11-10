@@ -256,3 +256,55 @@ def test_linha_de_comando_roda_um_experimento(tmp_path: Path, capsys: pytest.Cap
     assert "3 partidas" in saida and "REQ-09: inconclusivo" in saida
     assert (tmp_path / "s" / "manifest.json").exists()
     assert cli.main(["relatorio", str(tmp_path / "nao_existe")]) == 1
+
+
+# ---------------------------------------------------------------- rodízio e taxa de vitória por bot
+
+ESTILOS = [
+    {"tipo": "construtor", "parametros": {"conhecimento": "experiente", "blefe": "metade", "contestacao": "limiar"}},
+    {
+        "tipo": "cacador",
+        "parametros": {"conhecimento": "experiente", "blefe": "metade", "contestacao": "limiar", "alvo": "lider"},
+    },
+    {"tipo": "heuristico", "parametros": {"conhecimento": "experiente", "blefe": "metade", "contestacao": "limiar"}},
+    {**ALEATORIO, "rotulo": "aleatorio experiente"},
+]
+
+
+def test_rodizio_roda_cada_rotacao_dos_bots_pelos_assentos() -> None:
+    cenario = {"nome": "mista", "regras": "configs/regras_v2_2_1.yaml", "jogadores": 4, "partidas": 3,
+               "bots": ESTILOS, "rodizio": True}  # fmt: skip
+    lido = ler_experimento(experimento(cenarios=[cenario]))
+    rotacoes = lido.cenarios_expandidos()
+    assert [c.nome for c in rotacoes] == ["mista_r0", "mista_r1", "mista_r2", "mista_r3"]
+    assert all(c.grupo == "mista" and not c.rodizio for c in rotacoes)
+    assert [bot.tipo for bot in rotacoes[1].bots] == ["cacador", "heuristico", "aleatorio", "construtor"]
+    # Cada bot passa por todos os assentos.
+    for k in range(4):
+        assert {rotacao.bots[k].nome() for rotacao in rotacoes} == {bot.nome() for bot in rotacoes[0].bots}
+    with pytest.raises(ConfiguracaoInvalida):
+        ler_experimento(experimento(cenarios=[{**cenario, "bots": ESTILOS[:1]}]))
+
+
+def test_taxa_de_vitoria_por_bot_no_relatorio(tmp_path: Path) -> None:
+    cenario = {"nome": "mista", "regras": "configs/regras_v2_2_1.yaml", "jogadores": 4, "partidas": 6,
+               "bots": ESTILOS, "rodizio": True}  # fmt: skip
+    resultado = rodar(tmp_path, cenarios=[cenario])
+    assert resultado.manifest["partidas"] == 24
+    assert {c["grupo"] for c in resultado.manifest["cenarios"]} == {"mista"}
+    from critical_failure.metricas.requisitos import vitorias_por_bot
+
+    estilos = vitorias_por_bot(resultado.linhas, ler_experimento(experimento(cenarios=[cenario])))
+    assert sorted(e["bot"] for e in estilos) == ["aleatorio experiente", "cacador (lider)", "construtor", "heuristico"]
+    assert all(e["assentos_jogados"] == 24 and e["referencia"] == 0.25 for e in estilos)
+    # Cada partida distribui exatamente 1 vitória entre os assentos: as taxas somam 1.
+    assert sum(e["taxa"] for e in estilos) == pytest.approx(1.0)
+    texto = (resultado.pasta / "relatorio.md").read_text(encoding="utf-8")
+    assert "## Taxa de vitória por bot (MET-07)" in texto and "| mista | cacador (lider) | 4 | 24 |" in texto
+
+
+def test_experimento_da_fase_2_e_valido() -> None:
+    lido = carregar_experimento(RAIZ / "experimentos" / "fase2_fumaca_estilos.yaml")
+    rotacoes = lido.cenarios_expandidos()
+    assert len(rotacoes) == 4 + 5
+    assert sum(c.partidas for c in rotacoes) == 20_000

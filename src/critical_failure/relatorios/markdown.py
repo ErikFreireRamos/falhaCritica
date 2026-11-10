@@ -26,7 +26,12 @@ def _pct(valor: float) -> str:
     return f"{100 * valor:.1f}%".replace(".", ",")
 
 
-def renderizar(manifest: dict[str, Any], medidas: list[Medida], descricoes: list[dict[str, Any]]) -> str:
+def renderizar(
+    manifest: dict[str, Any],
+    medidas: list[Medida],
+    descricoes: list[dict[str, Any]],
+    estilos: list[dict[str, Any]] | None = None,
+) -> str:
     experimento = manifest["experimento"]["conteudo"]
     git = manifest["git"]
     commit = (git["commit"] or "sem git")[:7]
@@ -73,6 +78,24 @@ def renderizar(manifest: dict[str, Any], medidas: list[Medida], descricoes: list
             )
         notas = sorted({medida.nota for medida in do_requisito if medida.nota})
         linhas += ["", *[f"Nota: {nota}." for nota in notas], ""] if notas else [""]
+
+    if estilos:
+        linhas += [
+            "## Taxa de vitória por bot (MET-07)",
+            "",
+            "Sem veredito: a métrica aguarda a confirmação do autor. Cada assento conta 1 na vitória, 1/k numa "
+            "vitória dividida por k e 0 na derrota. Quem não leva vantagem nenhuma fica perto da referência 1/N. "
+            "As rotações do rodízio estão somadas.",
+            "",
+            "| Grupo | Bot | Jogadores | Assentos jogados | Taxa de vitória | IC 95% | Referência 1/N |",
+            "|---|---|---|---|---|---|---|",
+        ]
+        for estilo in sorted(estilos, key=lambda e: (e["grupo"], -e["taxa"])):
+            linhas.append(
+                f"| {estilo['grupo']} | {estilo['bot']} | {estilo['jogadores']} | {estilo['assentos_jogados']} | "
+                f"{_num(estilo['taxa'])} | {_faixa(estilo['intervalo'])} | {_num(estilo['referencia'])} |"
+            )
+        linhas.append("")
 
     linhas += [
         "## Descrição das partidas",

@@ -473,10 +473,12 @@ Não são regras do jogo. São o que o simulador precisa supor para substituir p
 | MOD-01 | A explicação do defensor está correta ou não conforme um sorteio do perfil de conhecimento do defensor. | A fala do jogador (R-7.2.2a) | 1 (mínimo) e 2 |
 | MOD-02 | O Auditor diz "confere" ou "não confere" conforme a sua precisão ao julgar, podendo errar nos dois sentidos. | O julgamento do Auditor (R-7.2.3) | 1 (mínimo) e 2 |
 | MOD-03 | O diagnóstico segue um modelo de confusão de poucos parâmetros: chance de acerto, chance de cair na secundária ao errar, e o resto do erro distribuído pelas categorias vizinhas do "Não confundir com". | A leitura do relato (R-8.0.2) | 1 (mínimo) e 2 |
-| MOD-04 | O que um bot deduz do Radar usa o mesmo modelo de MOD-03. | A interpretação do Radar (R-4.12) | 2 |
+| MOD-04 | O que um bot deduz do Radar usa o mesmo modelo de MOD-03. A leitura de cada incidente é sorteada uma vez e vale para o planejamento, o ataque e o diagnóstico (autor, 2026-11-10). | A interpretação do Radar (R-4.12) | 2 |
 | MOD-05 | A duração da partida é a soma de tempos configuráveis por ação (turno de Planejamento, disputa, defesa, Produção). | O relógio da mesa (R-6.7, R-7.2.2d) | 1b |
 | MOD-06 | Todo bot sabe quais testes pertencem a cada categoria. | O Cartão de Referência (R-2.0.5) | 1 |
-| MOD-07 | O atacante decide contestar por probabilidade fixa ou por limiar sobre a chance estimada de blefe. | O julgamento do atacante (R-7.2.4) | 2 |
+| MOD-07 | O atacante contesta nunca, sempre, ou quando a chance estimada de blefe é pelo menos o limiar de R-7.3.5, calculado com os números das regras em uso (autor, 2026-11-10). | O julgamento do atacante (R-7.2.4) | 2 |
+| MOD-08 | Todo bot conhece a composição do baralho (Apêndice B: cópias de cada teste) e quantos incidentes são severos (3 de 14). Não conhece o verso de nenhum incidente. | O texto das regras, que todos podem ler antes de jogar | 2 |
+| MOD-09 | Um bot estima a chance de um adversário não ter um teste ou uma categoria contando as cartas que ainda não viu: as cartas escondidas do sistema dele são tratadas como sorteadas, sem reposição, entre essas. Se o viu pegar a carta do Backlog, supõe que ela está no sistema. | A dedução do jogador atento | 2 |
 
 ## Requisitos derivados da tabela "Parâmetros a validar no playtest"
 

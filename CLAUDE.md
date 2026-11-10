@@ -13,6 +13,8 @@ Não decida sozinho. Pare, apresente as opções com uma sugestão e deixe o aut
 - Detalhes internos escolhidos sem perguntar também são informados no diário.
 - Princípio do autor para qualquer ponto de pontuação: manter a simplicidade.
 - As zonas de aceite de `configs/requisitos.yaml` são confirmadas com o autor antes da primeira medição de cada requisito.
+- O objetivo das simulações, nas palavras do autor: comparar bots com estilos de jogo diferentes, dizer qual é o melhor estilo e se o jogo está balanceado.
+- Nada de assento humano: o simulador é só para muitas partidas entre bots.
 
 ## Fontes, em ordem de autoridade
 
@@ -47,9 +49,9 @@ Não invente regras. Ponto ambíguo ou omisso vai para `docs/AMBIGUIDADES.md` e 
 | 0 | Especificações, ambiguidades, requisitos, convenções, diário | sim |
 | 1 | Núcleo, v2 (2.2 com módulo), auditoria, `replay`, `narrar`, `folha`, bot Aleatório, testes por regra e de propriedades, CI básica | sim |
 | 1b | Executor mínimo, manifest, Parquet, primeiras métricas com intervalo de confiança | resumo |
-| 2 | Bots e perfis, variantes estruturais, assento humano | resumo |
+| 2 | Bots e perfis (as variantes foram para a Fase 4; o assento humano saiu do escopo) | resumo |
 | 3 | v1 e Experimentos 1 e 2 | sim |
-| 4 | Experimentos 3 a 6, equilíbrio do blefe, relatórios | resumo |
+| 4 | Variantes estruturais, experimentos 3 a 6, melhor estilo e equilíbrio do blefe, relatórios | resumo |
 | 5 | Metamórficos, fuzzing, mutação, suíte noturna | resumo |
 
 O estado atual está na última entrada do diário.
@@ -87,7 +89,8 @@ src/critical_failure/
     config.py    modelo e validação do YAML das regras
     v2/          estado, ações, motor e invariantes da família v2
   observacao.py  o que cada assento vê (lista de AMB-10)
-  bots/          contrato dos bots, fábrica de bots e o bot Aleatório
+  bots/          contrato, fábrica, Aleatório e os estilos (Construtor, Caçador, Heurístico);
+                 mesa pública e Leitor (MOD-03, MOD-04, MOD-08), estimativas por contagem (MOD-09)
   partida.py     laço da partida: motor, bots e ouvinte de eventos
   auditoria/     registro JSONL, replay, narração e Folha
   duracao.py     modelo de duração da partida (MOD-05), tempos em configs/duracao.yaml
@@ -95,7 +98,7 @@ src/critical_failure/
   metricas/      intervalos de confiança, veredito e medida dos requisitos
   relatorios/    relatório Markdown de cada execução
   cli.py         comando cf
-configs/         regras por versão, catálogo gerado, requisitos, modelo de duração
+configs/         regras por versão, catálogo gerado, requisitos, modelo de duração, perfis dos bots
 experimentos/    um YAML por experimento
 resultados/      saída dos experimentos; só manifest.json e relatorio.md vão para o git
 regras/          texto das regras por versão

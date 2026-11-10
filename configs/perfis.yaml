@@ -1,0 +1,42 @@
+# Perfis dos bots. Não são regras do jogo: são as hipóteses do simulador sobre
+# como os jogadores agem (MOD-01 a MOD-04, MOD-07). Decididos pelo autor em
+# 2026-11-10; os valores são PROVISÓRIOS e serão calibrados com as Folhas de
+# registro das partidas reais.
+#
+# Num arquivo de experimento, um bot pode citar um perfil pelo nome
+# (conhecimento: experiente; blefe: metade). O registro de auditoria grava
+# sempre os valores já resolvidos, para a partida poder ser refeita mesmo que
+# este arquivo mude.
+
+esquema: cf-perfis/1
+
+# O aluno simulado.
+conhecimento:
+  iniciante:
+    explicacao_correta: 0.50   # MOD-01: chance de a explicação de uma defesa estar certa
+    diagnostico_certo: 0.40    # MOD-03 e MOD-04: chance de ler a categoria-chave de um relato
+    secundaria_no_erro: 0.50   # MOD-03: ao errar, chance de cair na categoria secundária, se houver
+    precisao_auditor: 0.75     # MOD-02: chance de o Auditor julgar a explicação corretamente
+  experiente:
+    explicacao_correta: 0.85
+    diagnostico_certo: 0.80
+    secundaria_no_erro: 0.50
+    precisao_auditor: 0.95
+
+# Chance de blefar quando não tem carta da categoria atacada.
+blefe:
+  nunca: 0.0
+  metade: 0.5
+  sempre: 1.0
+
+# Formas de contestar (MOD-07). "limiar" contesta quando a chance estimada de
+# blefe é pelo menos o limiar de R-7.3.5, calculado das regras em uso:
+# perda se era verdade / (perda se era verdade + ganho se era blefe).
+contestacao: [nunca, sempre, limiar]
+
+# Políticas de alvo do Caçador.
+alvo: [lider, mais_fraco, aleatorio]
+
+heuristico:
+  temperatura: 0.5          # autor, 2026-11-10: softmax com temperatura de 0,5 ficha
+  desconto_do_futuro: 0.8   # detalhe do assistente: peso do incidente Próximo e de guardar carta para depois

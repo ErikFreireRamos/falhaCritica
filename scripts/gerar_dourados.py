@@ -20,6 +20,7 @@ from typing import Any
 from critical_failure.auditoria import registro
 from critical_failure.auditoria.narrar import narrar
 from critical_failure.bots.aleatorio import BotAleatorio
+from critical_failure.bots.fabrica import criar_bot
 from critical_failure.duracao import carregar_duracao
 from critical_failure.regras.config import carregar_jogo
 from critical_failure.regras.v2.motor import MotorV2
@@ -35,13 +36,28 @@ CASOS: list[tuple[str, str, int, int, bool]] = [
     ("v2_2_1_com_4_jogadores", "regras_v2_2_1.yaml", 4, 0, True),
     ("v2_2_1_com_5_jogadores", "regras_v2_2_1.yaml", 5, 1, True),
     ("v2_2_impressa_com_6_jogadores", "regras_v2_2.yaml", 6, 2, False),
+    ("v2_2_1_estilos_mistos", "regras_v2_2_1.yaml", 4, 3, True),
 ]
 
+_COMUM = {"conhecimento": "experiente", "blefe": "metade", "contestacao": "limiar"}
+BOTS_DO_CASO: dict[str, list[tuple[str, dict[str, Any]]]] = {
+    "v2_2_1_estilos_mistos": [
+        ("construtor", _COMUM),
+        ("cacador", {**_COMUM, "alvo": "lider"}),
+        ("heuristico", _COMUM),
+        ("aleatorio", {"explicacao_correta": 0.85, "precisao_auditor": 0.95}),
+    ],
+}
+"""Casos com bots de estilo. Os outros usam o bot Aleatório com os parâmetros da Fase 1."""
 
-def linhas_do_caso(arquivo: str, jogadores: int, partida: int) -> tuple[list[dict[str, Any]], MotorV2]:
+
+def linhas_do_caso(arquivo: str, jogadores: int, partida: int, nome: str = "") -> tuple[list[dict[str, Any]], MotorV2]:
     regras, catalogo = carregar_jogo(RAIZ / "configs" / arquivo)
     motor = MotorV2(regras, catalogo)
-    bots = [BotAleatorio() for _ in range(jogadores)]
+    if nome in BOTS_DO_CASO:
+        bots: list[Any] = [criar_bot(tipo, parametros) for tipo, parametros in BOTS_DO_CASO[nome]]
+    else:
+        bots = [BotAleatorio() for _ in range(jogadores)]
     duracao = carregar_duracao(RAIZ / "configs" / "duracao.yaml")
     linhas, _ = registro.gerar_linhas(
         motor, f"configs/{arquivo}", bots, SEMENTE, partida, data_hora=DATA, duracao=duracao
@@ -51,20 +67,20 @@ def linhas_do_caso(arquivo: str, jogadores: int, partida: int) -> tuple[list[dic
     return linhas, motor
 
 
-def narracao_do_caso(arquivo: str, jogadores: int, partida: int) -> str:
-    linhas, motor = linhas_do_caso(arquivo, jogadores, partida)
+def narracao_do_caso(arquivo: str, jogadores: int, partida: int, nome: str = "") -> str:
+    linhas, motor = linhas_do_caso(arquivo, jogadores, partida, nome)
     return narrar(linhas, motor.catalogo, mostrar_oculto=True, citar_regras=False)
 
 
 def main() -> int:
     for nome, arquivo, jogadores, partida, com_narracao in CASOS:
-        linhas, _ = linhas_do_caso(arquivo, jogadores, partida)
+        linhas, _ = linhas_do_caso(arquivo, jogadores, partida, nome)
         registro.escrever(PASTA / f"{nome}.jsonl", linhas)
         print(f"escrito tests/dourados/{nome}.jsonl ({len(linhas) - 2} eventos)")
         if com_narracao:
             EXEMPLOS.mkdir(parents=True, exist_ok=True)
             destino = EXEMPLOS / f"narracao_{nome}.txt"
-            destino.write_text(narracao_do_caso(arquivo, jogadores, partida), encoding="utf-8", newline="\n")
+            destino.write_text(narracao_do_caso(arquivo, jogadores, partida, nome), encoding="utf-8", newline="\n")
             print(f"escrito docs/exemplos/{destino.name}")
     return 0
 

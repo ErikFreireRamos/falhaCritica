@@ -12,6 +12,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from critical_failure.bots.base import Bot
+from critical_failure.bots.mesa import mesa_do_motor
 from critical_failure.duracao import Cronometro, ModeloDeDuracao
 from critical_failure.nucleo.erros import ErroCF
 from critical_failure.observacao import observar
@@ -67,8 +68,9 @@ def jogar_partida(
     duracao: ModeloDeDuracao | None = None,
 ) -> ResultadoPartida:
     n = len(bots)
+    mesa = mesa_do_motor(motor)
     for assento, bot in enumerate(bots):
-        bot.iniciar(semente, partida, assento)
+        bot.iniciar(semente, partida, assento, mesa)
     fontes: list[dict[str, int]] = [dict.fromkeys(FONTES, 0) for _ in range(n)]
     total = 0
     criterio = ""

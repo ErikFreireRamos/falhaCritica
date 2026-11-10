@@ -1,0 +1,298 @@
+Critical Failure v2.2.1 | partida 3 | semente 2026 | 4 jogadores
+Jogadores, em sentido horário: Ana (construtor), Bruno (cacador), Carla (heuristico), Davi (aleatorio).
+O que aparece entre colchetes estava oculto na mesa.
+
+Cada jogador começa com 5 fichas.
+Radar de Riscos. Agora: 13 | Campanha viral. Próximo: 08 | Manutenção no provedor de nuvem.
+Ana recebe 2 cartas no sistema [Integridade, Recuperação].
+Bruno recebe 2 cartas no sistema [Resistência, Interoperabilidade].
+Carla recebe 2 cartas no sistema [Análise de impacto, Coexistência].
+Davi recebe 2 cartas no sistema [Teste com usuários, Instalabilidade].
+Backlog: Coexistência, Acessibilidade, Disponibilidade, Substituibilidade, Acessibilidade.
+Ana é quem começa. Davi é o Auditor.
+
+== Ciclo 1: Planejamento ==
+Ana compra Substituibilidade do Backlog.
+  O Backlog é reposto com Interoperabilidade.
+Ana compra Coexistência do Backlog.
+  O Backlog é reposto com Integridade.
+Ana compra Acessibilidade do Backlog.
+  O Backlog é reposto com Resistência.
+Ana coloca uma carta no sistema [Substituibilidade], que fica com 3.
+Ana coloca uma carta no sistema [Coexistência], que fica com 4.
+Ana coloca uma carta no sistema [Acessibilidade], que fica com 5.
+Ana encerra o turno com 0 na mão e 5 no sistema.
+Bruno compra do topo do baralho [Revisão de código].
+Bruno compra do topo do baralho [Autenticação].
+Bruno compra do topo do baralho [Recuperação].
+Bruno encerra o turno com 3 na mão e 2 no sistema.
+Carla compra Disponibilidade do Backlog.
+  O Backlog é reposto com Adaptabilidade.
+Carla compra Integridade do Backlog.
+  O Backlog é reposto com Proteção contra erro do usuário.
+Carla compra Adaptabilidade do Backlog.
+  O Backlog é reposto com Teste A/B.
+Carla coloca uma carta no sistema [Disponibilidade], que fica com 3.
+Carla coloca uma carta no sistema [Adaptabilidade], que fica com 4.
+Carla coloca uma carta no sistema [Integridade], que fica com 5.
+Carla encerra o turno com 0 na mão e 5 no sistema.
+Davi compra do topo do baralho [Estresse].
+Davi compra do topo do baralho [Penetração].
+Davi compra Acessibilidade do Backlog.
+  O Backlog é reposto com Regressão.
+Davi coloca uma carta no sistema [Penetração], que fica com 3.
+Davi coloca uma carta no sistema [Estresse], que fica com 4.
+Davi encerra o turno com 1 na mão e 4 no sistema.
+
+== Ciclo 1: Homologação ==
+Ana passa automaticamente, por não ter jogada possível.
+Bruno testa Carla com Revisão de código (Manutenibilidade). Auditor: Davi.
+  Carla se defende com Análise de impacto [tem a carta; explicação correta].
+  O Auditor Davi diz: "confere".
+  Bruno contesta. A carta Análise de impacto é revelada: era verdade. Bruno -1, Carla +1.
+Carla passa automaticamente, por não ter jogada possível.
+Davi testa Carla com Acessibilidade (Interação). Auditor: Ana, no lugar de Davi, que está na disputa.
+  Carla admite: "Falhou".
+  Falhou (admitiu a falha). Davi +1. Carla recebe Alerta de Interação.
+Bruno testa Carla com Autenticação (Segurança da Informação). Auditor: Davi.
+  Carla se defende com Integridade [tem a carta; explicação correta].
+  O Auditor Davi diz: "confere".
+  Bruno aceita a defesa. Nada é revelado.
+Davi passa automaticamente, por não ter jogada possível.
+Bruno testa Carla com Recuperação (Confiabilidade). Auditor: Davi.
+  Carla se defende com Disponibilidade [tem a carta; explicação correta].
+  O Auditor Davi diz: "confere".
+  Bruno aceita a defesa. Nada é revelado.
+Bruno passa automaticamente, por não ter jogada possível.
+
+== Ciclo 1: Produção ==
+O Auditor Davi lê o incidente 13 | Campanha viral: "Os usuários dobraram em uma semana, e o sistema ficou lento. A equipe adicionou servidores, mas cada servidor novo melhora cada vez menos o tempo de resposta."
+Todos revelam o diagnóstico. Ana: Flexibilidade; Bruno: Flexibilidade; Carla: Flexibilidade; Davi: Desempenho.
+Gabarito: categoria-chave Flexibilidade; secundária Desempenho; testes-chave Escalabilidade; incidente SEVERO.
+  Ana acertou a categoria-chave: Ana +1.
+  Bruno acertou a categoria-chave: Bruno +1.
+  Carla acertou a categoria-chave: Carla +1.
+  Davi escolheu a categoria secundária: 0.
+  Ana comprova cobertura revelando Substituibilidade.
+  Ana: dano 1 (severo sem teste-chave 1).
+  Bruno: dano 3 (sem cobertura 2, severo sem teste-chave 1).
+  Carla comprova cobertura revelando Adaptabilidade.
+  Carla: dano 1 (severo sem teste-chave 1).
+  Davi comprova cobertura revelando Instalabilidade.
+  Davi: dano 1 (severo sem teste-chave 1).
+Lição aprendida: não há carta da categoria no Backlog para Ana.
+Lição aprendida: não há carta da categoria no Backlog para Bruno.
+Lição aprendida: não há carta da categoria no Backlog para Carla.
+Limpeza: saem os Alertas de Flexibilidade (ninguém tinha). O incidente sai do jogo.
+Fim do ciclo 1. Placar: Ana 5, Bruno 2, Carla 6, Davi 5. Os marcadores passam para a esquerda: Bruno começa e Ana é o Auditor. Radar. Agora: 08 | Manutenção no provedor de nuvem. Próximo: 05 | Lançamento para o público idoso.
+
+== Ciclo 2: Planejamento ==
+Início do Planejamento: todos os Alertas saem. Carla: Interação.
+Bruno compra do topo do baralho [Regressão].
+Bruno compra do topo do baralho [Pico].
+Bruno compra do topo do baralho [Proteção contra erro do usuário].
+Bruno encerra o turno com 3 na mão e 2 no sistema.
+Carla compra Proteção contra erro do usuário do Backlog.
+  O Backlog é reposto com Adaptabilidade.
+Carla compra Regressão do Backlog.
+  O Backlog é reposto com Penetração.
+Carla compra Adaptabilidade do Backlog.
+  O Backlog é reposto com Engenharia do Caos.
+Carla encerra o turno com 3 na mão e 5 no sistema.
+Davi compra Teste A/B do Backlog.
+  O Backlog é reposto com Acessibilidade.
+Davi compra Penetração do Backlog.
+  O Backlog é reposto com Contrato de API.
+Davi compra Acessibilidade do Backlog.
+  O Backlog é reposto com Substituibilidade.
+Davi coloca uma carta no sistema [Acessibilidade], que fica com 5.
+Davi encerra o turno com 2 na mão e 5 no sistema.
+Ana compra do topo do baralho [Escalabilidade].
+Ana compra do topo do baralho [Confidencialidade].
+Ana compra do topo do baralho [Teste A/B].
+Ana encerra o turno com 3 na mão e 5 no sistema.
+
+== Ciclo 2: Homologação ==
+Bruno testa Carla com Regressão (Manutenibilidade). Auditor: Ana.
+  Carla se defende com Análise de impacto [tem a carta; explicação incorreta].
+  O Auditor Ana diz: "não confere".
+  Falhou (a explicação não conferiu). Bruno +1. Carla recebe Alerta de Manutenibilidade.
+Carla testa Davi com Regressão (Manutenibilidade). Auditor: Ana.
+  Davi se defende com Regressão [não tem a carta: é blefe; explicação correta].
+  O Auditor Ana diz: "confere".
+  Carla contesta. Era blefe. Carla +2, Davi -1. Davi recebe Alerta de Manutenibilidade.
+Davi testa Carla com Penetração (Segurança da Informação). Auditor: Ana.
+  Carla se defende com Integridade [tem a carta; explicação correta].
+  O Auditor Ana diz: "confere".
+  Davi aceita a defesa. Nada é revelado.
+Ana testa Davi com Teste A/B (Interação). Auditor: Bruno, no lugar de Ana, que está na disputa.
+  Davi se defende com Teste com usuários [tem a carta; explicação incorreta].
+  O Auditor Bruno diz: "não confere".
+  Falhou (a explicação não conferiu). Ana +1. Davi recebe Alerta de Interação.
+Bruno testa Carla com Pico (Desempenho). Auditor: Ana.
+  Carla admite: "Falhou".
+  Falhou (admitiu a falha). Bruno +1. Carla recebe Alerta de Desempenho.
+Carla testa Bruno com Proteção contra erro do usuário (Interação). Auditor: Ana.
+  Bruno se defende com Teste com usuários [não tem a carta: é blefe; explicação correta].
+  O Auditor Ana diz: "confere".
+  Carla contesta. Era blefe. Carla +2, Bruno -1. Bruno recebe Alerta de Interação.
+Davi testa Ana com Teste A/B (Interação). Auditor: Bruno, no lugar de Ana, que está na disputa.
+  Ana se defende com Acessibilidade [tem a carta; explicação incorreta].
+  O Auditor Bruno diz: "não confere".
+  Falhou (a explicação não conferiu). Davi +1. Ana recebe Alerta de Interação.
+Ana testa Bruno com Escalabilidade (Flexibilidade). Auditor: Carla, no lugar de Ana, que está na disputa.
+  Bruno admite: "Falhou".
+  Falhou (admitiu a falha). Ana +1. Bruno recebe Alerta de Flexibilidade.
+Bruno testa Carla com Proteção contra erro do usuário (Interação). Auditor: Ana.
+  Carla se defende com Teste com usuários [não tem a carta: é blefe; explicação correta].
+  O Auditor Ana diz: "confere".
+  Bruno contesta. Era blefe. Bruno +2, Carla -1. Carla recebe Alerta de Interação.
+Carla testa Davi com Adaptabilidade (Flexibilidade). Auditor: Ana.
+  Davi se defende com Instalabilidade [tem a carta; explicação correta].
+  O Auditor Ana diz: "confere".
+  Carla aceita a defesa. Nada é revelado.
+Davi passa automaticamente, por não ter jogada possível.
+Ana testa Davi com Confidencialidade (Segurança da Informação). Auditor: Bruno, no lugar de Ana, que está na disputa.
+  Davi se defende com Penetração [tem a carta; explicação correta].
+  O Auditor Bruno diz: "confere".
+  Ana contesta. A carta Penetração é revelada: era verdade. Ana -1, Davi +1.
+Bruno passa automaticamente, por não ter jogada possível.
+Carla passa automaticamente, por não ter jogada possível.
+Ana passa automaticamente, por não ter jogada possível.
+
+== Ciclo 2: Produção ==
+O Auditor Ana lê o incidente 08 | Manutenção no provedor de nuvem: "Durante uma manutenção programada do provedor, o sistema inteiro saiu do ar. Só um dos três servidores de banco de dados foi desligado; os outros dois continuavam funcionando."
+Todos revelam o diagnóstico. Ana: Confiabilidade; Bruno: Flexibilidade; Carla: Confiabilidade; Davi: Manutenibilidade.
+Gabarito: categoria-chave Confiabilidade; secundária não indicada; testes-chave Tolerância a falhas ou Engenharia do Caos; incidente normal.
+  Bruno errou: 0.
+  Carla acertou a categoria-chave: Carla +1.
+  Davi errou: 0.
+  Ana acertou a categoria-chave: Ana +1.
+  Bruno: dano 2 (sem cobertura 2).
+  Carla comprova cobertura revelando Disponibilidade.
+  Carla: sem dano.
+  Davi: dano 2 (sem cobertura 2).
+  Ana comprova cobertura revelando Recuperação.
+  Ana: sem dano.
+Lição aprendida: Carla prefere não pegar carta.
+Lição aprendida: Ana pega Engenharia do Caos do Backlog.
+  O Backlog é reposto com Coexistência.
+Limpeza: saem os Alertas de Confiabilidade (ninguém tinha). O incidente sai do jogo.
+Fim do ciclo 2. Placar: Ana 7, Bruno 3, Carla 10, Davi 4. Os marcadores passam para a esquerda: Carla começa e Bruno é o Auditor. Radar. Agora: 05 | Lançamento para o público idoso. Próximo: Critical Failure.
+
+== Ciclo 3: Planejamento ==
+Início do Planejamento: todos os Alertas saem. Ana: Interação; Bruno: Interação, Flexibilidade; Carla: Desempenho, Interação, Manutenibilidade; Davi: Interação, Manutenibilidade.
+Carla compra Substituibilidade do Backlog.
+  O Backlog é reposto com Tolerância a falhas.
+Carla compra Contrato de API do Backlog.
+  O Backlog é reposto com Análise estática.
+Carla compra Interoperabilidade do Backlog.
+  O Backlog é reposto com Análise de impacto.
+Carla encerra o turno com 3 na mão e 5 no sistema.
+Davi compra Tolerância a falhas do Backlog.
+  O Backlog é reposto com Carga.
+Davi compra do topo do baralho [Disponibilidade].
+Davi compra Análise de impacto do Backlog.
+  O Backlog é reposto com Pico.
+Davi encerra o turno com 3 na mão e 5 no sistema.
+Ana compra do topo do baralho [Engenharia do Caos].
+Ana compra do topo do baralho [Confidencialidade].
+Ana compra do topo do baralho [Recuperação].
+Ana encerra o turno com 4 na mão e 5 no sistema.
+Bruno compra do topo do baralho [Escalabilidade].
+Bruno compra do topo do baralho [Análise estática].
+Bruno compra do topo do baralho [Retrocompatibilidade].
+Bruno encerra o turno com 3 na mão e 2 no sistema.
+
+== Ciclo 3: Homologação ==
+Carla testa Davi com Interoperabilidade (Compatibilidade). Auditor: Bruno.
+  Davi se defende com Retrocompatibilidade [não tem a carta: é blefe; explicação correta].
+  O Auditor Bruno diz: "confere".
+  Carla contesta. Era blefe. Carla +2, Davi -1. Davi recebe Alerta de Compatibilidade.
+Davi testa Bruno com Análise de impacto (Manutenibilidade). Auditor: Carla, no lugar de Bruno, que está na disputa.
+  Bruno se defende com Regressão [não tem a carta: é blefe; explicação correta].
+  O Auditor Carla diz: "confere".
+  Davi contesta. Era blefe. Davi +2, Bruno -1. Bruno recebe Alerta de Manutenibilidade.
+Ana testa Davi com Confidencialidade (Segurança da Informação). Auditor: Bruno.
+  Davi se defende com Penetração [tem a carta; explicação correta].
+  O Auditor Bruno diz: "confere".
+  Ana aceita a defesa. Nada é revelado.
+Bruno testa Carla com Escalabilidade (Flexibilidade). Auditor: Davi, no lugar de Bruno, que está na disputa.
+  Carla se defende com Adaptabilidade [tem a carta; explicação correta].
+  O Auditor Davi diz: "confere".
+  Bruno aceita a defesa. Nada é revelado.
+Carla testa Bruno com Substituibilidade (Flexibilidade). Auditor: Davi, no lugar de Bruno, que está na disputa.
+  Bruno se defende com Escalabilidade [não tem a carta: é blefe; explicação correta].
+  O Auditor Davi diz: "confere".
+  Carla contesta. Era blefe. Carla +2, Bruno -1. Bruno recebe Alerta de Flexibilidade.
+Davi testa Ana com Disponibilidade (Confiabilidade). Auditor: Bruno.
+  Ana se defende com Recuperação [tem a carta; explicação correta].
+  O Auditor Bruno diz: "confere".
+  Davi contesta. A carta Recuperação é revelada: era verdade. Davi -1, Ana +1.
+Ana testa Davi com Recuperação (Confiabilidade). Auditor: Bruno.
+  Davi se defende com Disponibilidade [não tem a carta: é blefe; explicação correta].
+  O Auditor Bruno diz: "confere".
+  Ana contesta. Era blefe. Ana +2, Davi -1. Davi recebe Alerta de Confiabilidade.
+Bruno testa Carla com Análise estática (Manutenibilidade). Auditor: Davi, no lugar de Bruno, que está na disputa.
+  Carla se defende com Análise de impacto [tem a carta; explicação correta].
+  O Auditor Davi diz: "confere".
+  Bruno aceita a defesa. Nada é revelado.
+Carla testa Bruno com Contrato de API (Compatibilidade). Auditor: Davi, no lugar de Bruno, que está na disputa.
+  Bruno se defende com Interoperabilidade [tem a carta; explicação correta].
+  O Auditor Davi diz: "confere".
+  Carla contesta. A carta Interoperabilidade é revelada: era verdade. Carla -1, Bruno +1.
+Davi testa Carla com Tolerância a falhas (Confiabilidade). Auditor: Bruno.
+  Carla se defende com Disponibilidade [tem a carta; explicação correta].
+  O Auditor Bruno diz: "confere".
+  Davi contesta. A carta Disponibilidade é revelada: era verdade. Davi -1, Carla +1.
+Ana testa Bruno com Engenharia do Caos (Confiabilidade). Auditor: Carla, no lugar de Bruno, que está na disputa.
+  Bruno se defende com Tolerância a falhas [não tem a carta: é blefe; explicação correta].
+  O Auditor Carla diz: "confere".
+  Ana contesta. Era blefe. Ana +2, Bruno -1. Bruno recebe Alerta de Confiabilidade.
+Bruno testa Carla com Retrocompatibilidade (Compatibilidade). Auditor: Davi, no lugar de Bruno, que está na disputa.
+  Carla se defende com Coexistência [tem a carta; explicação correta].
+  O Auditor Davi diz: "confere".
+  Bruno contesta. A carta Coexistência é revelada: era verdade. Bruno -1, Carla +1.
+Carla passa automaticamente, por não ter jogada possível.
+Davi passa automaticamente, por não ter jogada possível.
+Ana testa Carla com Engenharia do Caos (Confiabilidade). Auditor: Bruno.
+  Carla se defende com Disponibilidade [tem a carta; explicação incorreta].
+  O Auditor Bruno diz: "não confere".
+  Falhou (a explicação não conferiu). Ana +1. Carla recebe Alerta de Confiabilidade.
+Bruno passa automaticamente, por não ter jogada possível.
+Ana passa automaticamente, por não ter jogada possível.
+
+== Ciclo 3: Produção ==
+O Auditor Bruno lê o incidente 05 | Lançamento para o público idoso: "Muitos usuários do novo app desistem antes de concluir o cadastro. A letra não aumenta quando o usuário amplia a fonte do celular, e os botões são pequenos demais para dedos menos precisos."
+Todos revelam o diagnóstico. Ana: Interação; Bruno: Interação; Carla: Interação; Davi: Flexibilidade.
+Gabarito: categoria-chave Interação; secundária não indicada; testes-chave Acessibilidade ou Teste com usuários; incidente normal.
+  Carla acertou a categoria-chave: Carla +1.
+  Davi errou: 0.
+  Ana acertou a categoria-chave: Ana +1.
+  Bruno acertou a categoria-chave: Bruno +1.
+  Carla: dano 2 (sem cobertura 2).
+  Davi comprova cobertura revelando Teste com usuários.
+  Davi: sem dano.
+  Ana comprova cobertura revelando Acessibilidade.
+  Ana: sem dano.
+  Bruno: dano 2 (sem cobertura 2); só tinha 1 para pagar.
+Lição aprendida: não há carta da categoria no Backlog para Carla.
+Lição aprendida: não há carta da categoria no Backlog para Ana.
+Lição aprendida: não há carta da categoria no Backlog para Bruno.
+Limpeza: saem os Alertas de Interação (ninguém tinha). O incidente sai do jogo.
+
+== Critical Failure ==
+Placar antes: Ana 14, Bruno 0, Carla 14, Davi 2. O dado deu 6: Manutenibilidade.
+  Carla: dano 2 (sempre 1, sem 2 testes diferentes 1).
+  Davi: dano 4 (sempre 1, sem 2 testes diferentes 1, sem cobertura 2); só tinha 2 para pagar.
+  Ana: dano 4 (sempre 1, sem 2 testes diferentes 1, sem cobertura 2).
+  Bruno: dano 5 (sempre 1, sem 2 testes diferentes 1, sem cobertura 2, Alerta 1); só tinha 0 para pagar.
+
+== Revelação e pontuação final ==
+Carla revela o sistema: Análise de impacto, Coexistência, Disponibilidade, Adaptabilidade, Integridade. 5 categoria(s) distinta(s), 0 cobertura(s) profunda(s), 1 Alerta(s) ativo(s): +5 e -1.
+Davi revela o sistema: Teste com usuários, Instalabilidade, Penetração, Estresse, Acessibilidade. 4 categoria(s) distinta(s), 1 cobertura(s) profunda(s), 2 Alerta(s) ativo(s): +5 e -2.
+Ana revela o sistema: Integridade, Recuperação, Substituibilidade, Coexistência, Acessibilidade. 5 categoria(s) distinta(s), 0 cobertura(s) profunda(s), 0 Alerta(s) ativo(s): +5 e -0.
+Bruno revela o sistema: Resistência, Interoperabilidade. 2 categoria(s) distinta(s), 0 cobertura(s) profunda(s), 3 Alerta(s) ativo(s): +2 e -3.
+
+Placar final: Ana 15, Bruno 0, Carla 16, Davi 3. Vence: Carla (mais fichas).
+Duração estimada pelo modelo de tempos (MOD-05, provisório): 51 min 30 s.

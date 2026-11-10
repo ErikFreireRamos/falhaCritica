@@ -22,7 +22,7 @@ from critical_failure.bots.aleatorio import BotAleatorio
 from critical_failure.duracao import carregar_duracao
 from critical_failure.experimentos import executor
 from critical_failure.experimentos.config import carregar_experimento, ler_experimento
-from critical_failure.metricas.requisitos import avaliar, carregar_requisitos, descrever
+from critical_failure.metricas.requisitos import avaliar, carregar_requisitos, descrever, vitorias_por_bot
 from critical_failure.nucleo.erros import ConfiguracaoInvalida, ErroCF
 from critical_failure.regras.config import carregar_jogo
 from critical_failure.regras.v2.motor import MotorV2
@@ -91,7 +91,12 @@ def _relatorio(args: argparse.Namespace) -> int:
         raise ConfiguracaoInvalida(f"{args.pasta} não é a pasta de um experimento rodado: {erro!r}") from erro
     linhas = executor.ler_tabela(args.pasta)
     requisitos = carregar_requisitos(registro.RAIZ / experimento.requisitos_arquivo)
-    texto = renderizar(manifest, avaliar(linhas, experimento, requisitos), descrever(linhas, experimento))
+    texto = renderizar(
+        manifest,
+        avaliar(linhas, experimento, requisitos),
+        descrever(linhas, experimento),
+        vitorias_por_bot(linhas, experimento),
+    )
     (args.pasta / "relatorio.md").write_text(texto, encoding="utf-8", newline="\n")
     print(texto)
     return 0

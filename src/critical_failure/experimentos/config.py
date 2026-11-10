@@ -28,6 +28,13 @@ class _Base(BaseModel):
 class BotDoCenario(_Base):
     tipo: str
     parametros: dict[str, Any] = Field(default_factory=dict)
+    rotulo: str | None = None
+    """Nome do bot nos relatórios. Sem rótulo, usa o tipo (e a política de alvo, no Caçador)."""
+
+    def nome(self) -> str:
+        from critical_failure.bots.fabrica import rotulo
+
+        return self.rotulo or rotulo(self.tipo, self.parametros)
 
 
 class Cenario(_Base):
@@ -42,6 +49,11 @@ class Cenario(_Base):
     """Valores trocados nas regras, por caminho pontuado (``planejamento.compras: 2``)."""
     requisitos: list[str] = Field(default_factory=list)
     """Requisitos medidos neste cenário, além da robustez, que vale para todos."""
+    rodizio: bool = False
+    """Roda o cenário uma vez em cada rotação dos bots pelos assentos, com as mesmas sementes.
+    ``partidas`` vale para cada rotação. Exige um bot por assento."""
+    grupo: str | None = None
+    """Preenchido no rodízio: o nome do cenário de origem, para os relatórios somarem as rotações."""
 
     @model_validator(mode="after")
     def _coerencia(self) -> Cenario:
@@ -51,7 +63,25 @@ class Cenario(_Base):
             raise ValueError("partidas precisa ser pelo menos 1")
         if len(self.bots) not in (1, self.jogadores):
             raise ValueError(f"cenário {self.nome}: informe 1 bot ou um por jogador ({self.jogadores})")
+        if self.rodizio and len(self.bots) != self.jogadores:
+            raise ValueError(f"cenário {self.nome}: o rodízio exige um bot por assento")
         return self
+
+    def rotacoes(self) -> list[Cenario]:
+        """As rotações do rodízio: na rotação k, o assento 0 recebe o bot k da lista."""
+        if not self.rodizio:
+            return [self]
+        return [
+            self.model_copy(
+                update={
+                    "nome": f"{self.nome}_r{k}",
+                    "bots": self.bots[k:] + self.bots[:k],
+                    "rodizio": False,
+                    "grupo": self.nome,
+                }
+            )
+            for k in range(self.jogadores)
+        ]
 
     def bots_por_assento(self) -> list[BotDoCenario]:
         return list(self.bots) * self.jogadores if len(self.bots) == 1 else list(self.bots)
@@ -87,6 +117,14 @@ class Experimento(_Base):
 
     def resolvido(self) -> dict[str, Any]:
         return self.model_dump(mode="json")
+
+    def cenarios_expandidos(self) -> list[Cenario]:
+        """Os cenários que de fato rodam, com o rodízio já aberto em rotações."""
+        expandidos = [rotacao for cenario in self.cenarios for rotacao in cenario.rotacoes()]
+        nomes = [cenario.nome for cenario in expandidos]
+        if len(set(nomes)) != len(nomes):
+            raise ConfiguracaoInvalida("as rotações do rodízio repetem o nome de outro cenário")
+        return expandidos
 
 
 def ler_experimento(dados: Any) -> Experimento:
