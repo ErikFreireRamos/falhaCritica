@@ -1,0 +1,1359 @@
+{
+  "ambiente": {
+    "motor": "0.1.0",
+    "numpy": "2.5.4",
+    "plataforma": "Windows-11-10.0.26200-SP0",
+    "pyarrow": "26.0.1",
+    "python": "3.12.0"
+  },
+  "arquivos": {
+    "partidas.parquet": "sha256:16ce8bfe41e31d7b733d1db43c9a4fed017dcacaecd9ec7b47cecad8c6227936",
+    "relatorio.md": "sha256:303febac70ac4776e457d9f97a6612acfd730594a2374723ce9d7a9fa835efb0"
+  },
+  "cenarios": [
+    {
+      "bots": [
+        {
+          "parametros": {
+            "explicacao_correta": 0.85,
+            "precisao_auditor": 0.95
+          },
+          "rotulo": null,
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "construtor"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "heuristico"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": null,
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "v1_com_4_jogadores",
+      "jogadores": 4,
+      "mudancas": {},
+      "nome": "v1_com_4_jogadores_r0",
+      "partidas": 2500,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "construtor"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.85,
+            "precisao_auditor": 0.95
+          },
+          "rotulo": null,
+          "tipo": "aleatorio"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": null,
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "v1_com_4_jogadores",
+      "jogadores": 4,
+      "mudancas": {},
+      "nome": "v1_com_4_jogadores_r1",
+      "partidas": 2500,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.85,
+            "precisao_auditor": 0.95
+          },
+          "rotulo": null,
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "construtor"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": null,
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "v1_com_4_jogadores",
+      "jogadores": 4,
+      "mudancas": {},
+      "nome": "v1_com_4_jogadores_r2",
+      "partidas": 2500,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.85,
+            "precisao_auditor": 0.95
+          },
+          "rotulo": null,
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "construtor"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": null,
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "v1_com_4_jogadores",
+      "jogadores": 4,
+      "mudancas": {},
+      "nome": "v1_com_4_jogadores_r3",
+      "partidas": 2500,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "explicacao_correta": 0.85,
+            "precisao_auditor": 0.95
+          },
+          "rotulo": null,
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "construtor"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "heuristico"
+        }
+      ],
+      "catalogo_hash": "sha256:89a8b5427c62009c7ce16a105b7d7de2e0d950035f7803edee091dc067937362",
+      "celula": null,
+      "comparar_com": "v1_com_4_jogadores",
+      "config_hash": "sha256:60ad08b41b4c4b60f71006dfeda6e2f85e8d576c11631b450363e462e19e3285",
+      "familia": "v2",
+      "grupo": "v2_2_1_com_4_jogadores",
+      "jogadores": 4,
+      "mudancas": {},
+      "nome": "v2_2_1_com_4_jogadores_r0",
+      "partidas": 2500,
+      "regras": "configs/regras_v2_2_1.yaml",
+      "requisitos": [
+        "REQ-02"
+      ],
+      "versao": "v2.2.1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "construtor"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.85,
+            "precisao_auditor": 0.95
+          },
+          "rotulo": null,
+          "tipo": "aleatorio"
+        }
+      ],
+      "catalogo_hash": "sha256:89a8b5427c62009c7ce16a105b7d7de2e0d950035f7803edee091dc067937362",
+      "celula": null,
+      "comparar_com": "v1_com_4_jogadores",
+      "config_hash": "sha256:60ad08b41b4c4b60f71006dfeda6e2f85e8d576c11631b450363e462e19e3285",
+      "familia": "v2",
+      "grupo": "v2_2_1_com_4_jogadores",
+      "jogadores": 4,
+      "mudancas": {},
+      "nome": "v2_2_1_com_4_jogadores_r1",
+      "partidas": 2500,
+      "regras": "configs/regras_v2_2_1.yaml",
+      "requisitos": [
+        "REQ-02"
+      ],
+      "versao": "v2.2.1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.85,
+            "precisao_auditor": 0.95
+          },
+          "rotulo": null,
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "construtor"
+        }
+      ],
+      "catalogo_hash": "sha256:89a8b5427c62009c7ce16a105b7d7de2e0d950035f7803edee091dc067937362",
+      "celula": null,
+      "comparar_com": "v1_com_4_jogadores",
+      "config_hash": "sha256:60ad08b41b4c4b60f71006dfeda6e2f85e8d576c11631b450363e462e19e3285",
+      "familia": "v2",
+      "grupo": "v2_2_1_com_4_jogadores",
+      "jogadores": 4,
+      "mudancas": {},
+      "nome": "v2_2_1_com_4_jogadores_r2",
+      "partidas": 2500,
+      "regras": "configs/regras_v2_2_1.yaml",
+      "requisitos": [
+        "REQ-02"
+      ],
+      "versao": "v2.2.1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.85,
+            "precisao_auditor": 0.95
+          },
+          "rotulo": null,
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "construtor"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:89a8b5427c62009c7ce16a105b7d7de2e0d950035f7803edee091dc067937362",
+      "celula": null,
+      "comparar_com": "v1_com_4_jogadores",
+      "config_hash": "sha256:60ad08b41b4c4b60f71006dfeda6e2f85e8d576c11631b450363e462e19e3285",
+      "familia": "v2",
+      "grupo": "v2_2_1_com_4_jogadores",
+      "jogadores": 4,
+      "mudancas": {},
+      "nome": "v2_2_1_com_4_jogadores_r3",
+      "partidas": 2500,
+      "regras": "configs/regras_v2_2_1.yaml",
+      "requisitos": [
+        "REQ-02"
+      ],
+      "versao": "v2.2.1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "explicacao_correta": 0.85,
+            "precisao_auditor": 0.95
+          },
+          "rotulo": null,
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "construtor"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "heuristico"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": null,
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "v1_com_5_jogadores",
+      "jogadores": 5,
+      "mudancas": {},
+      "nome": "v1_com_5_jogadores_r0",
+      "partidas": 2000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "construtor"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.85,
+            "precisao_auditor": 0.95
+          },
+          "rotulo": null,
+          "tipo": "aleatorio"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": null,
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "v1_com_5_jogadores",
+      "jogadores": 5,
+      "mudancas": {},
+      "nome": "v1_com_5_jogadores_r1",
+      "partidas": 2000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.85,
+            "precisao_auditor": 0.95
+          },
+          "rotulo": null,
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "construtor"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": null,
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "v1_com_5_jogadores",
+      "jogadores": 5,
+      "mudancas": {},
+      "nome": "v1_com_5_jogadores_r2",
+      "partidas": 2000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.85,
+            "precisao_auditor": 0.95
+          },
+          "rotulo": null,
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "construtor"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": null,
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "v1_com_5_jogadores",
+      "jogadores": 5,
+      "mudancas": {},
+      "nome": "v1_com_5_jogadores_r3",
+      "partidas": 2000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.85,
+            "precisao_auditor": 0.95
+          },
+          "rotulo": null,
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "construtor"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": null,
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "v1_com_5_jogadores",
+      "jogadores": 5,
+      "mudancas": {},
+      "nome": "v1_com_5_jogadores_r4",
+      "partidas": 2000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "explicacao_correta": 0.85,
+            "precisao_auditor": 0.95
+          },
+          "rotulo": null,
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "construtor"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "heuristico"
+        }
+      ],
+      "catalogo_hash": "sha256:89a8b5427c62009c7ce16a105b7d7de2e0d950035f7803edee091dc067937362",
+      "celula": null,
+      "comparar_com": "v1_com_5_jogadores",
+      "config_hash": "sha256:60ad08b41b4c4b60f71006dfeda6e2f85e8d576c11631b450363e462e19e3285",
+      "familia": "v2",
+      "grupo": "v2_2_1_com_5_jogadores",
+      "jogadores": 5,
+      "mudancas": {},
+      "nome": "v2_2_1_com_5_jogadores_r0",
+      "partidas": 2000,
+      "regras": "configs/regras_v2_2_1.yaml",
+      "requisitos": [
+        "REQ-02"
+      ],
+      "versao": "v2.2.1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "construtor"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.85,
+            "precisao_auditor": 0.95
+          },
+          "rotulo": null,
+          "tipo": "aleatorio"
+        }
+      ],
+      "catalogo_hash": "sha256:89a8b5427c62009c7ce16a105b7d7de2e0d950035f7803edee091dc067937362",
+      "celula": null,
+      "comparar_com": "v1_com_5_jogadores",
+      "config_hash": "sha256:60ad08b41b4c4b60f71006dfeda6e2f85e8d576c11631b450363e462e19e3285",
+      "familia": "v2",
+      "grupo": "v2_2_1_com_5_jogadores",
+      "jogadores": 5,
+      "mudancas": {},
+      "nome": "v2_2_1_com_5_jogadores_r1",
+      "partidas": 2000,
+      "regras": "configs/regras_v2_2_1.yaml",
+      "requisitos": [
+        "REQ-02"
+      ],
+      "versao": "v2.2.1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.85,
+            "precisao_auditor": 0.95
+          },
+          "rotulo": null,
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "construtor"
+        }
+      ],
+      "catalogo_hash": "sha256:89a8b5427c62009c7ce16a105b7d7de2e0d950035f7803edee091dc067937362",
+      "celula": null,
+      "comparar_com": "v1_com_5_jogadores",
+      "config_hash": "sha256:60ad08b41b4c4b60f71006dfeda6e2f85e8d576c11631b450363e462e19e3285",
+      "familia": "v2",
+      "grupo": "v2_2_1_com_5_jogadores",
+      "jogadores": 5,
+      "mudancas": {},
+      "nome": "v2_2_1_com_5_jogadores_r2",
+      "partidas": 2000,
+      "regras": "configs/regras_v2_2_1.yaml",
+      "requisitos": [
+        "REQ-02"
+      ],
+      "versao": "v2.2.1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.85,
+            "precisao_auditor": 0.95
+          },
+          "rotulo": null,
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "construtor"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:89a8b5427c62009c7ce16a105b7d7de2e0d950035f7803edee091dc067937362",
+      "celula": null,
+      "comparar_com": "v1_com_5_jogadores",
+      "config_hash": "sha256:60ad08b41b4c4b60f71006dfeda6e2f85e8d576c11631b450363e462e19e3285",
+      "familia": "v2",
+      "grupo": "v2_2_1_com_5_jogadores",
+      "jogadores": 5,
+      "mudancas": {},
+      "nome": "v2_2_1_com_5_jogadores_r3",
+      "partidas": 2000,
+      "regras": "configs/regras_v2_2_1.yaml",
+      "requisitos": [
+        "REQ-02"
+      ],
+      "versao": "v2.2.1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.85,
+            "precisao_auditor": 0.95
+          },
+          "rotulo": null,
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "construtor"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:89a8b5427c62009c7ce16a105b7d7de2e0d950035f7803edee091dc067937362",
+      "celula": null,
+      "comparar_com": "v1_com_5_jogadores",
+      "config_hash": "sha256:60ad08b41b4c4b60f71006dfeda6e2f85e8d576c11631b450363e462e19e3285",
+      "familia": "v2",
+      "grupo": "v2_2_1_com_5_jogadores",
+      "jogadores": 5,
+      "mudancas": {},
+      "nome": "v2_2_1_com_5_jogadores_r4",
+      "partidas": 2000,
+      "regras": "configs/regras_v2_2_1.yaml",
+      "requisitos": [
+        "REQ-02"
+      ],
+      "versao": "v2.2.1"
+    }
+  ],
+  "comando": "cf experimento experimentos/fase3_exp2_v1_contra_v2.yaml --oficial --processos 4",
+  "duracao": {
+    "arquivo": "configs/duracao.yaml",
+    "sha256": "sha256:9bb2aa16f286d032e76e1ae026a9acd891fcab591867d7c4b45f0d29a65ff756"
+  },
+  "esquema": "cf-manifest/1",
+  "experimento": {
+    "arquivo": "experimentos/fase3_exp2_v1_contra_v2.yaml",
+    "conteudo": {
+      "cenarios": [
+        {
+          "bots": [
+            {
+              "parametros": {
+                "explicacao_correta": 0.85,
+                "precisao_auditor": 0.95
+              },
+              "rotulo": null,
+              "tipo": "aleatorio"
+            },
+            {
+              "parametros": {
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": null,
+              "tipo": "construtor"
+            },
+            {
+              "parametros": {
+                "alvo": "lider",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": null,
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": null,
+              "tipo": "heuristico"
+            }
+          ],
+          "celula": null,
+          "comparar_com": null,
+          "grupo": null,
+          "jogadores": 4,
+          "mudancas": {},
+          "nome": "v1_com_4_jogadores",
+          "partidas": 2500,
+          "regras": "configs/regras_v1.yaml",
+          "requisitos": [],
+          "rodizio": true
+        },
+        {
+          "bots": [
+            {
+              "parametros": {
+                "explicacao_correta": 0.85,
+                "precisao_auditor": 0.95
+              },
+              "rotulo": null,
+              "tipo": "aleatorio"
+            },
+            {
+              "parametros": {
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": null,
+              "tipo": "construtor"
+            },
+            {
+              "parametros": {
+                "alvo": "lider",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": null,
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": null,
+              "tipo": "heuristico"
+            }
+          ],
+          "celula": null,
+          "comparar_com": "v1_com_4_jogadores",
+          "grupo": null,
+          "jogadores": 4,
+          "mudancas": {},
+          "nome": "v2_2_1_com_4_jogadores",
+          "partidas": 2500,
+          "regras": "configs/regras_v2_2_1.yaml",
+          "requisitos": [
+            "REQ-02"
+          ],
+          "rodizio": true
+        },
+        {
+          "bots": [
+            {
+              "parametros": {
+                "explicacao_correta": 0.85,
+                "precisao_auditor": 0.95
+              },
+              "rotulo": null,
+              "tipo": "aleatorio"
+            },
+            {
+              "parametros": {
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": null,
+              "tipo": "construtor"
+            },
+            {
+              "parametros": {
+                "alvo": "lider",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": null,
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "mais_fraco",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": null,
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": null,
+              "tipo": "heuristico"
+            }
+          ],
+          "celula": null,
+          "comparar_com": null,
+          "grupo": null,
+          "jogadores": 5,
+          "mudancas": {},
+          "nome": "v1_com_5_jogadores",
+          "partidas": 2000,
+          "regras": "configs/regras_v1.yaml",
+          "requisitos": [],
+          "rodizio": true
+        },
+        {
+          "bots": [
+            {
+              "parametros": {
+                "explicacao_correta": 0.85,
+                "precisao_auditor": 0.95
+              },
+              "rotulo": null,
+              "tipo": "aleatorio"
+            },
+            {
+              "parametros": {
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": null,
+              "tipo": "construtor"
+            },
+            {
+              "parametros": {
+                "alvo": "lider",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": null,
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "mais_fraco",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": null,
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": null,
+              "tipo": "heuristico"
+            }
+          ],
+          "celula": null,
+          "comparar_com": "v1_com_5_jogadores",
+          "grupo": null,
+          "jogadores": 5,
+          "mudancas": {},
+          "nome": "v2_2_1_com_5_jogadores",
+          "partidas": 2000,
+          "regras": "configs/regras_v2_2_1.yaml",
+          "requisitos": [
+            "REQ-02"
+          ],
+          "rodizio": true
+        }
+      ],
+      "conferir_invariantes": true,
+      "descricao": "v1 contra v2.2.1 em mesas mistas de 4 e 5 jogadores, com os mesmos estilos (Aleatório, Construtor, Caçador e Heurístico; com 5 jogadores, dois Caçadores), todos experientes, blefe moderado e contestação pelo limiar. Mede a vantagem do líder (REQ-02), as partidas desequilibradas (MET-01) e a vitória por estilo (MET-07).\n",
+      "duracao": "configs/duracao.yaml",
+      "esquema": "cf-experimento/1",
+      "nome": "fase3_exp2_v1_contra_v2",
+      "registros_completos_um_a_cada": 1000,
+      "requisitos_arquivo": "configs/requisitos.yaml",
+      "semente_mestre": 20261113
+    },
+    "sha256": "sha256:861922fa7750dc204e95b1afef07fc34e0a2c7fc7f0962938561e3ea654ea356"
+  },
+  "falhas": 0,
+  "git": {
+    "commit": "f447f4b33ed5f8b9b8f006d653e1ebf089d0422f",
+    "sujo": false
+  },
+  "inicio": "2026-11-10T21:20:34+00:00",
+  "invariantes_conferidos_a_cada_evento": true,
+  "oficial": true,
+  "partidas": 40000,
+  "processos": 4,
+  "registros_completos": 44,
+  "registros_nao_gravados": 0,
+  "requisitos": {
+    "arquivo": "configs/requisitos.yaml",
+    "sha256": "sha256:9ad212b418b1dd55aa3ce0cd9851139a63a81ccd7cca8c6dae23e68301f63869"
+  },
+  "segundos": 257.3,
+  "semente_mestre": 20261113,
+  "vereditos": {
+    "REQ-02": [
+      "passa"
+    ],
+    "REQ-09": [
+      "inconclusivo"
+    ]
+  }
+}

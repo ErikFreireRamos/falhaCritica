@@ -504,3 +504,78 @@ Os dois foram apontados pelos invariantes na primeira fumaça da v1:
 1. **Pontuação da v1 por conta direta** (`regras/v1/pontuacao.py`), sem busca e sem guardar nada entre partidas. De um atributo dá para tirar `p` pares se, contando no máximo `p` cartas de cada teste, sobram pelo menos `2p`; para os trios só importa quantas cartas de cada atributo sobraram. O cálculo percorre quantos pares sair de cada atributo e, para cada escolha, o máximo de trios. Um teste compara a conta direta com a busca exaustiva antiga em 300 sistemas aleatórios, inclusive com valores de par e trio diferentes dos da v1; outro mostra que um sistema de 40 cartas é pontuado em menos de 1 segundo. O registro de referência da v1 não mudou.
 2. **O executor não cai mais se a gravação de um registro falhar:** a partida ganha um aviso na tabela (`aviso`), e o manifest conta os registros não gravados. Um teste simula o erro de disco.
 3. **Os experimentos da Fase 3 rodam com 4 processos**, em vez de 7, para sobrar memória para o resto da máquina.
+
+**Detalhe escolhido pelo assistente, sem perguntar:** o executor exige a árvore do git limpa, e o manifest e o relatório do Experimento 1 ainda não estavam no git. Por isso eles foram commitados (`f447f4b`) antes de o Experimento 2 começar. O código dos dois experimentos é o mesmo (`ad1624f`).
+
+### Resultado do Experimento 1 (`fase3_exp1_validacao_v1`)
+
+Execução oficial no commit `ad1624f`, árvore limpa: 85.000 partidas em 1.214 s com 4 processos, nenhuma falha (REQ-09 passa). Relatório em `resultados/fase3_exp1_validacao_v1/20261110-205949-ad1624f/relatorio.md`. Mesas de 6; todos os bots com conhecimento experiente, blefe moderado e contestação pelo limiar.
+
+**Partidas desequilibradas (MET-01, critério fixado antes da execução).** Referência do artigo: 4 de 6 partidas (0,667; IC 95% de 0,300 a 0,903).
+
+| População (6 bots iguais, salvo a mista) | Fator 1,5 (principal) | Fator 2,0 (sensibilidade) |
+|---|---|---|
+| Aleatórios | 0,958 | 0,663 |
+| Construtores | 0,998 | 0,964 |
+| Caçadores que atacam o líder | 0,991 | 0,960 |
+| Caçadores que atacam o mais fraco | 0,957 | 0,622 |
+| Heurísticos | 0,999 | 0,960 |
+| Estilos mistos | 0,998 | 0,945 |
+
+Os intervalos têm cerca de ±0,01.
+
+**Política de alvo (MET-02).** Taxa de vitória de 1 Caçador (o foco, na linha) numa mesa em que os outros 5 usam a política da coluna. Referência 1/6 = 0,167.
+
+| Foco \ Outros | líder | mais fraco | ao acaso |
+|---|---|---|---|
+| líder | — | 0,233 (0,224 a 0,243) | 0,134 (0,126 a 0,143) |
+| mais fraco | 0,179 (0,168 a 0,189) | — | 0,134 (0,126 a 0,142) |
+| ao acaso | 0,184 (0,175 a 0,193) | 0,286 (0,275 a 0,297) | — |
+
+**Vantagem do líder** (chance de vencer de quem lidera sozinho depois que todos fizeram o primeiro teste, menos 1/6): de 0,32 a 0,62 conforme a população. Quem lidera no corte vence entre 49% e 78% das partidas.
+
+**Mesa mista (MET-07):** Heurístico 0,220; Construtor 0,214; Caçadores de 0,166 a 0,189; Aleatório 0,029. Referência 0,167.
+
+### Resultado do Experimento 2 (`fase3_exp2_v1_contra_v2`)
+
+Execução oficial no commit `f447f4b`, árvore limpa: 40.000 partidas em 257 s com 4 processos, nenhuma falha. Relatório em `resultados/fase3_exp2_v1_contra_v2/20261110-212034-f447f4b/relatorio.md`. Mesmas mesas mistas da fumaça da Fase 2, nas duas versões, com rodízio de assentos e as mesmas sementes.
+
+**REQ-02 (vantagem do líder): passa** com 4 e com 5 jogadores.
+
+| Jogadores | v1 | v2.2.1 | Diferença (IC 95%) | Zona |
+|---|---|---|---|---|
+| 4 | 0,392 | 0,087 | 0,305 (0,290 a 0,319) | pelo menos 0,05 |
+| 5 | 0,419 | 0,091 | 0,328 (0,316 a 0,342) | pelo menos 0,05 |
+
+**Taxa de vitória por estilo (MET-07, sem veredito).**
+
+| Bot | v1, 4 jog. | v2.2.1, 4 jog. | v1, 5 jog. | v2.2.1, 5 jog. |
+|---|---|---|---|---|
+| Construtor | 0,323 | 0,455 | 0,259 | 0,349 |
+| Heurístico | 0,354 | 0,370 | 0,262 | 0,331 |
+| Caçador, ataca o líder | 0,260 | 0,173 | 0,200 | 0,173 |
+| Caçador, ataca o mais fraco | — | — | 0,233 | 0,146 |
+| Aleatório | 0,063 | 0,003 | 0,045 | 0,001 |
+| Referência 1/N | 0,250 | 0,250 | 0,200 | 0,200 |
+
+**Partidas desequilibradas (MET-01):** com o fator 1,5, v1 0,991 e 0,996; v2.2.1 0,928 e 0,943 (4 e 5 jogadores). Com o fator 2,0, v1 0,921 e 0,937; v2.2.1 0,553 e 0,532.
+
+**Duração da v2.2.1 (descrição; o REQ-08 não estava neste experimento):** medianas de 45,5 a 45,9 min com 4 jogadores e de 54,5 a 55,2 min com 5.
+
+O REQ-09 saiu inconclusivo só porque o experimento tem 40.000 partidas e o critério pede 50.000. Somados os dois experimentos, foram 125.000 partidas sem nenhuma falha.
+
+### Observações (cuidado ao ler)
+
+1. **A v1 do simulador tem a bola de neve do artigo, e a v2.2.1 quase não tem.** A vantagem do líder cai de cerca de 0,40 para cerca de 0,09. É a primeira evidência, com bots, de que o redesenho atacou o problema da v1.
+2. **Pelo critério principal, a v1 do simulador é mais desequilibrada que as 6 partidas do artigo.** Todas as populações ficaram acima de 0,95, acima do limite superior do intervalo do artigo (0,903). Com o fator 2,0, as duas populações mais parecidas com o que o artigo relata (aleatórios e caçadores do mais fraco) ficam em 0,66 e 0,62, dentro do intervalo. O critério não foi mudado: foi fixado antes. Leituras possíveis: bots não jogam como alunos; o "significativamente" do artigo pode querer dizer uma diferença maior que 1,5 vez; 6 partidas são pouca evidência.
+3. **O MET-01 com o fator 1,5 quase não separa as versões** (v2.2.1 acima de 0,93). O placar da v1 é em pontos e o da v2 em fichas; a razão entre o vencedor e a média dos demais não está na mesma escala nas duas. Com o fator 2,0 as versões se separam (0,92 a 0,94 contra 0,53 a 0,55). Ponto para o autor decidir antes de usar o MET-01 na v2.
+4. **Na v1, atacar o mais fraco não é a melhor resposta para os bots.** A pergunta do Experimento 1 era se o simulador mostraria isso, e a resposta é não. Escolher o alvo ao acaso empata com a melhor resposta ou é a melhor contra as três populações, e é a única das três políticas em que ninguém ganha mudando sozinho. Explicação mecânica: na v1, a defesa bem-sucedida dá a carta de ataque ao defensor. Quem ataca o líder, que tem sistema grande e quase sempre tem o atributo, alimenta o líder (na população "todos atacam o líder", o vencedor faz 27 pontos e a média é 8). Quem ataca o mais fraco acerta mais, mas um sistema vazio não tem o que tomar (AMB-25).
+5. **A v2.2.1 tirou a bola de neve, mas afastou construir de caçar.** Na v1 os estilos ficam próximos (com 4 jogadores, Heurístico 0,354, Construtor 0,323, Caçador 0,260). Na v2.2.1 o Construtor vence 0,455 e o Caçador fica abaixo da referência (0,173). Isso alimenta a pergunta da Fase 4 sobre o melhor estilo, o REQ-04 (nenhum perfil dominante) e o REQ-11 (os dois estilos na mesa).
+6. **A duração com 5 jogadores e bots com estratégia** fica em 55 min, acima do teto de 50 do REQ-08, como na fumaça da Fase 2. Os tempos do modelo ainda são provisórios.
+
+### Pendências (parada para revisão da Fase 3)
+
+- Revisão dos resultados pelo autor.
+- MET-01 na v2: manter o fator 1,5, passar a usar o 2,0 ou adotar outro critério que valha nas duas escalas.
+- Decisões da Fase 4: ordem dos experimentos 3 a 6; zonas de REQ-03 a REQ-07 e de REQ-10 a REQ-14; mecânica de VAR-02, VAR-03, VAR-04 e VAR-06; se o REQ-08 terá a parte "acima de 60 minutos".
+- Do autor: rever a redação dos trechos marcados em `regras/v2.2.1.md` e `regras/v1.md`.
