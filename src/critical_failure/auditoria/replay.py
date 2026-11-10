@@ -22,7 +22,8 @@ from critical_failure.auditoria.registro import (
     gerar_linhas,
     linha_do_evento,
 )
-from critical_failure.bots.aleatorio import criar_bot
+from critical_failure.bots.fabrica import criar_bot
+from critical_failure.duracao import ler_duracao
 from critical_failure.nucleo.canonico import como_dict, sha256
 from critical_failure.nucleo.erros import ErroCF, RegistroDivergente
 from critical_failure.regras.config import catalogo_das_regras, ler_regras
@@ -108,6 +109,7 @@ def _por_acoes(linhas: list[Linha], motor: MotorV2) -> int:
 def _por_bots(linhas: list[Linha], motor: MotorV2) -> int:
     cabecalho = linhas[0]
     bots = [criar_bot(bot["tipo"], bot["parametros"]) for bot in cabecalho["bots"]]
+    modelo = (cabecalho.get("modelos") or {}).get("duracao")
     novas, _ = gerar_linhas(
         motor,
         cabecalho["regras"]["arquivo"],
@@ -115,6 +117,7 @@ def _por_bots(linhas: list[Linha], motor: MotorV2) -> int:
         cabecalho["semente_mestre"],
         cabecalho["partida"],
         data_hora=cabecalho["data_hora"],
+        duracao=ler_duracao(modelo) if modelo is not None else None,
     )
     if len(novas) != len(linhas):
         raise RegistroDivergente(f"o registro tem {len(linhas)} linhas e a reexecução gerou {len(novas)}")

@@ -6,11 +6,13 @@ assim que o registro de auditoria é escrito, sem que o motor saiba dele.
 
 from __future__ import annotations
 
+from collections import Counter
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from typing import Any
 
 from critical_failure.bots.base import Bot
+from critical_failure.duracao import Cronometro, ModeloDeDuracao
 from critical_failure.nucleo.erros import ErroCF
 from critical_failure.observacao import observar
 from critical_failure.regras.v2 import invariantes
@@ -38,6 +40,13 @@ class ResultadoPartida:
     """Para cada assento, o saldo de fichas por fonte."""
     eventos: int
     estado_final: Estado
+    duracao_s: int | None = None
+    """Duração estimada pelo modelo MOD-05, em segundos. ``None`` sem modelo."""
+    tipos_de_evento: tuple[tuple[str, int], ...] = ()
+    """Quantas vezes cada tipo de evento aconteceu, em ordem alfabética."""
+
+    def vezes(self, tipo: str) -> int:
+        return dict(self.tipos_de_evento).get(tipo, 0)
 
 
 def somar_fontes(fontes: list[dict[str, int]], evento: Evento) -> None:
@@ -55,6 +64,7 @@ def jogar_partida(
     partida: int,
     ouvinte: Ouvinte | None = None,
     conferir_invariantes: bool = False,
+    duracao: ModeloDeDuracao | None = None,
 ) -> ResultadoPartida:
     n = len(bots)
     for assento, bot in enumerate(bots):
@@ -62,6 +72,8 @@ def jogar_partida(
     fontes: list[dict[str, int]] = [dict.fromkeys(FONTES, 0) for _ in range(n)]
     total = 0
     criterio = ""
+    cronometro = Cronometro(duracao) if duracao is not None else None
+    tipos: Counter[str] = Counter()
 
     def entregar(eventos: list[Evento], decisao: dict[str, Any] | None) -> None:
         nonlocal total, criterio
@@ -70,6 +82,9 @@ def jogar_partida(
                 ultimo = posicao == len(eventos) - 1
                 invariantes.conferir(evento.estado, motor.regras, motor.catalogo, em_repouso=ultimo)
             somar_fontes(fontes, evento)
+            tipos[evento.tipo] += 1
+            if cronometro is not None:
+                cronometro.somar(evento)
             if evento.tipo == "fim_de_jogo":
                 criterio = evento.publico["criterio"]
             if ouvinte is not None:
@@ -105,4 +120,6 @@ def jogar_partida(
         fontes=tuple(fontes),
         eventos=total,
         estado_final=estado,
+        duracao_s=cronometro.segundos if cronometro is not None else None,
+        tipos_de_evento=tuple(sorted(tipos.items())),
     )

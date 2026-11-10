@@ -20,6 +20,7 @@ from typing import Any
 from critical_failure.auditoria import registro
 from critical_failure.auditoria.narrar import narrar
 from critical_failure.bots.aleatorio import BotAleatorio
+from critical_failure.duracao import carregar_duracao
 from critical_failure.regras.config import carregar_jogo
 from critical_failure.regras.v2.motor import MotorV2
 
@@ -41,7 +42,10 @@ def linhas_do_caso(arquivo: str, jogadores: int, partida: int) -> tuple[list[dic
     regras, catalogo = carregar_jogo(RAIZ / "configs" / arquivo)
     motor = MotorV2(regras, catalogo)
     bots = [BotAleatorio() for _ in range(jogadores)]
-    linhas, _ = registro.gerar_linhas(motor, f"configs/{arquivo}", bots, SEMENTE, partida, data_hora=DATA)
+    duracao = carregar_duracao(RAIZ / "configs" / "duracao.yaml")
+    linhas, _ = registro.gerar_linhas(
+        motor, f"configs/{arquivo}", bots, SEMENTE, partida, data_hora=DATA, duracao=duracao
+    )
     # O commit muda a cada versão do código; o dourado não pode depender dele.
     linhas[0]["git"] = {"commit": None, "sujo": None}
     return linhas, motor

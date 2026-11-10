@@ -1,0 +1,44 @@
+# Fase 1b: primeira medição, só com bots aleatórios.
+#
+# Serve para exercitar o executor e medir os três primeiros requisitos. Como os
+# bots escolhem ao acaso, nada aqui diz se o jogo está balanceado para quem joga
+# com estratégia: isso depende dos bots da Fase 2.
+
+esquema: cf-experimento/1
+nome: fase1b_linha_de_base
+descricao: >
+  Linha de base com bots aleatórios (explicação correta em 50% das defesas,
+  Auditor que sempre julga certo). Mede a equidade de assento (REQ-01), a
+  duração estimada (REQ-08) e a robustez do simulador (REQ-09).
+semente_mestre: 20261110
+duracao: configs/duracao.yaml
+registros_completos_um_a_cada: 1000
+
+cenarios:
+  - nome: v2_2_1_com_4_jogadores
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 40000
+    bots: [{tipo: aleatorio, parametros: {explicacao_correta: 0.5, precisao_auditor: 1.0}}]
+    requisitos: [REQ-01, REQ-08]
+
+  - nome: v2_2_1_com_5_jogadores
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 40000
+    bots: [{tipo: aleatorio, parametros: {explicacao_correta: 0.5, precisao_auditor: 1.0}}]
+    requisitos: [REQ-01, REQ-08]
+
+  # Os dois cenários abaixo só entram na robustez: exercitam o módulo e a regra impressa.
+  - nome: v2_2_1_com_modulo_5_jogadores
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 5000
+    bots: [{tipo: aleatorio, parametros: {explicacao_correta: 0.5, precisao_auditor: 1.0}}]
+    mudancas: {modulo_seguranca_operacional: true}
+
+  - nome: v2_2_impressa_com_6_jogadores
+    regras: configs/regras_v2_2.yaml
+    jogadores: 6
+    partidas: 5000
+    bots: [{tipo: aleatorio, parametros: {explicacao_correta: 0.5, precisao_auditor: 1.0}}]

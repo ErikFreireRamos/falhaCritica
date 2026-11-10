@@ -1,0 +1,16 @@
+# Modelo de duração da partida (MOD-05). Tempos em segundos.
+#
+# Não são regras do jogo: são a hipótese do simulador para estimar quanto tempo
+# uma partida levaria na mesa. Valores PROVISÓRIOS, aceitos pelo autor em
+# 2026-11-10, a calibrar com cronômetro no playtest.
+
+esquema: cf-duracao/1
+
+preparacao: {valor: 180, fonte: "PDF 2.2, p. 4: a preparação leva cerca de 3 minutos"}
+turno_de_planejamento: {valor: 30, fonte: "R-6.7: um turno leva cerca de 30 segundos"}
+teste_admitido: {valor: 20, fonte: "provisório, autor em 2026-11-10: teste em que o defensor admite a falha"}
+teste_com_defesa: {valor: 60, fonte: "PDF 2.2, p. 34: cada defesa leva até 1 minuto"}
+contestacao: {valor: 15, fonte: "provisório, autor em 2026-11-10: acréscimo quando há contestação"}
+passar: {valor: 5, fonte: "provisório, autor em 2026-11-10"}
+producao: {valor: 180, fonte: "provisório, autor em 2026-11-10: Produção inteira de um ciclo"}
+fim_de_jogo: {valor: 180, fonte: "provisório, autor em 2026-11-10: Critical Failure e pontuação final"}

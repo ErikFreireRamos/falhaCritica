@@ -36,7 +36,8 @@ Não invente regras. Ponto ambíguo ou omisso vai para `docs/AMBIGUIDADES.md` e 
 - **Regra impressa continua acessível.** Toda correção do autor fica atrás de uma chave de configuração, para o simulador medir o efeito da mudança. O padrão é sempre a versão corrigida.
 - **Código por família de regras, YAML por versão:** `regras/v2/` com `configs/regras_v2_2.yaml`. Uma nova iteração das regras é um YAML novo e uma entrada em `docs/HISTORICO_REGRAS.md`, sem copiar código.
 - **Registro do processo.** Atualize `docs/DIARIO_DE_BORDO.md` em toda sessão de trabalho e `docs/HISTORICO_REGRAS.md` em toda mudança de regra ou parâmetro.
-- **Experimento oficial só com a árvore do git limpa.** O cabeçalho e o manifest registram o commit e se havia alteração não commitada.
+- **Experimento oficial só com a árvore do git limpa.** O cabeçalho e o manifest registram o commit e se havia alteração não commitada. Ordem: commit do código, depois `cf experimento --oficial`, depois commit do manifest, do relatório e do diário.
+- **Requisitos só recebem veredito quando confirmados.** Em `configs/requisitos.yaml`, `estado: confirmado` e um `criterio` estruturado. Os outros aparecem só como descrição.
 - **Git:** um commit por fase, mensagens em português. A identidade do autor está configurada só neste repositório. **Não acrescentar linha de coautoria** (`Co-Authored-By`) nem outra atribuição ao assistente: o único autor é o Erik.
 
 ## Fases
@@ -69,6 +70,8 @@ uv run cf jogar --semente 1 --log p.jsonl          # joga uma partida e grava o 
 uv run cf replay p.jsonl                           # refaz e confere cada evento
 uv run cf narrar p.jsonl                           # conta a partida em português
 uv run cf folha p.jsonl                            # exporta a Folha de registro em 3 CSVs
+uv run cf experimento experimentos/X.yaml --oficial  # roda um experimento (exige árvore do git limpa)
+uv run cf relatorio resultados/X/<execução>        # refaz o relatório a partir do manifest e do Parquet
 ```
 
 Antes de commitar: `ruff format`, `ruff check`, `mypy`, a matriz regenerada e `pytest`.
@@ -84,11 +87,17 @@ src/critical_failure/
     config.py    modelo e validação do YAML das regras
     v2/          estado, ações, motor e invariantes da família v2
   observacao.py  o que cada assento vê (lista de AMB-10)
-  bots/          contrato dos bots e o bot Aleatório
+  bots/          contrato dos bots, fábrica de bots e o bot Aleatório
   partida.py     laço da partida: motor, bots e ouvinte de eventos
   auditoria/     registro JSONL, replay, narração e Folha
+  duracao.py     modelo de duração da partida (MOD-05), tempos em configs/duracao.yaml
+  experimentos/  arquivo de experimento e executor paralelo (Parquet, registros, manifest)
+  metricas/      intervalos de confiança, veredito e medida dos requisitos
+  relatorios/    relatório Markdown de cada execução
   cli.py         comando cf
-configs/         regras por versão, catálogo gerado, requisitos
+configs/         regras por versão, catálogo gerado, requisitos, modelo de duração
+experimentos/    um YAML por experimento
+resultados/      saída dos experimentos; só manifest.json e relatorio.md vão para o git
 regras/          texto das regras por versão
 tests/           testes por regra, propriedades, convenções e registros de referência
 scripts/         verificador, matriz, catálogo e registros de referência

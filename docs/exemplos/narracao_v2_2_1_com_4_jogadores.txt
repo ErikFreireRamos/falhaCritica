@@ -279,3 +279,4 @@ Ana revela o sistema: Autenticação, Estresse, Regressão, Pico, Análise está
 Bruno revela o sistema: Coexistência, Escalabilidade, Análise de impacto, Proteção contra erro do usuário, Instalabilidade. 4 categoria(s) distinta(s), 1 cobertura(s) profunda(s), 0 Alerta(s) ativo(s): +5 e -0.
 
 Placar final: Ana 3, Bruno 12, Carla 4, Davi 6. Vence: Bruno (mais fichas).
+Duração estimada pelo modelo de tempos (MOD-05, provisório): 42 min 5 s.

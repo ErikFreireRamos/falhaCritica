@@ -335,3 +335,4 @@ Ana revela o sistema: Acessibilidade, Escalabilidade, Resistência, Teste com us
 Bruno revela o sistema: Regressão, Instalabilidade, Carga, Contrato de API, Retrocompatibilidade. 4 categoria(s) distinta(s), 1 cobertura(s) profunda(s), 3 Alerta(s) ativo(s): +5 e -3.
 
 Placar final: Ana 13, Bruno 9, Carla 2, Davi 1, Elisa 5. Vence: Ana (mais fichas).
+Duração estimada pelo modelo de tempos (MOD-05, provisório): 49 min 30 s.

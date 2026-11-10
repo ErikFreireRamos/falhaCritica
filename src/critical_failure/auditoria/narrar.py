@@ -307,4 +307,9 @@ def narrar(linhas: list[Linha], catalogo: Catalogo, mostrar_oculto: bool = True,
             narrador.evento(linha)
     if fim.get("placar") is None:
         narrador.linhas.append(f"A partida não terminou: {fim.get('invariantes')}")
+    segundos = fim.get("duracao_estimada_s")
+    if segundos is not None:
+        narrador.linhas.append(
+            f"Duração estimada pelo modelo de tempos (MOD-05, provisório): {segundos // 60} min {segundos % 60} s."
+        )
     return "\n".join(titulo + narrador.linhas) + "\n"

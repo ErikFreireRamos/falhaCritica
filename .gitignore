@@ -14,7 +14,8 @@ dist/
 build/
 *.egg-info/
 
-# Resultados de experimentos ficam fora do git, exceto os manifests
+# Resultados de experimentos ficam fora do git, exceto o manifest e o relatório de cada execução
 resultados/**
 !resultados/**/
 !resultados/**/manifest.json
+!resultados/**/relatorio.md

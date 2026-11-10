@@ -77,10 +77,3 @@ class BotAleatorio:
             f"julgou {'certo' if acertou else 'errado'} (precisão={self._precisao_por_mil}/{MIL}, sorteio={sorteio})"
         )
         return Decisao(Acao(A.CONFERE if confere else A.NAO_CONFERE), motivo)
-
-
-def criar_bot(tipo: str, parametros: dict[str, Any]) -> BotAleatorio:
-    """Recria um bot a partir do que foi gravado no cabeçalho de um registro."""
-    if tipo == BotAleatorio.tipo:
-        return BotAleatorio(**parametros)
-    raise ValueError(f"tipo de bot desconhecido: {tipo}")

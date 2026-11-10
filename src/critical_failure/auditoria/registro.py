@@ -22,6 +22,7 @@ from typing import Any
 
 import critical_failure
 from critical_failure.bots.base import Bot
+from critical_failure.duracao import ModeloDeDuracao
 from critical_failure.nucleo.canonico import como_dict, json_canonico, sha256
 from critical_failure.nucleo.erros import ErroCF, RegistroDivergente
 from critical_failure.partida import ResultadoPartida, jogar_partida
@@ -54,7 +55,13 @@ def info_git() -> dict[str, Any]:
 
 
 def montar_cabecalho(
-    motor: MotorV2, arquivo_de_regras: str, bots: Sequence[Bot], semente: int, partida: int, data_hora: str
+    motor: MotorV2,
+    arquivo_de_regras: str,
+    bots: Sequence[Bot],
+    semente: int,
+    partida: int,
+    data_hora: str,
+    duracao: ModeloDeDuracao | None = None,
 ) -> Linha:
     regras = motor.regras
     return {
@@ -78,6 +85,8 @@ def montar_cabecalho(
         "bots": [
             {"assento": assento, "tipo": bot.tipo, "parametros": bot.parametros()} for assento, bot in enumerate(bots)
         ],
+        # Hipóteses de modelo que não são regra do jogo (MOD-05).
+        "modelos": {"duracao": duracao.resolvido() if duracao is not None else None},
         "data_hora": data_hora,
     }
 
@@ -113,7 +122,7 @@ def linha_do_fim(resultado: ResultadoPartida) -> Linha:
         "criterio_de_desempate": resultado.criterio,
         "invariantes": "ok",
         "eventos": resultado.eventos,
-        "duracao_estimada_min": None,  # MOD-05: o modelo de duração entra na Fase 1b
+        "duracao_estimada_s": resultado.duracao_s,  # MOD-05; None quando a partida roda sem modelo de duração
         "estado_hash_final": sha256(como_dict(resultado.estado_final)),
     }
 
@@ -126,7 +135,7 @@ def linha_de_falha(erro: Exception, eventos: int) -> Linha:
         "criterio_de_desempate": None,
         "invariantes": f"falha: {type(erro).__name__}: {erro}",
         "eventos": eventos,
-        "duracao_estimada_min": None,
+        "duracao_estimada_s": None,
         "estado_hash_final": None,
     }
 
@@ -138,6 +147,7 @@ def gerar_linhas(
     semente: int,
     partida: int,
     data_hora: str | None = None,
+    duracao: ModeloDeDuracao | None = None,
 ) -> tuple[list[Linha], ResultadoPartida]:
     """Joga a partida no modo auditado e devolve todas as linhas do registro.
 
@@ -145,13 +155,15 @@ def gerar_linhas(
     ``linhas``, terminadas por um ``fim`` que descreve a falha.
     """
     momento = data_hora or datetime.now(UTC).isoformat(timespec="seconds")
-    linhas: list[Linha] = [montar_cabecalho(motor, arquivo_de_regras, bots, semente, partida, momento)]
+    linhas: list[Linha] = [montar_cabecalho(motor, arquivo_de_regras, bots, semente, partida, momento, duracao)]
 
     def ouvinte(evento: Evento, decisao: dict[str, Any] | None) -> None:
         linhas.append(linha_do_evento(len(linhas) - 1, evento, decisao))
 
     try:
-        resultado = jogar_partida(motor, bots, semente, partida, ouvinte=ouvinte, conferir_invariantes=True)
+        resultado = jogar_partida(
+            motor, bots, semente, partida, ouvinte=ouvinte, conferir_invariantes=True, duracao=duracao
+        )
     except ErroCF as erro:
         linhas.append(linha_de_falha(erro, len(linhas) - 1))
         erro.linhas = linhas  # type: ignore[attr-defined]
@@ -175,10 +187,11 @@ def gravar_partida(
     semente: int,
     partida: int,
     data_hora: str | None = None,
+    duracao: ModeloDeDuracao | None = None,
 ) -> ResultadoPartida:
     """Joga e grava. Partida que falha também é gravada, e a exceção segue adiante."""
     try:
-        linhas, resultado = gerar_linhas(motor, arquivo_de_regras, bots, semente, partida, data_hora)
+        linhas, resultado = gerar_linhas(motor, arquivo_de_regras, bots, semente, partida, data_hora, duracao)
     except ErroCF as erro:
         escrever(caminho, getattr(erro, "linhas", []))
         raise

@@ -40,7 +40,8 @@ requisitos:
       jogador do ciclo 1), com o mesmo bot em todos os assentos, para cada
       número de jogadores N. Empates contam como vitória dividida (AMB-14).
     zona: "cada posição entre 1/N - 0.02 e 1/N + 0.02"
-    estado: aguardando_decisao
+    criterio: {margem: 0.02}
+    estado: confirmado  # autor, 2026-11-10
 
   - id: REQ-02
     nome: Anti bola de neve
@@ -119,19 +120,24 @@ requisitos:
     metrica: >
       Mediana da duração estimada da partida pelo modelo de tempos por ação
       (MOD-05), para N = 4 e 5 (o PDF pede 4 a 6; o máximo passou a 5 pela
-      COR-01). Complemento: fração de partidas acima de 60 minutos.
-    zona: "mediana entre 40 e 50 minutos em cada N; até 0.05 das partidas acima de 60"
-    estado: aguardando_decisao
+      COR-01). Os tempos por ação estão em configs/duracao.yaml e são
+      provisórios. A fração de partidas acima de 60 minutos é relatada como
+      descrição (percentil 90), sem critério, até o autor decidir.
+    zona: "mediana entre 40 e 50 minutos em cada N"
+    criterio: {minimo: 40, maximo: 50}
+    estado: confirmado  # autor, 2026-11-10: zona do PDF (p. 35) e tempos provisórios de MOD-05
 
   - id: REQ-09
     nome: Robustez
     tipo: simulador
     fonte: "prompt 3.6"
     metrica: >
-      Número de exceções e de violações de invariante em 1.000.000 de
-      partidas, com bots aleatórios e configurações variadas.
-    zona: "0 exceções e 0 violações"
-    estado: aguardando_decisao
+      Número de exceções e de violações de invariante em 50.000 partidas,
+      com bots aleatórios e configurações variadas. O prompt pedia 1.000.000;
+      o autor reduziu para 50.000 em 2026-11-10 ("esse número já basta").
+    zona: "0 exceções e 0 violações em pelo menos 50.000 partidas"
+    criterio: {partidas_minimas: 50000}
+    estado: confirmado  # autor, 2026-11-10
 
   - id: REQ-10
     nome: Tempo parado por ciclo
