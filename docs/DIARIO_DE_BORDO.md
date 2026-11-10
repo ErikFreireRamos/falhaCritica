@@ -579,3 +579,43 @@ O REQ-09 saiu inconclusivo só porque o experimento tem 40.000 partidas e o crit
 - MET-01 na v2: manter o fator 1,5, passar a usar o 2,0 ou adotar outro critério que valha nas duas escalas.
 - Decisões da Fase 4: ordem dos experimentos 3 a 6; zonas de REQ-03 a REQ-07 e de REQ-10 a REQ-14; mecânica de VAR-02, VAR-03, VAR-04 e VAR-06; se o REQ-08 terá a parte "acima de 60 minutos".
 - Do autor: rever a redação dos trechos marcados em `regras/v2.2.1.md` e `regras/v1.md`.
+
+---
+
+## 2026-11-10 — Fase 4: o melhor estilo de jogo
+
+### Decisões do autor
+
+| Assunto | Opções | Escolha |
+|---|---|---|
+| Revisão da Fase 3 | — | "Aprovo suas sugestões, siga avançando nas fases" |
+| MET-01 na v2 | manter o fator 1,5 nas duas versões; passar a 2,0; outro critério; 1,5 só na v1 | 1,5 só na v1. Na v2 o MET-01 é só descrição, e a comparação entre as versões é feita pelo REQ-02 |
+| Ordem da Fase 4 | sugestão do assistente | Primeiro o melhor estilo (REQ-04 e REQ-11), depois o torneio de blefe (Experimento 5), as variantes do playtest (Experimento 6), a ablação (3) e a sensibilidade (4) |
+| Zonas e variantes da Fase 4 | todas agora; na hora de cada experimento | Na hora do experimento que as usa |
+| Estilos na matriz (MET-07) | 6; 4 | 6: Aleatório, Construtor, Heurístico e o Caçador com as três políticas de alvo (líder, mais fraco, ao acaso) |
+| Estilo dominante (REQ-04) | melhor resposta; acima da referência | **Melhor resposta contra todas as mesas**, inclusive a de bots iguais a ele, com o intervalo da diferença inteiro acima de 0. Vale também para os perfis de blefe. Corrige a redação anterior ("acima de 1/N + 0,02 contra todas as mesas, inclusive a do próprio perfil"), que nunca acusaria dominância, porque na mesa do próprio perfil o foco vence exatamente 1/N |
+| Zona do REQ-03 | só o piso; 1,5/N a 0,85; 1,5/N a 0,95 | **Só o piso: acima de 1,5/N.** O Aleatório quase nunca vence na v2.2.1, então um teto diria mais sobre ele do que sobre o jogo |
+| Zona do REQ-11 | 0,10 a 0,90; 0,25 a 0,75 | 0,10 a 0,90 |
+
+### O que foi feito
+
+1. **Matriz de estilos** (`metricas/matrizes.py`). Um cenário pode declarar `matriz` e `celula` (estilo do foco, estilo dos outros). A análise calcula cada célula com o seu intervalo, as melhores respostas a cada mesa, a situação de cada estilo no REQ-04 (dominante, não dominante ou indefinido, com o motivo) e a dinâmica do replicador.
+2. **REQ-03 e REQ-11 medidos.** O motor da v2 passou a informar quem terminou o Planejamento do ciclo 1 com o sistema no teto. A informação vai para uma coluna nova da tabela de partidas (`cheios_no_planejamento_1`), e o relatório a mostra para todos os cenários.
+3. **Relatório:** seção da matriz de estilos. As rotações de uma célula de matriz aparecem somadas, numa linha só, na descrição e na lista de cenários. O MET-07 deixou de dizer que aguarda o autor, e o MET-01 ganhou a nota sobre a v2.
+4. **Uma só função de análise** (`metricas/analise.py`) para o executor e para o `cf relatorio`. Assim o relatório refeito continua igual ao original.
+5. **Experimento** `experimentos/fase4_melhor_estilo.yaml`: 140.000 partidas.
+6. **Testes novos:** 8, contando os três casos do REQ-04. Cobrem a coluna de sistemas cheios, conferida evento a evento; o replicador em dois casos com resposta conhecida; o REQ-04 nos três vereditos, com matrizes montadas à mão; um experimento do melhor estilo em miniatura, com o relatório refeito; e a validação do arquivo do experimento.
+
+### Verificação
+
+- `uv run pytest`: 394 testes passam e 1 é pulado. `ruff` e `mypy` estrito sem apontamentos. Matriz de rastreabilidade e registros de referência sem mudança.
+
+### Detalhes escolhidos pelo assistente, sem perguntar
+
+- **A diagonal não roda:** com bots iguais e rodízio, o foco vence exatamente 1/N.
+- **2.000 partidas por célula** (500 por rotação com 4 jogadores, 400 com 5). O intervalo de cada célula fica em cerca de ±0,02.
+- **Diferença entre duas células:** cada célula tem as suas 1.000 reamostras de bootstrap, e o intervalo da diferença sai das diferenças entre as médias reamostradas, como amostras independentes. Não há correção para comparações múltiplas: com 6 estilos são 180 comparações por matriz.
+- **Dinâmica do replicador:** tempo discreto (cada proporção é multiplicada pelo ganho do estilo e dividida pelo ganho médio), a partir da população uniforme, até 200.000 passos ou até a mudança ficar abaixo de 10⁻¹². É uma aproximação linear: numa população mista, o ganho de um estilo é a média dos seus ganhos contra cada população pura, pesada pelas proporções.
+- **Mesas só de Heurísticos** com 10.000 partidas por tamanho de mesa. Nelas também é medido o REQ-01, que já estava confirmado: é a primeira medida da equidade de assento com bots que jogam com estratégia.
+- **REQ-11:** a média é sobre as partidas, e o intervalo vem de bootstrap sobre as partidas, porque jogadores da mesma partida não são independentes. "Cheio" quer dizer sistema com o número de cartas do teto (`sistema.teto` do YAML).
+- **Perfis:** os mesmos das Fases 2 e 3 (experiente, blefe moderado, contestação pelo limiar); o Aleatório com explicação 85% e Auditor 95%. Semente mestre 20261114; 4 processos.

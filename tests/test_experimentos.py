@@ -437,3 +437,177 @@ def test_falha_ao_gravar_um_registro_nao_derruba_o_experimento(tmp_path: Path, m
     avisos = [linha["aviso"] for linha in resultado.linhas if linha["aviso"]]
     assert len(avisos) == 2 and "registro não gravado" in avisos[0]  # partidas 0 e 10
     assert resultado.manifest["registros_nao_gravados"] == 2
+
+
+# ---------------------------------------------------------------- Fase 4: melhor estilo (MET-07, REQ-03, 04 e 11)
+
+PERFIL = {"conhecimento": "experiente", "blefe": "metade", "contestacao": "limiar"}
+
+
+def celula(
+    nome: str, foco: dict[str, Any], outros: dict[str, Any], linha: str, coluna: str, **extra: Any
+) -> dict[str, Any]:
+    return {
+        "nome": nome,
+        "regras": "configs/regras_v2_2_1.yaml",
+        "jogadores": 4,
+        "partidas": 2,
+        "rodizio": True,
+        "matriz": "estilos_teste",
+        "celula": [linha, coluna],
+        "bots": [{**foco, "rotulo": "foco"}, *[{**outros, "rotulo": "outros"}] * 3],
+        **extra,
+    }
+
+
+def test_sistemas_cheios_no_fim_do_primeiro_planejamento() -> None:
+    from critical_failure.bots.fabrica import criar_bot
+    from critical_failure.regras.familias import carregar_motor
+
+    motor = carregar_motor(RAIZ / "configs" / "regras_v2_2_1.yaml")
+    teto = motor.regras.sistema.teto.valor
+    vistos: list[tuple[bool, ...]] = []
+
+    def ouvinte(evento: Any, _decisao: Any) -> None:
+        if evento.tipo == "inicio_da_fase" and evento.publico["fase"] == "homologacao" and evento.ciclo == 1:
+            vistos.append(tuple(len(j.sistema) >= teto for j in evento.estado.jogadores))
+
+    bots = [criar_bot("construtor", PERFIL), criar_bot("cacador", {**PERFIL, "alvo": "lider"})] * 2
+    resultado = jogar_partida(motor, bots, 5, 0, ouvinte=ouvinte)
+    assert resultado.sistemas_cheios_no_planejamento == vistos[0]
+    # O Construtor enche o sistema no primeiro Planejamento; o Caçador, não.
+    assert resultado.sistemas_cheios_no_planejamento == (True, False, True, False)
+    v1 = carregar_motor(RAIZ / "configs" / "regras_v1.yaml")
+    v1_bots = [criar_bot("construtor", PERFIL, "v1") for _ in range(4)]
+    assert jogar_partida(v1, v1_bots, 5, 0).sistemas_cheios_no_planejamento is None
+
+
+def test_replicador() -> None:
+    import numpy as np
+
+    from critical_failure.metricas.matrizes import replicador
+
+    # O estilo 0 se sai melhor contra as duas populações: ele toma a população.
+    final, convergiu = replicador(np.array([[0.25, 0.40], [0.10, 0.25]]))
+    assert convergiu and final[0] == pytest.approx(1.0)
+    # Cada um invade a população do outro. Equilíbrio misto: 0,2 x + 0,4 (1 - x) = 0,3 x + 0,25 (1 - x), x = 0,6.
+    final, convergiu = replicador(np.array([[0.20, 0.40], [0.30, 0.25]]))
+    assert convergiu and final[0] == pytest.approx(0.6, abs=1e-6)
+
+
+def _matriz_sintetica(taxas: dict[tuple[str, str], float], partidas: int = 400) -> tuple[Any, list[dict[str, Any]]]:
+    """Uma matriz 2 x 2 com o resultado de cada partida escolhido: o foco vence na fração pedida de cada célula."""
+    cenarios = [celula(f"{a}_contra_{b}", ALEATORIO, ALEATORIO, a, b, partidas=partidas) for a, b in taxas]
+    lido = ler_experimento(experimento(cenarios=cenarios))
+    linhas: list[dict[str, Any]] = []
+    for cenario in lido.cenarios_expandidos():
+        assert cenario.celula is not None
+        taxa = taxas[(cenario.celula[0], cenario.celula[1])]
+        foco = next(i for i, bot in enumerate(cenario.bots_por_assento()) if bot.rotulo == "foco")
+        outro = (foco + 1) % cenario.jogadores
+        for partida in range(cenario.partidas):
+            venceu = partida < round(taxa * cenario.partidas)
+            linhas.append({"cenario": cenario.nome, "erro": None, "vencedores": [foco if venceu else outro]})
+    return lido, linhas
+
+
+@pytest.mark.parametrize(
+    ("taxas", "esperado"),
+    [
+        # a se sai melhor que b contra as duas mesas: a é dominante.
+        ({("a", "b"): 0.60, ("b", "a"): 0.05}, "falha"),
+        # cada um invade a mesa do outro: ninguém é dominante.
+        ({("a", "b"): 0.60, ("b", "a"): 0.60}, "passa"),
+        # contra a mesa de a, b fica colado em 1/4: não dá para afirmar nem descartar que a domina.
+        ({("a", "b"): 0.60, ("b", "a"): 0.25}, "inconclusivo"),
+    ],
+)
+def test_estilo_dominante(taxas: dict[tuple[str, str], float], esperado: str) -> None:
+    from critical_failure.metricas.matrizes import medidas_de_dominancia, montar_matrizes
+
+    lido, linhas = _matriz_sintetica(taxas)
+    (matriz,) = montar_matrizes(linhas, lido, 0.0)
+    assert matriz.completa and matriz.estilos == ("a", "b")
+    assert matriz.celulas[("a", "a")].taxa == 0.25 and matriz.celulas[("a", "a")].intervalo is None
+    assert matriz.celulas[("a", "b")].taxa == pytest.approx(taxas[("a", "b")])
+    (medida,) = medidas_de_dominancia([matriz], {"diferenca_minima": 0.0})
+    assert medida.requisito == "REQ-04" and medida.veredito == esperado
+    if esperado == "falha":
+        assert matriz.situacao == {"a": "dominante", "b": "não dominante"}
+        assert matriz.replicador["a"] == pytest.approx(1.0)
+
+
+def test_experimento_do_melhor_estilo_em_miniatura(tmp_path: Path) -> None:
+    construtor = {"tipo": "construtor", "parametros": PERFIL}
+    heuristico = {"tipo": "heuristico", "parametros": PERFIL}
+    aleatorio = {"tipo": "aleatorio", "parametros": {"explicacao_correta": 0.85, "precisao_auditor": 0.95}}
+    estilos = {"construtor": construtor, "heuristico": heuristico, "aleatorio": aleatorio}
+    cenarios = [
+        celula(
+            f"{a}_contra_{b}",
+            estilos[a],
+            estilos[b],
+            a,
+            b,
+            **({"requisitos": ["REQ-03"]} if (a, b) == ("heuristico", "aleatorio") else {}),
+        )
+        for a in estilos
+        for b in estilos
+        if a != b
+    ]
+    cenarios.append(
+        {
+            "nome": "todos_heuristicos",
+            "regras": "configs/regras_v2_2_1.yaml",
+            "jogadores": 4,
+            "partidas": 6,
+            "bots": [heuristico],
+            "requisitos": ["REQ-01", "REQ-11"],
+        }
+    )
+    resultado = rodar(tmp_path, cenarios=cenarios)
+    assert resultado.manifest["partidas"] == 6 * 8 + 6
+    assert {"REQ-03", "REQ-04", "REQ-11"} <= set(resultado.manifest["vereditos"])
+    cheios = [linha["cheios_no_planejamento_1"] for linha in resultado.linhas]
+    assert all(c is not None and len(c) == 4 for c in cheios)
+    texto = (resultado.pasta / "relatorio.md").read_text(encoding="utf-8")
+    for trecho in (
+        "## Matriz de estilos (MET-07 e REQ-04)",
+        "### estilos_teste (4 jogadores",
+        "### REQ-03",
+        "### REQ-04",
+        "### REQ-11",
+        "Dinâmica do replicador",
+        "| construtor_contra_heuristico | 8 |",  # as 4 rotações da célula numa linha só da descrição
+        "| construtor_contra_heuristico (rotações somadas) |",
+    ):
+        assert trecho in texto, trecho
+    # As células da matriz não se repetem na tabela geral de taxa de vitória por bot.
+    assert "| construtor_contra_heuristico | foco |" not in texto
+    # O relatório refeito do manifest e da tabela é igual ao original.
+    assert cli.main(["relatorio", str(resultado.pasta)]) == 0
+    assert (resultado.pasta / "relatorio.md").read_text(encoding="utf-8") == texto
+
+
+def test_celula_de_matriz_mal_formada() -> None:
+    base = celula("x", ALEATORIO, ALEATORIO, "a", "b")
+    with pytest.raises(ConfiguracaoInvalida):
+        ler_experimento(experimento(cenarios=[{**base, "celula": ["a", "a"]}]))
+    with pytest.raises(ConfiguracaoInvalida):
+        ler_experimento(experimento(cenarios=[{**base, "bots": [ALEATORIO] * 4}]))
+
+
+def test_experimento_da_fase_4_melhor_estilo_e_valido() -> None:
+    lido = carregar_experimento(RAIZ / "experimentos" / "fase4_melhor_estilo.yaml")
+    celulas = {(c.matriz, tuple(c.celula)) for c in lido.cenarios if c.celula}
+    assert len(celulas) == 2 * 6 * 5
+    por_celula: dict[tuple[str, ...], int] = {}
+    for c in lido.cenarios_expandidos():
+        if c.celula:
+            chave = (str(c.matriz), *c.celula)
+            por_celula[chave] = por_celula.get(chave, 0) + c.partidas
+    assert set(por_celula.values()) == {2000}
+    assert [c.nome for c in lido.cenarios if "REQ-03" in c.requisitos] == [
+        "n4_heuristico_contra_aleatorio",
+        "n5_heuristico_contra_aleatorio",
+    ]

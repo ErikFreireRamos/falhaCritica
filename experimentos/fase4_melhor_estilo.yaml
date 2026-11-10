@@ -1,0 +1,792 @@
+# Fase 4: o melhor estilo de jogo na v2.2.1 (decisões do autor em 2026-11-10).
+#
+# Pergunta do autor: qual é o melhor estilo de jogo, e o jogo está balanceado?
+# - MET-07: matriz 6 x 6 de estilos. Em cada célula, 1 bot do estilo da linha (o foco)
+#   joga contra N-1 bots do estilo da coluna, com rodízio de assentos: 2.000 partidas por
+#   célula (500 por rotação com 4 jogadores, 400 com 5). A diagonal não roda: na mesa de
+#   bots iguais o foco vence exatamente 1/N.
+# - REQ-04: nenhum estilo é a melhor resposta contra todas as mesas.
+# - REQ-03: o Heurístico contra N-1 Aleatórios vence acima de 1,5/N.
+# - REQ-11 e REQ-01: mesas só de Heurísticos.
+#
+# Todos com conhecimento experiente, blefe moderado e contestação pelo limiar, como nas
+# Fases 2 e 3. Os critérios foram fixados em configs/requisitos.yaml antes da execução.
+
+esquema: cf-experimento/1
+nome: fase4_melhor_estilo
+descricao: >
+  Melhor estilo de jogo na v2.2.1, com mesas de 4 e de 5. Matriz 6 x 6 de estilos (um
+  bot foco contra N-1 bots de outro estilo, com rodízio de assentos), análise de
+  estilo dominante e dinâmica do replicador; Heurístico contra Aleatórios; mesas só de
+  Heurísticos para os dois estilos de sistema e a equidade de assento.
+semente_mestre: 20261114
+duracao: configs/duracao.yaml
+registros_completos_um_a_cada: 1000
+
+cenarios:
+  # ---------------------------------------------------------------- 4 jogadores
+  - nome: n4_aleatorio_contra_construtor
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 500
+    rodizio: true
+    matriz: estilos_4_jogadores
+    celula: [aleatorio, construtor]
+    bots:
+      - {tipo: aleatorio, rotulo: foco, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: construtor, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: construtor, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: construtor, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+  - nome: n4_aleatorio_contra_heuristico
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 500
+    rodizio: true
+    matriz: estilos_4_jogadores
+    celula: [aleatorio, heuristico]
+    bots:
+      - {tipo: aleatorio, rotulo: foco, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+  - nome: n4_aleatorio_contra_cacador_lider
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 500
+    rodizio: true
+    matriz: estilos_4_jogadores
+    celula: [aleatorio, cacador_lider]
+    bots:
+      - {tipo: aleatorio, rotulo: foco, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+  - nome: n4_aleatorio_contra_cacador_mais_fraco
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 500
+    rodizio: true
+    matriz: estilos_4_jogadores
+    celula: [aleatorio, cacador_mais_fraco]
+    bots:
+      - {tipo: aleatorio, rotulo: foco, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+  - nome: n4_aleatorio_contra_cacador_aleatorio
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 500
+    rodizio: true
+    matriz: estilos_4_jogadores
+    celula: [aleatorio, cacador_aleatorio]
+    bots:
+      - {tipo: aleatorio, rotulo: foco, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+  - nome: n4_construtor_contra_aleatorio
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 500
+    rodizio: true
+    matriz: estilos_4_jogadores
+    celula: [construtor, aleatorio]
+    bots:
+      - {tipo: construtor, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: aleatorio, rotulo: outros, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: aleatorio, rotulo: outros, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: aleatorio, rotulo: outros, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+  - nome: n4_construtor_contra_heuristico
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 500
+    rodizio: true
+    matriz: estilos_4_jogadores
+    celula: [construtor, heuristico]
+    bots:
+      - {tipo: construtor, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+  - nome: n4_construtor_contra_cacador_lider
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 500
+    rodizio: true
+    matriz: estilos_4_jogadores
+    celula: [construtor, cacador_lider]
+    bots:
+      - {tipo: construtor, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+  - nome: n4_construtor_contra_cacador_mais_fraco
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 500
+    rodizio: true
+    matriz: estilos_4_jogadores
+    celula: [construtor, cacador_mais_fraco]
+    bots:
+      - {tipo: construtor, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+  - nome: n4_construtor_contra_cacador_aleatorio
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 500
+    rodizio: true
+    matriz: estilos_4_jogadores
+    celula: [construtor, cacador_aleatorio]
+    bots:
+      - {tipo: construtor, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+  - nome: n4_heuristico_contra_aleatorio
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 500
+    rodizio: true
+    matriz: estilos_4_jogadores
+    celula: [heuristico, aleatorio]
+    requisitos: [REQ-03]
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: aleatorio, rotulo: outros, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: aleatorio, rotulo: outros, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: aleatorio, rotulo: outros, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+  - nome: n4_heuristico_contra_construtor
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 500
+    rodizio: true
+    matriz: estilos_4_jogadores
+    celula: [heuristico, construtor]
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: construtor, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: construtor, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: construtor, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+  - nome: n4_heuristico_contra_cacador_lider
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 500
+    rodizio: true
+    matriz: estilos_4_jogadores
+    celula: [heuristico, cacador_lider]
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+  - nome: n4_heuristico_contra_cacador_mais_fraco
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 500
+    rodizio: true
+    matriz: estilos_4_jogadores
+    celula: [heuristico, cacador_mais_fraco]
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+  - nome: n4_heuristico_contra_cacador_aleatorio
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 500
+    rodizio: true
+    matriz: estilos_4_jogadores
+    celula: [heuristico, cacador_aleatorio]
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+  - nome: n4_cacador_lider_contra_aleatorio
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 500
+    rodizio: true
+    matriz: estilos_4_jogadores
+    celula: [cacador_lider, aleatorio]
+    bots:
+      - {tipo: cacador, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: aleatorio, rotulo: outros, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: aleatorio, rotulo: outros, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: aleatorio, rotulo: outros, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+  - nome: n4_cacador_lider_contra_construtor
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 500
+    rodizio: true
+    matriz: estilos_4_jogadores
+    celula: [cacador_lider, construtor]
+    bots:
+      - {tipo: cacador, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: construtor, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: construtor, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: construtor, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+  - nome: n4_cacador_lider_contra_heuristico
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 500
+    rodizio: true
+    matriz: estilos_4_jogadores
+    celula: [cacador_lider, heuristico]
+    bots:
+      - {tipo: cacador, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+  - nome: n4_cacador_lider_contra_cacador_mais_fraco
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 500
+    rodizio: true
+    matriz: estilos_4_jogadores
+    celula: [cacador_lider, cacador_mais_fraco]
+    bots:
+      - {tipo: cacador, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+  - nome: n4_cacador_lider_contra_cacador_aleatorio
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 500
+    rodizio: true
+    matriz: estilos_4_jogadores
+    celula: [cacador_lider, cacador_aleatorio]
+    bots:
+      - {tipo: cacador, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+  - nome: n4_cacador_mais_fraco_contra_aleatorio
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 500
+    rodizio: true
+    matriz: estilos_4_jogadores
+    celula: [cacador_mais_fraco, aleatorio]
+    bots:
+      - {tipo: cacador, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: aleatorio, rotulo: outros, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: aleatorio, rotulo: outros, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: aleatorio, rotulo: outros, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+  - nome: n4_cacador_mais_fraco_contra_construtor
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 500
+    rodizio: true
+    matriz: estilos_4_jogadores
+    celula: [cacador_mais_fraco, construtor]
+    bots:
+      - {tipo: cacador, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: construtor, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: construtor, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: construtor, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+  - nome: n4_cacador_mais_fraco_contra_heuristico
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 500
+    rodizio: true
+    matriz: estilos_4_jogadores
+    celula: [cacador_mais_fraco, heuristico]
+    bots:
+      - {tipo: cacador, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+  - nome: n4_cacador_mais_fraco_contra_cacador_lider
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 500
+    rodizio: true
+    matriz: estilos_4_jogadores
+    celula: [cacador_mais_fraco, cacador_lider]
+    bots:
+      - {tipo: cacador, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+  - nome: n4_cacador_mais_fraco_contra_cacador_aleatorio
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 500
+    rodizio: true
+    matriz: estilos_4_jogadores
+    celula: [cacador_mais_fraco, cacador_aleatorio]
+    bots:
+      - {tipo: cacador, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+  - nome: n4_cacador_aleatorio_contra_aleatorio
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 500
+    rodizio: true
+    matriz: estilos_4_jogadores
+    celula: [cacador_aleatorio, aleatorio]
+    bots:
+      - {tipo: cacador, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: aleatorio, rotulo: outros, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: aleatorio, rotulo: outros, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: aleatorio, rotulo: outros, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+  - nome: n4_cacador_aleatorio_contra_construtor
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 500
+    rodizio: true
+    matriz: estilos_4_jogadores
+    celula: [cacador_aleatorio, construtor]
+    bots:
+      - {tipo: cacador, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: construtor, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: construtor, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: construtor, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+  - nome: n4_cacador_aleatorio_contra_heuristico
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 500
+    rodizio: true
+    matriz: estilos_4_jogadores
+    celula: [cacador_aleatorio, heuristico]
+    bots:
+      - {tipo: cacador, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+  - nome: n4_cacador_aleatorio_contra_cacador_lider
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 500
+    rodizio: true
+    matriz: estilos_4_jogadores
+    celula: [cacador_aleatorio, cacador_lider]
+    bots:
+      - {tipo: cacador, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+  - nome: n4_cacador_aleatorio_contra_cacador_mais_fraco
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 500
+    rodizio: true
+    matriz: estilos_4_jogadores
+    celula: [cacador_aleatorio, cacador_mais_fraco]
+    bots:
+      - {tipo: cacador, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+  - nome: n4_todos_heuristicos
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 10000
+    requisitos: [REQ-01, REQ-11]
+    bots: [{tipo: heuristico, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}]
+  # ---------------------------------------------------------------- 5 jogadores
+  - nome: n5_aleatorio_contra_construtor
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 400
+    rodizio: true
+    matriz: estilos_5_jogadores
+    celula: [aleatorio, construtor]
+    bots:
+      - {tipo: aleatorio, rotulo: foco, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: construtor, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: construtor, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: construtor, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: construtor, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+  - nome: n5_aleatorio_contra_heuristico
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 400
+    rodizio: true
+    matriz: estilos_5_jogadores
+    celula: [aleatorio, heuristico]
+    bots:
+      - {tipo: aleatorio, rotulo: foco, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+  - nome: n5_aleatorio_contra_cacador_lider
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 400
+    rodizio: true
+    matriz: estilos_5_jogadores
+    celula: [aleatorio, cacador_lider]
+    bots:
+      - {tipo: aleatorio, rotulo: foco, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+  - nome: n5_aleatorio_contra_cacador_mais_fraco
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 400
+    rodizio: true
+    matriz: estilos_5_jogadores
+    celula: [aleatorio, cacador_mais_fraco]
+    bots:
+      - {tipo: aleatorio, rotulo: foco, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+  - nome: n5_aleatorio_contra_cacador_aleatorio
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 400
+    rodizio: true
+    matriz: estilos_5_jogadores
+    celula: [aleatorio, cacador_aleatorio]
+    bots:
+      - {tipo: aleatorio, rotulo: foco, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+  - nome: n5_construtor_contra_aleatorio
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 400
+    rodizio: true
+    matriz: estilos_5_jogadores
+    celula: [construtor, aleatorio]
+    bots:
+      - {tipo: construtor, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: aleatorio, rotulo: outros, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: aleatorio, rotulo: outros, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: aleatorio, rotulo: outros, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: aleatorio, rotulo: outros, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+  - nome: n5_construtor_contra_heuristico
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 400
+    rodizio: true
+    matriz: estilos_5_jogadores
+    celula: [construtor, heuristico]
+    bots:
+      - {tipo: construtor, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+  - nome: n5_construtor_contra_cacador_lider
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 400
+    rodizio: true
+    matriz: estilos_5_jogadores
+    celula: [construtor, cacador_lider]
+    bots:
+      - {tipo: construtor, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+  - nome: n5_construtor_contra_cacador_mais_fraco
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 400
+    rodizio: true
+    matriz: estilos_5_jogadores
+    celula: [construtor, cacador_mais_fraco]
+    bots:
+      - {tipo: construtor, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+  - nome: n5_construtor_contra_cacador_aleatorio
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 400
+    rodizio: true
+    matriz: estilos_5_jogadores
+    celula: [construtor, cacador_aleatorio]
+    bots:
+      - {tipo: construtor, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+  - nome: n5_heuristico_contra_aleatorio
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 400
+    rodizio: true
+    matriz: estilos_5_jogadores
+    celula: [heuristico, aleatorio]
+    requisitos: [REQ-03]
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: aleatorio, rotulo: outros, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: aleatorio, rotulo: outros, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: aleatorio, rotulo: outros, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: aleatorio, rotulo: outros, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+  - nome: n5_heuristico_contra_construtor
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 400
+    rodizio: true
+    matriz: estilos_5_jogadores
+    celula: [heuristico, construtor]
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: construtor, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: construtor, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: construtor, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: construtor, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+  - nome: n5_heuristico_contra_cacador_lider
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 400
+    rodizio: true
+    matriz: estilos_5_jogadores
+    celula: [heuristico, cacador_lider]
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+  - nome: n5_heuristico_contra_cacador_mais_fraco
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 400
+    rodizio: true
+    matriz: estilos_5_jogadores
+    celula: [heuristico, cacador_mais_fraco]
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+  - nome: n5_heuristico_contra_cacador_aleatorio
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 400
+    rodizio: true
+    matriz: estilos_5_jogadores
+    celula: [heuristico, cacador_aleatorio]
+    bots:
+      - {tipo: heuristico, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+  - nome: n5_cacador_lider_contra_aleatorio
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 400
+    rodizio: true
+    matriz: estilos_5_jogadores
+    celula: [cacador_lider, aleatorio]
+    bots:
+      - {tipo: cacador, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: aleatorio, rotulo: outros, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: aleatorio, rotulo: outros, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: aleatorio, rotulo: outros, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: aleatorio, rotulo: outros, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+  - nome: n5_cacador_lider_contra_construtor
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 400
+    rodizio: true
+    matriz: estilos_5_jogadores
+    celula: [cacador_lider, construtor]
+    bots:
+      - {tipo: cacador, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: construtor, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: construtor, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: construtor, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: construtor, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+  - nome: n5_cacador_lider_contra_heuristico
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 400
+    rodizio: true
+    matriz: estilos_5_jogadores
+    celula: [cacador_lider, heuristico]
+    bots:
+      - {tipo: cacador, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+  - nome: n5_cacador_lider_contra_cacador_mais_fraco
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 400
+    rodizio: true
+    matriz: estilos_5_jogadores
+    celula: [cacador_lider, cacador_mais_fraco]
+    bots:
+      - {tipo: cacador, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+  - nome: n5_cacador_lider_contra_cacador_aleatorio
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 400
+    rodizio: true
+    matriz: estilos_5_jogadores
+    celula: [cacador_lider, cacador_aleatorio]
+    bots:
+      - {tipo: cacador, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+  - nome: n5_cacador_mais_fraco_contra_aleatorio
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 400
+    rodizio: true
+    matriz: estilos_5_jogadores
+    celula: [cacador_mais_fraco, aleatorio]
+    bots:
+      - {tipo: cacador, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: aleatorio, rotulo: outros, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: aleatorio, rotulo: outros, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: aleatorio, rotulo: outros, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: aleatorio, rotulo: outros, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+  - nome: n5_cacador_mais_fraco_contra_construtor
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 400
+    rodizio: true
+    matriz: estilos_5_jogadores
+    celula: [cacador_mais_fraco, construtor]
+    bots:
+      - {tipo: cacador, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: construtor, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: construtor, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: construtor, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: construtor, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+  - nome: n5_cacador_mais_fraco_contra_heuristico
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 400
+    rodizio: true
+    matriz: estilos_5_jogadores
+    celula: [cacador_mais_fraco, heuristico]
+    bots:
+      - {tipo: cacador, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+  - nome: n5_cacador_mais_fraco_contra_cacador_lider
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 400
+    rodizio: true
+    matriz: estilos_5_jogadores
+    celula: [cacador_mais_fraco, cacador_lider]
+    bots:
+      - {tipo: cacador, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+  - nome: n5_cacador_mais_fraco_contra_cacador_aleatorio
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 400
+    rodizio: true
+    matriz: estilos_5_jogadores
+    celula: [cacador_mais_fraco, cacador_aleatorio]
+    bots:
+      - {tipo: cacador, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+  - nome: n5_cacador_aleatorio_contra_aleatorio
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 400
+    rodizio: true
+    matriz: estilos_5_jogadores
+    celula: [cacador_aleatorio, aleatorio]
+    bots:
+      - {tipo: cacador, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: aleatorio, rotulo: outros, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: aleatorio, rotulo: outros, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: aleatorio, rotulo: outros, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: aleatorio, rotulo: outros, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+  - nome: n5_cacador_aleatorio_contra_construtor
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 400
+    rodizio: true
+    matriz: estilos_5_jogadores
+    celula: [cacador_aleatorio, construtor]
+    bots:
+      - {tipo: cacador, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: construtor, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: construtor, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: construtor, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: construtor, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+  - nome: n5_cacador_aleatorio_contra_heuristico
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 400
+    rodizio: true
+    matriz: estilos_5_jogadores
+    celula: [cacador_aleatorio, heuristico]
+    bots:
+      - {tipo: cacador, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+  - nome: n5_cacador_aleatorio_contra_cacador_lider
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 400
+    rodizio: true
+    matriz: estilos_5_jogadores
+    celula: [cacador_aleatorio, cacador_lider]
+    bots:
+      - {tipo: cacador, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+  - nome: n5_cacador_aleatorio_contra_cacador_mais_fraco
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 400
+    rodizio: true
+    matriz: estilos_5_jogadores
+    celula: [cacador_aleatorio, cacador_mais_fraco]
+    bots:
+      - {tipo: cacador, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+  - nome: n5_todos_heuristicos
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 10000
+    requisitos: [REQ-01, REQ-11]
+    bots: [{tipo: heuristico, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}]

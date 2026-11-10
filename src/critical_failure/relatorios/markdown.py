@@ -8,8 +8,9 @@ from __future__ import annotations
 
 from typing import Any
 
+from critical_failure.metricas.analise import Analise
 from critical_failure.metricas.estatistica import pior
-from critical_failure.metricas.requisitos import Medida
+from critical_failure.metricas.matrizes import MatrizDeEstilos
 
 
 def _num(valor: float, casas: int = 3) -> str:
@@ -59,13 +60,65 @@ def _matriz_de_alvos(manifest: dict[str, Any], estilos: list[dict[str, Any]]) ->
     return saida
 
 
-def renderizar(
-    manifest: dict[str, Any],
-    medidas: list[Medida],
-    descricoes: list[dict[str, Any]],
-    estilos: list[dict[str, Any]] | None = None,
-    desequilibrio: list[dict[str, Any]] | None = None,
-) -> str:
+def _matrizes_de_estilos(matrizes: list[MatrizDeEstilos]) -> list[str]:
+    """MET-07 e REQ-04: a matriz de cada tamanho de mesa, as melhores respostas e a dinâmica do replicador."""
+    if not matrizes:
+        return []
+    saida = [
+        "## Matriz de estilos (MET-07 e REQ-04)",
+        "",
+        "Taxa de vitória de 1 bot do estilo da linha (o foco) numa mesa em que os outros N-1 são do estilo da "
+        "coluna, com rodízio de assentos. Na diagonal o foco joga contra bots iguais a ele e vence exatamente 1/N; "
+        "essas mesas não são rodadas. Em negrito, as melhores respostas a cada mesa: os estilos que nenhum outro "
+        "supera com clareza (intervalo de 95% da diferença inteiro acima da diferença mínima do REQ-04).",
+        "",
+    ]
+    for matriz in matrizes:
+        saida += [
+            f"### {matriz.nome} ({matriz.jogadores} jogadores, referência 1/N = {_num(1 / matriz.jogadores)})",
+            "",
+            "| Foco \\ Mesa | " + " | ".join(matriz.estilos) + " |",
+            "|---|" + "---|" * len(matriz.estilos),
+        ]
+        for foco in matriz.estilos:
+            celulas = []
+            for mesa in matriz.estilos:
+                celula = matriz.celulas.get((foco, mesa))
+                if celula is None:
+                    texto = "não rodada"
+                elif celula.intervalo is None:
+                    texto = f"{_num(celula.taxa)} (1/N)"
+                else:
+                    texto = f"{_num(celula.taxa)} ({_faixa(celula.intervalo)})"
+                if foco in matriz.melhores_respostas.get(mesa, ()):
+                    texto = f"**{texto}**"
+                celulas.append(texto)
+            saida.append(f"| {foco} | " + " | ".join(celulas) + " |")
+        if not matriz.completa:
+            saida += ["", "Matriz incompleta: sem análise de dominância nem dinâmica do replicador.", ""]
+            continue
+        saida += ["", "| Estilo | Situação (REQ-04) | Por quê |", "|---|---|---|"]
+        saida += [f"| {e} | {matriz.situacao[e]} | {matriz.motivo[e]} |" for e in matriz.estilos]
+        mistura = ", ".join(
+            f"{estilo} {_num(proporcao)}"
+            for estilo, proporcao in sorted(matriz.replicador.items(), key=lambda item: (-item[1], item[0]))
+            if proporcao >= 0.0005
+        )
+        parada = "parou de mudar" if matriz.replicador_convergiu else "ainda mudava no limite de passos"
+        saida += [
+            "",
+            "Dinâmica do replicador (sem veredito; aproximação linear, a partir da população uniforme): "
+            f"{mistura} ({parada}).",
+            "",
+        ]
+    return saida
+
+
+def renderizar(manifest: dict[str, Any], analise: Analise) -> str:
+    medidas = analise.medidas
+    descricoes = analise.descricoes
+    estilos = analise.estilos
+    desequilibrio = analise.desequilibrio
     experimento = manifest["experimento"]["conteudo"]
     git = manifest["git"]
     commit = (git["commit"] or "sem git")[:7]
@@ -117,7 +170,7 @@ def renderizar(
         linhas += [
             "## Taxa de vitória por bot (MET-07)",
             "",
-            "Sem veredito: a métrica aguarda a confirmação do autor. Cada assento conta 1 na vitória, 1/k numa "
+            "Sem veredito. Cada assento conta 1 na vitória, 1/k numa "
             "vitória dividida por k e 0 na derrota. Quem não leva vantagem nenhuma fica perto da referência 1/N. "
             "As rotações do rodízio estão somadas.",
             "",
@@ -134,6 +187,7 @@ def renderizar(
     matriz = _matriz_de_alvos(manifest, estilos or [])
     if matriz:
         linhas += matriz
+    linhas += _matrizes_de_estilos(analise.matrizes)
 
     if desequilibrio:
         linhas += [
@@ -141,7 +195,9 @@ def renderizar(
             "",
             "Sem veredito. Desequilibrada: o vencedor tem pelo menos o fator vezes a média dos demais. "
             "O fator principal é o fixado em `configs/requisitos.yaml` antes da execução; os outros são "
-            "análise de sensibilidade. Referência do artigo: 4 de 6 partidas (0,667; IC 95% de 0,300 a 0,903).",
+            "análise de sensibilidade. Referência do artigo: 4 de 6 partidas (0,667; IC 95% de 0,300 a 0,903). "
+            "Na v2 é só descrição: o placar em fichas não está na mesma escala dos pontos da v1, e a comparação "
+            "entre as versões é feita pelo REQ-02 (autor, 2026-11-10).",
             "",
             "| Grupo | Família | Jogadores | Partidas | Fator | Desequilibradas | IC 95% |",
             "|---|---|---|---|---|---|---|",
@@ -162,19 +218,23 @@ def renderizar(
         "",
         "| Cenário | Partidas | Falhas | Testes por partida | Contestações por partida | Vitórias divididas | "
         "Partidas com reembaralhamento | Partidas em que faltou carta | Vantagem do líder | Placar do vencedor | "
-        "Placar médio | Duração p10 / mediana / p90 (min) |",
-        "|---|---|---|---|---|---|---|---|---|---|---|---|",
+        "Placar médio | Sistema cheio no 1º Planejamento | Duração p10 / mediana / p90 (min) |",
+        "|---|---|---|---|---|---|---|---|---|---|---|---|---|",
     ]
     for d in descricoes:
         if "testes_por_partida" not in d:
-            linhas.append(f"| {d['cenario']} | {d['partidas']} | {d['falhas']} | — | — | — | — | — | — | — | — | — |")
+            linhas.append(
+                f"| {d['cenario']} | {d['partidas']} | {d['falhas']} | — | — | — | — | — | — | — | — | — | — |"
+            )
             continue
+        cheios = d.get("sistemas_cheios_no_planejamento_1")
         linhas.append(
             f"| {d['cenario']} | {d['partidas']} | {d['falhas']} | {_num(d['testes_por_partida'], 1)} | "
             f"{_num(d['contestacoes_por_partida'], 1)} | {_pct(d['vitorias_divididas'])} | "
             f"{_pct(d['partidas_com_reembaralhamento'])} | {_pct(d['partidas_com_compra_impossivel'])} | "
             f"{'—' if d['vantagem_do_lider'] is None else _num(d['vantagem_do_lider'])} | "
             f"{_num(d['fichas_do_vencedor'], 1)} | {_num(d['fichas_medias'], 1)} | "
+            f"{'—' if cheios is None else _pct(cheios)} | "
             + (
                 "— |"
                 if d["duracao_mediana"] is None
@@ -188,11 +248,19 @@ def renderizar(
         "| Cenário | Regras | Jogadores | Bots | Hash da configuração |",
         "|---|---|---|---|---|",
     ]
+    ja_listados: set[str] = set()
     for cenario in manifest["cenarios"]:
+        nome = cenario["nome"]
+        if cenario.get("matriz"):  # as rotações de uma célula de matriz aparecem numa linha só
+            nome = cenario["grupo"]
+            if nome in ja_listados:
+                continue
+            ja_listados.add(nome)
+            nome = f"{nome} (rotações somadas)"
         bots = sorted({f"{bot['tipo']} {bot['parametros']}" for bot in cenario["bots"]})
         mudancas = f" com {cenario['mudancas']}" if cenario["mudancas"] else ""
         linhas.append(
-            f"| {cenario['nome']} | {cenario['versao']}{mudancas} | {cenario['jogadores']} | {'; '.join(bots)} | "
+            f"| {nome} | {cenario['versao']}{mudancas} | {cenario['jogadores']} | {'; '.join(bots)} | "
             f"`{cenario['config_hash'][:19]}` |"
         )
     linhas += [

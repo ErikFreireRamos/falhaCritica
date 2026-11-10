@@ -57,12 +57,25 @@ class Cenario(_Base):
     comparar_com: str | None = None
     """REQ-02: o grupo de referência (a v1) com que este grupo é comparado."""
     celula: list[str] | None = None
-    """MET-02: linha e coluna deste grupo na matriz de políticas de alvo (política do foco, política dos outros)."""
+    """Linha e coluna deste grupo numa matriz de ganhos: (estilo do bot "foco", estilo dos outros N-1)."""
+    matriz: str | None = None
+    """Nome da matriz de estilos (MET-07, REQ-04) a que a célula pertence. Sem nome, a célula é da
+    matriz de políticas de alvo da v1 (MET-02), como no Experimento 1 da Fase 3."""
 
     @model_validator(mode="after")
     def _coerencia(self) -> Cenario:
         if not NOME_VALIDO.fullmatch(self.nome):
             raise ValueError(f"nome de cenário inválido: {self.nome!r} (use letras minúsculas, números e _)")
+        if self.celula is not None and len(self.celula) != 2:
+            raise ValueError(f"cenário {self.nome}: a célula tem 2 nomes (estilo do foco, estilo dos outros)")
+        if self.matriz is not None:
+            if self.celula is None or self.celula[0] == self.celula[1]:
+                raise ValueError(
+                    f"cenário {self.nome}: célula de matriz precisa de dois estilos diferentes "
+                    "(na mesa de bots iguais, o foco vence exatamente 1/N e não é preciso rodar)"
+                )
+            if sum(1 for bot in self.bots if bot.rotulo == "foco") != 1:
+                raise ValueError(f"cenário {self.nome}: célula de matriz precisa de exatamente 1 bot com rótulo foco")
         if self.partidas < 1:
             raise ValueError("partidas precisa ser pelo menos 1")
         if len(self.bots) not in (1, self.jogadores):

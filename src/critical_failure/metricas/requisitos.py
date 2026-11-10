@@ -32,8 +32,10 @@ FLUXO_DO_BOOTSTRAP = 900_000
 
 EQUIDADE_DE_ASSENTO = "REQ-01"
 ANTI_BOLA_DE_NEVE = "REQ-02"
+HABILIDADE = "REQ-03"
 DURACAO = "REQ-08"
 ROBUSTEZ = "REQ-09"
+OS_DOIS_ESTILOS = "REQ-11"
 DESEQUILIBRIO = "MET-01"
 ARTIGO_DESEQUILIBRADAS = (4, 6)
 """Artigo, seção 4.4: 4 das 6 partidas foram vencidas por pontuação bem maior que a dos outros."""
@@ -61,7 +63,7 @@ def carregar_requisitos(caminho: Path) -> dict[str, dict[str, Any]]:
         raise ConfiguracaoInvalida(f"arquivo de requisitos inválido ({caminho}): {erro!r}") from erro
 
 
-def _criterio(requisitos: dict[str, dict[str, Any]], ident: str) -> dict[str, Any] | None:
+def criterio_confirmado(requisitos: dict[str, dict[str, Any]], ident: str) -> dict[str, Any] | None:
     """O critério estruturado do requisito, se o autor já o confirmou."""
     bloco = requisitos.get(ident)
     if bloco is None or bloco.get("estado") != "confirmado" or not isinstance(bloco.get("criterio"), dict):
@@ -70,7 +72,8 @@ def _criterio(requisitos: dict[str, dict[str, Any]], ident: str) -> dict[str, An
     return criterio
 
 
-def _rng(semente: int, *chave: int) -> np.random.Generator:
+def rng_da_analise(semente: int, *chave: int) -> np.random.Generator:
+    """Gerador do bootstrap, derivado da semente do experimento e de uma chave própria de cada medida."""
     sequencia = np.random.SeedSequence(entropy=semente, spawn_key=(FLUXO_DO_BOOTSTRAP, *chave))
     return np.random.Generator(np.random.PCG64(sequencia))
 
@@ -88,7 +91,7 @@ def _equidade_de_assento(
             [1 / len(linha["vencedores"]) if posicao in linha["vencedores"] else 0.0 for linha in linhas],
             dtype=np.float64,
         )
-        intervalo = intervalo_por_bootstrap(fatias, "media", _rng(semente, indice, posicao))
+        intervalo = intervalo_por_bootstrap(fatias, "media", rng_da_analise(semente, indice, posicao))
         medidas.append(
             Medida(
                 requisito=EQUIDADE_DE_ASSENTO,
@@ -110,7 +113,7 @@ def _duracao(
     """REQ-08: mediana da duração estimada pelo modelo MOD-05, em minutos."""
     minutos = np.array([linha["duracao_s"] / 60 for linha in linhas], dtype=np.float64)
     zona = (float(criterio["minimo"]), float(criterio["maximo"]))
-    intervalo = intervalo_por_bootstrap(minutos, "mediana", _rng(semente, indice, cenario.jogadores))
+    intervalo = intervalo_por_bootstrap(minutos, "mediana", rng_da_analise(semente, indice, cenario.jogadores))
     return [
         Medida(
             requisito=DURACAO,
@@ -159,17 +162,23 @@ def avaliar(
         if not validas:
             continue
         if EQUIDADE_DE_ASSENTO in cenario.requisitos:
-            criterio = _criterio(requisitos, EQUIDADE_DE_ASSENTO)
+            criterio = criterio_confirmado(requisitos, EQUIDADE_DE_ASSENTO)
             if criterio is not None and cenario.bots_identicos():
                 medidas += _equidade_de_assento(cenario, indice, validas, criterio, experimento.semente_mestre)
         if DURACAO in cenario.requisitos:
-            criterio = _criterio(requisitos, DURACAO)
+            criterio = criterio_confirmado(requisitos, DURACAO)
             if criterio is not None:
                 medidas += _duracao(cenario, indice, validas, criterio, experimento.semente_mestre)
-    criterio = _criterio(requisitos, ANTI_BOLA_DE_NEVE)
+    criterio = criterio_confirmado(requisitos, ANTI_BOLA_DE_NEVE)
     if criterio is not None:
         medidas += _anti_bola_de_neve(linhas, experimento, criterio)
-    criterio = _criterio(requisitos, ROBUSTEZ)
+    criterio = criterio_confirmado(requisitos, HABILIDADE)
+    if criterio is not None:
+        medidas += _habilidade(linhas, experimento, criterio)
+    criterio = criterio_confirmado(requisitos, OS_DOIS_ESTILOS)
+    if criterio is not None:
+        medidas += _os_dois_estilos(linhas, experimento, criterio)
+    criterio = criterio_confirmado(requisitos, ROBUSTEZ)
     if criterio is not None:
         medidas.append(_robustez(linhas, criterio))
     return medidas
@@ -221,7 +230,7 @@ def _anti_bola_de_neve(
         antigo = amostra_do_lider(_validas_do_grupo(linhas, por_grupo[base]))
         if novo.size == 0 or antigo.size == 0:
             continue
-        rng = _rng(experimento.semente_mestre, 20_000 + indice)
+        rng = rng_da_analise(experimento.semente_mestre, 20_000 + indice)
         vantagem_antiga = antigo - 1 / n_base
         vantagem_nova = novo - 1 / n_novo
         intervalo = intervalo_da_diferenca(vantagem_antiga, vantagem_nova, rng)
@@ -247,6 +256,93 @@ def _anti_bola_de_neve(
     return medidas
 
 
+def amostra_do_foco(linhas: list[dict[str, Any]], cenarios: list[Cenario]) -> np.ndarray[Any, np.dtype[np.float64]]:
+    """Para cada partida das rotações: 1 se o bot "foco" venceu, 1/k numa vitória dividida por k, 0 se perdeu."""
+    valores: list[float] = []
+    for cenario in cenarios:
+        assento = next(i for i, bot in enumerate(cenario.bots_por_assento()) if bot.rotulo == "foco")
+        for linha in linhas:
+            if linha["cenario"] == cenario.nome and linha["erro"] is None:
+                vencedores = linha["vencedores"]
+                valores.append(1 / len(vencedores) if assento in vencedores else 0.0)
+    return np.array(valores, dtype=np.float64)
+
+
+def _habilidade(linhas: list[dict[str, Any]], experimento: Experimento, criterio: dict[str, Any]) -> list[Medida]:
+    """REQ-03: a taxa de vitória do bot foco (o Heurístico) fica acima de ``fator_minimo``/N."""
+    medidas: list[Medida] = []
+    for indice, (grupo, cenarios) in enumerate(grupos(experimento).items()):
+        if HABILIDADE not in cenarios[0].requisitos:
+            continue
+        if not any(bot.rotulo == "foco" for bot in cenarios[0].bots):
+            raise ConfiguracaoInvalida(f"o cenário {grupo} mede o REQ-03, mas não tem bot com rótulo foco")
+        amostra = amostra_do_foco(linhas, cenarios)
+        if amostra.size == 0:
+            continue
+        zona = (float(criterio["fator_minimo"]) / cenarios[0].jogadores, 1.0)
+        intervalo = intervalo_por_bootstrap(
+            amostra, "media", rng_da_analise(experimento.semente_mestre, 30_000 + indice)
+        )
+        medidas.append(
+            Medida(
+                requisito=HABILIDADE,
+                cenario=grupo,
+                o_que="taxa de vitória do bot foco",
+                valor=float(amostra.mean()),
+                intervalo=intervalo,
+                zona=zona,
+                veredito=veredito(intervalo, zona),
+                partidas=int(amostra.size),
+                nota=f"piso {float(criterio['fator_minimo']):g}/N; o teto ficou de fora (autor, 2026-11-10)",
+            )
+        )
+    return medidas
+
+
+def fracao_de_sistemas_cheios(linha: dict[str, Any]) -> float | None:
+    """REQ-11: fração dos jogadores da partida com o sistema no teto ao fim do Planejamento do ciclo 1."""
+    cheios = linha.get("cheios_no_planejamento_1")
+    if not cheios:
+        return None
+    return sum(1 for cheio in cheios if cheio) / len(cheios)
+
+
+def _os_dois_estilos(linhas: list[dict[str, Any]], experimento: Experimento, criterio: dict[str, Any]) -> list[Medida]:
+    """REQ-11: a fração de jogadores com o sistema cheio ao fim do 1º Planejamento fica dentro da zona.
+
+    A média é sobre as partidas (cada partida contribui com a sua fração), e o
+    intervalo vem do bootstrap sobre as partidas, porque os jogadores da mesma
+    partida não são independentes.
+    """
+    medidas: list[Medida] = []
+    for indice, (grupo, cenarios) in enumerate(grupos(experimento).items()):
+        if OS_DOIS_ESTILOS not in cenarios[0].requisitos:
+            continue
+        fracoes = [
+            f for linha in _validas_do_grupo(linhas, cenarios) if (f := fracao_de_sistemas_cheios(linha)) is not None
+        ]
+        if not fracoes:
+            continue
+        amostra = np.array(fracoes, dtype=np.float64)
+        zona = (float(criterio["minimo"]), float(criterio["maximo"]))
+        intervalo = intervalo_por_bootstrap(
+            amostra, "media", rng_da_analise(experimento.semente_mestre, 40_000 + indice)
+        )
+        medidas.append(
+            Medida(
+                requisito=OS_DOIS_ESTILOS,
+                cenario=grupo,
+                o_que="fração de jogadores com o sistema cheio ao fim do 1º Planejamento",
+                valor=float(amostra.mean()),
+                intervalo=intervalo,
+                zona=zona,
+                veredito=veredito(intervalo, zona),
+                partidas=int(amostra.size),
+            )
+        )
+    return medidas
+
+
 def desequilibrio(
     linhas: list[dict[str, Any]], experimento: Experimento, requisitos: dict[str, dict[str, Any]]
 ) -> list[dict[str, Any]]:
@@ -254,7 +350,7 @@ def desequilibrio(
 
     Sem veredito: a métrica é comparada com as 4 de 6 do artigo só como checagem de plausibilidade.
     """
-    criterio = _criterio(requisitos, DESEQUILIBRIO)
+    criterio = criterio_confirmado(requisitos, DESEQUILIBRIO)
     if criterio is None:
         return []
     fatores = [float(criterio["fator"]), *(float(f) for f in criterio.get("sensibilidade", []))]
@@ -285,22 +381,34 @@ def desequilibrio(
     return resultado
 
 
+def _unidades_de_descricao(experimento: Experimento) -> dict[str, list[Cenario]]:
+    """Cada cenário vira uma linha da descrição; as rotações de uma célula de matriz são somadas numa só."""
+    unidades: dict[str, list[Cenario]] = {}
+    for cenario in experimento.cenarios_expandidos():
+        chave = (cenario.grupo or cenario.nome) if cenario.matriz is not None else cenario.nome
+        unidades.setdefault(chave, []).append(cenario)
+    return unidades
+
+
 def descrever(linhas: list[dict[str, Any]], experimento: Experimento) -> list[dict[str, Any]]:
     """Números descritivos por cenário. Não têm critério de aceite."""
     descricoes: list[dict[str, Any]] = []
-    for cenario in experimento.cenarios_expandidos():
-        do_cenario = [linha for linha in linhas if linha["cenario"] == cenario.nome]
+    for nome, cenarios in _unidades_de_descricao(experimento).items():
+        nomes = {cenario.nome for cenario in cenarios}
+        do_cenario = [linha for linha in linhas if linha["cenario"] in nomes]
         validas = [linha for linha in do_cenario if linha["erro"] is None]
+        cenario = cenarios[0]
         if not validas:
-            descricoes.append({"cenario": cenario.nome, "partidas": len(do_cenario), "falhas": len(do_cenario)})
+            descricoes.append({"cenario": nome, "partidas": len(do_cenario), "falhas": len(do_cenario)})
             continue
+        cheios = [f for linha in validas if (f := fracao_de_sistemas_cheios(linha)) is not None]
         p10 = p50 = p90 = None
         if all(linha["duracao_s"] is not None for linha in validas):
             minutos = np.array([linha["duracao_s"] / 60 for linha in validas])
             p10, p50, p90 = (float(x) for x in np.quantile(minutos, [0.1, 0.5, 0.9]))
         descricoes.append(
             {
-                "cenario": cenario.nome,
+                "cenario": nome,
                 "partidas": len(do_cenario),
                 "falhas": len(do_cenario) - len(validas),
                 "testes_por_partida": float(np.mean([linha["testes"] for linha in validas])),
@@ -320,6 +428,7 @@ def descrever(linhas: list[dict[str, Any]], experimento: Experimento) -> list[di
                 "duracao_p10": p10,
                 "duracao_mediana": p50,
                 "duracao_p90": p90,
+                "sistemas_cheios_no_planejamento_1": float(np.mean(cheios)) if cheios else None,
             }
         )
     return descricoes
@@ -331,11 +440,12 @@ def vitorias_por_bot(linhas: list[dict[str, Any]], experimento: Experimento) -> 
     Para cada assento ocupado por um bot conta 1 se ele venceu sozinho, 1/k numa
     vitória dividida por k (AMB-14) e 0 se perdeu; a taxa é a média disso. A
     referência de quem não leva vantagem nenhuma é 1/N. As rotações de um rodízio
-    são somadas no mesmo grupo. Sem veredito: a métrica aguarda o autor.
+    são somadas no mesmo grupo. Sem veredito. As células das matrizes de estilos
+    ficam de fora: elas têm uma seção própria no relatório.
     """
     grupos: dict[str, list[Cenario]] = {}
     for cenario in experimento.cenarios_expandidos():
-        if not cenario.bots_identicos():
+        if not cenario.bots_identicos() and cenario.matriz is None:
             grupos.setdefault(cenario.grupo or cenario.nome, []).append(cenario)
     resultado: list[dict[str, Any]] = []
     for indice, (grupo, cenarios) in enumerate(grupos.items()):
@@ -354,7 +464,7 @@ def vitorias_por_bot(linhas: list[dict[str, Any]], experimento: Experimento) -> 
             intervalo = intervalo_por_bootstrap(
                 amostra,
                 "media",
-                _rng(experimento.semente_mestre, len(experimento.cenarios_expandidos()) + indice, ordem),
+                rng_da_analise(experimento.semente_mestre, len(experimento.cenarios_expandidos()) + indice, ordem),
             )
             resultado.append(
                 {

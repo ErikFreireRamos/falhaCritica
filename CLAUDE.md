@@ -52,7 +52,7 @@ Não invente regras. Ponto ambíguo ou omisso vai para `docs/AMBIGUIDADES.md` e 
 | 1b | Executor mínimo, manifest, Parquet, primeiras métricas com intervalo de confiança | resumo |
 | 2 | Bots e perfis (as variantes foram para a Fase 4; o assento humano saiu do escopo) | resumo |
 | 3 | v1 e Experimentos 1 e 2 | sim |
-| 4 | Variantes estruturais, experimentos 3 a 6, melhor estilo e equilíbrio do blefe, relatórios | resumo |
+| 4 | Melhor estilo; depois equilíbrio do blefe (exp. 5), variantes do playtest (exp. 6), ablação (exp. 3) e sensibilidade (exp. 4); relatórios | resumo |
 | 5 | Metamórficos, fuzzing, mutação, suíte noturna | resumo |
 
 O estado atual está na última entrada do diário.
@@ -98,7 +98,8 @@ src/critical_failure/
   auditoria/     registro JSONL, replay, narração (v2 e v1) e Folha (só v2)
   duracao.py     modelo de duração da partida (MOD-05), tempos em configs/duracao.yaml
   experimentos/  arquivo de experimento e executor paralelo (Parquet, registros, manifest)
-  metricas/      intervalos de confiança, veredito e medida dos requisitos
+  metricas/      intervalos de confiança, veredito, medida dos requisitos, matriz de estilos
+                 (estilo dominante e dinâmica do replicador) e a análise completa de uma execução
   relatorios/    relatório Markdown de cada execução
   cli.py         comando cf
 configs/         regras por versão (v2.2, v2.2.1, v1), catálogo gerado, requisitos, modelo de duração, perfis

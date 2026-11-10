@@ -62,6 +62,7 @@ ESQUEMA_DA_TABELA = pa.schema(
         ("compras_impossiveis", pa.int16()),
         ("reposicoes_impossiveis", pa.int16()),
         ("placar_no_corte", pa.list_(pa.int16())),
+        ("cheios_no_planejamento_1", pa.list_(pa.bool_())),
         ("erro", pa.string()),
         ("aviso", pa.string()),
     ]
@@ -113,6 +114,7 @@ def _linha_de_falha(lote: Lote, partida: int, erro: Exception) -> dict[str, Any]
         "compras_impossiveis": None,
         "reposicoes_impossiveis": None,
         "placar_no_corte": None,
+        "cheios_no_planejamento_1": None,
         "erro": f"{type(erro).__name__}: {erro}",
         "aviso": None,
     }
@@ -181,6 +183,11 @@ def rodar_lote(lote: Lote) -> list[dict[str, Any]]:
                 "compras_impossiveis": resultado.vezes("compra_impossivel"),
                 "reposicoes_impossiveis": resultado.vezes("reposicao_impossivel"),
                 "placar_no_corte": list(resultado.placar_no_corte) if resultado.placar_no_corte else None,
+                "cheios_no_planejamento_1": (
+                    list(resultado.sistemas_cheios_no_planejamento)
+                    if resultado.sistemas_cheios_no_planejamento is not None
+                    else None
+                ),
                 "erro": None,
                 "aviso": None,
             }
@@ -230,6 +237,7 @@ def montar_lotes(experimento: Experimento, pasta_dos_registros: Path) -> tuple[l
                 "grupo": cenario.grupo or cenario.nome,
                 "comparar_com": cenario.comparar_com,
                 "celula": cenario.celula,
+                "matriz": cenario.matriz,
                 "requisitos": cenario.requisitos,
             }
         )
@@ -262,13 +270,8 @@ def executar(
     comando: str = "",
 ) -> Execucao:
     """Roda o experimento inteiro e grava tabela, registros, manifest e relatório."""
-    from critical_failure.metricas.requisitos import (
-        avaliar,
-        carregar_requisitos,
-        descrever,
-        desequilibrio,
-        vitorias_por_bot,
-    )
+    from critical_failure.metricas.analise import analisar
+    from critical_failure.metricas.requisitos import carregar_requisitos
     from critical_failure.relatorios.markdown import renderizar
 
     git = registro.info_git()
@@ -295,7 +298,8 @@ def executar(
     pq.write_table(pa.Table.from_pylist(linhas, schema=ESQUEMA_DA_TABELA), caminho_da_tabela, compression="zstd")
 
     requisitos = carregar_requisitos(RAIZ / experimento.requisitos_arquivo)
-    medidas = avaliar(linhas, experimento, requisitos)
+    analise = analisar(linhas, experimento, requisitos)
+    medidas = analise.medidas
     falhas = sum(1 for linha in linhas if linha["erro"] is not None)
     registros = sorted(p.relative_to(pasta).as_posix() for p in (pasta / "registros").rglob("*.jsonl"))
     manifest: dict[str, Any] = {
@@ -335,13 +339,7 @@ def executar(
             for requisito in sorted({m.requisito for m in medidas})
         },
     }
-    relatorio = renderizar(
-        manifest,
-        medidas,
-        descrever(linhas, experimento),
-        vitorias_por_bot(linhas, experimento),
-        desequilibrio(linhas, experimento, requisitos),
-    )
+    relatorio = renderizar(manifest, analise)
     (pasta / "relatorio.md").write_text(relatorio, encoding="utf-8", newline="\n")
     manifest["arquivos"] = {
         "partidas.parquet": _hash_do_arquivo(caminho_da_tabela),

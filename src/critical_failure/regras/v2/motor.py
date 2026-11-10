@@ -1021,6 +1021,13 @@ class MotorV2:
             return self.placar(evento.estado)
         return None
 
+    def sistemas_cheios_no_planejamento(self, evento: Evento) -> tuple[bool, ...] | None:
+        """REQ-11: ao fim do Planejamento do ciclo 1 (início da Homologação), quem está com o sistema no teto."""
+        if evento.tipo == "inicio_da_fase" and evento.publico.get("fase") == E.HOMOLOGACAO and evento.ciclo == 1:
+            teto = self.regras.sistema.teto.valor
+            return tuple(len(jogador.sistema) >= teto for jogador in evento.estado.jogadores)
+        return None
+
     _MANIPULADORES: dict[str, Callable[[MotorV2, _Ctx, int, Acao], None]] = {
         A.COMPRAR: _comprar,
         A.COLOCAR: _colocar,

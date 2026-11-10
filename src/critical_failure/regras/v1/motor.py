@@ -476,6 +476,10 @@ class MotorV1:
             return tuple(len(jogador.sistema) for jogador in evento.estado.jogadores)
         return None
 
+    def sistemas_cheios_no_planejamento(self, evento: EventoV1) -> tuple[bool, ...] | None:
+        """REQ-11 é da v2: a v1 não tem Planejamento nem teto no sistema."""
+        return None
+
     _MANIPULADORES: dict[str, Callable[[MotorV1, _Ctx, int, AcaoV1], None]] = {
         E.MONTAR: _montar,
         E.TESTAR: _testar,

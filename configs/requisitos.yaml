@@ -63,23 +63,36 @@ requisitos:
     tipo: comportamento
     fonte: "prompt 3.6"
     metrica: >
-      Taxa de vitória de 1 bot Heurístico numa mesa com N-1 bots Aleatórios,
-      com o mesmo perfil de conhecimento para todos.
-    zona: "entre 1.5/N e 0.85"
-    estado: aguardando_decisao
+      Taxa de vitória de 1 bot Heurístico (o foco) numa mesa com N-1 bots
+      Aleatórios, com o mesmo perfil de conhecimento para todos, com rodízio de
+      assentos. Só o piso tem critério (autor, 2026-11-10): o Aleatório quase
+      nunca vence na v2.2.1, então um teto diria mais sobre ele do que sobre o
+      jogo. A parte "sem ganhar sempre" fica para quando houver um adversário
+      mais fraco que jogue de verdade.
+    zona: "acima de 1.5/N"
+    criterio: {fator_minimo: 1.5}
+    estado: confirmado  # autor, 2026-11-10
 
   - id: REQ-04
     nome: Sem estratégia dominante
     tipo: comportamento
     fonte: "prompt 3.6; PDF 2.2 p. 34 (Contestação)"
     metrica: >
-      Matriz de ganhos entre perfis puros de blefe: taxa de vitória de 1
-      jogador do perfil i numa mesa em que os outros N-1 são do perfil j.
-      Um perfil é dominante se vence acima de 1/N + 0.02 contra todas as
-      mesas, inclusive a do próprio perfil. Complemento: equilíbrio da
-      dinâmica do replicador sobre a matriz.
+      Matriz de ganhos: taxa de vitória de 1 jogador do perfil i (o foco) numa
+      mesa em que os outros N-1 são do perfil j, com rodízio de assentos. Vale
+      para a matriz de estilos (MET-07) e para a de perfis puros de blefe. Na
+      mesa do próprio perfil, o foco vence exatamente 1/N. Um perfil é
+      dominante se é a melhor resposta contra todas as mesas, inclusive a do
+      próprio perfil: em cada coluna, a diferença para cada outro perfil tem o
+      intervalo de confiança inteiro acima da diferença mínima. Passa se nenhum
+      perfil é dominante; falha se algum é; inconclusivo se algum não pode ser
+      nem afirmado nem descartado. Complemento sem veredito: a dinâmica do
+      replicador sobre a matriz, numa aproximação linear. Redação corrigida
+      pelo autor em 2026-11-10: a anterior ("acima de 1/N + 0.02 contra todas
+      as mesas, inclusive a do próprio perfil") nunca acusaria dominância.
     zona: "nenhum perfil dominante"
-    estado: aguardando_decisao
+    criterio: {diferenca_minima: 0.0}
+    estado: confirmado  # autor, 2026-11-10
 
   - id: REQ-05
     nome: Blefes bem-sucedidos
@@ -156,10 +169,12 @@ requisitos:
     tipo: comportamento
     fonte: "PDF 2.2 p. 34 (Colocação livre, teto 5, sem troca)"
     metrica: >
-      Fração de jogadores com o sistema cheio ao fim do Planejamento do
-      ciclo 1, numa mesa de bots Heurísticos.
+      Fração de jogadores com o sistema cheio (no teto) ao fim do Planejamento
+      do ciclo 1, numa mesa de bots Heurísticos. Média sobre as partidas, com
+      bootstrap sobre as partidas.
     zona: "entre 0.10 e 0.90"
-    estado: aguardando_decisao
+    criterio: {minimo: 0.10, maximo: 0.90}
+    estado: confirmado  # autor, 2026-11-10
 
   - id: REQ-12
     nome: O primeiro incidente não decide a partida
@@ -202,8 +217,10 @@ metricas_registradas:
       Partida desequilibrada: a pontuação do vencedor é pelo menos 1.5 vez a
       média da pontuação dos demais jogadores. Análise de sensibilidade com
       o fator de 1.25 a 2.0. Comparada com 4 de 6 (intervalo de Wilson de
-      95%: 0.30 a 0.90), como checagem de plausibilidade. Na v2 vale o mesmo
-      critério, com fichas.
+      95%: 0.30 a 0.90), como checagem de plausibilidade. O fator 1.5 vale
+      para a v1. Na v2 a métrica é só descrição, porque o placar em fichas não
+      está na mesma escala dos pontos da v1; a comparação entre as versões é
+      feita pelo REQ-02 (autor, 2026-11-10).
     criterio: {fator: 1.5, sensibilidade: [1.25, 2.0]}
     estado: confirmado  # autor, 2026-11-10; fixado antes do Experimento 1
 
@@ -260,5 +277,7 @@ metricas_registradas:
       taxa de vitória de cada estilo em mesas mistas. Responde qual é o
       melhor estilo de jogo. Lida junto com REQ-03 e REQ-04, responde se o
       jogo está balanceado: um estilo que vence todos os outros é o melhor
-      e, ao mesmo tempo, sinal de desequilíbrio.
-    estado: aguardando_decisao
+      e, ao mesmo tempo, sinal de desequilíbrio. Matriz com 6 estilos
+      (autor, 2026-11-10): Aleatório, Construtor, Heurístico e o Caçador com
+      as três políticas de alvo (líder, mais fraco, ao acaso).
+    estado: confirmado  # autor, 2026-11-10

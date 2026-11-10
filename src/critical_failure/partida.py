@@ -52,6 +52,8 @@ class ResultadoPartida:
     placar_no_corte: tuple[int, ...] | None = None
     """REQ-02: o placar no ponto de corte (fichas no fim do ciclo 1; na v1, cartas no sistema
     depois que todos fizeram o primeiro teste)."""
+    sistemas_cheios_no_planejamento: tuple[bool, ...] | None = None
+    """REQ-11: quem terminou o Planejamento do ciclo 1 com o sistema no teto (só na v2)."""
 
     def vezes(self, tipo: str) -> int:
         return dict(self.tipos_de_evento).get(tipo, 0)
@@ -93,9 +95,10 @@ def jogar_partida(
     cronometro = Cronometro(duracao) if duracao is not None else None
     tipos: Counter[str] = Counter()
     placar_no_corte: tuple[int, ...] | None = None
+    cheios: tuple[bool, ...] | None = None
 
     def entregar(eventos: Sequence[Any], decisao: dict[str, Any] | None) -> None:
-        nonlocal total, criterio, placar_no_corte
+        nonlocal total, criterio, placar_no_corte, cheios
         for posicao, evento in enumerate(eventos):
             if conferir_invariantes:
                 motor.conferir_invariantes(evento.estado, em_repouso=posicao == len(eventos) - 1)
@@ -105,6 +108,8 @@ def jogar_partida(
                 cronometro.somar(evento)
             if placar_no_corte is None:
                 placar_no_corte = motor.ponto_de_corte(evento)
+            if cheios is None:
+                cheios = motor.sistemas_cheios_no_planejamento(evento)
             if evento.tipo == "fim_de_jogo":
                 criterio = evento.publico["criterio"]
             if ouvinte is not None:
@@ -144,4 +149,5 @@ def jogar_partida(
         duracao_s=cronometro.segundos if cronometro is not None else None,
         tipos_de_evento=tuple(sorted(tipos.items())),
         placar_no_corte=placar_no_corte,
+        sistemas_cheios_no_planejamento=cheios,
     )
