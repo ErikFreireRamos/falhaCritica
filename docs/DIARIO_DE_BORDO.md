@@ -253,3 +253,39 @@ Depois de revisar a Fase 0, o autor respondeu: "Não se coloque como co-author, 
 
 - **Do autor:** rever as duas narrações de `docs/exemplos/` e dizer se o motor joga como as regras dizem; criar o repositório no GitHub para a CI rodar.
 - **Antes da Fase 1b:** confirmar as zonas de REQ-01, REQ-08 e REQ-09 e os tempos por ação do modelo de duração (MOD-05).
+
+---
+
+## 2026-11-10 — Revisão da Fase 1 e sincronização com o GitHub
+
+### Respostas do autor à revisão da Fase 1
+
+| Assunto | Resposta |
+|---|---|
+| As duas narrações de `docs/exemplos/` | "O jogo está jogando corretamente" |
+| Os 13 detalhes escolhidos pelo assistente na Fase 1 | Aceitos |
+| Repositório remoto | Criado: https://github.com/ErikFreireRamos/falhaCritica |
+| Redação dos trechos marcados em `regras/v2.2.1.md` e do `regras/v1.md` | Sem resposta ainda; continua pendente |
+
+O autor também lembrou o objetivo das simulações: ter bots com estilos de jogo diferentes, avaliar qual é o melhor estilo e se o jogo está balanceado. Ficou registrado como a métrica MET-07 em `configs/requisitos.yaml` (sugestão do assistente, aguardando confirmação). As duas perguntas se respondem juntas: se um estilo vence todos os outros, ele é o melhor e o jogo não está balanceado.
+
+### Erro do assistente: histórico reescrito depois de publicado
+
+O autor não conseguia sincronizar pelo VS Code, que pedia rebase.
+
+- **Causa:** em 9 de novembro, para tirar a linha de coautoria, o assistente reescreveu o commit da Fase 0 com `git commit --amend` e registrou neste diário que "não havia repositório remoto". Não tinha conferido. O commit original (`69764b1`) já estava no GitHub. O histórico local (`b78a07a` e os dois commits seguintes) e o remoto divergiram.
+- **O que estava em jogo:** os dois commits da Fase 0 tinham o mesmo conteúdo; só a mensagem diferia. Nenhum arquivo foi perdido.
+- **Decisão do autor:** entre sobrescrever o GitHub, manter o commit antigo ou não mexer, escolheu sobrescrever.
+- **Correção:** `git push --force-with-lease=main:69764b1 origin main`. O GitHub ficou igual ao histórico local, sem linha de coautoria em nenhum commit.
+- **Para não repetir:** antes de qualquer reescrita de histórico, conferir `git remote -v` e `git status -sb`. Commit já enviado só se corrige com commit novo, a menos que o autor autorize sobrescrever.
+
+### Integração contínua
+
+Com o envio, o workflow `.github/workflows/ci.yml` rodou pela primeira vez, no commit `560522d`.
+
+| Plataforma | Resultado |
+|---|---|
+| `ubuntu-latest` | sucesso, 11 passos de 11 |
+| `windows-latest` | sucesso, 11 passos de 11 |
+
+Isso fecha a pendência da Fase 1: os registros de referência, gerados no Windows, foram refeitos byte a byte no Linux. O determinismo entre plataformas deixou de ser promessa e passou a ser conferido a cada envio.

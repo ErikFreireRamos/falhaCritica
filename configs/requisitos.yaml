@@ -240,3 +240,15 @@ metricas_registradas:
       Máximo de fichas em circulação e de cubos de Alerta em uso ao mesmo
       tempo, por partida, comparado com 135 fichas e 30 cubos.
     estado: aguardando_decisao
+
+  - id: MET-07
+    nome: Taxa de vitória por estilo de jogo
+    fonte: "autor, 2026-11-10; prompt 3.4"
+    metrica: >
+      Matriz de taxa de vitória de 1 bot do estilo i (Aleatório, Construtor,
+      Caçador, Heurístico) numa mesa em que os outros N-1 são do estilo j, e
+      taxa de vitória de cada estilo em mesas mistas. Responde qual é o
+      melhor estilo de jogo. Lida junto com REQ-03 e REQ-04, responde se o
+      jogo está balanceado: um estilo que vence todos os outros é o melhor
+      e, ao mesmo tempo, sinal de desequilíbrio.
+    estado: aguardando_decisao
