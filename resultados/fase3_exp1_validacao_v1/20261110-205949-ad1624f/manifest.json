@@ -1,0 +1,6058 @@
+{
+  "ambiente": {
+    "motor": "0.1.0",
+    "numpy": "2.5.4",
+    "plataforma": "Windows-11-10.0.26200-SP0",
+    "pyarrow": "26.0.1",
+    "python": "3.12.0"
+  },
+  "arquivos": {
+    "partidas.parquet": "sha256:b073792e96fa1f446c8ed9ca1876fe79962ec4f8948e842dcb25ba2b607182ab",
+    "relatorio.md": "sha256:4003cbf2e0c07fe81e16a55fc63475969acc8beb920a388ab03eadbda66fa1d7"
+  },
+  "cenarios": [
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "lider",
+        "lider"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_lider_contra_lider",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_lider_contra_lider_r0",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "lider",
+        "lider"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_lider_contra_lider",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_lider_contra_lider_r1",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "lider",
+        "lider"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_lider_contra_lider",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_lider_contra_lider_r2",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "lider",
+        "lider"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_lider_contra_lider",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_lider_contra_lider_r3",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "lider",
+        "lider"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_lider_contra_lider",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_lider_contra_lider_r4",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "lider",
+        "lider"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_lider_contra_lider",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_lider_contra_lider_r5",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "lider",
+        "mais_fraco"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_lider_contra_mais_fraco",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_lider_contra_mais_fraco_r0",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "lider",
+        "mais_fraco"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_lider_contra_mais_fraco",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_lider_contra_mais_fraco_r1",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "lider",
+        "mais_fraco"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_lider_contra_mais_fraco",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_lider_contra_mais_fraco_r2",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "lider",
+        "mais_fraco"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_lider_contra_mais_fraco",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_lider_contra_mais_fraco_r3",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "lider",
+        "mais_fraco"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_lider_contra_mais_fraco",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_lider_contra_mais_fraco_r4",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "lider",
+        "mais_fraco"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_lider_contra_mais_fraco",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_lider_contra_mais_fraco_r5",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "lider",
+        "aleatorio"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_lider_contra_aleatorio",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_lider_contra_aleatorio_r0",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "lider",
+        "aleatorio"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_lider_contra_aleatorio",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_lider_contra_aleatorio_r1",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "lider",
+        "aleatorio"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_lider_contra_aleatorio",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_lider_contra_aleatorio_r2",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "lider",
+        "aleatorio"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_lider_contra_aleatorio",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_lider_contra_aleatorio_r3",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "lider",
+        "aleatorio"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_lider_contra_aleatorio",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_lider_contra_aleatorio_r4",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "lider",
+        "aleatorio"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_lider_contra_aleatorio",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_lider_contra_aleatorio_r5",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "mais_fraco",
+        "lider"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_mais_fraco_contra_lider",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_mais_fraco_contra_lider_r0",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "mais_fraco",
+        "lider"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_mais_fraco_contra_lider",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_mais_fraco_contra_lider_r1",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "mais_fraco",
+        "lider"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_mais_fraco_contra_lider",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_mais_fraco_contra_lider_r2",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "mais_fraco",
+        "lider"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_mais_fraco_contra_lider",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_mais_fraco_contra_lider_r3",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "mais_fraco",
+        "lider"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_mais_fraco_contra_lider",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_mais_fraco_contra_lider_r4",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "mais_fraco",
+        "lider"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_mais_fraco_contra_lider",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_mais_fraco_contra_lider_r5",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "mais_fraco",
+        "mais_fraco"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_mais_fraco_contra_mais_fraco",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_mais_fraco_contra_mais_fraco_r0",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "mais_fraco",
+        "mais_fraco"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_mais_fraco_contra_mais_fraco",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_mais_fraco_contra_mais_fraco_r1",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "mais_fraco",
+        "mais_fraco"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_mais_fraco_contra_mais_fraco",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_mais_fraco_contra_mais_fraco_r2",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "mais_fraco",
+        "mais_fraco"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_mais_fraco_contra_mais_fraco",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_mais_fraco_contra_mais_fraco_r3",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "mais_fraco",
+        "mais_fraco"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_mais_fraco_contra_mais_fraco",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_mais_fraco_contra_mais_fraco_r4",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "mais_fraco",
+        "mais_fraco"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_mais_fraco_contra_mais_fraco",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_mais_fraco_contra_mais_fraco_r5",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "mais_fraco",
+        "aleatorio"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_mais_fraco_contra_aleatorio",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_mais_fraco_contra_aleatorio_r0",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "mais_fraco",
+        "aleatorio"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_mais_fraco_contra_aleatorio",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_mais_fraco_contra_aleatorio_r1",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "mais_fraco",
+        "aleatorio"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_mais_fraco_contra_aleatorio",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_mais_fraco_contra_aleatorio_r2",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "mais_fraco",
+        "aleatorio"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_mais_fraco_contra_aleatorio",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_mais_fraco_contra_aleatorio_r3",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "mais_fraco",
+        "aleatorio"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_mais_fraco_contra_aleatorio",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_mais_fraco_contra_aleatorio_r4",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "mais_fraco",
+        "aleatorio"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_mais_fraco_contra_aleatorio",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_mais_fraco_contra_aleatorio_r5",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "aleatorio",
+        "lider"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_aleatorio_contra_lider",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_aleatorio_contra_lider_r0",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "aleatorio",
+        "lider"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_aleatorio_contra_lider",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_aleatorio_contra_lider_r1",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "aleatorio",
+        "lider"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_aleatorio_contra_lider",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_aleatorio_contra_lider_r2",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "aleatorio",
+        "lider"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_aleatorio_contra_lider",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_aleatorio_contra_lider_r3",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "aleatorio",
+        "lider"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_aleatorio_contra_lider",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_aleatorio_contra_lider_r4",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "aleatorio",
+        "lider"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_aleatorio_contra_lider",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_aleatorio_contra_lider_r5",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "aleatorio",
+        "mais_fraco"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_aleatorio_contra_mais_fraco",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_aleatorio_contra_mais_fraco_r0",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "aleatorio",
+        "mais_fraco"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_aleatorio_contra_mais_fraco",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_aleatorio_contra_mais_fraco_r1",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "aleatorio",
+        "mais_fraco"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_aleatorio_contra_mais_fraco",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_aleatorio_contra_mais_fraco_r2",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "aleatorio",
+        "mais_fraco"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_aleatorio_contra_mais_fraco",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_aleatorio_contra_mais_fraco_r3",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "aleatorio",
+        "mais_fraco"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_aleatorio_contra_mais_fraco",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_aleatorio_contra_mais_fraco_r4",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "aleatorio",
+        "mais_fraco"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_aleatorio_contra_mais_fraco",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_aleatorio_contra_mais_fraco_r5",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "aleatorio",
+        "aleatorio"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_aleatorio_contra_aleatorio",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_aleatorio_contra_aleatorio_r0",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "aleatorio",
+        "aleatorio"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_aleatorio_contra_aleatorio",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_aleatorio_contra_aleatorio_r1",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "aleatorio",
+        "aleatorio"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_aleatorio_contra_aleatorio",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_aleatorio_contra_aleatorio_r2",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "aleatorio",
+        "aleatorio"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_aleatorio_contra_aleatorio",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_aleatorio_contra_aleatorio_r3",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "aleatorio",
+        "aleatorio"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_aleatorio_contra_aleatorio",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_aleatorio_contra_aleatorio_r4",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "foco",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "outros",
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": [
+        "aleatorio",
+        "aleatorio"
+      ],
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "alvo_aleatorio_contra_aleatorio",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "alvo_aleatorio_contra_aleatorio_r5",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "explicacao_correta": 0.85,
+            "precisao_auditor": 0.95
+          },
+          "rotulo": null,
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.85,
+            "precisao_auditor": 0.95
+          },
+          "rotulo": null,
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.85,
+            "precisao_auditor": 0.95
+          },
+          "rotulo": null,
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.85,
+            "precisao_auditor": 0.95
+          },
+          "rotulo": null,
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.85,
+            "precisao_auditor": 0.95
+          },
+          "rotulo": null,
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.85,
+            "precisao_auditor": 0.95
+          },
+          "rotulo": null,
+          "tipo": "aleatorio"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": null,
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "todos_aleatorios",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "todos_aleatorios",
+      "partidas": 5000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "construtor"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "construtor"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "construtor"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "construtor"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "construtor"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "construtor"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": null,
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "todos_construtores",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "todos_construtores",
+      "partidas": 5000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": null,
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "todos_cacadores_lider",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "todos_cacadores_lider",
+      "partidas": 5000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": null,
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "todos_cacadores_mais_fraco",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "todos_cacadores_mais_fraco",
+      "partidas": 5000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "heuristico"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": null,
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "todos_heuristicos",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "todos_heuristicos",
+      "partidas": 5000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "explicacao_correta": 0.85,
+            "precisao_auditor": 0.95
+          },
+          "rotulo": null,
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "construtor"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "heuristico"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": null,
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "estilos_mistos",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "estilos_mistos_r0",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "construtor"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.85,
+            "precisao_auditor": 0.95
+          },
+          "rotulo": null,
+          "tipo": "aleatorio"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": null,
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "estilos_mistos",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "estilos_mistos_r1",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.85,
+            "precisao_auditor": 0.95
+          },
+          "rotulo": null,
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "construtor"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": null,
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "estilos_mistos",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "estilos_mistos_r2",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.85,
+            "precisao_auditor": 0.95
+          },
+          "rotulo": null,
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "construtor"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": null,
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "estilos_mistos",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "estilos_mistos_r3",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.85,
+            "precisao_auditor": 0.95
+          },
+          "rotulo": null,
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "construtor"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": null,
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "estilos_mistos",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "estilos_mistos_r4",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.85,
+            "precisao_auditor": 0.95
+          },
+          "rotulo": null,
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "construtor"
+        },
+        {
+          "parametros": {
+            "alvo": "lider",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "mais_fraco",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        },
+        {
+          "parametros": {
+            "alvo": "aleatorio",
+            "blefe": "metade",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": null,
+          "tipo": "cacador"
+        }
+      ],
+      "catalogo_hash": "sha256:38b1bbe49e8e6641c70a3342114d63e0e8ae4ab0f20193dc714f5242d7a8903e",
+      "celula": null,
+      "comparar_com": null,
+      "config_hash": "sha256:fbc5495d99cf40dd49f9957521262e5d326d377b2e8a43b2a6e4e5407c33f3f6",
+      "familia": "v1",
+      "grupo": "estilos_mistos",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "estilos_mistos_r5",
+      "partidas": 1000,
+      "regras": "configs/regras_v1.yaml",
+      "requisitos": [],
+      "versao": "v1"
+    }
+  ],
+  "comando": "cf experimento experimentos/fase3_exp1_validacao_v1.yaml --oficial --processos 4",
+  "duracao": {
+    "arquivo": "configs/duracao.yaml",
+    "sha256": "sha256:9bb2aa16f286d032e76e1ae026a9acd891fcab591867d7c4b45f0d29a65ff756"
+  },
+  "esquema": "cf-manifest/1",
+  "experimento": {
+    "arquivo": "experimentos/fase3_exp1_validacao_v1.yaml",
+    "conteudo": {
+      "cenarios": [
+        {
+          "bots": [
+            {
+              "parametros": {
+                "alvo": "lider",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "foco",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "lider",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "lider",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "lider",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "lider",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "lider",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            }
+          ],
+          "celula": [
+            "lider",
+            "lider"
+          ],
+          "comparar_com": null,
+          "grupo": null,
+          "jogadores": 6,
+          "mudancas": {},
+          "nome": "alvo_lider_contra_lider",
+          "partidas": 1000,
+          "regras": "configs/regras_v1.yaml",
+          "requisitos": [],
+          "rodizio": true
+        },
+        {
+          "bots": [
+            {
+              "parametros": {
+                "alvo": "lider",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "foco",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "mais_fraco",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "mais_fraco",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "mais_fraco",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "mais_fraco",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "mais_fraco",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            }
+          ],
+          "celula": [
+            "lider",
+            "mais_fraco"
+          ],
+          "comparar_com": null,
+          "grupo": null,
+          "jogadores": 6,
+          "mudancas": {},
+          "nome": "alvo_lider_contra_mais_fraco",
+          "partidas": 1000,
+          "regras": "configs/regras_v1.yaml",
+          "requisitos": [],
+          "rodizio": true
+        },
+        {
+          "bots": [
+            {
+              "parametros": {
+                "alvo": "lider",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "foco",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "aleatorio",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "aleatorio",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "aleatorio",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "aleatorio",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "aleatorio",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            }
+          ],
+          "celula": [
+            "lider",
+            "aleatorio"
+          ],
+          "comparar_com": null,
+          "grupo": null,
+          "jogadores": 6,
+          "mudancas": {},
+          "nome": "alvo_lider_contra_aleatorio",
+          "partidas": 1000,
+          "regras": "configs/regras_v1.yaml",
+          "requisitos": [],
+          "rodizio": true
+        },
+        {
+          "bots": [
+            {
+              "parametros": {
+                "alvo": "mais_fraco",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "foco",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "lider",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "lider",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "lider",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "lider",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "lider",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            }
+          ],
+          "celula": [
+            "mais_fraco",
+            "lider"
+          ],
+          "comparar_com": null,
+          "grupo": null,
+          "jogadores": 6,
+          "mudancas": {},
+          "nome": "alvo_mais_fraco_contra_lider",
+          "partidas": 1000,
+          "regras": "configs/regras_v1.yaml",
+          "requisitos": [],
+          "rodizio": true
+        },
+        {
+          "bots": [
+            {
+              "parametros": {
+                "alvo": "mais_fraco",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "foco",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "mais_fraco",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "mais_fraco",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "mais_fraco",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "mais_fraco",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "mais_fraco",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            }
+          ],
+          "celula": [
+            "mais_fraco",
+            "mais_fraco"
+          ],
+          "comparar_com": null,
+          "grupo": null,
+          "jogadores": 6,
+          "mudancas": {},
+          "nome": "alvo_mais_fraco_contra_mais_fraco",
+          "partidas": 1000,
+          "regras": "configs/regras_v1.yaml",
+          "requisitos": [],
+          "rodizio": true
+        },
+        {
+          "bots": [
+            {
+              "parametros": {
+                "alvo": "mais_fraco",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "foco",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "aleatorio",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "aleatorio",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "aleatorio",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "aleatorio",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "aleatorio",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            }
+          ],
+          "celula": [
+            "mais_fraco",
+            "aleatorio"
+          ],
+          "comparar_com": null,
+          "grupo": null,
+          "jogadores": 6,
+          "mudancas": {},
+          "nome": "alvo_mais_fraco_contra_aleatorio",
+          "partidas": 1000,
+          "regras": "configs/regras_v1.yaml",
+          "requisitos": [],
+          "rodizio": true
+        },
+        {
+          "bots": [
+            {
+              "parametros": {
+                "alvo": "aleatorio",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "foco",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "lider",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "lider",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "lider",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "lider",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "lider",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            }
+          ],
+          "celula": [
+            "aleatorio",
+            "lider"
+          ],
+          "comparar_com": null,
+          "grupo": null,
+          "jogadores": 6,
+          "mudancas": {},
+          "nome": "alvo_aleatorio_contra_lider",
+          "partidas": 1000,
+          "regras": "configs/regras_v1.yaml",
+          "requisitos": [],
+          "rodizio": true
+        },
+        {
+          "bots": [
+            {
+              "parametros": {
+                "alvo": "aleatorio",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "foco",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "mais_fraco",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "mais_fraco",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "mais_fraco",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "mais_fraco",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "mais_fraco",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            }
+          ],
+          "celula": [
+            "aleatorio",
+            "mais_fraco"
+          ],
+          "comparar_com": null,
+          "grupo": null,
+          "jogadores": 6,
+          "mudancas": {},
+          "nome": "alvo_aleatorio_contra_mais_fraco",
+          "partidas": 1000,
+          "regras": "configs/regras_v1.yaml",
+          "requisitos": [],
+          "rodizio": true
+        },
+        {
+          "bots": [
+            {
+              "parametros": {
+                "alvo": "aleatorio",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "foco",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "aleatorio",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "aleatorio",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "aleatorio",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "aleatorio",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "aleatorio",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "outros",
+              "tipo": "cacador"
+            }
+          ],
+          "celula": [
+            "aleatorio",
+            "aleatorio"
+          ],
+          "comparar_com": null,
+          "grupo": null,
+          "jogadores": 6,
+          "mudancas": {},
+          "nome": "alvo_aleatorio_contra_aleatorio",
+          "partidas": 1000,
+          "regras": "configs/regras_v1.yaml",
+          "requisitos": [],
+          "rodizio": true
+        },
+        {
+          "bots": [
+            {
+              "parametros": {
+                "explicacao_correta": 0.85,
+                "precisao_auditor": 0.95
+              },
+              "rotulo": null,
+              "tipo": "aleatorio"
+            }
+          ],
+          "celula": null,
+          "comparar_com": null,
+          "grupo": null,
+          "jogadores": 6,
+          "mudancas": {},
+          "nome": "todos_aleatorios",
+          "partidas": 5000,
+          "regras": "configs/regras_v1.yaml",
+          "requisitos": [],
+          "rodizio": false
+        },
+        {
+          "bots": [
+            {
+              "parametros": {
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": null,
+              "tipo": "construtor"
+            }
+          ],
+          "celula": null,
+          "comparar_com": null,
+          "grupo": null,
+          "jogadores": 6,
+          "mudancas": {},
+          "nome": "todos_construtores",
+          "partidas": 5000,
+          "regras": "configs/regras_v1.yaml",
+          "requisitos": [],
+          "rodizio": false
+        },
+        {
+          "bots": [
+            {
+              "parametros": {
+                "alvo": "lider",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": null,
+              "tipo": "cacador"
+            }
+          ],
+          "celula": null,
+          "comparar_com": null,
+          "grupo": null,
+          "jogadores": 6,
+          "mudancas": {},
+          "nome": "todos_cacadores_lider",
+          "partidas": 5000,
+          "regras": "configs/regras_v1.yaml",
+          "requisitos": [],
+          "rodizio": false
+        },
+        {
+          "bots": [
+            {
+              "parametros": {
+                "alvo": "mais_fraco",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": null,
+              "tipo": "cacador"
+            }
+          ],
+          "celula": null,
+          "comparar_com": null,
+          "grupo": null,
+          "jogadores": 6,
+          "mudancas": {},
+          "nome": "todos_cacadores_mais_fraco",
+          "partidas": 5000,
+          "regras": "configs/regras_v1.yaml",
+          "requisitos": [],
+          "rodizio": false
+        },
+        {
+          "bots": [
+            {
+              "parametros": {
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": null,
+              "tipo": "heuristico"
+            }
+          ],
+          "celula": null,
+          "comparar_com": null,
+          "grupo": null,
+          "jogadores": 6,
+          "mudancas": {},
+          "nome": "todos_heuristicos",
+          "partidas": 5000,
+          "regras": "configs/regras_v1.yaml",
+          "requisitos": [],
+          "rodizio": false
+        },
+        {
+          "bots": [
+            {
+              "parametros": {
+                "explicacao_correta": 0.85,
+                "precisao_auditor": 0.95
+              },
+              "rotulo": null,
+              "tipo": "aleatorio"
+            },
+            {
+              "parametros": {
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": null,
+              "tipo": "construtor"
+            },
+            {
+              "parametros": {
+                "alvo": "lider",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": null,
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "mais_fraco",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": null,
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "alvo": "aleatorio",
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": null,
+              "tipo": "cacador"
+            },
+            {
+              "parametros": {
+                "blefe": "metade",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": null,
+              "tipo": "heuristico"
+            }
+          ],
+          "celula": null,
+          "comparar_com": null,
+          "grupo": null,
+          "jogadores": 6,
+          "mudancas": {},
+          "nome": "estilos_mistos",
+          "partidas": 1000,
+          "regras": "configs/regras_v1.yaml",
+          "requisitos": [],
+          "rodizio": true
+        }
+      ],
+      "conferir_invariantes": true,
+      "descricao": "Validação da v1 com mesas de 6. Matriz 3 x 3 de política de alvo (um Caçador foco contra cinco Caçadores com outra política, com rodízio de assentos) e proporção de partidas desequilibradas em populações de bots idênticos e numa mesa mista.\n",
+      "duracao": "configs/duracao.yaml",
+      "esquema": "cf-experimento/1",
+      "nome": "fase3_exp1_validacao_v1",
+      "registros_completos_um_a_cada": 1000,
+      "requisitos_arquivo": "configs/requisitos.yaml",
+      "semente_mestre": 20261112
+    },
+    "sha256": "sha256:60ba42b69a443adc4a75b644e81a090cbc1e5471a7175ed5d97cbe8cba2d775c"
+  },
+  "falhas": 0,
+  "git": {
+    "commit": "ad1624f5adc39a83e4cfcd26e6780457d7166a76",
+    "sujo": false
+  },
+  "inicio": "2026-11-10T20:59:49+00:00",
+  "invariantes_conferidos_a_cada_evento": true,
+  "oficial": true,
+  "partidas": 85000,
+  "processos": 4,
+  "registros_completos": 85,
+  "registros_nao_gravados": 0,
+  "requisitos": {
+    "arquivo": "configs/requisitos.yaml",
+    "sha256": "sha256:9ad212b418b1dd55aa3ce0cd9851139a63a81ccd7cca8c6dae23e68301f63869"
+  },
+  "segundos": 1213.9,
+  "semente_mestre": 20261112,
+  "vereditos": {
+    "REQ-09": [
+      "passa"
+    ]
+  }
+}
