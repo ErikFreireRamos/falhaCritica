@@ -1,0 +1,29 @@
+# Integração contínua básica: a cada push, no Linux e no Windows.
+# Os registros de referência (tests/dourados) são comparados byte a byte nas
+# duas plataformas, o que prova o determinismo do simulador entre elas.
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  testes:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - name: Instalar dependências
+        run: uv sync --locked
+      - name: Estilo (ruff)
+        run: uv run ruff check .
+      - name: Tipos (mypy)
+        run: uv run mypy
+      - name: Especificação
+        run: uv run python scripts/verificar_especificacao.py
+      - name: Testes por regra, de propriedades e registros de referência
+        run: uv run pytest

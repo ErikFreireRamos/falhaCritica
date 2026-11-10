@@ -1,0 +1,112 @@
+# Critical Failure v2.2: as regras como impressas no PDF de 17 de outubro de 2026.
+# Texto das regras: regras/v2.2.md. Especificação: docs/especificacao_v2_2.md.
+#
+# Todo número de regra do jogo está aqui, com o identificador da regra ao lado.
+# Nenhum deles pode aparecer no código.
+
+esquema: cf-regras/1
+familia: v2
+versao: v2.2
+texto: regras/v2.2.md
+correcoes: []
+catalogo: catalogo_v2.yaml
+
+modulo_seguranca_operacional: {valor: false, regra: R-11.1}
+
+jogadores:
+  minimo: {valor: 4, regra: R-1.2}
+  maximo: {valor: 6, regra: R-1.2}   # a COR-01 reduz para 5 na v2.2.1
+ciclos: {valor: 3, regra: R-1.3}
+
+# Componentes: conferidos contra o catálogo na carga da configuração.
+categorias:
+  base: {valor: 7, regra: R-1.4}
+  modulo: {valor: 1, regra: R-11.1}
+baralho:
+  cartas_base: {valor: 63, regra: R-2.0.1}
+  testes_base: {valor: 29, regra: R-2.0.1}
+  cartas_por_categoria: {valor: 9, regra: R-2.0.1}
+  cartas_modulo: {valor: 9, regra: R-11.2}
+  testes_modulo: {valor: 4, regra: R-11.2}
+  cartas_com_modulo: {valor: 72, regra: R-11.7}
+  testes_com_modulo: {valor: 33, regra: R-11.7}
+incidentes:
+  base: {valor: 14, regra: R-2.0.2}
+  por_categoria: {valor: 2, regra: R-2.0.2}
+  severos_base: {valor: 3, regra: R-C.0.1}
+  modulo: {valor: 2, regra: R-11.3}
+  com_modulo: {valor: 16, regra: R-11.7}
+banco:   # AMB-17: ilimitado no simulador; os números servem para medir o pico de uso
+  fichas_valor_1: {valor: 60, regra: R-2.0.7}
+  fichas_valor_5: {valor: 15, regra: R-2.0.7}
+  cubos_alerta: {valor: 30, regra: R-2.0.8}
+dado:
+  faces: {valor: 8, regra: R-2.0.10}
+radar:
+  vagas: {valor: 2, regra: R-4.11}
+
+# Preparação
+fichas:
+  iniciais: {valor: 5, regra: R-3.1}
+  minimo: {valor: 0, regra: R-5.2}
+linha_do_tempo:
+  incidentes: {valor: 3, regra: R-3.2}
+sistema:
+  cartas_iniciais: {valor: 2, regra: R-3.4}
+  teto: {valor: 5, regra: R-6.2}
+backlog:
+  tamanho: {valor: 5, regra: R-3.5}
+
+# Planejamento
+planejamento:
+  compras: {valor: 3, regra: R-6.1}
+alertas:
+  limpeza_no_planejamento: {valor: false, regra: R-6.9}   # a COR-02 liga na v2.2.1; desligada, vale R-6.2b
+
+# Homologação
+disputa:
+  tempo_defesa_s: {valor: 30, regra: R-7.2.2d}
+  falhou:
+    atacante_ganha: {valor: 1, regra: R-7.3.1}
+  contestacao_verdade:
+    atacante_paga: {valor: 1, regra: R-7.3.3}
+  contestacao_blefe:
+    defensor_paga: {valor: 1, regra: R-7.3.4}
+    atacante_ganha_do_banco: {valor: 1, regra: R-7.3.4}
+
+# Produção
+diagnostico:
+  acerto: {valor: 1, regra: R-8.0.4}
+licao_aprendida:
+  cartas: {valor: 1, regra: R-8.0.6}
+dano:
+  incidente:
+    sem_cobertura: {valor: 2, regra: R-8.1.1}
+    alerta: {valor: 1, regra: R-8.1.2}
+    severo_sem_teste_chave: {valor: 1, regra: R-8.1.3}
+  critical_failure:
+    sempre: {valor: 1, regra: R-9.1.3}
+    sem_cobertura_profunda: {valor: 1, regra: R-9.1.4}
+    sem_cobertura: {valor: 2, regra: R-9.1.5}
+    alerta: {valor: 1, regra: R-9.1.6}
+
+# Pontuação final
+final:
+  categoria_distinta: {valor: 1, regra: R-9.2.2}
+  cobertura_profunda: {valor: 1, regra: R-9.2.3}
+  alerta_ativo: {valor: 1, regra: R-9.2.4}
+cobertura_profunda:
+  testes_distintos: {valor: 2, regra: R-9.2.3a}
+
+# Decisões do autor sobre pontos ambíguos (docs/AMBIGUIDADES.md).
+# Só aparecem aqui as que o motor permite trocar por configuração.
+interpretacoes:
+  producao_ordem: {valor: diagnostico_primeiro, regra: AMB-01}
+  quem_passou_pode_ser_alvo: {valor: true, regra: AMB-04}
+  baralho_esgotado: {valor: pular_compra, regra: AMB-06}
+  carta_repetida: {valor: fundo, regra: AMB-07}
+  primeiro_jogador: {valor: assento_0, regra: AMB-08}
+  revelacao: {valor: minima, regra: AMB-11}
+  critical_failure_limpa_alertas: {valor: false, regra: AMB-12}
+  final_ordem: {valor: saldo, regra: AMB-13}
+  empate: {valor: dividido, regra: AMB-14}

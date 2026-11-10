@@ -1,0 +1,525 @@
+# Catálogo de cartas de Teste e de incidentes da família v2.
+# GERADO por scripts/gerar_catalogo.py a partir de docs/especificacao_v2_2.md.
+# Não edite à mão: mude a especificação e gere de novo.
+esquema: cf-catalogo/1
+familia: v2
+categorias:
+- nome: Desempenho
+  face_do_dado: 1
+  conjunto: base
+- nome: Compatibilidade
+  face_do_dado: 2
+  conjunto: base
+- nome: Interação
+  face_do_dado: 3
+  conjunto: base
+- nome: Confiabilidade
+  face_do_dado: 4
+  conjunto: base
+- nome: Segurança da Informação
+  face_do_dado: 5
+  conjunto: base
+- nome: Manutenibilidade
+  face_do_dado: 6
+  conjunto: base
+- nome: Flexibilidade
+  face_do_dado: 7
+  conjunto: base
+- nome: Segurança Operacional
+  face_do_dado: 8
+  conjunto: módulo
+testes:
+- regra: R-B.01
+  nome: Carga
+  categoria: Desempenho
+  copias: 3
+  conjunto: base
+  nao_confundir:
+  - Estresse
+  - Pico
+  descricao: Simula o uso normal e o pico esperado de usuários para verificar se o sistema mantém os tempos
+    de resposta previstos.
+- regra: R-B.02
+  nome: Estresse
+  categoria: Desempenho
+  copias: 2
+  conjunto: base
+  nao_confundir:
+  - Carga
+  descricao: Leva o sistema além do limite de projeto para descobrir onde e como ele quebra e se volta
+    ao normal depois.
+- regra: R-B.03
+  nome: Pico
+  categoria: Desempenho
+  copias: 2
+  conjunto: base
+  nao_confundir:
+  - Estresse
+  - Escalabilidade
+  descricao: Aplica um aumento brusco e curto de usuários para ver se o sistema absorve a onda e se estabiliza
+    quando ela passa.
+- regra: R-B.04
+  nome: Resistência
+  categoria: Desempenho
+  copias: 2
+  conjunto: base
+  nao_confundir:
+  - Carga
+  - Disponibilidade
+  descricao: Mantém uma carga normal por horas ou dias para revelar degradação lenta, como vazamento de
+    memória.
+- regra: R-B.05
+  nome: Coexistência
+  categoria: Compatibilidade
+  copias: 3
+  conjunto: base
+  nao_confundir:
+  - Adaptabilidade
+  descricao: Verifica se o sistema funciona no mesmo ambiente que outros produtos, dividindo recursos
+    sem prejudicá-los nem ser prejudicado.
+- regra: R-B.06
+  nome: Interoperabilidade
+  categoria: Compatibilidade
+  copias: 2
+  conjunto: base
+  nao_confundir:
+  - Contrato de API
+  descricao: Verifica, de ponta a ponta, se sistemas diferentes trocam informações e usam corretamente
+    o que recebem.
+- regra: R-B.07
+  nome: Contrato de API
+  categoria: Compatibilidade
+  copias: 2
+  conjunto: base
+  nao_confundir:
+  - Interoperabilidade
+  - Retrocompatibilidade
+  descricao: Verifica se a API continua respeitando o formato combinado com quem a consome (campos, tipos,
+    códigos de resposta), sem precisar subir os dois sistemas.
+- regra: R-B.08
+  nome: Retrocompatibilidade
+  categoria: Compatibilidade
+  copias: 2
+  conjunto: base
+  nao_confundir:
+  - Adaptabilidade
+  - Regressão
+  descricao: Verifica se a nova versão continua funcionando com clientes, arquivos e dados de versões
+    anteriores.
+- regra: R-B.09
+  nome: Acessibilidade
+  categoria: Interação
+  copias: 3
+  conjunto: base
+  nao_confundir:
+  - Teste com usuários
+  descricao: Verifica se pessoas com deficiência visual, auditiva, motora ou cognitiva conseguem usar
+    o sistema, por exemplo com leitor de tela ou só com o teclado (WCAG).
+- regra: R-B.10
+  nome: Proteção contra erro do usuário
+  categoria: Interação
+  copias: 2
+  conjunto: base
+  nao_confundir:
+  - Tolerância a falhas
+  - Restrição operacional
+  descricao: Verifica se o sistema impede ou reduz as consequências de erros do usuário, com confirmação,
+    desfazer e validação de campos.
+- regra: R-B.11
+  nome: Teste A/B
+  categoria: Interação
+  copias: 2
+  conjunto: base
+  nao_confundir:
+  - Teste com usuários
+  descricao: Compara duas versões de uma tela ou funcionalidade com usuários reais e mede qual alcança
+    melhor o objetivo.
+- regra: R-B.12
+  nome: Teste com usuários
+  categoria: Interação
+  copias: 2
+  conjunto: base
+  nao_confundir:
+  - Teste A/B
+  - Acessibilidade
+  descricao: Observa usuários representativos fazendo tarefas enquanto dizem o que pensam, para descobrir
+    onde se confundem e quanto demoram para aprender.
+- regra: R-B.13
+  nome: Recuperação
+  categoria: Confiabilidade
+  copias: 3
+  conjunto: base
+  nao_confundir:
+  - Tolerância a falhas
+  descricao: Provoca uma falha grave e verifica se o sistema volta a funcionar, em quanto tempo e se preserva
+    os dados.
+- regra: R-B.14
+  nome: Tolerância a falhas
+  categoria: Confiabilidade
+  copias: 2
+  conjunto: base
+  nao_confundir:
+  - Recuperação
+  - Engenharia do Caos
+  - Falha segura
+  descricao: Derruba uma parte do sistema e verifica se ele continua funcionando, mesmo de forma reduzida.
+- regra: R-B.15
+  nome: Disponibilidade
+  categoria: Confiabilidade
+  copias: 2
+  conjunto: base
+  nao_confundir:
+  - Resistência
+  descricao: Mede se o sistema fica acessível durante todo o período de operação previsto, por exemplo
+    99,9% do mês.
+- regra: R-B.16
+  nome: Engenharia do Caos
+  categoria: Confiabilidade
+  copias: 2
+  conjunto: base
+  nao_confundir:
+  - Tolerância a falhas
+  descricao: Injeta falhas de propósito e ao acaso em ambiente real ou quase real, como derrubar servidores
+    ou atrasar a rede, para achar fraquezas antes que elas apareçam sozinhas.
+- regra: R-B.17
+  nome: Autenticação
+  categoria: Segurança da Informação
+  copias: 2
+  conjunto: base
+  nao_confundir:
+  - Confidencialidade
+  descricao: Verifica se o sistema confirma a identidade de quem acessa (senha, 2FA, biometria) antes
+    de liberar o acesso.
+- regra: R-B.18
+  nome: Confidencialidade
+  categoria: Segurança da Informação
+  copias: 2
+  conjunto: base
+  nao_confundir:
+  - Autenticação
+  - Integridade
+  descricao: Verifica se cada informação sensível só é acessada por quem tem autorização, com controle
+    de acesso e criptografia.
+- regra: R-B.19
+  nome: Integridade
+  categoria: Segurança da Informação
+  copias: 2
+  conjunto: base
+  nao_confundir:
+  - Confidencialidade
+  descricao: Verifica se os dados não podem ser alterados ou corrompidos sem autorização.
+- regra: R-B.20
+  nome: Não repúdio
+  categoria: Segurança da Informação
+  copias: 1
+  conjunto: base
+  nao_confundir:
+  - Autenticação
+  descricao: Verifica se o sistema guarda provas de quem fez cada ação, para que ninguém possa negá-la
+    depois.
+- regra: R-B.21
+  nome: Penetração
+  categoria: Segurança da Informação
+  copias: 2
+  conjunto: base
+  nao_confundir:
+  - Análise de perigos
+  descricao: Simula um ataque real, como um invasor faria, para encontrar e explorar vulnerabilidades.
+- regra: R-B.22
+  nome: Regressão
+  categoria: Manutenibilidade
+  copias: 3
+  conjunto: base
+  nao_confundir:
+  - Análise de impacto
+  descricao: Executa de novo testes que já passavam para garantir que uma mudança não quebrou o que funcionava.
+- regra: R-B.23
+  nome: Análise estática
+  categoria: Manutenibilidade
+  copias: 2
+  conjunto: base
+  nao_confundir:
+  - Revisão de código
+  descricao: Examina o código sem executá-lo, com ferramentas, para medir complexidade, duplicação e más
+    práticas.
+- regra: R-B.24
+  nome: Revisão de código
+  categoria: Manutenibilidade
+  copias: 2
+  conjunto: base
+  nao_confundir:
+  - Análise estática
+  descricao: Outra pessoa da equipe lê o código antes da integração, procurando defeitos e trechos difíceis
+    de entender ou de mudar.
+- regra: R-B.25
+  nome: Análise de impacto
+  categoria: Manutenibilidade
+  copias: 2
+  conjunto: base
+  nao_confundir:
+  - Regressão
+  descricao: Antes de uma mudança, identifica quais partes do sistema dependem do trecho alterado e serão
+    afetadas.
+- regra: R-B.26
+  nome: Escalabilidade
+  categoria: Flexibilidade
+  copias: 3
+  conjunto: base
+  nao_confundir:
+  - Carga
+  - Pico
+  descricao: Verifica se o sistema cresce ou encolhe, por exemplo adicionando servidores, para acompanhar
+    a demanda sem ser reescrito.
+- regra: R-B.27
+  nome: Adaptabilidade
+  categoria: Flexibilidade
+  copias: 2
+  conjunto: base
+  nao_confundir:
+  - Coexistência
+  - Retrocompatibilidade
+  descricao: Verifica se o sistema funciona em ambientes diferentes (sistemas operacionais, navegadores,
+    telas) sem grandes mudanças.
+- regra: R-B.28
+  nome: Instalabilidade
+  categoria: Flexibilidade
+  copias: 2
+  conjunto: base
+  nao_confundir:
+  - Adaptabilidade
+  descricao: Verifica se o sistema se instala, atualiza e desinstala sem erros nos ambientes previstos.
+- regra: R-B.29
+  nome: Substituibilidade
+  categoria: Flexibilidade
+  copias: 2
+  conjunto: base
+  nao_confundir:
+  - Interoperabilidade
+  descricao: Verifica se um componente pode ser trocado por outro equivalente, como o banco de dados ou
+    o provedor de pagamento, sem afetar o funcionamento.
+- regra: R-B.30
+  nome: Falha segura
+  categoria: Segurança Operacional
+  copias: 3
+  conjunto: módulo
+  nao_confundir:
+  - Tolerância a falhas
+  - Recuperação
+  descricao: Provoca uma falha e verifica se o sistema vai para um estado que não causa dano, como o elevador
+    que trava os freios.
+- regra: R-B.31
+  nome: Alerta de perigo
+  categoria: Segurança Operacional
+  copias: 2
+  conjunto: módulo
+  nao_confundir:
+  - Proteção contra erro do usuário
+  descricao: Verifica se o sistema avisa as pessoas a tempo e com clareza quando surge uma situação perigosa.
+- regra: R-B.32
+  nome: Restrição operacional
+  categoria: Segurança Operacional
+  copias: 2
+  conjunto: módulo
+  nao_confundir:
+  - Proteção contra erro do usuário
+  descricao: Verifica se o sistema respeita os limites seguros de operação e se recusa a operar fora deles.
+- regra: R-B.33
+  nome: Análise de perigos
+  categoria: Segurança Operacional
+  copias: 2
+  conjunto: módulo
+  nao_confundir:
+  - Penetração
+  descricao: Identifica, antes da operação, quais falhas do software podem causar dano a pessoas ou ao
+    ambiente e qual a gravidade de cada uma.
+incidentes:
+- regra: R-C.01
+  numero: '01'
+  nome: Abertura da venda de ingressos
+  chave: Desempenho
+  secundaria: Confiabilidade
+  testes_chave:
+  - Pico
+  - Estresse
+  severo: false
+  conjunto: base
+  relato: Na abertura da venda, o site ficou 15 minutos sem responder. 50 mil pessoas entraram no mesmo
+    segundo. Às 10h20 tudo voltou ao normal sozinho, com os mesmos servidores.
+- regra: R-C.02
+  numero: '02'
+  nome: Feriado prolongado sem reinicialização
+  chave: Desempenho
+  secundaria: null
+  testes_chave:
+  - Resistência
+  - Carga
+  severo: false
+  conjunto: base
+  relato: Na terça depois do feriado, o sistema estava muito mais lento do que na sexta. O número de usuários
+    foi o mesmo nos dois dias, e a memória do servidor subiu sem parar desde o último reinício.
+- regra: R-C.03
+  numero: '03'
+  nome: Integração com o Sistema Internacional
+  chave: Compatibilidade
+  secundaria: null
+  testes_chave:
+  - Interoperabilidade
+  - Contrato de API
+  severo: false
+  conjunto: base
+  relato: 'Os dados saem corretos do app, mas o sistema parceiro grava as datas invertidas: 03/04 vira
+    4 de março.'
+- regra: R-C.04
+  numero: '04'
+  nome: Nova política de segurança da TI
+  chave: Compatibilidade
+  secundaria: null
+  testes_chave:
+  - Coexistência
+  severo: false
+  conjunto: base
+  relato: O sistema de ponto passou a travar ao abrir nos computadores da empresa. O problema começou
+    quando o novo antivírus foi instalado nas mesmas máquinas. Sem ele, o sistema funciona normalmente.
+- regra: R-C.05
+  numero: '05'
+  nome: Lançamento para o público idoso
+  chave: Interação
+  secundaria: null
+  testes_chave:
+  - Acessibilidade
+  - Teste com usuários
+  severo: false
+  conjunto: base
+  relato: Muitos usuários do novo app desistem antes de concluir o cadastro. A letra não aumenta quando
+    o usuário amplia a fonte do celular, e os botões são pequenos demais para dedos menos precisos.
+- regra: R-C.06
+  numero: '06'
+  nome: Fechamento da folha de pagamento
+  chave: Interação
+  secundaria: null
+  testes_chave:
+  - Proteção contra erro do usuário
+  - Teste com usuários
+  severo: false
+  conjunto: base
+  relato: No fechamento da folha, 3 mil registros sumiram de uma vez. Um analista clicou em "Excluir todos",
+    ao lado de "Exportar todos", e o sistema apagou tudo na hora.
+- regra: R-C.07
+  numero: '07'
+  nome: Queda de energia no data center
+  chave: Confiabilidade
+  secundaria: null
+  testes_chave:
+  - Recuperação
+  - Engenharia do Caos
+  severo: true
+  conjunto: base
+  relato: Depois de uma queda de energia, pedidos de clientes desapareceram. Quando a energia voltou,
+    o sistema reiniciou normalmente, mas os pedidos das últimas 2 horas não estavam mais no banco.
+- regra: R-C.08
+  numero: 08
+  nome: Manutenção no provedor de nuvem
+  chave: Confiabilidade
+  secundaria: null
+  testes_chave:
+  - Tolerância a falhas
+  - Engenharia do Caos
+  severo: false
+  conjunto: base
+  relato: Durante uma manutenção programada do provedor, o sistema inteiro saiu do ar. Só um dos três
+    servidores de banco de dados foi desligado; os outros dois continuavam funcionando.
+- regra: R-C.09
+  numero: 09
+  nome: Cliente contesta uma compra
+  chave: Segurança da Informação
+  secundaria: null
+  testes_chave:
+  - Não repúdio
+  - Autenticação
+  severo: true
+  conjunto: base
+  relato: Um cliente diz que não fez uma compra de R$ 2 mil registrada na conta dele. A compra foi feita
+    pelo app, com a conta dele, mas a empresa não tem nenhum registro que prove quem confirmou a operação.
+- regra: R-C.10
+  numero: '10'
+  nome: Novo portal do aluno
+  chave: Segurança da Informação
+  secundaria: null
+  testes_chave:
+  - Confidencialidade
+  - Penetração
+  severo: false
+  conjunto: base
+  relato: Alunos reclamam que suas notas estão sendo vistas por outras pessoas. Um aluno fez login normalmente
+    e, trocando o número de matrícula no endereço da página, abriu as notas dos colegas.
+- regra: R-C.11
+  numero: '11'
+  nome: Deploy de sexta à tarde
+  chave: Manutenibilidade
+  secundaria: null
+  testes_chave:
+  - Regressão
+  - Análise de impacto
+  severo: false
+  conjunto: base
+  relato: Na segunda-feira, clientes reclamaram que o cupom de desconto não funciona mais. Na sexta, a
+    equipe publicou uma correção no cálculo do frete. O cupom funcionava havia meses, e ninguém mexeu
+    nele.
+- regra: R-C.12
+  numero: '12'
+  nome: Novo desenvolvedor na equipe
+  chave: Manutenibilidade
+  secundaria: null
+  testes_chave:
+  - Análise estática
+  - Revisão de código
+  severo: false
+  conjunto: base
+  relato: Uma mudança simples numa regra de desconto levou três semanas para ficar pronta. A mesma lógica
+    estava copiada em 14 arquivos, dentro de funções com mais de 500 linhas.
+- regra: R-C.13
+  numero: '13'
+  nome: Campanha viral
+  chave: Flexibilidade
+  secundaria: Desempenho
+  testes_chave:
+  - Escalabilidade
+  severo: true
+  conjunto: base
+  relato: Os usuários dobraram em uma semana, e o sistema ficou lento. A equipe adicionou servidores,
+    mas cada servidor novo melhora cada vez menos o tempo de resposta.
+- regra: R-C.14
+  numero: '14'
+  nome: Atualização automática dos computadores
+  chave: Flexibilidade
+  secundaria: Interação
+  testes_chave:
+  - Adaptabilidade
+  severo: false
+  conjunto: base
+  relato: O painel de vendas abre com botões desalinhados, e o gráfico não carrega. O problema começou
+    depois que o navegador dos usuários foi atualizado. Na versão anterior, tudo funcionava.
+- regra: R-C.15
+  numero: '15'
+  nome: Hospital universitário
+  chave: Segurança Operacional
+  secundaria: Confiabilidade
+  testes_chave:
+  - Falha segura
+  - Análise de perigos
+  severo: true
+  conjunto: módulo
+  relato: Durante a madrugada, um paciente recebeu medicamento demais. O software da bomba de infusão
+    travou, e a bomba continuou injetando na última velocidade programada, sem parar.
+- regra: R-C.16
+  numero: '16'
+  nome: Frota de drones de entrega
+  chave: Segurança Operacional
+  secundaria: null
+  testes_chave:
+  - Restrição operacional
+  - Análise de perigos
+  severo: false
+  conjunto: módulo
+  relato: Um drone de entrega caiu num estacionamento. Havia rajadas de vento acima do limite do fabricante,
+    e mesmo assim o drone decolou normalmente.

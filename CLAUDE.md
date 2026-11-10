@@ -56,8 +56,45 @@ O estado atual está na última entrada do diário.
 ## Comandos
 
 ```
-py -3.12 scripts/verificar_especificacao.py   # confere as especificações (Fase 0)
+uv sync                                            # instala o ambiente (Python 3.12)
+uv run pytest                                      # todos os testes
+uv run ruff format . && uv run ruff check .        # formatação e estilo
+uv run mypy                                        # tipos, modo estrito, em src/
+uv run python scripts/verificar_especificacao.py   # confere especificações, ambiguidades e requisitos
+uv run python scripts/matriz_rastreabilidade.py    # regenera docs/MATRIZ_RASTREABILIDADE.md
+uv run python scripts/gerar_catalogo.py            # regenera configs/catalogo_v2.yaml da especificação
+uv run python scripts/gerar_dourados.py            # regenera tests/dourados e docs/exemplos
+
+uv run cf jogar --semente 1 --log p.jsonl          # joga uma partida e grava o registro
+uv run cf replay p.jsonl                           # refaz e confere cada evento
+uv run cf narrar p.jsonl                           # conta a partida em português
+uv run cf folha p.jsonl                            # exporta a Folha de registro em 3 CSVs
 ```
+
+Antes de commitar: `ruff format`, `ruff check`, `mypy`, a matriz regenerada e `pytest`.
+
+Os registros de `tests/dourados/` só são gerados de novo quando a mudança de comportamento é intencional, e o motivo vai para o diário.
+
+## Estrutura do código
+
+```
+src/critical_failure/
+  nucleo/        erros, JSON canônico e hash, aleatoriedade por contador, catálogo
+  regras/
+    config.py    modelo e validação do YAML das regras
+    v2/          estado, ações, motor e invariantes da família v2
+  observacao.py  o que cada assento vê (lista de AMB-10)
+  bots/          contrato dos bots e o bot Aleatório
+  partida.py     laço da partida: motor, bots e ouvinte de eventos
+  auditoria/     registro JSONL, replay, narração e Folha
+  cli.py         comando cf
+configs/         regras por versão, catálogo gerado, requisitos
+regras/          texto das regras por versão
+tests/           testes por regra, propriedades, convenções e registros de referência
+scripts/         verificador, matriz, catálogo e registros de referência
+```
+
+O motor (`regras/v2/`) não pode ter número literal além de 0 e 1; um teste confere. Todo evento do motor cita a regra que o justifica, e todo `regra`, `definicao`, `componente` ou `revogada` da especificação precisa de um teste marcado; outro teste confere.
 
 ## Ambiente
 

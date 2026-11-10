@@ -182,3 +182,74 @@ Depois de revisar a Fase 0, o autor respondeu: "Não se coloque como co-author, 
 
 - **Do autor:** revisar a redação dos trechos marcados em `regras/v2.2.1.md` e o `regras/v1.md`. A atualização do PDF deixa de ser pendência enquanto as regras estiverem em ajuste.
 - O repositório no GitHub continua pendente para a CI.
+
+---
+
+## 2026-11-09 — Fase 1: motor da v2, registro de auditoria e testes
+
+### O que foi feito
+
+1. **Ambiente:** projeto `uv` com `pyproject.toml` e `uv.lock`, Python 3.12, `ruff`, `mypy` no modo estrito, `pytest` e `hypothesis`.
+2. **Configuração:** `configs/regras_v2_2_1.yaml` (versão atual) e `configs/regras_v2_2.yaml` (como impressa), com todos os números das regras e a regra de cada um. `configs/catalogo_v2.yaml` é gerado da especificação por `scripts/gerar_catalogo.py`.
+3. **Núcleo** (`src/critical_failure/nucleo/`): erros controlados, JSON canônico e hash, aleatoriedade por contador, catálogo de cartas e incidentes.
+4. **Motor da família v2** (`regras/v2/`): estado imutável, ações, `preparar`, `acoes_legais`, `aplicar` e invariantes. Implementa a v2.2.1 e, por configuração, a v2.2 impressa e o módulo de Segurança Operacional.
+5. **Observação** (`observacao.py`): o que cada assento vê, pela lista de AMB-10.
+6. **Bot Aleatório** (`bots/`) e o laço da partida (`partida.py`).
+7. **Auditoria** (`auditoria/`): registro JSONL `cf-audit/1`, replay em dois modos, narração e Folha em três CSVs.
+8. **Linha de comando** `cf`: `jogar`, `replay`, `narrar` e `folha`.
+9. **Testes:** 231, entre testes por regra, de propriedades, de convenções e de registros de referência.
+10. **Rastreabilidade:** `scripts/matriz_rastreabilidade.py` gera `docs/MATRIZ_RASTREABILIDADE.md`.
+11. **CI:** `.github/workflows/ci.yml`, para Linux e Windows. Passa a rodar quando houver repositório remoto.
+12. **Exemplos:** duas partidas narradas em `docs/exemplos/`, geradas dos registros de `tests/dourados/`.
+
+### Decisões do autor
+
+| Assunto | Opções | Escolha |
+|---|---|---|
+| Valores provisórios do bot Aleatório (MOD-01 e MOD-02) | 50% e Auditor perfeito; 50% e Auditor com 90%; outros | Explicação correta em 50% das defesas; Auditor sempre julga certo |
+| Formato da Folha de registro | três arquivos CSV; um CSV só | Três arquivos CSV |
+
+### Detalhes escolhidos pelo assistente, sem perguntar
+
+- **Dependências de desenvolvimento fora da lista do prompt:** `hatchling` (empacotamento) e `types-pyyaml` (tipos para o `mypy`). `pandas`, `pyarrow` e `mutmut` ainda não foram instalados; entram nas fases que os usam.
+- **Limite de 120 colunas** no `ruff`.
+- **Cartas citadas pelo nome do teste nas ações** (`testar:Carga:2`). Cópias do mesmo teste são equivalentes; o motor escolhe a carta física.
+- **Distribuição na preparação:** as 2 cartas de cada jogador saem seguidas do topo, a partir do assento 0.
+- **Reposição do Backlog** na mesma vaga da carta que saiu.
+- **Carta revelada** (contestação ou Produção): entre as que servem, o motor prefere uma que a mesa já conhece.
+- **Interpretações que dá para trocar no YAML:** ordem entre diagnóstico e dano (AMB-01), quem passou pode ser alvo (AMB-04), Critical Failure limpa Alertas (AMB-12) e ordem da pontuação final (AMB-13), além das duas correções. As outras só aceitam o valor decidido.
+- **`estado_hash` do último evento de cada passo** é o do estado em repouso, já com a vez passada ao próximo jogador.
+- **Defesa com teste de outra categoria** (R-7.2.2c): o motor aceita e aplica "Falhou", mas não oferece a opção aos bots (AMB-16).
+- **Narração:** nomes Ana, Bruno, Carla, Davi, Elisa e Fábio por assento; o que estava oculto aparece entre colchetes, com opção para esconder.
+- **Pastas novas:** `tests/dourados/` e `docs/exemplos/`.
+- **Duração estimada** fica nula no registro até a Fase 1b, quando entra o modelo de tempos (MOD-05).
+- **Fuzzing básico** do motor já nesta fase, como teste de propriedade. O fuzzing completo continua na Fase 5.
+- **`cf jogar`** só usa bots aleatórios por enquanto; a escolha de bots entra na Fase 2.
+
+### Defeitos achados e corrigidos durante a fase
+
+- **Decisão que não ia para o registro:** encerrar o turno de Planejamento não gerava evento, então a ação do bot não teria onde ser gravada. Criado o evento `fim_do_turno` (R-6.4), e o motor passou a recusar qualquer ação que não gere evento.
+- **Hash do estado errado no fim de cada passo:** depois do último evento o motor ainda passava a vez, e o hash gravado não era o do estado final. Corrigido.
+- **Citação de regra inexistente:** um comentário do código citava as regras da seção 2 com um identificador genérico, que não existe na especificação. O teste de convenções acusou. O mesmo erro apareceu depois numa frase deste diário, e o verificador da especificação também acusou.
+- **Dois erros de expectativa em testes** (não do motor): um teste pedia 4 cópias de Carga, e o baralho tem 3; outro esquecia que a compra no Backlog repõe a vaga com a carta do topo.
+
+### Verificação
+
+- `uv run pytest`: 231 testes passam e 1 é pulado (o caso de 6 jogadores não tem narração de exemplo).
+- `uv run ruff check .` e `uv run mypy` (modo estrito, 24 arquivos): sem apontamentos.
+- **Matriz de rastreabilidade:** 148 de 148 itens que exigem teste têm pelo menos um.
+- **Registros de referência:** 3 partidas (4, 5 e 6 jogadores) refeitas byte a byte e pelo replay nos dois modos. A comparação entre Windows e Linux só acontece quando a CI rodar.
+- **Replay contra adulteração:** 8 tipos de alteração no registro, nos dois modos; todos acusados.
+- **Não vazamento:** teste de não interferência com 120 partidas aleatórias. Trocar o que está oculto para um assento não muda a observação dele.
+- **Defeitos plantados:** 17 alterações no motor, uma de cada vez; os testes por regra, sem os registros de referência, acusaram as 17. É uma amostra feita à mão, não o teste de mutação da Fase 5.
+- **Fumaça:** 200 partidas na v2.2.1 e 300 na v2.2 impressa, com os invariantes conferidos a cada evento.
+
+### Observações (não são medição de requisito)
+
+- **Velocidade no modo rápido, num núcleo:** 74 partidas por segundo com 4 jogadores e 54 com 5. Um milhão de partidas levaria de 4 a 5 horas num núcleo. Perfilar e paralelizar é trabalho da Fase 1b.
+- **Baralho com 6 jogadores:** na v2.2 impressa, as 200 partidas de bots aleatórios com 6 jogadores precisaram embaralhar o descarte. Com 4 e 5, nenhuma. Em nenhuma faltou carta, porque bots aleatórios testam muito (32 testes por partida com 6). É coerente com a conta que levou à COR-01, mas bots aleatórios não são jogadores.
+
+### Pendências
+
+- **Do autor:** rever as duas narrações de `docs/exemplos/` e dizer se o motor joga como as regras dizem; criar o repositório no GitHub para a CI rodar.
+- **Antes da Fase 1b:** confirmar as zonas de REQ-01, REQ-08 e REQ-09 e os tempos por ação do modelo de duração (MOD-05).
