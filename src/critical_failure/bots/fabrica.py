@@ -19,6 +19,7 @@ import yaml
 from critical_failure.bots.aleatorio import BotAleatorio
 from critical_failure.bots.base import Bot
 from critical_failure.bots.estrategicos import BotCacador, BotConstrutor, BotHeuristico
+from critical_failure.bots.v1 import BotAleatorioV1, BotCacadorV1, BotConstrutorV1, BotHeuristicoV1
 from critical_failure.nucleo.erros import ConfiguracaoInvalida
 
 PERFIS = Path(__file__).resolve().parents[3] / "configs" / "perfis.yaml"
@@ -29,6 +30,13 @@ TIPOS: dict[str, Callable[..., Bot]] = {
     BotCacador.tipo: BotCacador,
     BotHeuristico.tipo: BotHeuristico,
 }
+TIPOS_V1: dict[str, Callable[..., Bot]] = {
+    BotAleatorioV1.tipo: BotAleatorioV1,
+    BotConstrutorV1.tipo: BotConstrutorV1,
+    BotCacadorV1.tipo: BotCacadorV1,
+    BotHeuristicoV1.tipo: BotHeuristicoV1,
+}
+"""Os mesmos estilos, traduzidos para a v1 (decisão do autor em 2026-11-10)."""
 ESTILOS = (BotConstrutor.tipo, BotCacador.tipo, BotHeuristico.tipo)
 
 
@@ -62,12 +70,16 @@ def resolver(tipo: str, parametros: dict[str, Any] | None) -> dict[str, Any]:
     return resolvidos
 
 
-def criar_bot(tipo: str, parametros: dict[str, Any] | None = None) -> Bot:
-    if tipo not in TIPOS:
-        raise ConfiguracaoInvalida(f"tipo de bot desconhecido: {tipo!r}. Conhecidos: {sorted(TIPOS)}")
+def criar_bot(tipo: str, parametros: dict[str, Any] | None = None, familia: str = "v2") -> Bot:
+    """Cria o bot do tipo pedido para a família de regras (``v2`` ou ``v1``)."""
+    tabela = {"v2": TIPOS, "v1": TIPOS_V1}.get(familia)
+    if tabela is None:
+        raise ConfiguracaoInvalida(f"família de regras desconhecida: {familia!r}")
+    if tipo not in tabela:
+        raise ConfiguracaoInvalida(f"tipo de bot desconhecido na {familia}: {tipo!r}. Conhecidos: {sorted(tabela)}")
     resolvidos = resolver(tipo, parametros)
     try:
-        return TIPOS[tipo](**resolvidos)
+        return tabela[tipo](**resolvidos)
     except (TypeError, ValueError) as erro:
         raise ConfiguracaoInvalida(f"parâmetros inválidos para o bot {tipo!r}: {erro}") from erro
 

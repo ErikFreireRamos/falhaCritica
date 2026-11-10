@@ -39,8 +39,7 @@ from critical_failure.experimentos.config import Experimento, aplicar_mudancas
 from critical_failure.nucleo.canonico import sha256
 from critical_failure.nucleo.erros import ConfiguracaoInvalida, ErroCF
 from critical_failure.partida import jogar_partida
-from critical_failure.regras.config import catalogo_das_regras, ler_regras
-from critical_failure.regras.v2.motor import MotorV2
+from critical_failure.regras.familias import motor_de
 
 RAIZ = registro.RAIZ
 PARTIDAS_POR_LOTE = 250
@@ -49,6 +48,7 @@ ESQUEMA_DO_MANIFEST = "cf-manifest/1"
 ESQUEMA_DA_TABELA = pa.schema(
     [
         ("cenario", pa.string()),
+        ("familia", pa.string()),
         ("partida", pa.int32()),
         ("jogadores", pa.int8()),
         ("placar", pa.list_(pa.int16())),
@@ -61,6 +61,7 @@ ESQUEMA_DA_TABELA = pa.schema(
         ("reembaralhamentos", pa.int16()),
         ("compras_impossiveis", pa.int16()),
         ("reposicoes_impossiveis", pa.int16()),
+        ("placar_no_corte", pa.list_(pa.int16())),
         ("erro", pa.string()),
     ]
 )
@@ -84,6 +85,7 @@ class Lote:
     um_a_cada: int
     pasta_dos_registros: str
     conferir_invariantes: bool
+    familia: str
 
 
 @dataclass(frozen=True)
@@ -96,6 +98,7 @@ class Execucao:
 def _linha_de_falha(lote: Lote, partida: int, erro: Exception) -> dict[str, Any]:
     return {
         "cenario": lote.cenario,
+        "familia": lote.familia,
         "partida": partida,
         "jogadores": len(lote.bots),
         "placar": None,
@@ -108,19 +111,20 @@ def _linha_de_falha(lote: Lote, partida: int, erro: Exception) -> dict[str, Any]
         "reembaralhamentos": None,
         "compras_impossiveis": None,
         "reposicoes_impossiveis": None,
+        "placar_no_corte": None,
         "erro": f"{type(erro).__name__}: {erro}",
     }
 
 
 def rodar_lote(lote: Lote) -> list[dict[str, Any]]:
     """Roda as partidas de um lote e devolve uma linha por partida. Nunca levanta exceção de partida."""
-    regras = ler_regras(lote.regras)
-    motor = MotorV2(regras, catalogo_das_regras(regras, registro.PASTA_CONFIGS))
-    modelo = ler_duracao(lote.duracao) if lote.duracao is not None else None
+    motor = motor_de(lote.regras, registro.PASTA_CONFIGS)
+    # O modelo de duração (MOD-05) só existe para a família v2.
+    modelo = ler_duracao(lote.duracao) if lote.duracao is not None and motor.familia == "v2" else None
     pasta = Path(lote.pasta_dos_registros) / lote.cenario
 
     def novos_bots() -> list[Any]:
-        return [criar_bot(tipo, dict(parametros)) for tipo, parametros in lote.bots]
+        return [criar_bot(tipo, dict(parametros), motor.familia) for tipo, parametros in lote.bots]
 
     def gravar_registro(partida: int, prefixo: str) -> None:
         """Refaz a partida no modo auditado e grava o registro completo."""
@@ -153,6 +157,7 @@ def rodar_lote(lote: Lote) -> list[dict[str, Any]]:
         saida.append(
             {
                 "cenario": lote.cenario,
+                "familia": motor.familia,
                 "partida": partida,
                 "jogadores": resultado.n_jogadores,
                 "placar": list(resultado.placar),
@@ -165,6 +170,7 @@ def rodar_lote(lote: Lote) -> list[dict[str, Any]]:
                 "reembaralhamentos": resultado.vezes("reembaralhamento"),
                 "compras_impossiveis": resultado.vezes("compra_impossivel"),
                 "reposicoes_impossiveis": resultado.vezes("reposicao_impossivel"),
+                "placar_no_corte": list(resultado.placar_no_corte) if resultado.placar_no_corte else None,
                 "erro": None,
             }
         )
@@ -192,17 +198,18 @@ def montar_lotes(experimento: Experimento, pasta_dos_registros: Path) -> tuple[l
     resumos: list[dict[str, Any]] = []
     for cenario in experimento.cenarios_expandidos():
         dados = aplicar_mudancas(_ler_yaml(RAIZ / cenario.regras), cenario.mudancas)
-        regras = ler_regras(dados)
-        catalogo = catalogo_das_regras(regras, registro.PASTA_CONFIGS)
-        MotorV2(regras, catalogo).preparar(cenario.jogadores, experimento.semente_mestre, 0)  # valida o cenário
+        motor = motor_de(dados, registro.PASTA_CONFIGS)
+        regras, catalogo = motor.regras, motor.catalogo
+        motor.preparar(cenario.jogadores, experimento.semente_mestre, 0)  # valida o cenário
         bots = cenario.bots_por_assento()
         for bot in bots:
-            criar_bot(bot.tipo, bot.parametros)  # valida os bots antes de gastar tempo de máquina
+            criar_bot(bot.tipo, bot.parametros, motor.familia)  # valida os bots antes de gastar tempo de máquina
         resumos.append(
             {
                 "nome": cenario.nome,
                 "regras": cenario.regras,
                 "versao": regras.versao,
+                "familia": motor.familia,
                 "mudancas": cenario.mudancas,
                 "config_hash": regras.hash(),
                 "catalogo_hash": catalogo.hash,
@@ -210,6 +217,8 @@ def montar_lotes(experimento: Experimento, pasta_dos_registros: Path) -> tuple[l
                 "partidas": cenario.partidas,
                 "bots": [bot.model_dump(mode="json") for bot in bots],
                 "grupo": cenario.grupo or cenario.nome,
+                "comparar_com": cenario.comparar_com,
+                "celula": cenario.celula,
                 "requisitos": cenario.requisitos,
             }
         )
@@ -227,6 +236,7 @@ def montar_lotes(experimento: Experimento, pasta_dos_registros: Path) -> tuple[l
                     um_a_cada=experimento.registros_completos_um_a_cada,
                     pasta_dos_registros=str(pasta_dos_registros),
                     conferir_invariantes=experimento.conferir_invariantes,
+                    familia=motor.familia,
                 )
             )
     return lotes, resumos
@@ -241,7 +251,13 @@ def executar(
     comando: str = "",
 ) -> Execucao:
     """Roda o experimento inteiro e grava tabela, registros, manifest e relatório."""
-    from critical_failure.metricas.requisitos import avaliar, carregar_requisitos, descrever, vitorias_por_bot
+    from critical_failure.metricas.requisitos import (
+        avaliar,
+        carregar_requisitos,
+        descrever,
+        desequilibrio,
+        vitorias_por_bot,
+    )
     from critical_failure.relatorios.markdown import renderizar
 
     git = registro.info_git()
@@ -307,7 +323,13 @@ def executar(
             for requisito in sorted({m.requisito for m in medidas})
         },
     }
-    relatorio = renderizar(manifest, medidas, descrever(linhas, experimento), vitorias_por_bot(linhas, experimento))
+    relatorio = renderizar(
+        manifest,
+        medidas,
+        descrever(linhas, experimento),
+        vitorias_por_bot(linhas, experimento),
+        desequilibrio(linhas, experimento, requisitos),
+    )
     (pasta / "relatorio.md").write_text(relatorio, encoding="utf-8", newline="\n")
     manifest["arquivos"] = {
         "partidas.parquet": _hash_do_arquivo(caminho_da_tabela),

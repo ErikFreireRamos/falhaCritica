@@ -428,3 +428,66 @@ REQ-09 saiu inconclusivo só porque a fumaça tem 20.000 partidas e o critério 
 - **O Heurístico é o meu primeiro modelo de valor** e perde para o Construtor. Isso diz mais do modelo de valor do que do jogo.
 - **Duração com bots que jogam de verdade:** com 5 jogadores, a mediana foi de cerca de 55 minutos, acima dos 50 do REQ-08, que tinha passado com bots aleatórios (49,2). Bots com estratégia testam mais: 33 testes por partida contra 27,6. Os tempos ainda são provisórios, mas é um alerta para a duração com 5 jogadores.
 - **Baralho com 5 jogadores:** de 0,4% a 3,8% das partidas embaralharam o descarte; em nenhuma faltou carta.
+
+---
+
+## 2026-11-10 — Fase 3: v1 e Experimentos 1 e 2
+
+### Decisões do autor
+
+| Assunto | Opções | Escolha |
+|---|---|---|
+| A dúvida na v1 | a definição pesa; não pesa | **A definição não pesa:** o atacante decide só pelo perfil de contestação; a definição fica só registrada |
+| Estilos na v1 | os quatro, traduzidos; só Aleatório e Caçador | Os quatro, traduzidos |
+| Critério de partida desequilibrada (MET-01) | 1,5 × média dos outros; diferença para o 2º colocado | 1,5 × média dos outros, com 1,25 e 2,0 como sensibilidade. Fixado antes do Experimento 1 |
+| Zona do REQ-02 | v2.2.1 menor por 0,05; só menor; só descrever | Resposta livre: "a v1 não deve ser balanceada, ela deve ser apenas analisada e observada; dito isto, menor por 0,05" |
+
+**Princípio registrado:** a v1 é linha de base. Só é analisada e observada; nunca se propõe ajuste para ela.
+
+### O que foi feito
+
+1. **Regras da v1 em YAML** (`configs/regras_v1.yaml`): baralho da Tabela 3, números do artigo e as decisões AMB-20 a AMB-29.
+2. **Motor da v1** (`regras/v1/`): estado, ações, motor, pontuação pela melhor divisão (AMB-24), observação e invariantes. Mesma interface do motor da v2.
+3. **Núcleo comum:** `regras/familias.py` escolhe o motor pela família declarada no YAML. O laço da partida, o registro de auditoria, o replay, o executor e a linha de comando passaram a servir às duas famílias. Os registros de referência da v2 não mudaram com isso.
+4. **Bots da v1** (`bots/v1.py`): os quatro estilos traduzidos, com os mesmos perfis de blefe e de conhecimento.
+5. **Narração da v1** (`auditoria/narrar_v1.py`). A Folha de registro continua só para a v2.
+6. **Métricas novas no executor e no relatório:** partidas desequilibradas (MET-01), matriz de política de alvo (MET-02) e a vantagem do líder com o veredito do REQ-02.
+7. **Experimentos:** `experimentos/fase3_exp1_validacao_v1.yaml` (85 mil partidas) e `experimentos/fase3_exp2_v1_contra_v2.yaml` (40 mil).
+8. **Testes novos:** 56, com pelo menos um por regra da v1. A matriz de rastreabilidade passou a cobrir as duas versões: 176 de 176 itens.
+9. **Registro de referência da v1** com seis estilos e a narração `docs/exemplos/narracao_v1_estilos_mistos_6_jogadores.txt`.
+
+### Detalhes escolhidos pelo assistente, sem perguntar
+
+**Regras e motor da v1**
+- **Tamanho do par (2 cartas) e do trio (3 cartas)** foram para o YAML e para a especificação (`v1.combinacoes`), para não haver número de regra no código.
+- O parâmetro `v1.blefe_aceito` da especificação passou a se chamar `v1.interpretacoes.blefe_aceito`, como no YAML.
+- **Fluxo da dúvida:** depois da declaração, o atacante escolhe aceitar ou duvidar; depois da definição, aceitar ou contestar. Aceitar sem duvidar e aceitar depois da definição dão o mesmo resultado.
+- **Informação pública:** a carta de ataque que vai para o sistema do defensor fica conhecida pela mesa. Depois de uma carta tirada ao acaso de um sistema, a mesa deixa de saber quais cartas conhecidas continuam nele.
+- **REQ-02 na v1:** o ponto de corte é quando todos fizeram o primeiro teste, e o placar ali é o número de cartas no sistema.
+
+**Bots da v1**
+- Construtor, Caçador e Heurístico montam o sistema de 3 cartas que mais pontua (empate sorteado).
+- O defensor que tem a cor sempre declara que tem; sem a cor, blefa com a chance do perfil.
+- Com o perfil "nunca contesta", o bot nem duvida; com os outros, sempre duvida, porque duvidar não custa nada.
+- O Caçador escolhe o alvo pela política e a carta ao acaso. O Construtor escolhe carta e alvo ao acaso.
+- **Heurístico da v1:** valor = chance de o alvo não ter a cor × (1 + 1/(N − 1)) − (chance de ter) × 1/(N − 1). A Critical Failure vale uma carta certa. O desconto do futuro não é usado na v1.
+- O limiar de contestação da v1 sai dos números da v1, pela mesma conta de R-7.3.5: 1 / (1 + 2) = 1/3.
+
+**Métricas e experimentos**
+- **MET-01:** "os demais" são todos menos o primeiro colocado; partida com placar zerado não conta como desequilibrada.
+- **REQ-02:** só entram partidas com um líder isolado no corte. A vantagem é a média da fração de vitória do líder menos 1/N, e o intervalo da diferença entre v1 e v2.2.1 vem de bootstrap com as duas amostras independentes.
+- **Experimento 1:** mesas de 6. Matriz 3 × 3 com um Caçador foco contra cinco Caçadores com outra política, rodízio de assentos, 6.000 partidas por célula. Cinco populações de bots idênticos (5.000 partidas cada) e uma mesa mista (6.000).
+- **Experimento 2:** mesas mistas de 4 e 5 jogadores nas duas versões, com a mesma formação da fumaça da Fase 2, rodízio de assentos e as mesmas sementes. 10.000 partidas por versão e por tamanho de mesa.
+- Todos com conhecimento experiente, blefe moderado e contestação pelo limiar, como na Fase 2.
+
+### Defeitos achados e corrigidos durante a fase
+
+Os dois foram apontados pelos invariantes na primeira fumaça da v1:
+- **Carta contada duas vezes:** numa defesa bem-sucedida, a carta de ataque já estava no sistema do defensor, mas a disputa ainda apontava para ela até fechar. A disputa agora marca que a carta foi entregue.
+- **Fim antes do vencedor:** a fase passava a "fim" antes de o vencedor ser definido, e os eventos de pontuação no meio ficavam num estado incoerente.
+
+### Verificação
+
+- `uv run pytest`: 383 testes passam e 1 é pulado. `ruff` e `mypy` estrito sem apontamentos. Matriz: 176 de 176.
+- Fumaça da v1: 600 partidas com os invariantes conferidos a cada evento; replay nos dois modos.
+- Narração de uma partida da v1 lida por inteiro: declaração, dúvida, definição, contestação, cartas tiradas ao acaso e pontuação seguem o artigo e as decisões AMB-20 a AMB-29.

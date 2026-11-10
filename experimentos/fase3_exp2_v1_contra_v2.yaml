@@ -1,0 +1,65 @@
+# Fase 3, Experimento 2: v1 contra v2.2.1 com os mesmos estilos de bot e as mesmas sementes.
+#
+# REQ-02 (anti bola de neve): a vantagem do líder no ponto de corte precisa cair pelo
+# menos 0,05 da v1 para a v2.2.1 (zona confirmada pelo autor em 2026-11-10). Corte na
+# v2.2.1: fim do ciclo 1, em fichas. Na v1: quando todos fizeram o primeiro teste, em
+# cartas no sistema. Mesas de 4 e 5 (AMB-27), mistas, com rodízio de assentos.
+
+esquema: cf-experimento/1
+nome: fase3_exp2_v1_contra_v2
+descricao: >
+  v1 contra v2.2.1 em mesas mistas de 4 e 5 jogadores, com os mesmos estilos
+  (Aleatório, Construtor, Caçador e Heurístico; com 5 jogadores, dois Caçadores),
+  todos experientes, blefe moderado e contestação pelo limiar. Mede a vantagem do
+  líder (REQ-02), as partidas desequilibradas (MET-01) e a vitória por estilo (MET-07).
+semente_mestre: 20261113
+duracao: configs/duracao.yaml
+registros_completos_um_a_cada: 1000
+
+cenarios:
+  - nome: v1_com_4_jogadores
+    regras: configs/regras_v1.yaml
+    jogadores: 4
+    partidas: 2500   # por rotação: 4 rotações, 10000 partidas
+    rodizio: true
+    bots:
+      - {tipo: aleatorio, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: construtor, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: cacador, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: heuristico, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+  - nome: v2_2_1_com_4_jogadores
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2500   # por rotação: 4 rotações, 10000 partidas
+    rodizio: true
+    comparar_com: v1_com_4_jogadores
+    requisitos: [REQ-02]
+    bots:
+      - {tipo: aleatorio, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: construtor, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: cacador, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: heuristico, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+  - nome: v1_com_5_jogadores
+    regras: configs/regras_v1.yaml
+    jogadores: 5
+    partidas: 2000   # por rotação: 5 rotações, 10000 partidas
+    rodizio: true
+    bots:
+      - {tipo: aleatorio, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: construtor, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: cacador, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: heuristico, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+  - nome: v2_2_1_com_5_jogadores
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000   # por rotação: 5 rotações, 10000 partidas
+    rodizio: true
+    comparar_com: v1_com_5_jogadores
+    requisitos: [REQ-02]
+    bots:
+      - {tipo: aleatorio, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: construtor, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: cacador, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: heuristico, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}

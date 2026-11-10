@@ -62,6 +62,25 @@ def intervalo_por_bootstrap(
     return float(baixo), float(alto)
 
 
+def intervalo_da_diferenca(
+    a: NDArray[np.float64],
+    b: NDArray[np.float64],
+    rng: np.random.Generator,
+    reamostras: int = 1000,
+    confianca: float = 0.95,
+) -> Intervalo:
+    """Intervalo percentil por bootstrap para média(a) - média(b), com as duas amostras independentes."""
+    if a.size == 0 or b.size == 0:
+        raise ValueError("não há valores para o bootstrap")
+    diferencas = [
+        float(np.mean(a[rng.integers(0, a.size, a.size)]) - np.mean(b[rng.integers(0, b.size, b.size)]))
+        for _ in range(reamostras)
+    ]
+    cauda = (1 - confianca) / 2
+    baixo, alto = np.quantile(np.array(diferencas), [cauda, 1 - cauda])
+    return float(baixo), float(alto)
+
+
 def veredito(intervalo: Intervalo, zona: Intervalo) -> str:
     """Compara o intervalo de confiança com a zona de aceite."""
     baixo, alto = intervalo

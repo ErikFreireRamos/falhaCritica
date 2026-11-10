@@ -1,0 +1,68 @@
+# Critical Failure v1, como publicada no artigo do SBQS 2025 (seção 4.3 e Tabela 3).
+# Texto das regras: regras/v1.md. Especificação: docs/especificacao_v1.md.
+#
+# A v1 é linha de base: só é analisada e observada, nunca ajustada
+# (decisão do autor em 2026-11-10). Todo número de regra está aqui, com a regra
+# ao lado; nenhum deles pode aparecer no código.
+
+esquema: cf-regras/1
+familia: v1
+versao: v1
+texto: regras/v1.md
+correcoes: []
+
+jogadores:
+  minimo: {valor: 3, regra: V1-T2.2}
+  maximo: {valor: 8, regra: V1-T2.2}
+atributos: {valor: 6, regra: V1-4.1.1}
+
+baralho:
+  cartas: {valor: 54, regra: V1-T2.1}
+  # Tabela 3 do artigo, como impressa e jogada (AMB-21). Um teste é o par
+  # atributo e nome (AMB-26): "Stress" de Usabilidade não é o de Desempenho.
+  testes:
+    - {atributo: Eficiência de Desempenho, teste: Load, copias: 3, regra: V1-T3.1}
+    - {atributo: Eficiência de Desempenho, teste: Stress, copias: 3, regra: V1-T3.2}
+    - {atributo: Eficiência de Desempenho, teste: Scalability, copias: 3, regra: V1-T3.3}
+    - {atributo: Compatibilidade, teste: Coexistence, copias: 3, regra: V1-T3.4}
+    - {atributo: Compatibilidade, teste: Interoperability, copias: 3, regra: V1-T3.5}
+    - {atributo: Confiabilidade, teste: Recovery, copias: 3, regra: V1-T3.6}
+    - {atributo: Confiabilidade, teste: Fault Tolerance, copias: 3, regra: V1-T3.7}
+    - {atributo: Confiabilidade, teste: ScalabilityAvailability, copias: 3, regra: V1-T3.8}
+    - {atributo: Segurança, teste: Confidentiality, copias: 3, regra: V1-T3.9}
+    - {atributo: Segurança, teste: Authentication, copias: 3, regra: V1-T3.10}
+    - {atributo: Segurança, teste: Non-Repudiation, copias: 3, regra: V1-T3.11}
+    - {atributo: Portabilidade, teste: Adaptability, copias: 3, regra: V1-T3.12}
+    - {atributo: Portabilidade, teste: Installability, copias: 3, regra: V1-T3.13}
+    - {atributo: Portabilidade, teste: Replaceability, copias: 3, regra: V1-T3.14}
+    - {atributo: Usabilidade, teste: A/B, copias: 3, regra: V1-T3.15}
+    - {atributo: Usabilidade, teste: Stress, copias: 3, regra: V1-T3.16}
+    - {atributo: Usabilidade, teste: Scalability, copias: 3, regra: V1-T3.17}
+    - {atributo: Especial, teste: Critical Failure, copias: 3, regra: V1-T3.18, especial: true}
+
+mao_inicial: {valor: 6, regra: V1-4.3.1}
+sistema_inicial: {valor: 3, regra: V1-4.3.3}
+cartas_de_teste: {valor: 3, regra: V1-4.3.3}
+
+falha:
+  cartas_tomadas: {valor: 1, regra: V1-4.3.6}
+contestacao_verdade:
+  cartas_tomadas: {valor: 1, regra: V1-4.3.11}
+contestacao_blefe:
+  cartas_extras: {valor: 1, regra: V1-4.3.12}
+
+pontos:
+  carta: {valor: 1, regra: V1-4.3.15}
+  par: {valor: 2, regra: V1-4.3.16}
+  trio: {valor: 2, regra: V1-4.3.17}
+combinacoes:
+  cartas_no_par: {valor: 2, regra: V1-4.3.16}
+  cartas_no_trio: {valor: 3, regra: V1-4.3.17}
+
+# Decisões do autor sobre pontos ambíguos (docs/AMBIGUIDADES.md).
+interpretacoes:
+  blefe_aceito: {valor: declaracao, regra: AMB-20}
+  carta_de_ataque_apos_falha: {valor: descarte, regra: AMB-23}
+  pontuacao_combinacoes: {valor: particao, regra: AMB-24}
+  alvo_com_sistema_vazio: {valor: true, regra: AMB-25}
+  empate: {valor: dividido, regra: AMB-29}

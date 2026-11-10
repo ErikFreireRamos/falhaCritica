@@ -20,6 +20,8 @@ from critical_failure.metricas.estatistica import (
     INCONCLUSIVO,
     PASSA,
     Intervalo,
+    intervalo_da_diferenca,
+    intervalo_de_wilson,
     intervalo_por_bootstrap,
     veredito,
 )
@@ -29,8 +31,12 @@ FLUXO_DO_BOOTSTRAP = 900_000
 """Fluxo de aleatoriedade do bootstrap, separado dos fluxos das partidas."""
 
 EQUIDADE_DE_ASSENTO = "REQ-01"
+ANTI_BOLA_DE_NEVE = "REQ-02"
 DURACAO = "REQ-08"
 ROBUSTEZ = "REQ-09"
+DESEQUILIBRIO = "MET-01"
+ARTIGO_DESEQUILIBRADAS = (4, 6)
+"""Artigo, seção 4.4: 4 das 6 partidas foram vencidas por pontuação bem maior que a dos outros."""
 
 
 @dataclass(frozen=True, slots=True)
@@ -160,10 +166,123 @@ def avaliar(
             criterio = _criterio(requisitos, DURACAO)
             if criterio is not None:
                 medidas += _duracao(cenario, indice, validas, criterio, experimento.semente_mestre)
+    criterio = _criterio(requisitos, ANTI_BOLA_DE_NEVE)
+    if criterio is not None:
+        medidas += _anti_bola_de_neve(linhas, experimento, criterio)
     criterio = _criterio(requisitos, ROBUSTEZ)
     if criterio is not None:
         medidas.append(_robustez(linhas, criterio))
     return medidas
+
+
+def grupos(experimento: Experimento) -> dict[str, list[Cenario]]:
+    """Os cenários de cada grupo (as rotações de um rodízio formam um grupo), na ordem do arquivo."""
+    resultado: dict[str, list[Cenario]] = {}
+    for cenario in experimento.cenarios_expandidos():
+        resultado.setdefault(cenario.grupo or cenario.nome, []).append(cenario)
+    return resultado
+
+
+def _validas_do_grupo(linhas: list[dict[str, Any]], cenarios: list[Cenario]) -> list[dict[str, Any]]:
+    nomes = {cenario.nome for cenario in cenarios}
+    return [linha for linha in linhas if linha["cenario"] in nomes and linha["erro"] is None]
+
+
+def amostra_do_lider(linhas: list[dict[str, Any]]) -> np.ndarray[Any, np.dtype[np.float64]]:
+    """Para cada partida com líder isolado no corte: 1 se ele venceu, 1/k numa vitória dividida, 0 se perdeu."""
+    valores: list[float] = []
+    for linha in linhas:
+        corte = linha.get("placar_no_corte")
+        if not corte:
+            continue
+        maximo = max(corte)
+        lideres = [assento for assento, valor in enumerate(corte) if valor == maximo]
+        if len(lideres) != 1:
+            continue
+        vencedores = linha["vencedores"]
+        valores.append(1 / len(vencedores) if lideres[0] in vencedores else 0.0)
+    return np.array(valores, dtype=np.float64)
+
+
+def _anti_bola_de_neve(
+    linhas: list[dict[str, Any]], experimento: Experimento, criterio: dict[str, Any]
+) -> list[Medida]:
+    """REQ-02: a vantagem do líder, P(vencer | líder isolado no corte) - 1/N, cai pelo menos a margem da v1 à v2."""
+    por_grupo = grupos(experimento)
+    medidas: list[Medida] = []
+    for indice, (grupo, cenarios) in enumerate(por_grupo.items()):
+        base = cenarios[0].comparar_com
+        if ANTI_BOLA_DE_NEVE not in cenarios[0].requisitos or base is None:
+            continue
+        if base not in por_grupo:
+            raise ConfiguracaoInvalida(f"o cenário {grupo} compara com {base}, que não existe no experimento")
+        n_novo, n_base = cenarios[0].jogadores, por_grupo[base][0].jogadores
+        novo = amostra_do_lider(_validas_do_grupo(linhas, cenarios))
+        antigo = amostra_do_lider(_validas_do_grupo(linhas, por_grupo[base]))
+        if novo.size == 0 or antigo.size == 0:
+            continue
+        rng = _rng(experimento.semente_mestre, 20_000 + indice)
+        vantagem_antiga = antigo - 1 / n_base
+        vantagem_nova = novo - 1 / n_novo
+        intervalo = intervalo_da_diferenca(vantagem_antiga, vantagem_nova, rng)
+        margem = float(criterio["margem"])
+        diferenca = float(vantagem_antiga.mean() - vantagem_nova.mean())
+        medidas.append(
+            Medida(
+                requisito=ANTI_BOLA_DE_NEVE,
+                cenario=grupo,
+                o_que=f"vantagem do líder em {base} menos a vantagem em {grupo}",
+                valor=diferenca,
+                intervalo=intervalo,
+                zona=(margem, 1.0),
+                veredito=veredito(intervalo, (margem, 1.0)),
+                partidas=int(novo.size + antigo.size),
+                nota=(
+                    f"vantagem do líder: {base} {float(vantagem_antiga.mean()):.3f} "
+                    f"({antigo.size} partidas com líder isolado); {grupo} {float(vantagem_nova.mean()):.3f} "
+                    f"({novo.size} partidas)"
+                ),
+            )
+        )
+    return medidas
+
+
+def desequilibrio(
+    linhas: list[dict[str, Any]], experimento: Experimento, requisitos: dict[str, dict[str, Any]]
+) -> list[dict[str, Any]]:
+    """MET-01: fração de partidas em que o vencedor tem pelo menos ``fator`` vezes a média dos demais.
+
+    Sem veredito: a métrica é comparada com as 4 de 6 do artigo só como checagem de plausibilidade.
+    """
+    criterio = _criterio(requisitos, DESEQUILIBRIO)
+    if criterio is None:
+        return []
+    fatores = [float(criterio["fator"]), *(float(f) for f in criterio.get("sensibilidade", []))]
+    resultado: list[dict[str, Any]] = []
+    for grupo, cenarios in grupos(experimento).items():
+        validas = _validas_do_grupo(linhas, cenarios)
+        if not validas:
+            continue
+        for posicao, fator in enumerate(fatores):
+            desequilibradas = 0
+            for linha in validas:
+                placar = sorted(linha["placar"], reverse=True)
+                media_dos_outros = sum(placar[1:]) / (len(placar) - 1)
+                if placar[0] >= fator * media_dos_outros and placar[0] > 0:
+                    desequilibradas += 1
+            resultado.append(
+                {
+                    "grupo": grupo,
+                    "familia": validas[0]["familia"],
+                    "jogadores": cenarios[0].jogadores,
+                    "partidas": len(validas),
+                    "fator": fator,
+                    "principal": posicao == 0,
+                    "proporcao": desequilibradas / len(validas),
+                    "intervalo": intervalo_de_wilson(desequilibradas, len(validas)),
+                }
+            )
+    return resultado
 
 
 def descrever(linhas: list[dict[str, Any]], experimento: Experimento) -> list[dict[str, Any]]:
@@ -175,8 +294,10 @@ def descrever(linhas: list[dict[str, Any]], experimento: Experimento) -> list[di
         if not validas:
             descricoes.append({"cenario": cenario.nome, "partidas": len(do_cenario), "falhas": len(do_cenario)})
             continue
-        minutos = np.array([linha["duracao_s"] / 60 for linha in validas])
-        p10, p50, p90 = (float(x) for x in np.quantile(minutos, [0.1, 0.5, 0.9]))
+        p10 = p50 = p90 = None
+        if all(linha["duracao_s"] is not None for linha in validas):
+            minutos = np.array([linha["duracao_s"] / 60 for linha in validas])
+            p10, p50, p90 = (float(x) for x in np.quantile(minutos, [0.1, 0.5, 0.9]))
         descricoes.append(
             {
                 "cenario": cenario.nome,
@@ -188,6 +309,11 @@ def descrever(linhas: list[dict[str, Any]], experimento: Experimento) -> list[di
                 "partidas_com_reembaralhamento": float(np.mean([linha["reembaralhamentos"] > 0 for linha in validas])),
                 "partidas_com_compra_impossivel": float(
                     np.mean([linha["compras_impossiveis"] + linha["reposicoes_impossiveis"] > 0 for linha in validas])
+                ),
+                "vantagem_do_lider": (
+                    float(amostra.mean() - 1 / cenario.jogadores)
+                    if (amostra := amostra_do_lider(validas)).size
+                    else None
                 ),
                 "fichas_do_vencedor": float(np.mean([max(linha["placar"]) for linha in validas])),
                 "fichas_medias": float(np.mean([np.mean(linha["placar"]) for linha in validas])),

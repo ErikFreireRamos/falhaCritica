@@ -54,6 +54,10 @@ class Cenario(_Base):
     ``partidas`` vale para cada rotação. Exige um bot por assento."""
     grupo: str | None = None
     """Preenchido no rodízio: o nome do cenário de origem, para os relatórios somarem as rotações."""
+    comparar_com: str | None = None
+    """REQ-02: o grupo de referência (a v1) com que este grupo é comparado."""
+    celula: list[str] | None = None
+    """MET-02: linha e coluna deste grupo na matriz de políticas de alvo (política do foco, política dos outros)."""
 
     @model_validator(mode="after")
     def _coerencia(self) -> Cenario:

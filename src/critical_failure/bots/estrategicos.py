@@ -98,8 +98,8 @@ class BotEstrategico:
     def parametros(self) -> dict[str, Any]:
         return {"conhecimento": dict(self._conhecimento), "blefe": self._blefe, "contestacao": self._contestacao}
 
-    def iniciar(self, semente: int, partida: int, assento: int, mesa: MesaPublica | None = None) -> None:
-        if mesa is None:
+    def iniciar(self, semente: int, partida: int, assento: int, mesa: Any = None) -> None:
+        if not isinstance(mesa, MesaPublica):
             raise ValueError(f"o bot {self.tipo} precisa da mesa pública para jogar")
         self._mesa = mesa
         self._origem = (semente, partida, assento)

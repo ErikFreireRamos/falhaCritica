@@ -19,6 +19,7 @@ import numpy as np
 
 from critical_failure.nucleo.catalogo import Catalogo
 from critical_failure.regras.config import RegrasV2
+from critical_failure.regras.v1.motor import MotorV1
 from critical_failure.regras.v2.motor import MotorV2
 
 MIL = 1000
@@ -102,3 +103,27 @@ class MesaPublica:
 def mesa_do_motor(motor: MotorV2) -> MesaPublica:
     """A mesa pública de um motor, montada uma vez só."""
     return MesaPublica(motor.regras, motor.catalogo)
+
+
+class MesaPublicaV1:
+    """Regras e composição do baralho da v1 (Tabela 3), como um jogador conhece antes de jogar."""
+
+    def __init__(self, motor: MotorV1) -> None:
+        self.regras = motor.regras
+        self.tabela = motor.tabela
+        catalogo = motor.catalogo
+        self.atributos = catalogo.atributos
+        self.especiais = catalogo.especiais
+        self.atributo = dict(catalogo.atributo)
+        self.copias: dict[str, int] = {}
+        for nome in catalogo.cartas:
+            self.copias[nome] = self.copias.get(nome, 0) + 1
+        self.total_de_cartas = len(catalogo.cartas)
+
+
+@lru_cache(maxsize=16)
+def mesa_para(motor: MotorV2 | MotorV1) -> MesaPublica | MesaPublicaV1:
+    """A mesa pública certa para a família do motor, montada uma vez só."""
+    if isinstance(motor, MotorV1):
+        return MesaPublicaV1(motor)
+    return mesa_do_motor(motor)

@@ -1,0 +1,147 @@
+Critical Failure v1 | partida 4 | semente 2026 | 6 jogadores
+Jogadores, em sentido horário: Ana (aleatorio), Bruno (construtor), Carla (cacador), Davi (cacador), Elisa (cacador), Fábio (heuristico).
+O que aparece entre colchetes estava oculto na mesa.
+
+Ana compra 6 cartas [Interoperability (Compatibilidade), A/B (Usabilidade), Non-Repudiation (Segurança), ScalabilityAvailability (Confiabilidade), Recovery (Confiabilidade), Adaptability (Portabilidade)].
+Bruno compra 6 cartas [ScalabilityAvailability (Confiabilidade), Coexistence (Compatibilidade), Authentication (Segurança), Scalability (Usabilidade), Confidentiality (Segurança), Load (Eficiência de Desempenho)].
+Carla compra 6 cartas [Scalability (Usabilidade), Installability (Portabilidade), Coexistence (Compatibilidade), Load (Eficiência de Desempenho), Scalability (Usabilidade), Authentication (Segurança)].
+Davi compra 6 cartas [Coexistence (Compatibilidade), Critical Failure, Critical Failure, Confidentiality (Segurança), Interoperability (Compatibilidade), Replaceability (Portabilidade)].
+Elisa compra 6 cartas [Fault Tolerance (Confiabilidade), Interoperability (Compatibilidade), Adaptability (Portabilidade), Recovery (Confiabilidade), Stress (Usabilidade), Critical Failure].
+Fábio compra 6 cartas [Adaptability (Portabilidade), Fault Tolerance (Confiabilidade), Fault Tolerance (Confiabilidade), Installability (Portabilidade), Installability (Portabilidade), Scalability (Eficiência de Desempenho)].
+
+== Montagem dos sistemas ==
+Ordem de jogo: Ana, Bruno, Carla, Davi, Elisa, Fábio.
+Ana monta o sistema com 3 cartas [Interoperability (Compatibilidade), Non-Repudiation (Segurança), Recovery (Confiabilidade)].
+Bruno monta o sistema com 3 cartas [Load (Eficiência de Desempenho), Scalability (Usabilidade), ScalabilityAvailability (Confiabilidade)].
+Carla monta o sistema com 3 cartas [Authentication (Segurança), Load (Eficiência de Desempenho), Scalability (Usabilidade)].
+Davi monta o sistema com 3 cartas [Coexistence (Compatibilidade), Interoperability (Compatibilidade), Replaceability (Portabilidade)].
+Elisa monta o sistema com 3 cartas [Adaptability (Portabilidade), Fault Tolerance (Confiabilidade), Stress (Usabilidade)].
+Fábio monta o sistema com 3 cartas [Adaptability (Portabilidade), Fault Tolerance (Confiabilidade), Installability (Portabilidade)].
+
+== Rodada 1 de testes ==
+Ana testa Elisa com Adaptability (Portabilidade).
+  Elisa declara que tem a cor [tem a cor].
+  Ana duvida.
+  Elisa dá a definição de um teste [errada].
+  Ana contesta. A carta Adaptability (Portabilidade) é revelada: era verdade.
+  Defesa bem-sucedida: Elisa fica com Adaptability (Portabilidade) no sistema.
+  Como punição pela contestação errada, Elisa tira uma carta do sistema do atacante.
+  Elisa tira ao acaso uma carta do sistema de Ana [Non-Repudiation (Segurança)].
+  Resultado: contestação errada: era verdade.
+Bruno testa Fábio com Confidentiality (Segurança).
+  Fábio declara que não tem a cor.
+  Falha encontrada (declarou que não tem).
+  Bruno tira ao acaso uma carta do sistema de Fábio [Installability (Portabilidade)].
+  Resultado: falha encontrada.
+Carla testa Elisa com Coexistence (Compatibilidade).
+  Elisa declara que não tem a cor.
+  Falha encontrada (declarou que não tem).
+  Carla tira ao acaso uma carta do sistema de Elisa [Fault Tolerance (Confiabilidade)].
+  Resultado: falha encontrada.
+Davi testa Fábio com Critical Failure.
+  É a carta Critical Failure: falha automática, sem defesa.
+  Davi tira ao acaso uma carta do sistema de Fábio [Adaptability (Portabilidade)].
+  Resultado: falha automática da Critical Failure.
+Elisa testa Fábio com Interoperability (Compatibilidade).
+  Fábio declara que não tem a cor.
+  Falha encontrada (declarou que não tem).
+  Elisa tira ao acaso uma carta do sistema de Fábio [Fault Tolerance (Confiabilidade)].
+  Resultado: falha encontrada.
+Fábio testa Carla com Installability (Portabilidade).
+  Carla declara que tem a cor [não tem a cor: é blefe].
+  Fábio duvida.
+  Carla dá a definição de um teste [certa].
+  Fábio contesta. Não há carta da cor: era blefe.
+  Fábio tira ao acaso uma carta do sistema de Carla [Scalability (Usabilidade)].
+  Fábio tira ao acaso uma carta do sistema de Carla [Fault Tolerance (Confiabilidade)].
+  Resultado: contestação certa: era blefe.
+
+== Rodada 2 de testes ==
+Ana testa Bruno com A/B (Usabilidade).
+  Bruno declara que tem a cor [tem a cor].
+  Ana duvida.
+  Bruno dá a definição de um teste [certa].
+  Ana aceita a declaração.
+  Defesa bem-sucedida: Bruno fica com A/B (Usabilidade) no sistema.
+  Resultado: defesa bem-sucedida.
+Bruno testa Fábio com Authentication (Segurança).
+  Fábio declara que tem a cor [não tem a cor: é blefe].
+  Bruno duvida.
+  Fábio dá a definição de um teste [certa].
+  Bruno contesta. Não há carta da cor: era blefe.
+  Bruno tira ao acaso uma carta do sistema de Fábio [Scalability (Usabilidade)].
+  Bruno tira ao acaso uma carta do sistema de Fábio [Fault Tolerance (Confiabilidade)].
+  Resultado: contestação certa: era blefe.
+Carla testa Bruno com Installability (Portabilidade).
+  Bruno declara que tem a cor [tem a cor].
+  Carla duvida.
+  Bruno dá a definição de um teste [certa].
+  Carla aceita a declaração.
+  Defesa bem-sucedida: Bruno fica com Installability (Portabilidade) no sistema.
+  Resultado: defesa bem-sucedida.
+Davi testa Fábio com Confidentiality (Segurança).
+  Fábio declara que não tem a cor.
+  Falha encontrada (declarou que não tem).
+  O sistema de Fábio está vazio: não há carta para tirar.
+  Resultado: falha encontrada.
+Elisa testa Carla com Recovery (Confiabilidade).
+  Carla declara que não tem a cor.
+  Falha encontrada (declarou que não tem).
+  Elisa tira ao acaso uma carta do sistema de Carla [Load (Eficiência de Desempenho)].
+  Resultado: falha encontrada.
+Fábio testa Carla com Scalability (Eficiência de Desempenho).
+  Carla declara que não tem a cor.
+  Falha encontrada (declarou que não tem).
+  Fábio tira ao acaso uma carta do sistema de Carla [Authentication (Segurança)].
+  Resultado: falha encontrada.
+
+== Rodada 3 de testes ==
+Ana testa Davi com ScalabilityAvailability (Confiabilidade).
+  Davi declara que tem a cor [não tem a cor: é blefe].
+  Ana aceita a declaração.
+  Defesa bem-sucedida: Davi fica com ScalabilityAvailability (Confiabilidade) no sistema.
+  Resultado: defesa bem-sucedida.
+Bruno testa Davi com Coexistence (Compatibilidade).
+  Davi declara que tem a cor [tem a cor].
+  Bruno duvida.
+  Davi dá a definição de um teste [certa].
+  Bruno contesta. A carta Coexistence (Compatibilidade) é revelada: era verdade.
+  Defesa bem-sucedida: Davi fica com Coexistence (Compatibilidade) no sistema.
+  Como punição pela contestação errada, Davi tira uma carta do sistema do atacante.
+  Davi tira ao acaso uma carta do sistema de Bruno [ScalabilityAvailability (Confiabilidade)].
+  Resultado: contestação errada: era verdade.
+Carla testa Davi com Scalability (Usabilidade).
+  Davi declara que tem a cor [não tem a cor: é blefe].
+  Carla duvida.
+  Davi dá a definição de um teste [certa].
+  Carla contesta. Não há carta da cor: era blefe.
+  Carla tira ao acaso uma carta do sistema de Davi [ScalabilityAvailability (Confiabilidade)].
+  Carla tira ao acaso uma carta do sistema de Davi [Coexistence (Compatibilidade)].
+  Resultado: contestação certa: era blefe.
+Davi testa Fábio com Critical Failure.
+  É a carta Critical Failure: falha automática, sem defesa.
+  Davi tira ao acaso uma carta do sistema de Fábio [Authentication (Segurança)].
+  Resultado: falha automática da Critical Failure.
+Elisa testa Davi com Critical Failure.
+  É a carta Critical Failure: falha automática, sem defesa.
+  Elisa tira ao acaso uma carta do sistema de Davi [Authentication (Segurança)].
+  Resultado: falha automática da Critical Failure.
+Fábio testa Carla com Fault Tolerance (Confiabilidade).
+  Carla declara que tem a cor [tem a cor].
+  Fábio duvida.
+  Carla dá a definição de um teste [certa].
+  Fábio contesta. A carta ScalabilityAvailability (Confiabilidade) é revelada: era verdade.
+  Defesa bem-sucedida: Carla fica com Fault Tolerance (Confiabilidade) no sistema.
+  Como punição pela contestação errada, Carla tira uma carta do sistema do atacante.
+  O sistema de Fábio está vazio: não há carta para tirar.
+  Resultado: contestação errada: era verdade.
+
+== Revelação e pontuação ==
+Ana revela o sistema: Interoperability (Compatibilidade), Recovery (Confiabilidade). 2 carta(s), 0 par(es), 0 trio(s): 2 pontos.
+Bruno revela o sistema: Load (Eficiência de Desempenho), Scalability (Usabilidade), Installability (Portabilidade), A/B (Usabilidade), Scalability (Usabilidade), Fault Tolerance (Confiabilidade), Installability (Portabilidade). 7 carta(s), 1 par(es), 1 trio(s): 11 pontos.
+Carla revela o sistema: ScalabilityAvailability (Confiabilidade), Coexistence (Compatibilidade), Fault Tolerance (Confiabilidade). 3 carta(s), 1 par(es), 0 trio(s): 5 pontos.
+Davi revela o sistema: Interoperability (Compatibilidade), Replaceability (Portabilidade), Adaptability (Portabilidade), ScalabilityAvailability (Confiabilidade), Coexistence (Compatibilidade). 5 carta(s), 2 par(es), 0 trio(s): 9 pontos.
+Elisa revela o sistema: Adaptability (Portabilidade), Stress (Usabilidade), Adaptability (Portabilidade), Non-Repudiation (Segurança), Fault Tolerance (Confiabilidade), Load (Eficiência de Desempenho), Authentication (Segurança). 7 carta(s), 1 par(es), 1 trio(s): 11 pontos.
+Fábio revela o sistema: vazio. 0 carta(s), 0 par(es), 0 trio(s): 0 pontos.
+
+Placar final: Ana 2, Bruno 11, Carla 5, Davi 9, Elisa 11, Fábio 0. Vence: Bruno e Elisa (vitória dividida).

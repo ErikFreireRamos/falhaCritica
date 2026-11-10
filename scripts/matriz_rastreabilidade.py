@@ -1,4 +1,4 @@
-"""Matriz de rastreabilidade: regra da especificação -> código -> testes.
+"""Matriz de rastreabilidade: regra da especificação (v2.2.1 e v1) -> código -> testes.
 
 Uso:
     uv run python scripts/matriz_rastreabilidade.py            # escreve docs/MATRIZ_RASTREABILIDADE.md
@@ -17,17 +17,17 @@ import re
 import sys
 from collections import defaultdict
 
-from verificar_especificacao import ESPEC_V2, PADRAO_R, RAIZ, ler_tabelas
+from verificar_especificacao import ESPEC_V1, ESPEC_V2, PADRAO_R, PADRAO_V1, RAIZ, ler_tabelas
 
 DESTINO = RAIZ / "docs" / "MATRIZ_RASTREABILIDADE.md"
 TIPOS_COM_TESTE = {"regra", "definicao", "componente", "revogada"}
-RE_REGRA = re.compile(rf"(?<![\w-])({PADRAO_R})(?![\w])")
+RE_REGRA = re.compile(rf"(?<![\w-])({PADRAO_R}|{PADRAO_V1})(?![\w])")
 
 
 def itens_da_especificacao() -> dict[str, tuple[str, str]]:
     """``{id: (tipo, texto)}`` de todas as tabelas de regras da especificação da v2.2."""
     itens: dict[str, tuple[str, str]] = {}
-    for cabecalho, linhas in ler_tabelas(ESPEC_V2):
+    for cabecalho, linhas in ler_tabelas(ESPEC_V2) + ler_tabelas(ESPEC_V1):
         if "ID" in cabecalho and "Tipo" in cabecalho and "Regra" in cabecalho:
             for linha in linhas:
                 itens[linha["ID"]] = (linha["Tipo"], linha["Regra"])
@@ -92,11 +92,12 @@ def renderizar() -> str:
     exigem = [ident for ident, (tipo, _) in itens.items() if tipo in TIPOS_COM_TESTE]
     cobertos = [ident for ident in exigem if testes.get(ident)]
     linhas = [
-        "# Matriz de rastreabilidade — v2.2.1",
+        "# Matriz de rastreabilidade — v2.2.1 e v1",
         "",
         "Gerada por `scripts/matriz_rastreabilidade.py`. Não edite à mão.",
         "",
-        "Para cada item de `docs/especificacao_v2_2.md`: onde o código o cita e quais testes o cobrem. "
+        "Para cada item de `docs/especificacao_v2_2.md` e `docs/especificacao_v1.md`: "
+        "onde o código o cita e quais testes o cobrem. "
         "Itens dos tipos `regra`, `definicao`, `componente` e `revogada` precisam de pelo menos um teste "
         "marcado com `@pytest.mark.regra`. Itens `mesa` e `nota` não são mecânica do motor.",
         "",

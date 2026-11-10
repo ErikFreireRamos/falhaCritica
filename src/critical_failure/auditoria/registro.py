@@ -26,8 +26,7 @@ from critical_failure.duracao import ModeloDeDuracao
 from critical_failure.nucleo.canonico import como_dict, json_canonico, sha256
 from critical_failure.nucleo.erros import ErroCF, RegistroDivergente
 from critical_failure.partida import ResultadoPartida, jogar_partida
-from critical_failure.regras.v2.estado import Evento
-from critical_failure.regras.v2.motor import MotorV2
+from critical_failure.regras.familias import Motor
 
 ESQUEMA = "cf-audit/1"
 RAIZ = Path(__file__).resolve().parents[3]
@@ -55,7 +54,7 @@ def info_git() -> dict[str, Any]:
 
 
 def montar_cabecalho(
-    motor: MotorV2,
+    motor: Motor,
     arquivo_de_regras: str,
     bots: Sequence[Bot],
     semente: int,
@@ -91,7 +90,7 @@ def montar_cabecalho(
     }
 
 
-def linha_do_evento(seq: int, evento: Evento, decisao: dict[str, Any] | None) -> Linha:
+def linha_do_evento(seq: int, evento: Any, decisao: dict[str, Any] | None) -> Linha:
     oculto = dict(evento.oculto)
     if oculto:
         oculto["visivel_para"] = evento.visivel_para
@@ -141,7 +140,7 @@ def linha_de_falha(erro: Exception, eventos: int) -> Linha:
 
 
 def gerar_linhas(
-    motor: MotorV2,
+    motor: Motor,
     arquivo_de_regras: str,
     bots: Sequence[Bot],
     semente: int,
@@ -157,7 +156,7 @@ def gerar_linhas(
     momento = data_hora or datetime.now(UTC).isoformat(timespec="seconds")
     linhas: list[Linha] = [montar_cabecalho(motor, arquivo_de_regras, bots, semente, partida, momento, duracao)]
 
-    def ouvinte(evento: Evento, decisao: dict[str, Any] | None) -> None:
+    def ouvinte(evento: Any, decisao: dict[str, Any] | None) -> None:
         linhas.append(linha_do_evento(len(linhas) - 1, evento, decisao))
 
     try:
@@ -181,7 +180,7 @@ def escrever(caminho: Path, linhas: Sequence[Linha]) -> None:
 
 def gravar_partida(
     caminho: Path,
-    motor: MotorV2,
+    motor: Motor,
     arquivo_de_regras: str,
     bots: Sequence[Bot],
     semente: int,

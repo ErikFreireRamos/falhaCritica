@@ -26,11 +26,45 @@ def _pct(valor: float) -> str:
     return f"{100 * valor:.1f}%".replace(".", ",")
 
 
+def _matriz_de_alvos(manifest: dict[str, Any], estilos: list[dict[str, Any]]) -> list[str]:
+    """MET-02: a taxa de vitória do bot "foco" em cada célula (política do foco x política dos outros)."""
+    celulas = {
+        cenario["grupo"]: cenario["celula"] for cenario in manifest["cenarios"] if cenario.get("celula") is not None
+    }
+    if not celulas:
+        return []
+    do_foco = {e["grupo"]: e for e in estilos if e["bot"] == "foco" and e["grupo"] in celulas}
+    linhas_da_matriz = list(dict.fromkeys(celula[0] for celula in celulas.values()))
+    colunas = list(dict.fromkeys(celula[1] for celula in celulas.values()))
+    saida = [
+        "## Política de alvo (MET-02)",
+        "",
+        "Sem veredito. Taxa de vitória de 1 bot (o foco) que usa a política da linha, numa mesa em que todos os "
+        "outros usam a política da coluna. Rodízio de assentos. Referência de quem não leva vantagem: 1/N.",
+        "",
+        "| Foco \\ Outros | " + " | ".join(colunas) + " |",
+        "|---|" + "---|" * len(colunas),
+    ]
+    for linha in linhas_da_matriz:
+        celulas_da_linha = []
+        for coluna in colunas:
+            grupo = next((g for g, c in celulas.items() if c == [linha, coluna]), None)
+            estilo = do_foco.get(grupo or "")
+            celulas_da_linha.append(
+                "—" if estilo is None else f"{_num(estilo['taxa'])} ({_faixa(estilo['intervalo'])})"
+            )
+        saida.append(f"| {linha} | " + " | ".join(celulas_da_linha) + " |")
+    referencias = sorted({e["referencia"] for e in do_foco.values()})
+    saida += ["", "Referência 1/N: " + ", ".join(_num(r) for r in referencias) + ".", ""]
+    return saida
+
+
 def renderizar(
     manifest: dict[str, Any],
     medidas: list[Medida],
     descricoes: list[dict[str, Any]],
     estilos: list[dict[str, Any]] | None = None,
+    desequilibrio: list[dict[str, Any]] | None = None,
 ) -> str:
     experimento = manifest["experimento"]["conteudo"]
     git = manifest["git"]
@@ -97,26 +131,55 @@ def renderizar(
             )
         linhas.append("")
 
+    matriz = _matriz_de_alvos(manifest, estilos or [])
+    if matriz:
+        linhas += matriz
+
+    if desequilibrio:
+        linhas += [
+            "## Partidas desequilibradas (MET-01)",
+            "",
+            "Sem veredito. Desequilibrada: o vencedor tem pelo menos o fator vezes a média dos demais. "
+            "O fator principal é o fixado em `configs/requisitos.yaml` antes da execução; os outros são "
+            "análise de sensibilidade. Referência do artigo: 4 de 6 partidas (0,667; IC 95% de 0,300 a 0,903).",
+            "",
+            "| Grupo | Família | Jogadores | Partidas | Fator | Desequilibradas | IC 95% |",
+            "|---|---|---|---|---|---|---|",
+        ]
+        for d in desequilibrio:
+            fator = f"**{_num(d['fator'], 2)}**" if d["principal"] else _num(d["fator"], 2)
+            linhas.append(
+                f"| {d['grupo']} | {d['familia']} | {d['jogadores']} | {d['partidas']} | {fator} | "
+                f"{_num(d['proporcao'])} | {_faixa(d['intervalo'])} |"
+            )
+        linhas.append("")
+
     linhas += [
         "## Descrição das partidas",
         "",
-        "Números sem critério de aceite. Dependem de como os bots jogam.",
+        "Números sem critério de aceite. Dependem de como os bots jogam. Na v1 o placar é em pontos, não em "
+        "fichas, e não há modelo de duração. Vantagem do líder: P(vencer | líder isolado no ponto de corte) - 1/N.",
         "",
         "| Cenário | Partidas | Falhas | Testes por partida | Contestações por partida | Vitórias divididas | "
-        "Partidas com reembaralhamento | Partidas em que faltou carta | Fichas do vencedor | Fichas médias | "
-        "Duração p10 / mediana / p90 (min) |",
-        "|---|---|---|---|---|---|---|---|---|---|---|",
+        "Partidas com reembaralhamento | Partidas em que faltou carta | Vantagem do líder | Placar do vencedor | "
+        "Placar médio | Duração p10 / mediana / p90 (min) |",
+        "|---|---|---|---|---|---|---|---|---|---|---|---|",
     ]
     for d in descricoes:
         if "testes_por_partida" not in d:
-            linhas.append(f"| {d['cenario']} | {d['partidas']} | {d['falhas']} | — | — | — | — | — | — | — | — |")
+            linhas.append(f"| {d['cenario']} | {d['partidas']} | {d['falhas']} | — | — | — | — | — | — | — | — | — |")
             continue
         linhas.append(
             f"| {d['cenario']} | {d['partidas']} | {d['falhas']} | {_num(d['testes_por_partida'], 1)} | "
             f"{_num(d['contestacoes_por_partida'], 1)} | {_pct(d['vitorias_divididas'])} | "
             f"{_pct(d['partidas_com_reembaralhamento'])} | {_pct(d['partidas_com_compra_impossivel'])} | "
+            f"{'—' if d['vantagem_do_lider'] is None else _num(d['vantagem_do_lider'])} | "
             f"{_num(d['fichas_do_vencedor'], 1)} | {_num(d['fichas_medias'], 1)} | "
-            f"{_num(d['duracao_p10'], 1)} / {_num(d['duracao_mediana'], 1)} / {_num(d['duracao_p90'], 1)} |"
+            + (
+                "— |"
+                if d["duracao_mediana"] is None
+                else f"{_num(d['duracao_p10'], 1)} / {_num(d['duracao_mediana'], 1)} / {_num(d['duracao_p90'], 1)} |"
+            )
         )
     linhas += [
         "",

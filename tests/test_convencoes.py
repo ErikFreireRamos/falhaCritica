@@ -4,19 +4,24 @@ from __future__ import annotations
 
 import ast
 import re
+from pathlib import Path
 
 import matriz_rastreabilidade
+import pytest
 import verificar_especificacao
 from conftest import RAIZ
 
 MOTOR = RAIZ / "src" / "critical_failure" / "regras" / "v2"
+MOTOR_V1 = RAIZ / "src" / "critical_failure" / "regras" / "v1"
 PERMITIDOS = {0, 1}
 """Só índices e passos. Todo número de regra vem do YAML."""
 
 
 def test_nenhum_numero_de_regra_no_codigo_do_motor() -> None:
     achados: list[str] = []
-    for arquivo in sorted(MOTOR.glob("*.py")):
+    # config.py da v1 valida o arquivo (por exemplo, "pelo menos 2 jogadores") e não aplica regra.
+    arquivos = [*MOTOR.glob("*.py"), *(a for a in MOTOR_V1.glob("*.py") if a.name != "config.py")]
+    for arquivo in sorted(arquivos):
         for no in ast.walk(ast.parse(arquivo.read_text(encoding="utf-8"))):
             if (
                 isinstance(no, ast.Constant)
@@ -28,15 +33,20 @@ def test_nenhum_numero_de_regra_no_codigo_do_motor() -> None:
     assert achados == [], "número literal no motor; ele deveria vir do YAML: " + "; ".join(achados)
 
 
-def test_todo_evento_do_motor_cita_uma_regra() -> None:
-    arvore = ast.parse((MOTOR / "motor.py").read_text(encoding="utf-8"))
+@pytest.mark.parametrize(
+    "pasta, padrao_da_regra, minimo",
+    [(MOTOR, verificar_especificacao.PADRAO_R, 30), (MOTOR_V1, verificar_especificacao.PADRAO_V1, 15)],
+    ids=["v2", "v1"],
+)
+def test_todo_evento_do_motor_cita_uma_regra(pasta: Path, padrao_da_regra: str, minimo: int) -> None:
+    arvore = ast.parse((pasta / "motor.py").read_text(encoding="utf-8"))
     chamadas = [
         no
         for no in ast.walk(arvore)
         if isinstance(no, ast.Call) and isinstance(no.func, ast.Attribute) and no.func.attr == "_ev"
     ]
-    assert len(chamadas) > 30
-    padrao = re.compile(verificar_especificacao.PADRAO_R)
+    assert len(chamadas) > minimo
+    padrao = re.compile(padrao_da_regra)
     for chamada in chamadas:
         regra = chamada.args[2]
         if isinstance(regra, ast.Constant):
@@ -47,7 +57,10 @@ def test_todo_evento_do_motor_cita_uma_regra() -> None:
 
 def test_toda_regra_citada_no_codigo_existe_na_especificacao() -> None:
     itens = set(matriz_rastreabilidade.itens_da_especificacao())
-    for cabecalho, linhas in verificar_especificacao.ler_tabelas(verificar_especificacao.ESPEC_V2):
+    tabelas = verificar_especificacao.ler_tabelas(
+        verificar_especificacao.ESPEC_V2
+    ) + verificar_especificacao.ler_tabelas(verificar_especificacao.ESPEC_V1)
+    for cabecalho, linhas in tabelas:
         if "ID" in cabecalho and "Tipo" not in cabecalho:
             itens |= {linha["ID"] for linha in linhas}  # cartas e incidentes
     desconhecidas = {

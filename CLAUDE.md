@@ -15,6 +15,7 @@ Não decida sozinho. Pare, apresente as opções com uma sugestão e deixe o aut
 - As zonas de aceite de `configs/requisitos.yaml` são confirmadas com o autor antes da primeira medição de cada requisito.
 - O objetivo das simulações, nas palavras do autor: comparar bots com estilos de jogo diferentes, dizer qual é o melhor estilo e se o jogo está balanceado.
 - Nada de assento humano: o simulador é só para muitas partidas entre bots.
+- A v1 é linha de base: só é analisada e observada, nunca ajustada.
 
 ## Fontes, em ordem de autoridade
 
@@ -86,19 +87,21 @@ Os registros de `tests/dourados/` só são gerados de novo quando a mudança de 
 src/critical_failure/
   nucleo/        erros, JSON canônico e hash, aleatoriedade por contador, catálogo
   regras/
-    config.py    modelo e validação do YAML das regras
+    config.py    modelo e validação do YAML das regras da v2
+    familias.py  escolhe o motor pela família declarada no YAML (v1 ou v2)
     v2/          estado, ações, motor e invariantes da família v2
+    v1/          configuração, estado, ações, motor, pontuação, observação e invariantes da v1
   observacao.py  o que cada assento vê (lista de AMB-10)
   bots/          contrato, fábrica, Aleatório e os estilos (Construtor, Caçador, Heurístico);
                  mesa pública e Leitor (MOD-03, MOD-04, MOD-08), estimativas por contagem (MOD-09)
   partida.py     laço da partida: motor, bots e ouvinte de eventos
-  auditoria/     registro JSONL, replay, narração e Folha
+  auditoria/     registro JSONL, replay, narração (v2 e v1) e Folha (só v2)
   duracao.py     modelo de duração da partida (MOD-05), tempos em configs/duracao.yaml
   experimentos/  arquivo de experimento e executor paralelo (Parquet, registros, manifest)
   metricas/      intervalos de confiança, veredito e medida dos requisitos
   relatorios/    relatório Markdown de cada execução
   cli.py         comando cf
-configs/         regras por versão, catálogo gerado, requisitos, modelo de duração, perfis dos bots
+configs/         regras por versão (v2.2, v2.2.1, v1), catálogo gerado, requisitos, modelo de duração, perfis
 experimentos/    um YAML por experimento
 resultados/      saída dos experimentos; só manifest.json e relatorio.md vão para o git
 regras/          texto das regras por versão
@@ -106,7 +109,7 @@ tests/           testes por regra, propriedades, convenções e registros de ref
 scripts/         verificador, matriz, catálogo e registros de referência
 ```
 
-O motor (`regras/v2/`) não pode ter número literal além de 0 e 1; um teste confere. Todo evento do motor cita a regra que o justifica, e todo `regra`, `definicao`, `componente` ou `revogada` da especificação precisa de um teste marcado; outro teste confere.
+Os motores (`regras/v2/` e `regras/v1/`, menos o `config.py` da v1) não podem ter número literal além de 0 e 1; um teste confere. Todo evento do motor cita a regra que o justifica, e todo `regra`, `definicao`, `componente` ou `revogada` da especificação precisa de um teste marcado; outro teste confere.
 
 ## Ambiente
 

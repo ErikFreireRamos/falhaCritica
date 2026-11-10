@@ -18,10 +18,12 @@ from typing import Any
 from critical_failure.nucleo.catalogo import Catalogo, Incidente
 from critical_failure.nucleo.erros import AcaoIlegal, ConfiguracaoInvalida
 from critical_failure.nucleo.rng import FLUXO_JOGO, gerador
+from critical_failure.observacao import Observacao, observar
 from critical_failure.regras.config import RegrasV2
 from critical_failure.regras.v2 import acoes as A
 from critical_failure.regras.v2 import estado as E
-from critical_failure.regras.v2.acoes import Acao
+from critical_failure.regras.v2 import invariantes
+from critical_failure.regras.v2.acoes import Acao, acao_de_dict
 from critical_failure.regras.v2.estado import (
     Disputa,
     DisputaEncerrada,
@@ -66,6 +68,9 @@ class _Ctx:
 
 
 class MotorV2:
+    familia = "v2"
+    fontes = FONTES
+
     def __init__(self, regras: RegrasV2, catalogo: Catalogo) -> None:
         self.regras = regras
         self.catalogo = catalogo
@@ -995,6 +1000,26 @@ class MotorV2:
             },
             amb="AMB-14" if criterio == "dividida" else None,
         )
+
+    # ------------------------------------------------------------------ para o laço da partida
+
+    def observar(self, estado: Estado, assento: int) -> Observacao:
+        return observar(estado, assento, self.catalogo)
+
+    def conferir_invariantes(self, estado: Estado, em_repouso: bool = True) -> None:
+        invariantes.conferir(estado, self.regras, self.catalogo, em_repouso)
+
+    def acao_de_dict(self, dados: Any) -> Acao:
+        return acao_de_dict(dados)
+
+    def placar(self, estado: Estado) -> tuple[int, ...]:
+        return tuple(jogador.fichas for jogador in estado.jogadores)
+
+    def ponto_de_corte(self, evento: Evento) -> tuple[int, ...] | None:
+        """REQ-02: no fim do ciclo 1, as fichas de cada jogador."""
+        if evento.tipo == "fim_do_ciclo" and evento.publico.get("ciclo_encerrado") == 1:
+            return self.placar(evento.estado)
+        return None
 
     _MANIPULADORES: dict[str, Callable[[MotorV2, _Ctx, int, Acao], None]] = {
         A.COMPRAR: _comprar,

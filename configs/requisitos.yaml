@@ -52,9 +52,11 @@ requisitos:
       Ponto de corte na v2.2: fim da Produção do ciclo 1, líder em fichas.
       Ponto de corte na v1, que não tem ciclos: depois que cada jogador fez o
       primeiro dos seus 3 testes, líder em cartas no sistema.
-      Mesmos bots e mesmas sementes nas duas versões.
-    zona: "vantagem do líder na v2.2 menor que na v1 por pelo menos 0.05"
-    estado: aguardando_decisao
+      Mesmos estilos de bot e mesmas sementes nas duas versões. A v1 só é
+      observada, nunca ajustada (autor, 2026-11-10).
+    zona: "vantagem do líder na v2.2.1 menor que na v1 por pelo menos 0.05"
+    criterio: {margem: 0.05}
+    estado: confirmado  # autor, 2026-11-10
 
   - id: REQ-03
     nome: Habilidade importa
@@ -200,9 +202,10 @@ metricas_registradas:
       Partida desequilibrada: a pontuação do vencedor é pelo menos 1.5 vez a
       média da pontuação dos demais jogadores. Análise de sensibilidade com
       o fator de 1.25 a 2.0. Comparada com 4 de 6 (intervalo de Wilson de
-      95%: 0.30 a 0.90), como checagem de plausibilidade.
-    criterio: "vencedor >= 1.5 x média dos demais"
-    estado: aguardando_decisao
+      95%: 0.30 a 0.90), como checagem de plausibilidade. Na v2 vale o mesmo
+      critério, com fichas.
+    criterio: {fator: 1.5, sensibilidade: [1.25, 2.0]}
+    estado: confirmado  # autor, 2026-11-10; fixado antes do Experimento 1
 
   - id: MET-02
     nome: "v1: taxa de vitória por política de alvo"
@@ -211,7 +214,8 @@ metricas_registradas:
       Taxa de vitória de 1 bot Caçador com a política de alvo p (líder, mais
       fraco ou aleatório) numa mesa em que os outros usam a política q.
       Matriz 3 x 3. A hipótese do artigo é que atacar o mais fraco é a
-      melhor resposta.
+      melhor resposta. Na v1, líder é quem tem mais cartas no sistema (o
+      "mais forte" do artigo); na v2, quem tem mais fichas.
     estado: aguardando_decisao
 
   - id: MET-03

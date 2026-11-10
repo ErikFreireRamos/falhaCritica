@@ -1,0 +1,181 @@
+# Fase 3, Experimento 1: validação da v1 (decisões do autor em 2026-11-10).
+#
+# A v1 só é observada, nunca ajustada. Perguntas:
+# 1. O simulador reproduz o desequilíbrio relatado no artigo (4 de 6 partidas)? (MET-01)
+# 2. Atacar o mais fraco é a melhor política de alvo? (MET-02)
+#
+# Mesas de 6, como os grupos do artigo (AMB-27). Todos com conhecimento experiente,
+# blefe moderado e contestação pelo limiar. Critério de desequilíbrio fixado antes
+# da execução: vencedor com pelo menos 1,5 vez a média dos demais.
+
+esquema: cf-experimento/1
+nome: fase3_exp1_validacao_v1
+descricao: >
+  Validação da v1 com mesas de 6. Matriz 3 x 3 de política de alvo (um Caçador
+  foco contra cinco Caçadores com outra política, com rodízio de assentos) e
+  proporção de partidas desequilibradas em populações de bots idênticos e numa
+  mesa mista.
+semente_mestre: 20261112
+duracao: configs/duracao.yaml
+registros_completos_um_a_cada: 1000
+
+cenarios:
+  # MET-02: matriz de política de alvo. 6 rotações x 1.000 partidas por célula.
+  - nome: alvo_lider_contra_lider
+    regras: configs/regras_v1.yaml
+    jogadores: 6
+    partidas: 1000
+    rodizio: true
+    celula: [lider, lider]
+    bots:
+      - {tipo: cacador, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+  - nome: alvo_lider_contra_mais_fraco
+    regras: configs/regras_v1.yaml
+    jogadores: 6
+    partidas: 1000
+    rodizio: true
+    celula: [lider, mais_fraco]
+    bots:
+      - {tipo: cacador, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+  - nome: alvo_lider_contra_aleatorio
+    regras: configs/regras_v1.yaml
+    jogadores: 6
+    partidas: 1000
+    rodizio: true
+    celula: [lider, aleatorio]
+    bots:
+      - {tipo: cacador, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+  - nome: alvo_mais_fraco_contra_lider
+    regras: configs/regras_v1.yaml
+    jogadores: 6
+    partidas: 1000
+    rodizio: true
+    celula: [mais_fraco, lider]
+    bots:
+      - {tipo: cacador, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+  - nome: alvo_mais_fraco_contra_mais_fraco
+    regras: configs/regras_v1.yaml
+    jogadores: 6
+    partidas: 1000
+    rodizio: true
+    celula: [mais_fraco, mais_fraco]
+    bots:
+      - {tipo: cacador, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+  - nome: alvo_mais_fraco_contra_aleatorio
+    regras: configs/regras_v1.yaml
+    jogadores: 6
+    partidas: 1000
+    rodizio: true
+    celula: [mais_fraco, aleatorio]
+    bots:
+      - {tipo: cacador, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+  - nome: alvo_aleatorio_contra_lider
+    regras: configs/regras_v1.yaml
+    jogadores: 6
+    partidas: 1000
+    rodizio: true
+    celula: [aleatorio, lider]
+    bots:
+      - {tipo: cacador, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+  - nome: alvo_aleatorio_contra_mais_fraco
+    regras: configs/regras_v1.yaml
+    jogadores: 6
+    partidas: 1000
+    rodizio: true
+    celula: [aleatorio, mais_fraco]
+    bots:
+      - {tipo: cacador, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+  - nome: alvo_aleatorio_contra_aleatorio
+    regras: configs/regras_v1.yaml
+    jogadores: 6
+    partidas: 1000
+    rodizio: true
+    celula: [aleatorio, aleatorio]
+    bots:
+      - {tipo: cacador, rotulo: foco, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: cacador, rotulo: outros, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+
+  # MET-01: populações de bots idênticos, 5.000 partidas cada.
+  - nome: todos_aleatorios
+    regras: configs/regras_v1.yaml
+    jogadores: 6
+    partidas: 5000
+    bots: [{tipo: aleatorio, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}]
+  - nome: todos_construtores
+    regras: configs/regras_v1.yaml
+    jogadores: 6
+    partidas: 5000
+    bots: [{tipo: construtor, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}]
+  - nome: todos_cacadores_lider
+    regras: configs/regras_v1.yaml
+    jogadores: 6
+    partidas: 5000
+    bots: [{tipo: cacador, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}]
+  - nome: todos_cacadores_mais_fraco
+    regras: configs/regras_v1.yaml
+    jogadores: 6
+    partidas: 5000
+    bots: [{tipo: cacador, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}]
+  - nome: todos_heuristicos
+    regras: configs/regras_v1.yaml
+    jogadores: 6
+    partidas: 5000
+    bots: [{tipo: heuristico, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}]
+
+  # Mesa mista com os quatro estilos (três políticas de Caçador): MET-01 e MET-07.
+  - nome: estilos_mistos
+    regras: configs/regras_v1.yaml
+    jogadores: 6
+    partidas: 1000   # por rotação: 6 rotações, 6.000 partidas
+    rodizio: true
+    bots:
+      - {tipo: aleatorio, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: construtor, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: cacador, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: cacador, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: mais_fraco}}
+      - {tipo: cacador, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: aleatorio}}
+      - {tipo: heuristico, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}

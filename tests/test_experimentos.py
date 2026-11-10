@@ -272,8 +272,14 @@ ESTILOS = [
 
 
 def test_rodizio_roda_cada_rotacao_dos_bots_pelos_assentos() -> None:
-    cenario = {"nome": "mista", "regras": "configs/regras_v2_2_1.yaml", "jogadores": 4, "partidas": 3,
-               "bots": ESTILOS, "rodizio": True}  # fmt: skip
+    cenario = {
+        "nome": "mista",
+        "regras": "configs/regras_v2_2_1.yaml",
+        "jogadores": 4,
+        "partidas": 3,
+        "bots": ESTILOS,
+        "rodizio": True,
+    }
     lido = ler_experimento(experimento(cenarios=[cenario]))
     rotacoes = lido.cenarios_expandidos()
     assert [c.nome for c in rotacoes] == ["mista_r0", "mista_r1", "mista_r2", "mista_r3"]
@@ -287,8 +293,14 @@ def test_rodizio_roda_cada_rotacao_dos_bots_pelos_assentos() -> None:
 
 
 def test_taxa_de_vitoria_por_bot_no_relatorio(tmp_path: Path) -> None:
-    cenario = {"nome": "mista", "regras": "configs/regras_v2_2_1.yaml", "jogadores": 4, "partidas": 6,
-               "bots": ESTILOS, "rodizio": True}  # fmt: skip
+    cenario = {
+        "nome": "mista",
+        "regras": "configs/regras_v2_2_1.yaml",
+        "jogadores": 4,
+        "partidas": 6,
+        "bots": ESTILOS,
+        "rodizio": True,
+    }
     resultado = rodar(tmp_path, cenarios=[cenario])
     assert resultado.manifest["partidas"] == 24
     assert {c["grupo"] for c in resultado.manifest["cenarios"]} == {"mista"}
@@ -308,3 +320,108 @@ def test_experimento_da_fase_2_e_valido() -> None:
     rotacoes = lido.cenarios_expandidos()
     assert len(rotacoes) == 4 + 5
     assert sum(c.partidas for c in rotacoes) == 20_000
+
+
+# ---------------------------------------------------------------- Fase 3: v1, MET-01, MET-02 e REQ-02
+
+V1_PERFIL = {"conhecimento": "experiente", "blefe": "metade", "contestacao": "limiar"}
+
+
+def test_desequilibrio_pelo_criterio_fixado() -> None:
+    from critical_failure.metricas.requisitos import carregar_requisitos, desequilibrio
+
+    lido = ler_experimento(experimento(cenarios=[{**experimento()["cenarios"][0], "partidas": 4}]))
+    linhas = [
+        {"cenario": "quatro", "familia": "v2", "erro": None, "placar": placar, "vencedores": [0]}
+        for placar in ([6, 2, 2, 2], [3, 3, 2, 2], [9, 6, 6, 6], [0, 0, 0, 0])
+    ]
+    requisitos = carregar_requisitos(RAIZ / "configs" / "requisitos.yaml")
+    medidas = {d["fator"]: d for d in desequilibrio(linhas, lido, requisitos)}
+    # 6 >= 1,5 x 2 (sim); 3 >= 1,5 x 2,33 (não); 9 >= 1,5 x 6 (sim, no limite); placar zerado (não).
+    assert medidas[1.5]["proporcao"] == 0.5 and medidas[1.5]["principal"]
+    # Com 1,25: 3 >= 1,25 x 2,33 também conta. Com 2,0: só a primeira.
+    assert medidas[1.25]["proporcao"] == 0.75 and medidas[2.0]["proporcao"] == 0.25
+    assert set(medidas) == {1.5, 1.25, 2.0}
+
+
+def test_amostra_do_lider_no_corte() -> None:
+    from critical_failure.metricas.requisitos import amostra_do_lider
+
+    linhas = [
+        {"placar_no_corte": [3, 1, 1], "vencedores": [0]},  # líder venceu
+        {"placar_no_corte": [3, 1, 1], "vencedores": [0, 2]},  # líder dividiu a vitória
+        {"placar_no_corte": [1, 3, 1], "vencedores": [0]},  # líder perdeu
+        {"placar_no_corte": [2, 2, 1], "vencedores": [0]},  # sem líder isolado: fica de fora
+        {"placar_no_corte": None, "vencedores": [0]},
+    ]
+    assert list(amostra_do_lider(linhas)) == [1.0, 0.5, 0.0]
+
+
+def test_experimento_com_v1_v2_matriz_e_req_02(tmp_path: Path) -> None:
+    cacador = {"tipo": "cacador", "parametros": {**V1_PERFIL, "alvo": "lider"}}
+    foco = {"tipo": "cacador", "rotulo": "foco", "parametros": {**V1_PERFIL, "alvo": "mais_fraco"}}
+    mistos = [
+        {"tipo": "construtor", "parametros": V1_PERFIL},
+        cacador,
+        {"tipo": "heuristico", "parametros": V1_PERFIL},
+        {"tipo": "aleatorio", "parametros": {}},
+    ]
+    cenarios = [
+        {
+            "nome": "v1_mistos",
+            "regras": "configs/regras_v1.yaml",
+            "jogadores": 4,
+            "partidas": 6,
+            "rodizio": True,
+            "bots": mistos,
+        },
+        {
+            "nome": "v2_mistos",
+            "regras": "configs/regras_v2_2_1.yaml",
+            "jogadores": 4,
+            "partidas": 6,
+            "rodizio": True,
+            "bots": mistos,
+            "comparar_com": "v1_mistos",
+            "requisitos": ["REQ-02"],
+        },
+        {
+            "nome": "alvo_mais_fraco_contra_lider",
+            "regras": "configs/regras_v1.yaml",
+            "jogadores": 3,
+            "partidas": 4,
+            "rodizio": True,
+            "celula": ["mais_fraco", "lider"],
+            "bots": [foco, cacador, cacador],
+        },
+    ]
+    resultado = rodar(tmp_path, cenarios=cenarios)
+    v1 = [linha for linha in resultado.linhas if linha["familia"] == "v1"]
+    assert v1 and all(linha["duracao_s"] is None for linha in v1)
+    assert all(linha["placar_no_corte"] is not None for linha in resultado.linhas)
+    assert resultado.manifest["vereditos"]["REQ-02"][0] in {"passa", "falha", "inconclusivo"}
+    assert {c["familia"] for c in resultado.manifest["cenarios"]} == {"v1", "v2"}
+    texto = (resultado.pasta / "relatorio.md").read_text(encoding="utf-8")
+    for secao in ("### REQ-02", "## Política de alvo (MET-02)", "## Partidas desequilibradas (MET-01)"):
+        assert secao in texto
+    assert "| mais_fraco | " in texto and "vantagem do líder em v1_mistos menos a vantagem em v2_mistos" in texto
+    # A v1 não tem duração: a coluna fica vazia, sem quebrar o relatório.
+    assert "| v1_mistos_r0 |" in texto
+
+
+def test_comparacao_com_grupo_que_nao_existe(tmp_path: Path) -> None:
+    cenario = {**experimento()["cenarios"][0], "partidas": 2, "comparar_com": "nao_existe", "requisitos": ["REQ-02"]}
+    with pytest.raises(ConfiguracaoInvalida):
+        rodar(tmp_path, cenarios=[cenario])
+
+
+def test_experimentos_da_fase_3_sao_validos() -> None:
+    primeiro = carregar_experimento(RAIZ / "experimentos" / "fase3_exp1_validacao_v1.yaml")
+    celulas = [c.celula for c in primeiro.cenarios if c.celula]
+    assert len(celulas) == 9 and all(c.jogadores == 6 for c in primeiro.cenarios)
+    segundo = carregar_experimento(RAIZ / "experimentos" / "fase3_exp2_v1_contra_v2.yaml")
+    comparacoes = {c.nome: c.comparar_com for c in segundo.cenarios if c.comparar_com}
+    assert comparacoes == {
+        "v2_2_1_com_4_jogadores": "v1_com_4_jogadores",
+        "v2_2_1_com_5_jogadores": "v1_com_5_jogadores",
+    }

@@ -289,7 +289,12 @@ class Narrador:
         self._dizer(ev, f"Placar final: {self._placar()}. Vence: {vencedores} ({CRITERIOS[p['criterio']]}).")
 
 
-def narrar(linhas: list[Linha], catalogo: Catalogo, mostrar_oculto: bool = True, citar_regras: bool = False) -> str:
+def narrar(linhas: list[Linha], catalogo: Any, mostrar_oculto: bool = True, citar_regras: bool = False) -> str:
+    """Narra a partida. A família das regras vem do cabeçalho do registro."""
+    if linhas[0]["regras"].get("familia") == "v1":
+        from critical_failure.auditoria.narrar_v1 import narrar_v1
+
+        return narrar_v1(linhas, mostrar_oculto, citar_regras)
     cabecalho, fim = linhas[0], linhas[-1]
     regras = cabecalho["regras"]
     bots = ", ".join(f"{nome(bot['assento'])} ({bot['tipo']})" for bot in cabecalho["bots"])

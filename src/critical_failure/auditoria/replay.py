@@ -26,9 +26,7 @@ from critical_failure.bots.fabrica import criar_bot
 from critical_failure.duracao import ler_duracao
 from critical_failure.nucleo.canonico import como_dict, sha256
 from critical_failure.nucleo.erros import ErroCF, RegistroDivergente
-from critical_failure.regras.config import catalogo_das_regras, ler_regras
-from critical_failure.regras.v2.acoes import acao_de_dict
-from critical_failure.regras.v2.motor import MotorV2
+from critical_failure.regras.familias import Motor, motor_de
 
 MODO_ACOES = "acoes"
 MODO_BOTS = "bots"
@@ -41,18 +39,17 @@ class ResultadoReplay:
     eventos: int
 
 
-def motor_do_cabecalho(cabecalho: Linha) -> MotorV2:
+def motor_do_cabecalho(cabecalho: Linha) -> Motor:
     """Monta o motor com a configuração gravada no registro, não com a do disco."""
-    regras = ler_regras(cabecalho.get("config"))
-    if regras.hash() != cabecalho.get("config_hash"):
+    motor = motor_de(cabecalho.get("config"), PASTA_CONFIGS)
+    if motor.regras.hash() != cabecalho.get("config_hash"):
         raise RegistroDivergente("o hash da configuração não corresponde à configuração gravada")
-    catalogo = catalogo_das_regras(regras, PASTA_CONFIGS)
-    if catalogo.hash != cabecalho.get("catalogo_hash"):
+    if motor.catalogo.hash != cabecalho.get("catalogo_hash"):
         raise RegistroDivergente(
             "o catálogo de cartas mudou desde que o registro foi gravado; "
             "use o commit indicado no cabeçalho para refazer a partida"
         )
-    return MotorV2(regras, catalogo)
+    return motor
 
 
 def _comparar(esperada: Linha, gerada: Linha, ignorar: tuple[str, ...] = ()) -> None:
@@ -66,9 +63,10 @@ def _comparar(esperada: Linha, gerada: Linha, ignorar: tuple[str, ...] = ()) -> 
             )
 
 
-def _por_acoes(linhas: list[Linha], motor: MotorV2) -> int:
+def _por_acoes(linhas: list[Linha], motor: Motor) -> int:
     cabecalho, fim = linhas[0], linhas[-1]
     esperadas = [linha for linha in linhas if linha.get("registro") == EVENTO]
+    estado: Any
     estado, eventos = motor.preparar(cabecalho["jogadores"], cabecalho["semente_mestre"], cabecalho["partida"])
     geradas = [linha_do_evento(seq, evento, None) for seq, evento in enumerate(eventos)]
     conferidas = 0
@@ -87,12 +85,12 @@ def _por_acoes(linhas: list[Linha], motor: MotorV2) -> int:
         legais = [opcao.texto() for opcao in motor.acoes_legais(estado)]
         if decisao.get("opcoes") != legais:
             raise RegistroDivergente(f"evento {conferidas}: as opções gravadas não são as ações legais do motor")
-        estado, eventos = motor.aplicar(estado, acao_de_dict(decisao.get("acao")))
+        estado, eventos = motor.aplicar(estado, motor.acao_de_dict(decisao.get("acao")))  # type: ignore[arg-type]
         geradas += [linha_do_evento(len(geradas) + k, evento, None) for k, evento in enumerate(eventos)]
     if estado.pendente is not None:
         raise RegistroDivergente("o registro terminou, mas a partida refeita ainda não acabou")
     final: dict[str, Any] = {
-        "placar_final": [jogador.fichas for jogador in estado.jogadores],
+        "placar_final": list(motor.placar(estado)),
         "vencedores": list(estado.vencedores),
         "estado_hash_final": sha256(como_dict(estado)),
     }
@@ -106,9 +104,9 @@ def _por_acoes(linhas: list[Linha], motor: MotorV2) -> int:
     return conferidas
 
 
-def _por_bots(linhas: list[Linha], motor: MotorV2) -> int:
+def _por_bots(linhas: list[Linha], motor: Motor) -> int:
     cabecalho = linhas[0]
-    bots = [criar_bot(bot["tipo"], bot["parametros"]) for bot in cabecalho["bots"]]
+    bots = [criar_bot(bot["tipo"], bot["parametros"], motor.familia) for bot in cabecalho["bots"]]
     modelo = (cabecalho.get("modelos") or {}).get("duracao")
     novas, _ = gerar_linhas(
         motor,

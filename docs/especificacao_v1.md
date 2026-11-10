@@ -81,7 +81,7 @@ Total: 54 cartas (9 + 6 + 9 + 9 + 9 + 9 + 3).
 | V1-4.3.8 | regra | Declaração: ao ser testado, e antes de qualquer carta ser revelada, o defensor pode declarar se tem ou não uma carta do mesmo atributo. Se disser que tem, pode estar falando a verdade ou blefando. | 6 | — | AMB-20 |
 | V1-4.3.9 | regra | Dúvida: o atacante pode duvidar da declaração. Nesse caso, o defensor deve dar a definição de um tipo de teste associado à carta que diz ter. | 6 | — | MOD-07 |
 | V1-4.3.10 | regra | Depois de ouvir a definição, o atacante decide se aceita ou se contesta. | 6 | — | MOD-07 |
-| V1-4.3.10a | regra | Se o atacante aceita, aplica-se a regra padrão do teste (defesa bem-sucedida ou falha encontrada) conforme a veracidade da declaração. A carta não é revelada. | 6 | `v1.blefe_aceito=declaracao` | Texto do artigo, que é circular. Pela decisão de AMB-20, o simulador aplica a declaração: defesa aceita conta como bem-sucedida, sem verificar |
+| V1-4.3.10a | regra | Se o atacante aceita, aplica-se a regra padrão do teste (defesa bem-sucedida ou falha encontrada) conforme a veracidade da declaração. A carta não é revelada. | 6 | `v1.interpretacoes.blefe_aceito=declaracao` | Texto do artigo, que é circular. Pela decisão de AMB-20, o simulador aplica a declaração: defesa aceita conta como bem-sucedida, sem verificar |
 | V1-4.3.10b | regra | Se o atacante contesta, o defensor revela do sistema a carta que usaria para se defender. | 6 | — | |
 | V1-4.3.11 | regra | Contestou, e o defensor falava a verdade: a defesa é bem-sucedida (o defensor fica com a carta de ataque) e, como punição, o defensor pega uma carta do sistema do atacante, à sua escolha e sem ver. | 6 | `v1.contestacao_verdade.cartas_tomadas=1` | AMB-22 |
 | V1-4.3.12 | regra | Contestou, e o defensor blefou ou errou: aplica-se a falha encontrada (o atacante pega uma carta do sistema do defensor) e, como recompensa, o atacante pega mais uma carta do sistema do defensor. | 6 | `v1.contestacao_blefe.cartas_extras=1` | AMB-22; AMB-25 |
@@ -93,8 +93,8 @@ Total: 54 cartas (9 + 6 + 9 + 9 + 9 + 9 + 3).
 | V1-4.3.13 | regra | A rodada termina quando todos os jogadores usaram todas as suas cartas de teste. | 6 | — | Igual a V1-4.3.4a |
 | V1-4.3.14 | regra | Todos revelam as cartas dos seus sistemas e calculam a pontuação. | 6 | — | |
 | V1-4.3.15 | regra | Cada carta no sistema ao fim da rodada vale 1 ponto. | 6 | `v1.pontos.carta=1` | |
-| V1-4.3.16 | regra | Um par de cartas do mesmo atributo e de testes diferentes vale 2 pontos de bônus. | 6 | `v1.pontos.par=2` | AMB-24; AMB-26 |
-| V1-4.3.17 | regra | Três cartas de atributos diferentes e de testes diferentes valem 2 pontos de bônus. | 6 | `v1.pontos.trio=2` | AMB-24; AMB-26 |
+| V1-4.3.16 | regra | Um par de cartas do mesmo atributo e de testes diferentes vale 2 pontos de bônus. | 6 | `v1.pontos.par=2`; `v1.combinacoes.cartas_no_par=2` | AMB-24; AMB-26 |
+| V1-4.3.17 | regra | Três cartas de atributos diferentes e de testes diferentes valem 2 pontos de bônus. | 6 | `v1.pontos.trio=2`; `v1.combinacoes.cartas_no_trio=3` | AMB-24; AMB-26 |
 | V1-4.3.18 | regra | É possível pontuar vários pares do mesmo atributo, desde que cada par tenha cartas de testes diferentes. | 6 | — | AMB-24 |
 | V1-4.3.19 | regra | Vence a rodada quem tem a maior pontuação total. | 6 | — | AMB-29 |
 

@@ -17,6 +17,7 @@ from typing import Any
 
 from critical_failure.auditoria.narrar import nome
 from critical_failure.auditoria.registro import EVENTO, Linha
+from critical_failure.nucleo.erros import ConfiguracaoInvalida
 
 COLUNAS_DIAGNOSTICOS = [
     "ciclo",
@@ -54,6 +55,8 @@ def _sim_nao(valor: bool) -> str:
 
 def extrair(linhas: list[Linha]) -> dict[str, list[dict[str, Any]]]:
     """Monta as três tabelas da Folha a partir das linhas do registro."""
+    if linhas[0]["regras"].get("familia") != "v2":
+        raise ConfiguracaoInvalida("a Folha de registro só existe para a família v2 das regras")
     diagnosticos: list[dict[str, Any]] = []
     defesas: list[dict[str, Any]] = []
     auditor_do_ciclo: int | None = None

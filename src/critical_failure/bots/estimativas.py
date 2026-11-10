@@ -59,6 +59,11 @@ def chance_de_nao_ter(
         nao_vistas = copias_nao_vistas(obs, mesa)
     total = sum(nao_vistas.values())
     favoraveis = sum(nao_vistas[teste] for teste in procurados)
+    return chance_de_nenhuma(escondidas, total, favoraveis)
+
+
+def chance_de_nenhuma(escondidas: int, total: int, favoraveis: int) -> float:
+    """Chance de, tirando ``escondidas`` cartas sem reposição de ``total``, não sair nenhuma das ``favoraveis``."""
     chance = 1.0
     for retirada in range(escondidas):
         restantes = total - retirada

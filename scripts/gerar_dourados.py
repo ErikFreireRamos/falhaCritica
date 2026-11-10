@@ -22,8 +22,7 @@ from critical_failure.auditoria.narrar import narrar
 from critical_failure.bots.aleatorio import BotAleatorio
 from critical_failure.bots.fabrica import criar_bot
 from critical_failure.duracao import carregar_duracao
-from critical_failure.regras.config import carregar_jogo
-from critical_failure.regras.v2.motor import MotorV2
+from critical_failure.regras.familias import Motor, carregar_motor
 
 RAIZ = Path(__file__).resolve().parent.parent
 PASTA = RAIZ / "tests" / "dourados"
@@ -37,6 +36,7 @@ CASOS: list[tuple[str, str, int, int, bool]] = [
     ("v2_2_1_com_5_jogadores", "regras_v2_2_1.yaml", 5, 1, True),
     ("v2_2_impressa_com_6_jogadores", "regras_v2_2.yaml", 6, 2, False),
     ("v2_2_1_estilos_mistos", "regras_v2_2_1.yaml", 4, 3, True),
+    ("v1_estilos_mistos_6_jogadores", "regras_v1.yaml", 6, 4, True),
 ]
 
 _COMUM = {"conhecimento": "experiente", "blefe": "metade", "contestacao": "limiar"}
@@ -47,18 +47,26 @@ BOTS_DO_CASO: dict[str, list[tuple[str, dict[str, Any]]]] = {
         ("heuristico", _COMUM),
         ("aleatorio", {"explicacao_correta": 0.85, "precisao_auditor": 0.95}),
     ],
+    "v1_estilos_mistos_6_jogadores": [
+        ("aleatorio", {"explicacao_correta": 0.85, "precisao_auditor": 0.95}),
+        ("construtor", _COMUM),
+        ("cacador", {**_COMUM, "alvo": "lider"}),
+        ("cacador", {**_COMUM, "alvo": "mais_fraco"}),
+        ("cacador", {**_COMUM, "alvo": "aleatorio"}),
+        ("heuristico", _COMUM),
+    ],
 }
 """Casos com bots de estilo. Os outros usam o bot Aleatório com os parâmetros da Fase 1."""
 
 
-def linhas_do_caso(arquivo: str, jogadores: int, partida: int, nome: str = "") -> tuple[list[dict[str, Any]], MotorV2]:
-    regras, catalogo = carregar_jogo(RAIZ / "configs" / arquivo)
-    motor = MotorV2(regras, catalogo)
+def linhas_do_caso(arquivo: str, jogadores: int, partida: int, nome: str = "") -> tuple[list[dict[str, Any]], Motor]:
+    motor = carregar_motor(RAIZ / "configs" / arquivo)
     if nome in BOTS_DO_CASO:
-        bots: list[Any] = [criar_bot(tipo, parametros) for tipo, parametros in BOTS_DO_CASO[nome]]
+        bots: list[Any] = [criar_bot(tipo, parametros, motor.familia) for tipo, parametros in BOTS_DO_CASO[nome]]
     else:
         bots = [BotAleatorio() for _ in range(jogadores)]
-    duracao = carregar_duracao(RAIZ / "configs" / "duracao.yaml")
+    # O modelo de duração (MOD-05) só existe para a família v2.
+    duracao = carregar_duracao(RAIZ / "configs" / "duracao.yaml") if motor.familia == "v2" else None
     linhas, _ = registro.gerar_linhas(
         motor, f"configs/{arquivo}", bots, SEMENTE, partida, data_hora=DATA, duracao=duracao
     )
