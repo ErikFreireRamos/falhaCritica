@@ -1,0 +1,242 @@
+# Requisitos de balanceamento do Critical Failure
+#
+# Cada requisito tem a definição exata da métrica e uma zona de aceite.
+# As zonas são fixadas ANTES de rodar o experimento que as mede.
+#
+# Veredito de cada requisito, a partir do intervalo de confiança da métrica:
+#   passa        o intervalo inteiro está dentro da zona
+#   falha        o intervalo inteiro está fora da zona
+#   inconclusivo o intervalo cruza a borda da zona
+#
+# tipo:
+#   regra          propriedade das regras, medida com bots idênticos
+#   comportamento  depende de como os bots jogam; é relatado como faixa sobre
+#                  várias populações de bots e no equilíbrio empírico
+#   modelo         depende de uma hipótese do simulador (MOD-xx)
+#   simulador      qualidade do próprio simulador
+#
+# estado:
+#   aguardando_decisao  métrica e zona são sugestão do assistente
+#   confirmado          o autor confirmou (data em docs/DIARIO_DE_BORDO.md)
+#
+# Todas as zonas abaixo são sugestões. Nenhuma vale antes da confirmação do autor.
+#
+# Decisão do autor em 2026-11-09: cada zona é confirmada na fase em que o
+# requisito é medido pela primeira vez, sempre antes de rodar o experimento.
+
+esquema: cf-requisitos/1
+nivel_de_confianca: 0.95
+intervalos:
+  proporcao: wilson
+  demais: bootstrap
+
+requisitos:
+  - id: REQ-01
+    nome: Equidade de assento
+    tipo: regra
+    fonte: "prompt 3.6"
+    metrica: >
+      Taxa de vitória por posição na ordem inicial (posição 0 é o primeiro
+      jogador do ciclo 1), com o mesmo bot em todos os assentos, para cada
+      número de jogadores N. Empates contam como vitória dividida (AMB-14).
+    zona: "cada posição entre 1/N - 0.02 e 1/N + 0.02"
+    estado: aguardando_decisao
+
+  - id: REQ-02
+    nome: Anti bola de neve
+    tipo: regra
+    fonte: "prompt 3.6"
+    metrica: >
+      Vantagem do líder = P(vencer | líder isolado no ponto de corte) - 1/N.
+      Ponto de corte na v2.2: fim da Produção do ciclo 1, líder em fichas.
+      Ponto de corte na v1, que não tem ciclos: depois que cada jogador fez o
+      primeiro dos seus 3 testes, líder em cartas no sistema.
+      Mesmos bots e mesmas sementes nas duas versões.
+    zona: "vantagem do líder na v2.2 menor que na v1 por pelo menos 0.05"
+    estado: aguardando_decisao
+
+  - id: REQ-03
+    nome: Habilidade importa
+    tipo: comportamento
+    fonte: "prompt 3.6"
+    metrica: >
+      Taxa de vitória de 1 bot Heurístico numa mesa com N-1 bots Aleatórios,
+      com o mesmo perfil de conhecimento para todos.
+    zona: "entre 1.5/N e 0.85"
+    estado: aguardando_decisao
+
+  - id: REQ-04
+    nome: Sem estratégia dominante
+    tipo: comportamento
+    fonte: "prompt 3.6; PDF 2.2 p. 34 (Contestação)"
+    metrica: >
+      Matriz de ganhos entre perfis puros de blefe: taxa de vitória de 1
+      jogador do perfil i numa mesa em que os outros N-1 são do perfil j.
+      Um perfil é dominante se vence acima de 1/N + 0.02 contra todas as
+      mesas, inclusive a do próprio perfil. Complemento: equilíbrio da
+      dinâmica do replicador sobre a matriz.
+    zona: "nenhum perfil dominante"
+    estado: aguardando_decisao
+
+  - id: REQ-05
+    nome: Blefes bem-sucedidos
+    tipo: comportamento
+    fonte: "prompt 3.6; PDF 2.2 p. 34 (Contestação)"
+    metrica: >
+      Blefes bem-sucedidos divididos por blefes tentados. Blefe tentado é a
+      defesa que nomeia um teste que não está no sistema (AMB-15). É
+      bem-sucedido quando termina sem Alerta: a explicação conferiu e o
+      atacante aceitou. Relatado por população de bots e no equilíbrio
+      empírico de REQ-04.
+    zona: "entre 0.30 e 0.50"
+    estado: aguardando_decisao
+
+  - id: REQ-06
+    nome: Distribuição de ataques
+    tipo: comportamento
+    fonte: "prompt 3.6; PDF 2.2 p. 34 (Alvo livre)"
+    metrica: >
+      (a) Por partida, razão entre o máximo e a média de testes recebidos por
+      jogador. (b) Fração dos testes dirigida a quem tem o menor placar no
+      momento do teste, comparada com a chance uniforme 1/(N-1).
+    zona: "(a) média da razão até 1.5; (b) fração até 1/(N-1) + 0.10"
+    estado: aguardando_decisao
+
+  - id: REQ-07
+    nome: Fichas não zeram cedo
+    tipo: regra
+    fonte: "prompt 3.6; PDF 2.2 p. 34 (Fichas iniciais)"
+    metrica: >
+      Fração de partidas em que algum jogador fica com 0 fichas em qualquer
+      momento antes do início do ciclo 3.
+    zona: "até 0.10"
+    estado: aguardando_decisao
+
+  - id: REQ-08
+    nome: Duração
+    tipo: modelo
+    fonte: "prompt 3.6; PDF 2.2 p. 34 e 35 (Compra por Planejamento; Duração)"
+    metrica: >
+      Mediana da duração estimada da partida pelo modelo de tempos por ação
+      (MOD-05), para N = 4 e 5 (o PDF pede 4 a 6; o máximo passou a 5 pela
+      COR-01). Complemento: fração de partidas acima de 60 minutos.
+    zona: "mediana entre 40 e 50 minutos em cada N; até 0.05 das partidas acima de 60"
+    estado: aguardando_decisao
+
+  - id: REQ-09
+    nome: Robustez
+    tipo: simulador
+    fonte: "prompt 3.6"
+    metrica: >
+      Número de exceções e de violações de invariante em 1.000.000 de
+      partidas, com bots aleatórios e configurações variadas.
+    zona: "0 exceções e 0 violações"
+    estado: aguardando_decisao
+
+  - id: REQ-10
+    nome: Tempo parado por ciclo
+    tipo: modelo
+    fonte: "PDF 2.2 p. 34 (Tempo parado)"
+    metrica: >
+      Por jogador e por ciclo, tempo estimado (MOD-05) em que ele não é o
+      jogador da vez, atacante, defensor nem Auditor da disputa.
+    zona: "percentil 90 abaixo de 5 minutos"
+    estado: aguardando_decisao
+
+  - id: REQ-11
+    nome: Os dois estilos aparecem
+    tipo: comportamento
+    fonte: "PDF 2.2 p. 34 (Colocação livre, teto 5, sem troca)"
+    metrica: >
+      Fração de jogadores com o sistema cheio ao fim do Planejamento do
+      ciclo 1, numa mesa de bots Heurísticos.
+    zona: "entre 0.10 e 0.90"
+    estado: aguardando_decisao
+
+  - id: REQ-12
+    nome: O primeiro incidente não decide a partida
+    tipo: regra
+    fonte: "PDF 2.2 p. 34 (Sistema inicial)"
+    metrica: >
+      Diferença de taxa de vitória entre os jogadores cujo sistema inicial
+      sorteado já cobre a categoria-chave do incidente 1 e os demais, com
+      bots idênticos.
+    zona: "diferença até 0.10"
+    estado: aguardando_decisao
+
+  - id: REQ-13
+    nome: Incidentes pesam, mas não decidem sozinhos
+    tipo: regra
+    fonte: "PDF 2.2 p. 34 (Dano de incidente)"
+    metrica: >
+      Participação do dano de incidentes no total de fichas movimentadas na
+      partida (ganhos mais perdas, de todas as fontes).
+    zona: "entre 0.20 e 0.60"
+    estado: aguardando_decisao
+
+  - id: REQ-14
+    nome: Sem Hotfix, o placar não dispersa demais
+    tipo: regra
+    fonte: "PDF 2.2 p. 34 (Sem Hotfix)"
+    metrica: >
+      Diferença entre o primeiro e o último colocado no placar final, e a
+      parte dela que vem de Alertas cobrados na Produção.
+    zona: "a definir depois de uma medição descritiva"
+    estado: aguardando_decisao
+
+metricas_registradas:
+  # Medidas sem critério de aceite. Entram nos relatórios para descrição,
+  # para conferir o simulador ou para comparar com dados reais.
+  - id: MET-01
+    nome: "v1: proporção de partidas desequilibradas"
+    fonte: "prompt 3.6; artigo 4.4 (4 de 6 partidas)"
+    metrica: >
+      Partida desequilibrada: a pontuação do vencedor é pelo menos 1.5 vez a
+      média da pontuação dos demais jogadores. Análise de sensibilidade com
+      o fator de 1.25 a 2.0. Comparada com 4 de 6 (intervalo de Wilson de
+      95%: 0.30 a 0.90), como checagem de plausibilidade.
+    criterio: "vencedor >= 1.5 x média dos demais"
+    estado: aguardando_decisao
+
+  - id: MET-02
+    nome: "v1: taxa de vitória por política de alvo"
+    fonte: "prompt 3.6; artigo 4.4"
+    metrica: >
+      Taxa de vitória de 1 bot Caçador com a política de alvo p (líder, mais
+      fraco ou aleatório) numa mesa em que os outros usam a política q.
+      Matriz 3 x 3. A hipótese do artigo é que atacar o mais fraco é a
+      melhor resposta.
+    estado: aguardando_decisao
+
+  - id: MET-03
+    nome: Categorias distintas testadas por partida
+    fonte: "PDF 2.2 p. 34 (Bug duplicado)"
+    metrica: >
+      Número de categorias diferentes usadas em testes na Homologação, por
+      partida.
+    estado: aguardando_decisao
+
+  - id: MET-04
+    nome: Incidentes severos por partida
+    fonte: "PDF 2.2 p. 34 (Severos)"
+    metrica: >
+      Média de incidentes severos por partida. Valor esperado no jogo base:
+      3 x 3/14 = 0.643. Serve para conferir o sorteio da Linha do Tempo.
+    estado: aguardando_decisao
+
+  - id: MET-05
+    nome: Acerto e confusão no diagnóstico
+    fonte: "PDF 2.2 p. 34 e 35 (Diagnóstico; Registro da partida)"
+    metrica: >
+      Curva de acerto por ciclo e matriz de confusão do diagnóstico, com as
+      escolhas separadas em categoria-chave, secundária e outra. Mesmo
+      esquema da Folha de registro, para comparar com partidas reais.
+    estado: aguardando_decisao
+
+  - id: MET-06
+    nome: Pico de uso de componentes
+    fonte: "AMB-17"
+    metrica: >
+      Máximo de fichas em circulação e de cubos de Alerta em uso ao mesmo
+      tempo, por partida, comparado com 135 fichas e 30 cubos.
+    estado: aguardando_decisao

@@ -1,0 +1,7 @@
+# Fim de linha LF em todas as plataformas: os registros de auditoria precisam
+# ser idênticos byte a byte no Windows e no Linux.
+* text=auto eol=lf
+
+*.pdf binary
+*.png binary
+*.parquet binary
