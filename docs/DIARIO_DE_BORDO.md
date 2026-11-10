@@ -289,3 +289,58 @@ Com o envio, o workflow `.github/workflows/ci.yml` rodou pela primeira vez, no c
 | `windows-latest` | sucesso, 11 passos de 11 |
 
 Isso fecha a pendência da Fase 1: os registros de referência, gerados no Windows, foram refeitos byte a byte no Linux. O determinismo entre plataformas deixou de ser promessa e passou a ser conferido a cada envio.
+
+---
+
+## 2026-11-10 — Fase 1b: executor de experimentos e primeiros requisitos medidos
+
+### Decisões do autor
+
+| Assunto | Opções | Escolha |
+|---|---|---|
+| Envio ao GitHub | enviar a cada fase; o autor sincroniza | "Faça sempre, mas não se coloque como co-author": envio normal (sem forçar) a cada commit, sem linha de coautoria |
+| Zona de REQ-01 (equidade de assento) | 1, 2 ou 3 pontos percentuais | 2 pontos: cada posição entre 1/N − 0,02 e 1/N + 0,02 |
+| Tempos do modelo de duração (MOD-05) | sugestão do assistente; o autor informa | Sugestão: teste admitido 20 s, teste com defesa 60 s, contestação +15 s, passar 5 s, Produção 3 min, fim de jogo 3 min; preparação 3 min e turno de 30 s vêm do PDF |
+| Robustez (REQ-09) | 100 mil agora e 1 milhão depois; 1 milhão agora; otimizar antes | Resposta livre: "REQ-09 está muito criterioso, reduza o número de partidas para 50.000. Esse número já basta" |
+
+O REQ-08 foi confirmado com a zona do próprio PDF (mediana entre 40 e 50 minutos). A outra parte que eu tinha sugerido, no máximo 5% das partidas acima de 60 minutos, não chegou a ser perguntada: ficou só como descrição (percentil 90), sem veredito, até o autor decidir.
+
+### O que foi feito
+
+1. **Modelo de duração** (`duracao.py`, `configs/duracao.yaml`): cada partida soma os tempos das suas ações. A duração estimada vai para o fim do registro de auditoria, em segundos, e o modelo usado vai para o cabeçalho.
+2. **Executor** (`experimentos/`): `cf experimento` lê um YAML com cenários, roda em paralelo e grava `partidas.parquet`, os registros completos de uma amostra e de toda partida que falhar, `manifest.json` e `relatorio.md`. `cf relatorio` refaz o relatório a partir do manifest e da tabela.
+3. **Métricas** (`metricas/`): intervalo de Wilson, bootstrap e o veredito passa, falha ou inconclusivo. Só recebem veredito os requisitos com `estado: confirmado` e um `criterio` estruturado em `configs/requisitos.yaml`.
+4. **Fábrica de bots** (`bots/fabrica.py`): cria um bot pelo tipo e pelos parâmetros gravados num registro ou num experimento.
+5. **Testes novos:** 53, sobre duração, estatística e executor. Entre eles: o resultado não depende do número de processos; partida que falha vira linha de erro e ganha registro; o relatório refeito do manifest é igual ao original.
+6. **Registros de referência** gerados de novo, porque o formato mudou (cabeçalho com o modelo de duração; fim com a duração em segundos). Só a primeira e a última linha de cada um mudaram: os eventos são os mesmos, então o motor joga igual.
+
+### Detalhes escolhidos pelo assistente, sem perguntar
+
+- **`pyarrow`** como dependência, para o Parquet. Estava na lista do prompt.
+- **REQ-01 usa bootstrap, não Wilson.** A vitória dividida (AMB-14) gera frações, e o intervalo de Wilson só vale para resultados 0 ou 1.
+- **Invariantes conferidos a cada evento** em todas as partidas do experimento, para a robustez valer de verdade. Custa o dobro do tempo; dá para desligar no YAML.
+- **`relatorio.md` também vai para o git**, além do `manifest.json`, para os resultados aparecerem no GitHub.
+- **Ordem de trabalho para experimento oficial:** commit do código, `cf experimento --oficial` e depois commit do manifest, do relatório e do diário. Ficou registrada no `CLAUDE.md`.
+- **Organização da execução:** pasta `resultados/<experimento>/<data>-<commit>/`; lotes de 250 partidas; processos padrão igual ao número de núcleos menos 1; 1.000 reamostras no bootstrap; registro completo de 1 partida a cada 1.000.
+- **Cenários extras só para a robustez:** v2.2.1 com o módulo de Segurança Operacional e v2.2 impressa com 6 jogadores.
+
+### Resultado do experimento `fase1b_linha_de_base`
+
+Execução oficial no commit `4d14805`, árvore limpa: 90.000 partidas em 685 s com 7 processos, nenhuma falha. Relatório em `resultados/fase1b_linha_de_base/20261110-140810-4d14805/relatorio.md`.
+
+| Requisito | Resultado |
+|---|---|
+| REQ-01, equidade de assento | **passa** com 4 e com 5 jogadores. Todas as posições entre 0,248 e 0,253 (4 jogadores) e entre 0,198 e 0,203 (5 jogadores), com intervalos de cerca de ±0,004 |
+| REQ-08, duração | **passa** com 4 e com 5 jogadores. Medianas de 41,6 e 49,2 minutos |
+| REQ-09, robustez | **passa**: 0 falhas em 90.000 partidas, acima das 50.000 pedidas |
+
+### Observações (cuidado ao ler)
+
+- **Os bots são aleatórios.** A equidade de assento com bots aleatórios mostra que a ordem de jogo, sozinha, não dá vantagem. Não diz nada sobre jogadores com estratégia; isso é a Fase 2.
+- **A mediana com 5 jogadores, 49,2 min, está perto do teto de 50**, e 10% das partidas passam de 52,9 min. Os tempos são provisórios e bots aleatórios testam muito (27,6 testes por partida com 5 jogadores). Vale cronometrar no playtest antes de concluir algo.
+- **Com 6 jogadores, na regra impressa**, a mediana foi de 55,3 min e todas as partidas precisaram embaralhar o descarte. Nenhuma ficou sem carta, porque bots aleatórios testam muito. É mais um dado a favor da COR-01.
+
+### Pendências
+
+- Do autor: rever a redação dos trechos marcados em `regras/v2.2.1.md` e o `regras/v1.md`.
+- Decidir se o REQ-08 terá a parte "no máximo 5% das partidas acima de 60 minutos".

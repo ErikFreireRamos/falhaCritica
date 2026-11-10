@@ -1,0 +1,341 @@
+{
+  "ambiente": {
+    "motor": "0.1.0",
+    "numpy": "2.5.4",
+    "plataforma": "Windows-11-10.0.26200-SP0",
+    "pyarrow": "26.0.1",
+    "python": "3.12.0"
+  },
+  "arquivos": {
+    "partidas.parquet": "sha256:6cf9858fae3b6d6703f3031530b05ff4dd1e5dbaae4a3d49ef568b12a21f8f55",
+    "relatorio.md": "sha256:4b69eecc7ed039a456acaec10632564ee5364d46a7ed1b62d02831a23890a499"
+  },
+  "cenarios": [
+    {
+      "bots": [
+        {
+          "parametros": {
+            "explicacao_correta": 0.5,
+            "precisao_auditor": 1.0
+          },
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.5,
+            "precisao_auditor": 1.0
+          },
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.5,
+            "precisao_auditor": 1.0
+          },
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.5,
+            "precisao_auditor": 1.0
+          },
+          "tipo": "aleatorio"
+        }
+      ],
+      "catalogo_hash": "sha256:89a8b5427c62009c7ce16a105b7d7de2e0d950035f7803edee091dc067937362",
+      "config_hash": "sha256:60ad08b41b4c4b60f71006dfeda6e2f85e8d576c11631b450363e462e19e3285",
+      "jogadores": 4,
+      "mudancas": {},
+      "nome": "v2_2_1_com_4_jogadores",
+      "partidas": 40000,
+      "regras": "configs/regras_v2_2_1.yaml",
+      "requisitos": [
+        "REQ-01",
+        "REQ-08"
+      ],
+      "versao": "v2.2.1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "explicacao_correta": 0.5,
+            "precisao_auditor": 1.0
+          },
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.5,
+            "precisao_auditor": 1.0
+          },
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.5,
+            "precisao_auditor": 1.0
+          },
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.5,
+            "precisao_auditor": 1.0
+          },
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.5,
+            "precisao_auditor": 1.0
+          },
+          "tipo": "aleatorio"
+        }
+      ],
+      "catalogo_hash": "sha256:89a8b5427c62009c7ce16a105b7d7de2e0d950035f7803edee091dc067937362",
+      "config_hash": "sha256:60ad08b41b4c4b60f71006dfeda6e2f85e8d576c11631b450363e462e19e3285",
+      "jogadores": 5,
+      "mudancas": {},
+      "nome": "v2_2_1_com_5_jogadores",
+      "partidas": 40000,
+      "regras": "configs/regras_v2_2_1.yaml",
+      "requisitos": [
+        "REQ-01",
+        "REQ-08"
+      ],
+      "versao": "v2.2.1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "explicacao_correta": 0.5,
+            "precisao_auditor": 1.0
+          },
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.5,
+            "precisao_auditor": 1.0
+          },
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.5,
+            "precisao_auditor": 1.0
+          },
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.5,
+            "precisao_auditor": 1.0
+          },
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.5,
+            "precisao_auditor": 1.0
+          },
+          "tipo": "aleatorio"
+        }
+      ],
+      "catalogo_hash": "sha256:89a8b5427c62009c7ce16a105b7d7de2e0d950035f7803edee091dc067937362",
+      "config_hash": "sha256:cf9e3da275871f924a017bc33f8143cf5c2bb8673f97468edd9d4430217fb519",
+      "jogadores": 5,
+      "mudancas": {
+        "modulo_seguranca_operacional": true
+      },
+      "nome": "v2_2_1_com_modulo_5_jogadores",
+      "partidas": 5000,
+      "regras": "configs/regras_v2_2_1.yaml",
+      "requisitos": [],
+      "versao": "v2.2.1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "explicacao_correta": 0.5,
+            "precisao_auditor": 1.0
+          },
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.5,
+            "precisao_auditor": 1.0
+          },
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.5,
+            "precisao_auditor": 1.0
+          },
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.5,
+            "precisao_auditor": 1.0
+          },
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.5,
+            "precisao_auditor": 1.0
+          },
+          "tipo": "aleatorio"
+        },
+        {
+          "parametros": {
+            "explicacao_correta": 0.5,
+            "precisao_auditor": 1.0
+          },
+          "tipo": "aleatorio"
+        }
+      ],
+      "catalogo_hash": "sha256:89a8b5427c62009c7ce16a105b7d7de2e0d950035f7803edee091dc067937362",
+      "config_hash": "sha256:d16ad3fcd4ea851b91708f06e097e2e060a1671a4cce6e054bcee75448e7be48",
+      "jogadores": 6,
+      "mudancas": {},
+      "nome": "v2_2_impressa_com_6_jogadores",
+      "partidas": 5000,
+      "regras": "configs/regras_v2_2.yaml",
+      "requisitos": [],
+      "versao": "v2.2"
+    }
+  ],
+  "comando": "cf experimento experimentos/fase1b_linha_de_base.yaml --oficial --processos 7",
+  "duracao": {
+    "arquivo": "configs/duracao.yaml",
+    "sha256": "sha256:9bb2aa16f286d032e76e1ae026a9acd891fcab591867d7c4b45f0d29a65ff756"
+  },
+  "esquema": "cf-manifest/1",
+  "experimento": {
+    "arquivo": "experimentos/fase1b_linha_de_base.yaml",
+    "conteudo": {
+      "cenarios": [
+        {
+          "bots": [
+            {
+              "parametros": {
+                "explicacao_correta": 0.5,
+                "precisao_auditor": 1.0
+              },
+              "tipo": "aleatorio"
+            }
+          ],
+          "jogadores": 4,
+          "mudancas": {},
+          "nome": "v2_2_1_com_4_jogadores",
+          "partidas": 40000,
+          "regras": "configs/regras_v2_2_1.yaml",
+          "requisitos": [
+            "REQ-01",
+            "REQ-08"
+          ]
+        },
+        {
+          "bots": [
+            {
+              "parametros": {
+                "explicacao_correta": 0.5,
+                "precisao_auditor": 1.0
+              },
+              "tipo": "aleatorio"
+            }
+          ],
+          "jogadores": 5,
+          "mudancas": {},
+          "nome": "v2_2_1_com_5_jogadores",
+          "partidas": 40000,
+          "regras": "configs/regras_v2_2_1.yaml",
+          "requisitos": [
+            "REQ-01",
+            "REQ-08"
+          ]
+        },
+        {
+          "bots": [
+            {
+              "parametros": {
+                "explicacao_correta": 0.5,
+                "precisao_auditor": 1.0
+              },
+              "tipo": "aleatorio"
+            }
+          ],
+          "jogadores": 5,
+          "mudancas": {
+            "modulo_seguranca_operacional": true
+          },
+          "nome": "v2_2_1_com_modulo_5_jogadores",
+          "partidas": 5000,
+          "regras": "configs/regras_v2_2_1.yaml",
+          "requisitos": []
+        },
+        {
+          "bots": [
+            {
+              "parametros": {
+                "explicacao_correta": 0.5,
+                "precisao_auditor": 1.0
+              },
+              "tipo": "aleatorio"
+            }
+          ],
+          "jogadores": 6,
+          "mudancas": {},
+          "nome": "v2_2_impressa_com_6_jogadores",
+          "partidas": 5000,
+          "regras": "configs/regras_v2_2.yaml",
+          "requisitos": []
+        }
+      ],
+      "conferir_invariantes": true,
+      "descricao": "Linha de base com bots aleatórios (explicação correta em 50% das defesas, Auditor que sempre julga certo). Mede a equidade de assento (REQ-01), a duração estimada (REQ-08) e a robustez do simulador (REQ-09).\n",
+      "duracao": "configs/duracao.yaml",
+      "esquema": "cf-experimento/1",
+      "nome": "fase1b_linha_de_base",
+      "registros_completos_um_a_cada": 1000,
+      "requisitos_arquivo": "configs/requisitos.yaml",
+      "semente_mestre": 20261110
+    },
+    "sha256": "sha256:d1a121cbdf520abce8b1402d8a1b1e52ae8521854fed19c63bd05eb8a47e3a5f"
+  },
+  "falhas": 0,
+  "git": {
+    "commit": "4d1480595a8bc710c4b6ee55119159021e28a5e6",
+    "sujo": false
+  },
+  "inicio": "2026-11-10T14:08:10+00:00",
+  "invariantes_conferidos_a_cada_evento": true,
+  "oficial": true,
+  "partidas": 90000,
+  "processos": 7,
+  "registros_completos": 90,
+  "requisitos": {
+    "arquivo": "configs/requisitos.yaml",
+    "sha256": "sha256:52f8445071417ffa100ab692addfc2a2dbe87259a9d6cc27b4a91d25b5f8b472"
+  },
+  "segundos": 685.3,
+  "semente_mestre": 20261110,
+  "vereditos": {
+    "REQ-01": [
+      "passa"
+    ],
+    "REQ-08": [
+      "passa"
+    ],
+    "REQ-09": [
+      "passa"
+    ]
+  }
+}
