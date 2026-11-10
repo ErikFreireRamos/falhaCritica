@@ -403,3 +403,28 @@ Execução oficial no commit `4d14805`, árvore limpa: 90.000 partidas em 685 s 
 
 - `uv run pytest`: 327 testes passam e 1 é pulado. `ruff` e `mypy` estrito sem apontamentos. Matriz: 148 de 148.
 - Partida narrada com os quatro estilos lida por inteiro: os motivos gravados batem com o que cada estilo deve fazer.
+
+### Resultado do experimento `fase2_fumaca_estilos`
+
+Execução oficial no commit `058bd0e`, árvore limpa: 20.000 partidas em 236 s com 7 processos, nenhuma falha. Relatório em `resultados/fase2_fumaca_estilos/20261110-143205-058bd0e/relatorio.md`. Todos com conhecimento experiente, blefe moderado e contestação pelo limiar; rodízio de assentos.
+
+**Taxa de vitória por bot (MET-07, sem veredito).** Referência de quem não leva vantagem: 0,250 com 4 jogadores e 0,200 com 5.
+
+| Bot | 4 jogadores | 5 jogadores |
+|---|---|---|
+| Construtor | 0,457 (0,448 a 0,468) | 0,353 (0,344 a 0,362) |
+| Heurístico | 0,368 (0,359 a 0,378) | 0,322 (0,313 a 0,331) |
+| Caçador, ataca o líder | 0,172 (0,165 a 0,180) | 0,176 (0,168 a 0,183) |
+| Caçador, ataca o mais fraco | — | 0,147 (0,140 a 0,154) |
+| Aleatório | 0,002 (0,001 a 0,003) | 0,002 (0,001 a 0,003) |
+
+REQ-09 saiu inconclusivo só porque a fumaça tem 20.000 partidas e o critério pede 50.000. Não houve nenhuma falha.
+
+### Observações (é fumaça, não conclusão)
+
+- **Os estilos jogam diferente**, que era o objetivo da fumaça. O sistema final médio do Construtor é cheio (5), o do Caçador fica perto de 3,5.
+- **Primeiro sinal sobre o melhor estilo:** construir rende mais que caçar na v2.2.1. O Construtor vence quase o dobro da referência com 4 jogadores, e os dois Caçadores ficam abaixo dela. Se isso se confirmar na Fase 4, com mesas e perfis variados, é um achado de balanceamento: atacar pode estar valendo pouco, e a regra do PDF que pede "os dois estilos na mesa" (REQ-11) estaria em risco.
+- **Caçar o mais fraco rende menos que caçar o líder** (0,147 contra 0,176, com 5 jogadores). É o contrário do que se viu na v1, segundo o artigo. É só a primeira medida; o Experimento 1 da Fase 3 olha isso na v1.
+- **O Heurístico é o meu primeiro modelo de valor** e perde para o Construtor. Isso diz mais do modelo de valor do que do jogo.
+- **Duração com bots que jogam de verdade:** com 5 jogadores, a mediana foi de cerca de 55 minutos, acima dos 50 do REQ-08, que tinha passado com bots aleatórios (49,2). Bots com estratégia testam mais: 33 testes por partida contra 27,6. Os tempos ainda são provisórios, mas é um alerta para a duração com 5 jogadores.
+- **Baralho com 5 jogadores:** de 0,4% a 3,8% das partidas embaralharam o descarte; em nenhuma faltou carta.
