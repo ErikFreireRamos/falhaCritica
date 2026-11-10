@@ -582,8 +582,11 @@ def test_experimento_do_melhor_estilo_em_miniatura(tmp_path: Path) -> None:
         "| construtor_contra_heuristico (rotações somadas) |",
     ):
         assert trecho in texto, trecho
-    # As células da matriz não se repetem na tabela geral de taxa de vitória por bot.
+    # As células da matriz não se repetem na tabela geral de taxa de vitória por bot, não entram no MET-01
+    # e não criam a seção da matriz de políticas de alvo da v1 (MET-02).
     assert "| construtor_contra_heuristico | foco |" not in texto
+    assert "| construtor_contra_heuristico | v2 |" not in texto and "| todos_heuristicos | v2 |" in texto
+    assert "## Política de alvo (MET-02)" not in texto
     # O relatório refeito do manifest e da tabela é igual ao original.
     assert cli.main(["relatorio", str(resultado.pasta)]) == 0
     assert (resultado.pasta / "relatorio.md").read_text(encoding="utf-8") == texto

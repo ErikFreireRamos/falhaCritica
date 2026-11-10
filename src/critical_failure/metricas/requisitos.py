@@ -356,6 +356,8 @@ def desequilibrio(
     fatores = [float(criterio["fator"]), *(float(f) for f in criterio.get("sensibilidade", []))]
     resultado: list[dict[str, Any]] = []
     for grupo, cenarios in grupos(experimento).items():
+        if cenarios[0].matriz is not None:  # as células das matrizes de estilos têm a sua própria seção
+            continue
         validas = _validas_do_grupo(linhas, cenarios)
         if not validas:
             continue

@@ -30,7 +30,9 @@ def _pct(valor: float) -> str:
 def _matriz_de_alvos(manifest: dict[str, Any], estilos: list[dict[str, Any]]) -> list[str]:
     """MET-02: a taxa de vitória do bot "foco" em cada célula (política do foco x política dos outros)."""
     celulas = {
-        cenario["grupo"]: cenario["celula"] for cenario in manifest["cenarios"] if cenario.get("celula") is not None
+        cenario["grupo"]: cenario["celula"]
+        for cenario in manifest["cenarios"]
+        if cenario.get("celula") is not None and not cenario.get("matriz")
     }
     if not celulas:
         return []
