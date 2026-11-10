@@ -593,3 +593,59 @@ def test_qualquer_partida_da_v1_respeita_os_invariantes(
     assert sorted(em_jogo) == list(range(54))
     assert primeira.vezes("teste") == 3 * len(estilos)
     assert jogar_partida(motor, [novo(e) for e in estilos], semente, partida) == primeira
+
+
+# ---------------------------------------------------------------- conta direta contra busca exaustiva
+
+
+def _por_busca(cartas: tuple[tuple[str, str], ...], tabela: Any) -> tuple[int, int, int]:
+    """Oráculo: tenta todas as divisões (o cálculo antigo, por busca). (bônus, pares, trios)."""
+    from itertools import combinations
+
+    if not cartas:
+        return (0, 0, 0)
+    primeira, outras = cartas[0], cartas[1:]
+    opcoes = [_por_busca(outras, tabela)]
+    for tamanho, e_par, bonus_do_grupo in (
+        (tabela.cartas_no_par, True, tabela.por_par),
+        (tabela.cartas_no_trio, False, tabela.por_trio),
+    ):
+        for indices in combinations(range(len(outras)), tamanho - 1):
+            grupo = (primeira, *(outras[i] for i in indices))
+            atributos = {atributo for atributo, _ in grupo}
+            valido = (len(atributos) == 1 and len(set(grupo)) == len(grupo)) if e_par else len(atributos) == len(grupo)
+            if valido:
+                sobra = tuple(carta for k, carta in enumerate(outras) if k not in indices)
+                bonus, pares, trios = _por_busca(sobra, tabela)
+                opcoes.append((bonus + bonus_do_grupo, pares + e_par, trios + (not e_par)))
+    return max(opcoes)
+
+
+@settings(max_examples=300, deadline=None)
+@given(
+    cartas=st.lists(
+        st.tuples(st.sampled_from(["A", "B", "C", "D", "E"]), st.sampled_from(["x", "y", "z"])), max_size=9
+    ),
+    por_par=st.integers(0, 4),
+    por_trio=st.integers(0, 4),
+)
+def test_conta_direta_igual_a_busca_exaustiva(cartas: list[tuple[str, str]], por_par: int, por_trio: int) -> None:
+    from critical_failure.regras.v1.pontuacao import TabelaDePontos
+
+    tabela = TabelaDePontos(por_carta=1, por_par=por_par, por_trio=por_trio, cartas_no_par=2, cartas_no_trio=3)
+    direto = pontuar(cartas, tabela)
+    bonus, pares, trios = _por_busca(tuple(sorted(cartas)), tabela)
+    assert direto.total == len(cartas) + bonus
+    assert (direto.pares, direto.trios) == (pares, trios)
+
+
+def test_pontuacao_de_sistema_grande_e_rapida(motor: MotorV1) -> None:
+    """A busca antiga explodia com sistemas grandes; a conta direta não."""
+    import time
+
+    nomes_v1 = sorted(set(motor.catalogo.cartas) - motor.catalogo.especiais)
+    sistema = [(motor.catalogo.atributo[nome], nome) for nome in (nomes_v1 * 3)[:40]]
+    inicio = time.perf_counter()
+    resultado = pontuar(sistema, motor.tabela)
+    assert time.perf_counter() - inicio < 1.0
+    assert resultado.cartas == 40 and resultado.total > 40

@@ -63,6 +63,7 @@ ESQUEMA_DA_TABELA = pa.schema(
         ("reposicoes_impossiveis", pa.int16()),
         ("placar_no_corte", pa.list_(pa.int16())),
         ("erro", pa.string()),
+        ("aviso", pa.string()),
     ]
 )
 
@@ -113,6 +114,7 @@ def _linha_de_falha(lote: Lote, partida: int, erro: Exception) -> dict[str, Any]
         "reposicoes_impossiveis": None,
         "placar_no_corte": None,
         "erro": f"{type(erro).__name__}: {erro}",
+        "aviso": None,
     }
 
 
@@ -126,8 +128,12 @@ def rodar_lote(lote: Lote) -> list[dict[str, Any]]:
     def novos_bots() -> list[Any]:
         return [criar_bot(tipo, dict(parametros), motor.familia) for tipo, parametros in lote.bots]
 
-    def gravar_registro(partida: int, prefixo: str) -> None:
-        """Refaz a partida no modo auditado e grava o registro completo."""
+    def gravar_registro(partida: int, prefixo: str) -> str | None:
+        """Refaz a partida no modo auditado e grava o registro completo.
+
+        Se o arquivo não puder ser gravado (disco cheio, pasta sincronizada travada...),
+        devolve um aviso em vez de derrubar o experimento inteiro.
+        """
         caminho = pasta / f"{prefixo}_{partida:07d}.jsonl"
         try:
             linhas, _ = registro.gerar_linhas(
@@ -137,7 +143,11 @@ def rodar_lote(lote: Lote) -> list[dict[str, Any]]:
             linhas = getattr(erro, "linhas", [])
         except Exception as erro:  # noqa: BLE001 - a falha já está na tabela; aqui só não há registro para gravar
             linhas = [{"registro": "falha_sem_registro", "erro": f"{type(erro).__name__}: {erro}"}]
-        registro.escrever(caminho, linhas)
+        try:
+            registro.escrever(caminho, linhas)
+        except OSError as erro:
+            return f"registro não gravado em {caminho.name}: {type(erro).__name__}: {erro}"
+        return None
 
     saida: list[dict[str, Any]] = []
     for partida in lote.partidas:
@@ -152,7 +162,7 @@ def rodar_lote(lote: Lote) -> list[dict[str, Any]]:
             )
         except Exception as erro:  # noqa: BLE001 - REQ-09: qualquer exceção numa partida é uma falha a registrar
             saida.append(_linha_de_falha(lote, partida, erro))
-            gravar_registro(partida, "falha")
+            saida[-1]["aviso"] = gravar_registro(partida, "falha")
             continue
         saida.append(
             {
@@ -172,10 +182,11 @@ def rodar_lote(lote: Lote) -> list[dict[str, Any]]:
                 "reposicoes_impossiveis": resultado.vezes("reposicao_impossivel"),
                 "placar_no_corte": list(resultado.placar_no_corte) if resultado.placar_no_corte else None,
                 "erro": None,
+                "aviso": None,
             }
         )
         if partida % lote.um_a_cada == 0:
-            gravar_registro(partida, "partida")
+            saida[-1]["aviso"] = gravar_registro(partida, "partida")
     return saida
 
 
@@ -318,6 +329,7 @@ def executar(
         "partidas": len(linhas),
         "falhas": falhas,
         "registros_completos": len(registros),
+        "registros_nao_gravados": sum(1 for linha in linhas if linha.get("aviso")),
         "vereditos": {
             requisito: sorted({m.veredito for m in medidas if m.requisito == requisito})
             for requisito in sorted({m.requisito for m in medidas})

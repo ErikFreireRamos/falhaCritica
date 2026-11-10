@@ -425,3 +425,15 @@ def test_experimentos_da_fase_3_sao_validos() -> None:
         "v2_2_1_com_4_jogadores": "v1_com_4_jogadores",
         "v2_2_1_com_5_jogadores": "v1_com_5_jogadores",
     }
+
+
+def test_falha_ao_gravar_um_registro_nao_derruba_o_experimento(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    def disco_com_problema(caminho: Path, linhas: Any) -> None:
+        raise OSError(22, "Invalid argument")
+
+    monkeypatch.setattr(registro, "escrever", disco_com_problema)
+    resultado = rodar(tmp_path, cenarios=[{**experimento()["cenarios"][0], "partidas": 12}])
+    assert len(resultado.linhas) == 12 and all(linha["erro"] is None for linha in resultado.linhas)
+    avisos = [linha["aviso"] for linha in resultado.linhas if linha["aviso"]]
+    assert len(avisos) == 2 and "registro não gravado" in avisos[0]  # partidas 0 e 10
+    assert resultado.manifest["registros_nao_gravados"] == 2

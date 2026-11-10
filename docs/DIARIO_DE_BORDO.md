@@ -491,3 +491,16 @@ Os dois foram apontados pelos invariantes na primeira fumaça da v1:
 - `uv run pytest`: 383 testes passam e 1 é pulado. `ruff` e `mypy` estrito sem apontamentos. Matriz: 176 de 176.
 - Fumaça da v1: 600 partidas com os invariantes conferidos a cada evento; replay nos dois modos.
 - Narração de uma partida da v1 lida por inteiro: declaração, dúvida, definição, contestação, cartas tiradas ao acaso e pontuação seguem o artigo e as decisões AMB-20 a AMB-29.
+
+### Experimento 1 interrompido e correções (2026-11-10)
+
+**O que aconteceu.** A primeira execução oficial do Experimento 1 (commit `756f209`) parou no meio, junto com um travamento do VS Code. O registro da execução mostra que uma partida do cenário `todos_cacadores_lider` (partida 2731) foi marcada como falha e que, em seguida, a gravação do arquivo dela deu um erro do Windows (`OSError 22`), que derrubou o experimento. O Experimento 2 não chegou a começar. Os 442 registros parciais, sem manifest, foram apagados.
+
+**Diagnóstico.** A mesma partida, jogada sozinha, termina normalmente: não é defeito das regras. A causa mais provável, não medida (a medição foi interrompida), é falta de memória. A pontuação da v1 guardava em memória todas as combinações já calculadas, sem limite, em cada processo. Os Caçadores da v1 acumulam sistemas grandes, e a máquina tinha 0,8 GB livres de 7,8.
+
+**Decisão do autor:** trocar o cálculo por conta direta, implementar as propostas e refazer os experimentos.
+
+**Correções:**
+1. **Pontuação da v1 por conta direta** (`regras/v1/pontuacao.py`), sem busca e sem guardar nada entre partidas. De um atributo dá para tirar `p` pares se, contando no máximo `p` cartas de cada teste, sobram pelo menos `2p`; para os trios só importa quantas cartas de cada atributo sobraram. O cálculo percorre quantos pares sair de cada atributo e, para cada escolha, o máximo de trios. Um teste compara a conta direta com a busca exaustiva antiga em 300 sistemas aleatórios, inclusive com valores de par e trio diferentes dos da v1; outro mostra que um sistema de 40 cartas é pontuado em menos de 1 segundo. O registro de referência da v1 não mudou.
+2. **O executor não cai mais se a gravação de um registro falhar:** a partida ganha um aviso na tabela (`aviso`), e o manifest conta os registros não gravados. Um teste simula o erro de disco.
+3. **Os experimentos da Fase 3 rodam com 4 processos**, em vez de 7, para sobrar memória para o resto da máquina.
