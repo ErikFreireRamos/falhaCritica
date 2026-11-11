@@ -1,0 +1,305 @@
+{
+  "ambiente": {
+    "motor": "0.1.0",
+    "numpy": "2.5.4",
+    "plataforma": "Windows-11-10.0.26200-SP0",
+    "pyarrow": "26.0.1",
+    "python": "3.12.0"
+  },
+  "arquivos": {
+    "partidas.parquet": "sha256:dc503e4daf6dfc2c00c0e90f67c9aec565c89d2d0cf0b2fb0284f0fecb81e643",
+    "relatorio.md": "sha256:26fab704d36dde7fb8263aee9e3728e784512e7ca6592b73af1dcb8d41c0e0ea"
+  },
+  "cenarios": [
+    {
+      "bots": [
+        {
+          "parametros": {
+            "blefe": "nunca",
+            "conhecimento": "experiente",
+            "contestacao": "nunca"
+          },
+          "rotulo": "blefa_nunca_contesta_nunca",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "nunca",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "blefa_nunca_contesta_limiar",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "sempre",
+            "conhecimento": "experiente",
+            "contestacao": "nunca"
+          },
+          "rotulo": "blefa_sempre_contesta_nunca",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "sempre",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "blefa_sempre_contesta_limiar",
+          "tipo": "heuristico"
+        }
+      ],
+      "catalogo_hash": "sha256:89a8b5427c62009c7ce16a105b7d7de2e0d950035f7803edee091dc067937362",
+      "celula": null,
+      "comparar_com": null,
+      "config_hash": "sha256:60ad08b41b4c4b60f71006dfeda6e2f85e8d576c11631b450363e462e19e3285",
+      "familia": "v2",
+      "grupo": "n4_mistura_do_equilibrio",
+      "jogadores": 4,
+      "matriz": null,
+      "mudancas": {},
+      "nome": "n4_mistura_do_equilibrio",
+      "partidas": 10000,
+      "pesos": [
+        325,
+        501,
+        133,
+        41
+      ],
+      "regras": "configs/regras_v2_2_1.yaml",
+      "requisitos": [
+        "REQ-05"
+      ],
+      "versao": "v2.2.1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "blefe": "nunca",
+            "conhecimento": "experiente",
+            "contestacao": "nunca"
+          },
+          "rotulo": "blefa_nunca_contesta_nunca",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "nunca",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "blefa_nunca_contesta_limiar",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "sempre",
+            "conhecimento": "experiente",
+            "contestacao": "nunca"
+          },
+          "rotulo": "blefa_sempre_contesta_nunca",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "sempre",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "blefa_sempre_contesta_limiar",
+          "tipo": "heuristico"
+        }
+      ],
+      "catalogo_hash": "sha256:89a8b5427c62009c7ce16a105b7d7de2e0d950035f7803edee091dc067937362",
+      "celula": null,
+      "comparar_com": null,
+      "config_hash": "sha256:60ad08b41b4c4b60f71006dfeda6e2f85e8d576c11631b450363e462e19e3285",
+      "familia": "v2",
+      "grupo": "n5_mistura_do_equilibrio",
+      "jogadores": 5,
+      "matriz": null,
+      "mudancas": {},
+      "nome": "n5_mistura_do_equilibrio",
+      "partidas": 10000,
+      "pesos": [
+        313,
+        541,
+        133,
+        13
+      ],
+      "regras": "configs/regras_v2_2_1.yaml",
+      "requisitos": [
+        "REQ-05"
+      ],
+      "versao": "v2.2.1"
+    }
+  ],
+  "comando": "cf experimento experimentos/fase4_exp5b_blefe_equilibrio.yaml --oficial --processos 4",
+  "duracao": {
+    "arquivo": "configs/duracao.yaml",
+    "sha256": "sha256:9bb2aa16f286d032e76e1ae026a9acd891fcab591867d7c4b45f0d29a65ff756"
+  },
+  "esquema": "cf-manifest/1",
+  "experimento": {
+    "arquivo": "experimentos/fase4_exp5b_blefe_equilibrio.yaml",
+    "conteudo": {
+      "cenarios": [
+        {
+          "bots": [
+            {
+              "parametros": {
+                "blefe": "nunca",
+                "conhecimento": "experiente",
+                "contestacao": "nunca"
+              },
+              "rotulo": "blefa_nunca_contesta_nunca",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "nunca",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "blefa_nunca_contesta_limiar",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "sempre",
+                "conhecimento": "experiente",
+                "contestacao": "nunca"
+              },
+              "rotulo": "blefa_sempre_contesta_nunca",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "sempre",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "blefa_sempre_contesta_limiar",
+              "tipo": "heuristico"
+            }
+          ],
+          "celula": null,
+          "comparar_com": null,
+          "grupo": null,
+          "jogadores": 4,
+          "matriz": null,
+          "mudancas": {},
+          "nome": "n4_mistura_do_equilibrio",
+          "partidas": 10000,
+          "pesos": [
+            325,
+            501,
+            133,
+            41
+          ],
+          "regras": "configs/regras_v2_2_1.yaml",
+          "requisitos": [
+            "REQ-05"
+          ],
+          "rodizio": false
+        },
+        {
+          "bots": [
+            {
+              "parametros": {
+                "blefe": "nunca",
+                "conhecimento": "experiente",
+                "contestacao": "nunca"
+              },
+              "rotulo": "blefa_nunca_contesta_nunca",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "nunca",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "blefa_nunca_contesta_limiar",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "sempre",
+                "conhecimento": "experiente",
+                "contestacao": "nunca"
+              },
+              "rotulo": "blefa_sempre_contesta_nunca",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "sempre",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "blefa_sempre_contesta_limiar",
+              "tipo": "heuristico"
+            }
+          ],
+          "celula": null,
+          "comparar_com": null,
+          "grupo": null,
+          "jogadores": 5,
+          "matriz": null,
+          "mudancas": {},
+          "nome": "n5_mistura_do_equilibrio",
+          "partidas": 10000,
+          "pesos": [
+            313,
+            541,
+            133,
+            13
+          ],
+          "regras": "configs/regras_v2_2_1.yaml",
+          "requisitos": [
+            "REQ-05"
+          ],
+          "rodizio": false
+        }
+      ],
+      "conferir_invariantes": true,
+      "descricao": "Blefes bem-sucedidos (REQ-05) em mesas de Heurísticos sorteadas da mistura de perfis de blefe do equilíbrio do Experimento 5, com 4 e com 5 jogadores.\n",
+      "duracao": "configs/duracao.yaml",
+      "esquema": "cf-experimento/1",
+      "nome": "fase4_exp5b_blefe_equilibrio",
+      "registros_completos_um_a_cada": 1000,
+      "requisitos_arquivo": "configs/requisitos.yaml",
+      "semente_mestre": 20261117
+    },
+    "sha256": "sha256:817f390529d5463b6bcbf8e2dcbac2079ed8cd2928e13b9f314f138830d064f4"
+  },
+  "falhas": 0,
+  "git": {
+    "commit": "e17bbf288304cc5e9d2ff8748d12138022c11dba",
+    "sujo": false
+  },
+  "inicio": "2026-11-11T00:42:53+00:00",
+  "invariantes_conferidos_a_cada_evento": true,
+  "oficial": true,
+  "partidas": 20000,
+  "processos": 4,
+  "registros_completos": 20,
+  "registros_nao_gravados": 0,
+  "requisitos": {
+    "arquivo": "configs/requisitos.yaml",
+    "sha256": "sha256:f23d815a3c91ac01999a7ac5e20e0ba974a98c11d0a4dff3a113328e476bfe5e"
+  },
+  "segundos": 318.1,
+  "semente_mestre": 20261117,
+  "vereditos": {
+    "REQ-05": [
+      "passa"
+    ],
+    "REQ-09": [
+      "inconclusivo"
+    ]
+  }
+}

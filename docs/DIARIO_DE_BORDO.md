@@ -787,3 +787,17 @@ Execução oficial no commit `b02b6d4`, árvore limpa: 180.000 partidas em 4.760
 1. **O blefe está equilibrado no sentido de jogo:** nenhum perfil puro domina, e os perfis formam um ciclo. Blefar sempre ganha de quem nunca contesta; contestar pelo limiar ganha de quem blefa; não contestar ganha numa mesa de honestos. No equilíbrio, cerca de 1 em cada 6 jogadores blefa sempre. É o comportamento que a regra de contestação (R-7.3.5) pretendia criar.
 2. **Contestar pelo limiar pega quase todo blefe** (só 1,6% a 2,7% passam). Os bots contam as cartas já vistas (MOD-09) e sabem quando um teste nomeado está esgotado. Jogadores humanos não contam tão bem: a taxa real de blefes que passam deve ficar entre esse número e os 81% de quem nunca contesta. O veredito do REQ-05 vale para bots que contam cartas.
 3. **"Contestar pelo limiar" é o perfil mais comum no equilíbrio**, e o mesmo de todos os experimentos anteriores. Por isso aqueles resultados não estão longe do comportamento de equilíbrio. O blefe "metade das vezes" usado antes, porém, não aparece no equilíbrio: quem blefa, blefa sempre.
+
+### Resultado do Experimento 5b (`fase4_exp5b_blefe_equilibrio`)
+
+Execução oficial no commit `e17bbf2`, árvore limpa: 20.000 partidas em 318 s com 4 processos, nenhuma falha. Relatório em `resultados/fase4_exp5b_blefe_equilibrio/20261111-004253-e17bbf2/relatorio.md`.
+
+| Requisito | Resultado |
+|---|---|
+| REQ-05, blefes bem-sucedidos no equilíbrio | **passa**: 0,395 (0,386 a 0,403) com 4 jogadores e 0,385 (0,377 a 0,393) com 5, em 21.532 e 23.535 blefes. Zona: 0,30 a 0,50 |
+
+**Observações**
+
+1. **Os números do PDF batem com o equilíbrio:** com a contestação de R-7.3.4 e R-7.3.5, a mistura estável de comportamentos faz cerca de 39% dos blefes darem certo, no meio da faixa de 30% a 50% que o PDF pede para o playtest.
+2. **Na mesa de equilíbrio, os perfis vencem perto de 1/N**, como se espera de um equilíbrio. Quem sempre blefa fica um pouco abaixo (0,234 com 4 jogadores, intervalo de 0,223 a 0,246), porque a dinâmica usa uma aproximação linear.
+3. **A duração depende muito de como a mesa contesta.** Na mesa de equilíbrio há 3,3 contestações por partida com 4 jogadores, contra cerca de 9,5 com o blefe moderado. As medianas caem para 38,7 min (4 jogadores) e 44,6 min (5), contra 45,7 e 55,1 nos Experimentos 2 e 3. É só descrição (o REQ-08 não foi medido aqui), mas a duração com 5 jogadores, que estourava os 50 min, fica dentro da faixa com o comportamento de equilíbrio.
