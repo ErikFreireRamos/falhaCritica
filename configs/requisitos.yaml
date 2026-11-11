@@ -121,7 +121,8 @@ requisitos:
       jogador. (b) Fração dos testes dirigida a quem tem o menor placar no
       momento do teste, comparada com a chance uniforme 1/(N-1).
     zona: "(a) média da razão até 1.5; (b) fração até 1/(N-1) + 0.10"
-    estado: aguardando_decisao
+    criterio: {razao_maxima: 1.5, acima_do_uniforme: 0.10}
+    estado: confirmado  # autor, 2026-11-10
 
   - id: REQ-07
     nome: Fichas não zeram cedo
@@ -131,7 +132,8 @@ requisitos:
       Fração de partidas em que algum jogador fica com 0 fichas em qualquer
       momento antes do início do ciclo 3.
     zona: "até 0.10"
-    estado: aguardando_decisao
+    criterio: {maximo: 0.10}
+    estado: confirmado  # autor, 2026-11-10
 
   - id: REQ-08
     nome: Duração
@@ -167,7 +169,8 @@ requisitos:
       Por jogador e por ciclo, tempo estimado (MOD-05) em que ele não é o
       jogador da vez, atacante, defensor nem Auditor da disputa.
     zona: "percentil 90 abaixo de 5 minutos"
-    estado: aguardando_decisao
+    criterio: {quantil: 0.9, maximo_min: 5}
+    estado: confirmado  # autor, 2026-11-10
 
   - id: REQ-11
     nome: Os dois estilos aparecem
@@ -190,7 +193,8 @@ requisitos:
       sorteado já cobre a categoria-chave do incidente 1 e os demais, com
       bots idênticos.
     zona: "diferença até 0.10"
-    estado: aguardando_decisao
+    criterio: {diferenca_maxima: 0.10}
+    estado: confirmado  # autor, 2026-11-10
 
   - id: REQ-13
     nome: Incidentes pesam, mas não decidem sozinhos
@@ -200,7 +204,8 @@ requisitos:
       Participação do dano de incidentes no total de fichas movimentadas na
       partida (ganhos mais perdas, de todas as fontes).
     zona: "entre 0.20 e 0.60"
-    estado: aguardando_decisao
+    criterio: {minimo: 0.20, maximo: 0.60}
+    estado: confirmado  # autor, 2026-11-10
 
   - id: REQ-14
     nome: Sem Hotfix, o placar não dispersa demais

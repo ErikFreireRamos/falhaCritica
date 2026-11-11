@@ -47,8 +47,11 @@ NAO_DOMINANTE = "não dominante"
 INDEFINIDO = "indefinido"
 REAMOSTRAS = 1000
 CONFIANCA = 0.95
-PASSOS_DO_REPLICADOR = 200_000
-TOLERANCIA_DO_REPLICADOR = 1e-12
+PASSOS_DO_REPLICADOR = 400_000
+PASSO_DO_REPLICADOR = 0.05
+TOLERANCIA_DO_REPLICADOR = 1e-13
+TOLERANCIA_DE_NASH = 1e-6
+"""Folga numérica para dizer que nenhum estilo se sai melhor que a média no ponto final."""
 CHAVE_DAS_MATRIZES = 50_000
 """Chave do fluxo de aleatoriedade do bootstrap das matrizes, separada das dos outros requisitos."""
 
@@ -110,23 +113,31 @@ def _intervalo(medias: NDArray[np.float64]) -> Intervalo:
 
 
 def replicador(ganhos: NDArray[np.float64]) -> tuple[NDArray[np.float64], bool]:
-    """Dinâmica do replicador em tempo discreto, a partir da população uniforme.
+    """Dinâmica do replicador em tempo contínuo (passo pequeno), a partir da população uniforme.
 
     ``ganhos[i, j]`` é o ganho do estilo i contra a população pura j. Devolve a
-    proporção final de cada estilo e se a dinâmica parou de mudar.
+    proporção final de cada estilo e se ela é um ponto de repouso estável de fato:
+    a dinâmica parou de mudar **e** nenhum estilo se sai melhor que a média ali
+    (um equilíbrio de Nash simétrico do jogo linearizado).
+
+    A versão em tempo discreto com passo cheio, usada antes, espiralava para fora
+    em jogos cíclicos (pedra-papel-tesoura) e parava num vértice que outro estilo
+    invadia; o teste de Nash abaixo pega esse caso.
     """
     n = ganhos.shape[0]
     x = np.full(n, 1 / n)
     for _ in range(PASSOS_DO_REPLICADOR):
         aptidao = ganhos @ x
-        media = float(x @ aptidao)
-        if media <= 0:
-            return x, False
-        novo = x * aptidao / media
-        if float(np.max(np.abs(novo - x))) < TOLERANCIA_DO_REPLICADOR:
-            return novo, True
+        novo = x + PASSO_DO_REPLICADOR * x * (aptidao - float(x @ aptidao))
+        novo = np.clip(novo, 0.0, None)
+        novo /= novo.sum()
+        mudou = float(np.max(np.abs(novo - x)))
         x = novo
-    return x, False
+        if mudou < TOLERANCIA_DO_REPLICADOR:
+            break
+    aptidao = ganhos @ x
+    estavel = bool(np.all(aptidao <= float(x @ aptidao) + TOLERANCIA_DE_NASH))
+    return x, estavel
 
 
 def _dominancia(
@@ -270,7 +281,9 @@ def medidas_de_blefe(matrizes: list[MatrizDeEstilos], criterio: dict[str, Any]) 
         puros = [e for e, p in matriz.replicador.items() if p >= PROPORCAO_PURA] if matriz.replicador_convergiu else []
         populacao = next((p for p in matriz.populacoes if puros and p.estilo == puros[0]), None)
         if not puros or populacao is None or populacao.taxa_de_sucesso is None or populacao.intervalo is None:
-            if not puros:
+            if not matriz.replicador_convergiu:
+                nota = "a dinâmica do replicador não chegou a um equilíbrio"
+            elif not puros:
                 mistura = ", ".join(f"{e} {p:.3f}" for e, p in matriz.replicador.items() if p >= 0.0005)
                 nota = f"o equilíbrio é uma mistura ({mistura}); falta a mesa sorteada da mistura"
             elif populacao is None:

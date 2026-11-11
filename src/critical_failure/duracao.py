@@ -88,5 +88,9 @@ class Cronometro:
             "critical_failure": modelo.fim_de_jogo.valor,
         }
 
+    def tempo(self, evento: Evento) -> int:
+        """Segundos que o modelo atribui a este evento."""
+        return self._por_evento.get(evento.tipo, 0)
+
     def somar(self, evento: Evento) -> None:
-        self.segundos += self._por_evento.get(evento.tipo, 0)
+        self.segundos += self.tempo(evento)

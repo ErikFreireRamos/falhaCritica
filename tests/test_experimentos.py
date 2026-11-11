@@ -149,7 +149,7 @@ def test_manifest_identifica_tudo_o_que_gerou_os_numeros(execucao: executor.Exec
     assert quatro["versao"] == "v2.2.1" and quatro["config_hash"].startswith("sha256:")
     assert len(quatro["bots"]) == 4 and quatro["requisitos"] == ["REQ-01", "REQ-08"]
     for arquivo, hash_ in manifest["arquivos"].items():
-        assert hash_ == executor._hash_do_arquivo(execucao.pasta / arquivo)
+        assert hash_ == executor.hash_do_arquivo(execucao.pasta / arquivo)
     assert manifest["registros_completos"] == 5
 
 
@@ -189,7 +189,7 @@ def test_relatorio_refeito_do_manifest_e_igual_ao_original(
 
 def test_requisito_nao_confirmado_nao_recebe_veredito(tmp_path: Path) -> None:
     cenarios = experimento()["cenarios"][:1]
-    cenarios[0] = {**cenarios[0], "partidas": 4, "requisitos": ["REQ-02", "REQ-06"]}
+    cenarios[0] = {**cenarios[0], "partidas": 4, "requisitos": ["REQ-02", "REQ-14"]}
     resultado = rodar(tmp_path, cenarios=cenarios)
     assert set(resultado.manifest["vereditos"]) == {"REQ-09"}
 
@@ -493,6 +493,13 @@ def test_replicador() -> None:
     # Cada um invade a população do outro. Equilíbrio misto: 0,2 x + 0,4 (1 - x) = 0,3 x + 0,25 (1 - x), x = 0,6.
     final, convergiu = replicador(np.array([[0.20, 0.40], [0.30, 0.25]]))
     assert convergiu and final[0] == pytest.approx(0.6, abs=1e-6)
+    # Pedra-papel-tesoura em que o equilíbrio misto atrai: a dinâmica chega a ele.
+    final, convergiu = replicador(np.array([[0.25, 0.10, 0.50], [0.45, 0.25, 0.10], [0.10, 0.40, 0.25]]))
+    assert convergiu and list(np.round(final, 4)) == [0.3, 0.4, 0.3]
+    # Pedra-papel-tesoura em que a trajetória espirala para fora: ela para num vértice que outro
+    # estilo invade, e isso não pode ser lido como equilíbrio.
+    final, convergiu = replicador(np.array([[0.25, 0.00, 0.45], [0.40, 0.25, 0.00], [0.00, 0.35, 0.25]]))
+    assert not convergiu and final.max() == pytest.approx(1.0)
 
 
 def _matriz_sintetica(taxas: dict[tuple[str, str], float], partidas: int = 400) -> tuple[Any, list[dict[str, Any]]]:
@@ -777,3 +784,180 @@ def test_experimento_5_e_valido() -> None:
     diagonais = [c for c in lido.cenarios if c.celula and c.celula[0] == c.celula[1]]
     assert len(diagonais) == 18 and all(c.requisitos == ["REQ-05"] and c.partidas == 2000 for c in diagonais)
     assert all(bot.tipo == "heuristico" for c in lido.cenarios for bot in c.bots)
+
+
+# ---------------------------------------------------------------- Fase 4, Experimento 6: REQ-06, 07, 10, 12 e 13
+
+
+def _linhas_da_coleta(partidas: int, **colunas: Any) -> list[dict[str, Any]]:
+    base = {
+        "cenario": "quatro",
+        "familia": "v2",
+        "erro": None,
+        "placar": [9, 5, 3, 0],
+        "vencedores": [0],
+        "testes_recebidos": [2, 2, 2, 2],
+        "testes_contra_o_menor": 2,
+        "zerado_antes_do_ultimo_ciclo": False,
+        "parado_s": [120] * 12,
+        "cobre_incidente_1": [True, False, False, False],
+        "fichas_movimentadas": 40,
+        "fichas_de_dano": 12,
+    }
+    return [{**base, "partida": i, **colunas} for i in range(partidas)]
+
+
+@pytest.mark.parametrize(
+    ("requisito", "colunas", "esperado"),
+    [
+        # REQ-06 (a) razão 1,0 e (b) 2 de 8 testes contra o menor (0,25 <= 1/3 + 0,10): passa.
+        ("REQ-06", {}, "passa"),
+        # Um jogador recebe todos os testes, e todos são contra o menor placar: falha.
+        ("REQ-06", {"testes_recebidos": [0, 0, 0, 8], "testes_contra_o_menor": 8}, "falha"),
+        ("REQ-07", {}, "passa"),
+        ("REQ-07", {"zerado_antes_do_ultimo_ciclo": True}, "falha"),
+        # 2 min parados por jogador e ciclo: abaixo de 5.
+        ("REQ-10", {}, "passa"),
+        ("REQ-10", {"parado_s": [420] * 12}, "falha"),
+        # O único que começa cobrindo sempre vence: diferença de 1 menos 0.
+        ("REQ-12", {}, "falha"),
+        ("REQ-12", {"cobre_incidente_1": [False, False, False, False]}, None),
+        # 12 de 40 fichas vêm do dano de incidente: 0,30, dentro de 0,20 a 0,60.
+        ("REQ-13", {}, "passa"),
+        ("REQ-13", {"fichas_de_dano": 30}, "falha"),
+    ],
+)
+def test_medidas_do_experimento_6(requisito: str, colunas: dict[str, Any], esperado: str | None) -> None:
+    from critical_failure.metricas.requisitos import avaliar, carregar_requisitos
+
+    cenario = {**experimento()["cenarios"][0], "partidas": 200, "requisitos": [requisito]}
+    lido = ler_experimento(experimento(cenarios=[cenario]))
+    requisitos = carregar_requisitos(RAIZ / "configs" / "requisitos.yaml")
+    medidas = [m for m in avaliar(_linhas_da_coleta(200, **colunas), lido, requisitos) if m.requisito == requisito]
+    if esperado is None:  # ninguém começou cobrindo: não há com quem comparar
+        assert medidas == []
+        return
+    vereditos = {m.veredito for m in medidas}
+    assert "falha" in vereditos if esperado == "falha" else vereditos == {esperado}
+
+
+def test_medidas_ignoram_tabela_sem_as_colunas_da_coleta() -> None:
+    from critical_failure.metricas.requisitos import avaliar, carregar_requisitos, equilibrio_interno
+
+    reqs = ["REQ-06", "REQ-07", "REQ-10", "REQ-12", "REQ-13"]
+    lido = ler_experimento(experimento(cenarios=[{**experimento()["cenarios"][0], "requisitos": reqs}]))
+    antigas = [
+        {"cenario": "quatro", "familia": "v2", "erro": None, "placar": [1, 2, 3, 4], "vencedores": [3]}
+        for _ in range(5)
+    ]
+    requisitos = carregar_requisitos(RAIZ / "configs" / "requisitos.yaml")
+    assert [m for m in avaliar(antigas, lido, requisitos) if m.requisito in reqs] == []
+    assert equilibrio_interno(antigas, lido) == []
+
+
+def test_experimento_6_e_valido() -> None:
+    lido = carregar_experimento(RAIZ / "experimentos" / "fase4_exp6_variantes.yaml")
+    assert len(lido.cenarios) == 40 and sum(c.partidas for c in lido.cenarios_expandidos()) == 80_000
+    nomes = {c.nome.split("_", 2)[2] for c in lido.cenarios}
+    assert len(nomes) == 10 and "base" in nomes
+    for cenario in lido.cenarios:
+        assert all(bot.tipo == "heuristico" for bot in cenario.bots)
+        assert {"REQ-06", "REQ-07", "REQ-08", "REQ-10", "REQ-11", "REQ-12", "REQ-13"} <= set(cenario.requisitos)
+
+
+def test_experimento_6_em_miniatura(tmp_path: Path) -> None:
+    lido = carregar_experimento(RAIZ / "experimentos" / "fase4_exp6_variantes.yaml")
+    escolhidos = [c for c in lido.cenarios if c.jogadores == 4 and "iniciante" in c.nome][:10]
+    cenarios = [{**c.model_dump(mode="json"), "partidas": 3} for c in escolhidos]
+    resultado = rodar(tmp_path, cenarios=cenarios)
+    assert resultado.manifest["falhas"] == 0
+    texto = (resultado.pasta / "relatorio.md").read_text(encoding="utf-8")
+    for trecho in ("## Equilíbrio dentro da partida (descrição)", "### REQ-06", "### REQ-10", "### REQ-13"):
+        assert trecho in texto, trecho
+    assert cli.main(["relatorio", str(resultado.pasta)]) == 0
+    assert (resultado.pasta / "relatorio.md").read_text(encoding="utf-8") == texto
+
+
+# ---------------------------------------------------------------- mesa sorteada da mistura e relatório refeito
+
+
+def test_sorteio_por_pesos() -> None:
+    from collections import Counter
+
+    from critical_failure.nucleo.rng import sortear_por_pesos
+
+    assert sortear_por_pesos(5, 3, 4, (1, 3, 0)) == sortear_por_pesos(5, 3, 4, (1, 3, 0))
+    contagem = Counter(i for partida in range(2000) for i in sortear_por_pesos(5, partida, 2, (1, 3, 0)))
+    assert contagem[2] == 0 and 0.22 < contagem[0] / 4000 < 0.28
+    with pytest.raises(ValueError):
+        sortear_por_pesos(5, 0, 2, (0, 0))
+
+
+def test_mesa_sorteada_mal_formada() -> None:
+    base = {
+        "nome": "sorteada",
+        "regras": "configs/regras_v2_2_1.yaml",
+        "jogadores": 4,
+        "partidas": 2,
+        "pesos": [1, 1],
+        "bots": [{**ALEATORIO, "rotulo": "a"}, {**ALEATORIO, "rotulo": "b"}],
+    }
+    ler_experimento(experimento(cenarios=[base]))
+    for errado in ({"pesos": [1]}, {"pesos": [0, 0]}, {"rodizio": True}, {"bots": [ALEATORIO, ALEATORIO]}):
+        with pytest.raises(ConfiguracaoInvalida):
+            ler_experimento(experimento(cenarios=[{**base, **errado}]))
+
+
+def test_mesa_sorteada_da_mistura(tmp_path: Path) -> None:
+    honesto = {"tipo": "heuristico", "rotulo": "honesto", "parametros": {**PERFIL, "blefe": "nunca"}}
+    blefador = {
+        "tipo": "heuristico",
+        "rotulo": "blefador",
+        "parametros": {**PERFIL, "blefe": "sempre", "contestacao": "nunca"},
+    }
+    cenario = {
+        "nome": "mistura",
+        "regras": "configs/regras_v2_2_1.yaml",
+        "jogadores": 4,
+        "partidas": 12,
+        "pesos": [1, 1],
+        "bots": [honesto, blefador],
+        "requisitos": ["REQ-05"],
+    }
+    resultado = rodar(tmp_path, cenarios=[cenario])
+    from critical_failure.nucleo.rng import sortear_por_pesos
+
+    for linha in resultado.linhas:
+        esperado = [["honesto", "blefador"][i] for i in sortear_por_pesos(77, linha["partida"], 4, (1, 1))]
+        assert linha["bots_da_mesa"] == esperado
+    assert "REQ-05" in resultado.manifest["vereditos"]
+    texto = (resultado.pasta / "relatorio.md").read_text(encoding="utf-8")
+    assert "na mesa sorteada da mistura" in texto and "| mistura | blefador | 4 |" in texto
+    assert "honesto (peso 1): heuristico" in texto
+    # O registro completo de uma partida sorteada refaz a mesma mesa.
+    registro_0 = next((resultado.pasta / "registros" / "mistura").glob("partida_*.jsonl"))
+    assert replay.refazer(registro.ler(registro_0), "bots").eventos > 0
+    assert cli.main(["relatorio", str(resultado.pasta)]) == 0
+    assert (resultado.pasta / "relatorio.md").read_text(encoding="utf-8") == texto
+
+
+def test_relatorio_refeito_com_outro_codigo_fica_registrado(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    resultado = rodar(tmp_path, cenarios=[{**experimento()["cenarios"][0], "partidas": 3}])
+    monkeypatch.setattr(registro, "info_git", lambda: {"commit": "f" * 40, "sujo": False})
+    assert cli.main(["relatorio", str(resultado.pasta)]) == 0
+    capsys.readouterr()
+    manifest = json.loads((resultado.pasta / "manifest.json").read_text(encoding="utf-8"))
+    assert manifest["relatorio_refeito"]["commit"] == "f" * 40
+    assert manifest["arquivos"]["relatorio.md"] == executor.hash_do_arquivo(resultado.pasta / "relatorio.md")
+    texto = (resultado.pasta / "relatorio.md").read_text(encoding="utf-8")
+    assert "| Relatório refeito | com o código do commit `fffffff`" in texto
+
+
+def test_experimento_5b_e_valido() -> None:
+    lido = carregar_experimento(RAIZ / "experimentos" / "fase4_exp5b_blefe_equilibrio.yaml")
+    assert [c.jogadores for c in lido.cenarios] == [4, 5]
+    for cenario in lido.cenarios:
+        assert cenario.pesos is not None and sum(cenario.pesos) == 1000 and cenario.requisitos == ["REQ-05"]
+        assert len(cenario.pesos) == len(cenario.bots) == 4

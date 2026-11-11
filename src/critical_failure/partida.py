@@ -12,13 +12,15 @@ from __future__ import annotations
 
 from collections import Counter
 from collections.abc import Callable, Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Any
 
 from critical_failure.bots.base import Bot
 from critical_failure.bots.mesa import mesa_para
+from critical_failure.coleta import ColetorV2
 from critical_failure.duracao import Cronometro, ModeloDeDuracao
 from critical_failure.nucleo.erros import ErroCF
+from critical_failure.regras.v2.motor import MotorV2
 
 if TYPE_CHECKING:
     from critical_failure.regras.familias import Motor
@@ -58,6 +60,8 @@ class ResultadoPartida:
     """REQ-05: defesas que nomearam um teste que não estava no sistema (AMB-15; só na v2)."""
     blefes_bem_sucedidos: int = 0
     """REQ-05: desses blefes, os que terminaram aceitos, sem Alerta."""
+    medidas: dict[str, Any] = field(default_factory=dict)
+    """Medidas dos requisitos de balanceamento da v2 (``coleta.ColetorV2``); vazio na v1."""
 
     def vezes(self, tipo: str) -> int:
         return dict(self.tipos_de_evento).get(tipo, 0)
@@ -102,6 +106,7 @@ def jogar_partida(
     cheios: tuple[bool, ...] | None = None
     blefes = blefes_bem_sucedidos = 0
     blefe_em_aberto = False
+    coletor = ColetorV2(motor, duracao) if isinstance(motor, MotorV2) else None
 
     def entregar(eventos: Sequence[Any], decisao: dict[str, Any] | None) -> None:
         nonlocal total, criterio, placar_no_corte, cheios, blefes, blefes_bem_sucedidos, blefe_em_aberto
@@ -116,6 +121,8 @@ def jogar_partida(
                 placar_no_corte = motor.ponto_de_corte(evento)
             if cheios is None:
                 cheios = motor.sistemas_cheios_no_planejamento(evento)
+            if coletor is not None:
+                coletor.ver(evento)
             if motor.blefe_na_defesa(evento):
                 blefe_em_aberto = True
             aceita = motor.defesa_aceita(evento)
@@ -165,4 +172,5 @@ def jogar_partida(
         sistemas_cheios_no_planejamento=cheios,
         blefes=blefes,
         blefes_bem_sucedidos=blefes_bem_sucedidos,
+        medidas=coletor.resumo() if coletor is not None else {},
     )

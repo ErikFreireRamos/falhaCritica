@@ -115,11 +115,15 @@ def _matrizes_de_estilos(matrizes: list[MatrizDeEstilos]) -> list[str]:
             for estilo, proporcao in sorted(matriz.replicador.items(), key=lambda item: (-item[1], item[0]))
             if proporcao >= 0.0005
         )
-        parada = "parou de mudar" if matriz.replicador_convergiu else "ainda mudava no limite de passos"
+        parada = (
+            "é um equilíbrio: ali nenhuma linha se sai melhor que a média"
+            if matriz.replicador_convergiu
+            else "não é um equilíbrio: a dinâmica não parou ou parou num ponto que outra linha invade"
+        )
         saida += [
             "",
-            "Dinâmica do replicador (sem veredito; aproximação linear, a partir da população uniforme): "
-            f"{mistura} ({parada}).",
+            "Dinâmica do replicador (sem veredito; aproximação linear, tempo contínuo com passo pequeno, a partir "
+            f"da população uniforme): {mistura} ({parada}).",
             "",
         ]
         if matriz.populacoes:
@@ -163,6 +167,15 @@ def renderizar(manifest: dict[str, Any], analise: Analise) -> str:
         f"| Falhas | {manifest['falhas']} |",
         f"| Registros completos gravados | {manifest['registros_completos']} |",
         f"| Início | {manifest['inicio']} |",
+        *(
+            [
+                f"| Relatório refeito | com o código do commit `{(refeito['commit'] or 'sem git')[:7]}`"
+                f"{' (com alterações não commitadas)' if refeito['sujo'] else ''} em {refeito['data']}; "
+                "a execução e a tabela de partidas são as do commit acima |"
+            ]
+            if (refeito := manifest.get("relatorio_refeito"))
+            else []
+        ),
         "",
         "## Requisitos",
         "",
@@ -175,7 +188,7 @@ def renderizar(manifest: dict[str, Any], analise: Analise) -> str:
         linhas += ["Nenhum requisito confirmado foi medido neste experimento.", ""]
     for requisito in sorted({medida.requisito for medida in medidas}):
         do_requisito = [medida for medida in medidas if medida.requisito == requisito]
-        casas = 1 if requisito == "REQ-08" else 3
+        casas = 1 if requisito in ("REQ-08", "REQ-10") else 3
         linhas += [
             f"### {requisito}: {pior([medida.veredito for medida in do_requisito])}",
             "",
@@ -270,6 +283,31 @@ def renderizar(manifest: dict[str, Any], analise: Analise) -> str:
                 else f"{_num(d['duracao_p10'], 1)} / {_num(d['duracao_mediana'], 1)} / {_num(d['duracao_p90'], 1)} |"
             )
         )
+    if analise.interno:
+
+        def talvez(valor: float | None, casas: int = 3) -> str:
+            return "—" if valor is None else _num(valor, casas)
+
+        linhas += [
+            "",
+            "## Equilíbrio dentro da partida (descrição)",
+            "",
+            "Números sem critério de aceite; os vereditos, quando pedidos, estão na seção de requisitos. Razão de "
+            "testes: máximo sobre a média de testes recebidos na partida (REQ-06a). Contra o menor: fração dos "
+            "testes contra quem tinha o menor placar (REQ-06b). Zeradas: partidas com alguém em 0 ficha antes do "
+            "último ciclo (REQ-07). Parado: percentil 90 do tempo parado por jogador e ciclo, pelos tempos "
+            "provisórios do MOD-05 (REQ-10). Peso do dano: dano de incidente sobre as fichas movimentadas "
+            "(REQ-13). Dispersão: placar do primeiro menos o do último no fim (REQ-14).",
+            "",
+            "| Cenário | Razão de testes | Contra o menor | Zeradas | Parado p90 (min) | Peso do dano | Dispersão |",
+            "|---|---|---|---|---|---|---|",
+        ]
+        for d in analise.interno:
+            linhas.append(
+                f"| {d['cenario']} | {talvez(d['razao_de_testes'], 2)} | {talvez(d['contra_o_menor'])} | "
+                f"{_pct(d['zeradas'])} | {talvez(d['parado_p90_min'], 1)} | {talvez(d['peso_do_dano'])} | "
+                f"{_num(d['dispersao_final'], 1)} |"
+            )
     linhas += [
         "",
         "## Cenários",
@@ -287,6 +325,11 @@ def renderizar(manifest: dict[str, Any], analise: Analise) -> str:
             ja_listados.add(nome)
             nome = f"{nome} (rotações somadas)"
         bots = sorted({f"{bot['tipo']} {bot['parametros']}" for bot in cenario["bots"]})
+        if cenario.get("pesos"):
+            bots = [
+                f"{bot['rotulo']} (peso {peso}): {bot['tipo']} {bot['parametros']}"
+                for bot, peso in zip(cenario["bots"], cenario["pesos"], strict=True)
+            ]
         mudancas = f" com {cenario['mudancas']}" if cenario["mudancas"] else ""
         linhas.append(
             f"| {nome} | {cenario['versao']}{mudancas} | {cenario['jogadores']} | {'; '.join(bots)} | "

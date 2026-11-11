@@ -38,11 +38,22 @@ from critical_failure.duracao import carregar_duracao, ler_duracao
 from critical_failure.experimentos.config import Experimento, aplicar_mudancas
 from critical_failure.nucleo.canonico import sha256
 from critical_failure.nucleo.erros import ConfiguracaoInvalida, ErroCF
+from critical_failure.nucleo.rng import sortear_por_pesos
 from critical_failure.partida import jogar_partida
 from critical_failure.regras.familias import motor_de
 
 RAIZ = registro.RAIZ
 PARTIDAS_POR_LOTE = 250
+COLUNAS_DA_COLETA = (
+    "testes_recebidos",
+    "testes_contra_o_menor",
+    "zerado_antes_do_ultimo_ciclo",
+    "parado_s",
+    "cobre_incidente_1",
+    "fichas_movimentadas",
+    "fichas_de_dano",
+)
+"""Medidas de ``coleta.ColetorV2`` que viram colunas da tabela (vazias na v1)."""
 ESQUEMA_DO_MANIFEST = "cf-manifest/1"
 
 ESQUEMA_DA_TABELA = pa.schema(
@@ -65,6 +76,14 @@ ESQUEMA_DA_TABELA = pa.schema(
         ("cheios_no_planejamento_1", pa.list_(pa.bool_())),
         ("blefes", pa.int16()),
         ("blefes_bem_sucedidos", pa.int16()),
+        ("testes_recebidos", pa.list_(pa.int16())),
+        ("testes_contra_o_menor", pa.int16()),
+        ("zerado_antes_do_ultimo_ciclo", pa.bool_()),
+        ("parado_s", pa.list_(pa.int32())),
+        ("cobre_incidente_1", pa.list_(pa.bool_())),
+        ("fichas_movimentadas", pa.int32()),
+        ("fichas_de_dano", pa.int32()),
+        ("bots_da_mesa", pa.list_(pa.string())),
         ("erro", pa.string()),
         ("aviso", pa.string()),
     ]
@@ -90,6 +109,11 @@ class Lote:
     pasta_dos_registros: str
     conferir_invariantes: bool
     familia: str
+    jogadores: int
+    pesos: tuple[int, ...] | None = None
+    """Mesa sorteada: ``bots`` são os candidatos, e cada assento é sorteado com estes pesos."""
+    rotulos: tuple[str, ...] = ()
+    """Nome de cada candidato, para a coluna ``bots_da_mesa``."""
 
 
 @dataclass(frozen=True)
@@ -104,7 +128,7 @@ def _linha_de_falha(lote: Lote, partida: int, erro: Exception) -> dict[str, Any]
         "cenario": lote.cenario,
         "familia": lote.familia,
         "partida": partida,
-        "jogadores": len(lote.bots),
+        "jogadores": lote.jogadores,
         "placar": None,
         "vencedores": None,
         "criterio": None,
@@ -119,6 +143,14 @@ def _linha_de_falha(lote: Lote, partida: int, erro: Exception) -> dict[str, Any]
         "cheios_no_planejamento_1": None,
         "blefes": None,
         "blefes_bem_sucedidos": None,
+        "testes_recebidos": None,
+        "testes_contra_o_menor": None,
+        "zerado_antes_do_ultimo_ciclo": None,
+        "parado_s": None,
+        "cobre_incidente_1": None,
+        "fichas_movimentadas": None,
+        "fichas_de_dano": None,
+        "bots_da_mesa": None,
         "erro": f"{type(erro).__name__}: {erro}",
         "aviso": None,
     }
@@ -131,8 +163,13 @@ def rodar_lote(lote: Lote) -> list[dict[str, Any]]:
     modelo = ler_duracao(lote.duracao) if lote.duracao is not None and motor.familia == "v2" else None
     pasta = Path(lote.pasta_dos_registros) / lote.cenario
 
-    def novos_bots() -> list[Any]:
-        return [criar_bot(tipo, dict(parametros), motor.familia) for tipo, parametros in lote.bots]
+    def indices_da_mesa(partida: int) -> list[int]:
+        if lote.pesos is None:
+            return list(range(len(lote.bots)))
+        return sortear_por_pesos(lote.semente, partida, lote.jogadores, lote.pesos)
+
+    def novos_bots(partida: int) -> list[Any]:
+        return [criar_bot(lote.bots[i][0], dict(lote.bots[i][1]), motor.familia) for i in indices_da_mesa(partida)]
 
     def gravar_registro(partida: int, prefixo: str) -> str | None:
         """Refaz a partida no modo auditado e grava o registro completo.
@@ -143,7 +180,7 @@ def rodar_lote(lote: Lote) -> list[dict[str, Any]]:
         caminho = pasta / f"{prefixo}_{partida:07d}.jsonl"
         try:
             linhas, _ = registro.gerar_linhas(
-                motor, lote.arquivo_de_regras, novos_bots(), lote.semente, partida, duracao=modelo
+                motor, lote.arquivo_de_regras, novos_bots(partida), lote.semente, partida, duracao=modelo
             )
         except ErroCF as erro:
             linhas = getattr(erro, "linhas", [])
@@ -160,7 +197,7 @@ def rodar_lote(lote: Lote) -> list[dict[str, Any]]:
         try:
             resultado = jogar_partida(
                 motor,
-                novos_bots(),
+                novos_bots(partida),
                 lote.semente,
                 partida,
                 duracao=modelo,
@@ -194,6 +231,10 @@ def rodar_lote(lote: Lote) -> list[dict[str, Any]]:
                 ),
                 "blefes": resultado.blefes,
                 "blefes_bem_sucedidos": resultado.blefes_bem_sucedidos,
+                **{coluna: resultado.medidas.get(coluna) for coluna in COLUNAS_DA_COLETA},
+                "bots_da_mesa": (
+                    [lote.rotulos[i] for i in indices_da_mesa(partida)] if lote.pesos is not None else None
+                ),
                 "erro": None,
                 "aviso": None,
             }
@@ -203,7 +244,7 @@ def rodar_lote(lote: Lote) -> list[dict[str, Any]]:
     return saida
 
 
-def _hash_do_arquivo(caminho: Path) -> str:
+def hash_do_arquivo(caminho: Path) -> str:
     return "sha256:" + hashlib.sha256(caminho.read_bytes()).hexdigest()
 
 
@@ -225,7 +266,7 @@ def montar_lotes(experimento: Experimento, pasta_dos_registros: Path) -> tuple[l
         motor = motor_de(dados, registro.PASTA_CONFIGS)
         regras, catalogo = motor.regras, motor.catalogo
         motor.preparar(cenario.jogadores, experimento.semente_mestre, 0)  # valida o cenário
-        bots = cenario.bots_por_assento()
+        bots = cenario.bots if cenario.pesos is not None else cenario.bots_por_assento()
         for bot in bots:
             criar_bot(bot.tipo, bot.parametros, motor.familia)  # valida os bots antes de gastar tempo de máquina
         resumos.append(
@@ -243,6 +284,7 @@ def montar_lotes(experimento: Experimento, pasta_dos_registros: Path) -> tuple[l
                 "grupo": cenario.grupo or cenario.nome,
                 "comparar_com": cenario.comparar_com,
                 "celula": cenario.celula,
+                "pesos": cenario.pesos,
                 "matriz": cenario.matriz,
                 "requisitos": cenario.requisitos,
             }
@@ -262,6 +304,9 @@ def montar_lotes(experimento: Experimento, pasta_dos_registros: Path) -> tuple[l
                     pasta_dos_registros=str(pasta_dos_registros),
                     conferir_invariantes=experimento.conferir_invariantes,
                     familia=motor.familia,
+                    jogadores=cenario.jogadores,
+                    pesos=tuple(cenario.pesos) if cenario.pesos is not None else None,
+                    rotulos=tuple(bot.nome() for bot in bots),
                 )
             )
     return lotes, resumos
@@ -320,7 +365,7 @@ def executar(
         "duracao": {"arquivo": experimento.duracao, "sha256": carregar_duracao(RAIZ / experimento.duracao).hash()},
         "requisitos": {
             "arquivo": experimento.requisitos_arquivo,
-            "sha256": _hash_do_arquivo(RAIZ / experimento.requisitos_arquivo),
+            "sha256": hash_do_arquivo(RAIZ / experimento.requisitos_arquivo),
         },
         "git": git,
         "oficial": oficial,
@@ -348,8 +393,8 @@ def executar(
     relatorio = renderizar(manifest, analise)
     (pasta / "relatorio.md").write_text(relatorio, encoding="utf-8", newline="\n")
     manifest["arquivos"] = {
-        "partidas.parquet": _hash_do_arquivo(caminho_da_tabela),
-        "relatorio.md": _hash_do_arquivo(pasta / "relatorio.md"),
+        "partidas.parquet": hash_do_arquivo(caminho_da_tabela),
+        "relatorio.md": hash_do_arquivo(pasta / "relatorio.md"),
     }
     (pasta / "manifest.json").write_text(
         json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n"

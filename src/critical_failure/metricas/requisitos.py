@@ -21,7 +21,9 @@ from critical_failure.metricas.estatistica import (
     PASSA,
     Intervalo,
     intervalo_da_diferenca,
+    intervalo_da_razao,
     intervalo_de_wilson,
+    intervalo_do_quantil_por_grupos,
     intervalo_por_bootstrap,
     veredito,
 )
@@ -35,6 +37,12 @@ ANTI_BOLA_DE_NEVE = "REQ-02"
 HABILIDADE = "REQ-03"
 DURACAO = "REQ-08"
 ROBUSTEZ = "REQ-09"
+DISTRIBUICAO_DE_ATAQUES = "REQ-06"
+FICHAS_NAO_ZERAM = "REQ-07"
+TEMPO_PARADO = "REQ-10"
+PRIMEIRO_INCIDENTE = "REQ-12"
+PESO_DOS_INCIDENTES = "REQ-13"
+BLEFES_BEM_SUCEDIDOS = "REQ-05"
 OS_DOIS_ESTILOS = "REQ-11"
 DESEQUILIBRIO = "MET-01"
 ARTIGO_DESEQUILIBRADAS = (4, 6)
@@ -152,6 +160,240 @@ def _robustez(linhas: list[dict[str, Any]], criterio: dict[str, Any]) -> Medida:
     )
 
 
+def _da_coleta(linhas: list[dict[str, Any]], coluna: str) -> list[dict[str, Any]]:
+    """As partidas que têm a medida do coletor (a v2, numa tabela que já tem a coluna)."""
+    return [linha for linha in linhas if linha.get(coluna) is not None]
+
+
+def _distribuicao_de_ataques(
+    cenario: Cenario, indice: int, linhas: list[dict[str, Any]], criterio: dict[str, Any], semente: int
+) -> list[Medida]:
+    """REQ-06: (a) razão máximo/média de testes recebidos; (b) fração dos testes contra o menor placar."""
+    com_testes = [linha for linha in _da_coleta(linhas, "testes_recebidos") if sum(linha["testes_recebidos"]) > 0]
+    if not com_testes:
+        return []
+    n = cenario.jogadores
+    razoes = np.array([max(t) / (sum(t) / len(t)) for t in (linha["testes_recebidos"] for linha in com_testes)])
+    zona_a = (0.0, float(criterio["razao_maxima"]))
+    intervalo_a = intervalo_por_bootstrap(razoes, "media", rng_da_analise(semente, 70_000 + indice))
+    contra = np.array([linha["testes_contra_o_menor"] for linha in com_testes], dtype=np.float64)
+    testes = np.array([sum(linha["testes_recebidos"]) for linha in com_testes], dtype=np.float64)
+    zona_b = (0.0, 1 / (n - 1) + float(criterio["acima_do_uniforme"]))
+    intervalo_b = intervalo_da_razao(contra, testes, rng_da_analise(semente, 71_000 + indice))
+    return [
+        Medida(
+            DISTRIBUICAO_DE_ATAQUES,
+            cenario.nome,
+            "(a) média da razão máximo/média de testes recebidos",
+            float(razoes.mean()),
+            intervalo_a,
+            zona_a,
+            veredito(intervalo_a, zona_a),
+            len(com_testes),
+        ),
+        Medida(
+            DISTRIBUICAO_DE_ATAQUES,
+            cenario.nome,
+            "(b) fração dos testes contra quem tinha o menor placar",
+            float(contra.sum() / testes.sum()),
+            intervalo_b,
+            zona_b,
+            veredito(intervalo_b, zona_b),
+            len(com_testes),
+            nota="(b): empate no menor placar conta como teste contra o menor",
+        ),
+    ]
+
+
+def _fichas_nao_zeram(
+    cenario: Cenario, indice: int, linhas: list[dict[str, Any]], criterio: dict[str, Any], semente: int
+) -> list[Medida]:
+    """REQ-07: fração de partidas em que alguém ficou com 0 ficha antes do último ciclo."""
+    partidas = _da_coleta(linhas, "zerado_antes_do_ultimo_ciclo")
+    if not partidas:
+        return []
+    zeradas = sum(1 for linha in partidas if linha["zerado_antes_do_ultimo_ciclo"])
+    zona = (0.0, float(criterio["maximo"]))
+    intervalo = intervalo_de_wilson(zeradas, len(partidas))
+    return [
+        Medida(
+            FICHAS_NAO_ZERAM,
+            cenario.nome,
+            "partidas com alguém em 0 ficha antes do último ciclo",
+            zeradas / len(partidas),
+            intervalo,
+            zona,
+            veredito(intervalo, zona),
+            len(partidas),
+        )
+    ]
+
+
+def _tempo_parado(
+    cenario: Cenario, indice: int, linhas: list[dict[str, Any]], criterio: dict[str, Any], semente: int
+) -> list[Medida]:
+    """REQ-10: quantil do tempo parado por jogador e por ciclo, em minutos, com bootstrap sobre as partidas."""
+    partidas = _da_coleta(linhas, "parado_s")
+    if not partidas:
+        return []
+    quantil = float(criterio["quantil"])
+    grupos = [np.array(linha["parado_s"], dtype=np.float64) / 60 for linha in partidas]
+    valor = float(np.quantile(np.concatenate(grupos), quantil))
+    intervalo = intervalo_do_quantil_por_grupos(grupos, quantil, rng_da_analise(semente, 72_000 + indice))
+    zona = (0.0, float(criterio["maximo_min"]))
+    return [
+        Medida(
+            TEMPO_PARADO,
+            cenario.nome,
+            f"percentil {round(100 * quantil)} do tempo parado por jogador e ciclo (min)",
+            valor,
+            intervalo,
+            zona,
+            veredito(intervalo, zona),
+            len(partidas),
+            nota="depende dos tempos provisórios de configs/duracao.yaml (MOD-05)",
+        )
+    ]
+
+
+def _primeiro_incidente(
+    cenario: Cenario, indice: int, linhas: list[dict[str, Any]], criterio: dict[str, Any], semente: int
+) -> list[Medida]:
+    """REQ-12: taxa de vitória de quem começou cobrindo a categoria-chave do incidente 1, menos a dos demais."""
+    cobre: list[float] = []
+    nao_cobre: list[float] = []
+    for linha in _da_coleta(linhas, "cobre_incidente_1"):
+        vencedores = linha["vencedores"]
+        for assento, cobria in enumerate(linha["cobre_incidente_1"]):
+            fatia = 1 / len(vencedores) if assento in vencedores else 0.0
+            (cobre if cobria else nao_cobre).append(fatia)
+    if not cobre or not nao_cobre:
+        return []
+    a, b = np.array(cobre), np.array(nao_cobre)
+    limite = float(criterio["diferenca_maxima"])
+    zona = (-limite, limite)
+    intervalo = intervalo_da_diferenca(a, b, rng_da_analise(semente, 73_000 + indice))
+    return [
+        Medida(
+            PRIMEIRO_INCIDENTE,
+            cenario.nome,
+            "vitória de quem começa cobrindo a chave do incidente 1 menos a dos demais",
+            float(a.mean() - b.mean()),
+            intervalo,
+            zona,
+            veredito(intervalo, zona),
+            len(linhas),
+            nota=f"{cenario.nome}: {a.size} assentos começaram cobrindo, {b.size} não",
+        )
+    ]
+
+
+def _peso_dos_incidentes(
+    cenario: Cenario, indice: int, linhas: list[dict[str, Any]], criterio: dict[str, Any], semente: int
+) -> list[Medida]:
+    """REQ-13: dano de incidente dividido pelo total de fichas movimentadas (ganhos e perdas, todas as fontes)."""
+    partidas = [linha for linha in _da_coleta(linhas, "fichas_movimentadas") if linha["fichas_movimentadas"] > 0]
+    if not partidas:
+        return []
+    dano = np.array([linha["fichas_de_dano"] for linha in partidas], dtype=np.float64)
+    total = np.array([linha["fichas_movimentadas"] for linha in partidas], dtype=np.float64)
+    zona = (float(criterio["minimo"]), float(criterio["maximo"]))
+    intervalo = intervalo_da_razao(dano, total, rng_da_analise(semente, 74_000 + indice))
+    return [
+        Medida(
+            PESO_DOS_INCIDENTES,
+            cenario.nome,
+            "dano de incidente / fichas movimentadas",
+            float(dano.sum() / total.sum()),
+            intervalo,
+            zona,
+            veredito(intervalo, zona),
+            len(partidas),
+            nota="o dano do Critical Failure não conta como dano de incidente",
+        )
+    ]
+
+
+def _blefes_na_mesa_sorteada(
+    cenario: Cenario, indice: int, linhas: list[dict[str, Any]], criterio: dict[str, Any], semente: int
+) -> list[Medida]:
+    """REQ-05 numa mesa sorteada da mistura do equilíbrio: blefes bem-sucedidos sobre blefes tentados.
+
+    Só vale em cenário com ``pesos``: numa população pura, o veredito sai da matriz (``matrizes.py``).
+    """
+    if cenario.pesos is None:
+        return []
+    partidas = [linha for linha in _da_coleta(linhas, "blefes")]
+    tentados = np.array([linha["blefes"] for linha in partidas], dtype=np.float64)
+    if not partidas or tentados.sum() <= 0:
+        return []
+    sucessos = np.array([linha["blefes_bem_sucedidos"] for linha in partidas], dtype=np.float64)
+    zona = (float(criterio["minimo"]), float(criterio["maximo"]))
+    intervalo = intervalo_da_razao(sucessos, tentados, rng_da_analise(semente, 75_000 + indice))
+    mistura = ", ".join(f"{bot.nome()} {peso}" for bot, peso in zip(cenario.bots, cenario.pesos, strict=True))
+    return [
+        Medida(
+            BLEFES_BEM_SUCEDIDOS,
+            cenario.nome,
+            "blefes bem-sucedidos / blefes tentados, na mesa sorteada da mistura",
+            float(sucessos.sum() / tentados.sum()),
+            intervalo,
+            zona,
+            veredito(intervalo, zona),
+            len(partidas),
+            nota=f"{cenario.nome}: pesos da mistura ({mistura}); {int(tentados.sum())} blefes tentados",
+        )
+    ]
+
+
+MEDIDAS_POR_CENARIO = {
+    BLEFES_BEM_SUCEDIDOS: _blefes_na_mesa_sorteada,
+    DISTRIBUICAO_DE_ATAQUES: _distribuicao_de_ataques,
+    FICHAS_NAO_ZERAM: _fichas_nao_zeram,
+    TEMPO_PARADO: _tempo_parado,
+    PRIMEIRO_INCIDENTE: _primeiro_incidente,
+    PESO_DOS_INCIDENTES: _peso_dos_incidentes,
+}
+"""Requisitos medidos cenário a cenário, além do REQ-01 e do REQ-08."""
+
+
+def equilibrio_interno(linhas: list[dict[str, Any]], experimento: Experimento) -> list[dict[str, Any]]:
+    """Descrição, sem critério, do equilíbrio dentro da partida (REQ-06, 07, 10, 12, 13 e 14), por cenário."""
+    resultado: list[dict[str, Any]] = []
+    for nome, cenarios in _unidades_de_descricao(experimento).items():
+        nomes = {cenario.nome for cenario in cenarios}
+        validas = [linha for linha in linhas if linha["cenario"] in nomes and linha["erro"] is None]
+        com_coleta = _da_coleta(validas, "testes_recebidos")
+        if not com_coleta:
+            continue
+        com_testes = [linha for linha in com_coleta if sum(linha["testes_recebidos"]) > 0]
+        testes = sum(sum(linha["testes_recebidos"]) for linha in com_coleta)
+        parado = [linha["parado_s"] for linha in com_coleta if linha.get("parado_s") is not None]
+        movimentadas = sum(linha["fichas_movimentadas"] for linha in com_coleta)
+        resultado.append(
+            {
+                "cenario": nome,
+                "razao_de_testes": (
+                    float(np.mean([max(t) / (sum(t) / len(t)) for t in (x["testes_recebidos"] for x in com_testes)]))
+                    if com_testes
+                    else None
+                ),
+                "contra_o_menor": sum(linha["testes_contra_o_menor"] for linha in com_coleta) / testes
+                if testes
+                else None,
+                "zeradas": float(np.mean([linha["zerado_antes_do_ultimo_ciclo"] for linha in com_coleta])),
+                "parado_p90_min": float(np.quantile(np.concatenate(parado), 0.9)) / 60 if parado else None,
+                "peso_do_dano": (
+                    sum(linha["fichas_de_dano"] for linha in com_coleta) / movimentadas if movimentadas else None
+                ),
+                "dispersao_final": float(
+                    np.mean([max(linha["placar"]) - min(linha["placar"]) for linha in com_coleta])
+                ),
+            }
+        )
+    return resultado
+
+
 def avaliar(
     linhas: list[dict[str, Any]], experimento: Experimento, requisitos: dict[str, dict[str, Any]]
 ) -> list[Medida]:
@@ -169,6 +411,10 @@ def avaliar(
             criterio = criterio_confirmado(requisitos, DURACAO)
             if criterio is not None:
                 medidas += _duracao(cenario, indice, validas, criterio, experimento.semente_mestre)
+        for ident, medir in MEDIDAS_POR_CENARIO.items():
+            criterio = criterio_confirmado(requisitos, ident)
+            if ident in cenario.requisitos and criterio is not None:
+                medidas += medir(cenario, indice, validas, criterio, experimento.semente_mestre)
     criterio = criterio_confirmado(requisitos, ANTI_BOLA_DE_NEVE)
     if criterio is not None:
         medidas += _anti_bola_de_neve(linhas, experimento, criterio)
@@ -460,16 +706,17 @@ def vitorias_por_bot(linhas: list[dict[str, Any]], experimento: Experimento) -> 
     """
     grupos: dict[str, list[Cenario]] = {}
     for cenario in experimento.cenarios_expandidos():
-        if not cenario.bots_identicos() and cenario.matriz is None:
+        if (not cenario.bots_identicos() or cenario.pesos is not None) and cenario.matriz is None:
             grupos.setdefault(cenario.grupo or cenario.nome, []).append(cenario)
     resultado: list[dict[str, Any]] = []
     for indice, (grupo, cenarios) in enumerate(grupos.items()):
         fatias: dict[str, list[float]] = {}
         for cenario in cenarios:
-            nomes = [bot.nome() for bot in cenario.bots_por_assento()]
+            fixos = [bot.nome() for bot in cenario.bots_por_assento()] if cenario.pesos is None else []
             for linha in linhas:
                 if linha["cenario"] != cenario.nome or linha["erro"] is not None:
                     continue
+                nomes = linha["bots_da_mesa"] if cenario.pesos is not None else fixos
                 vencedores = linha["vencedores"]
                 for assento, nome in enumerate(nomes):
                     fatias.setdefault(nome, []).append(1 / len(vencedores) if assento in vencedores else 0.0)

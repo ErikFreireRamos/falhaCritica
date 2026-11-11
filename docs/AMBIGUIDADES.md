@@ -39,6 +39,8 @@ Duas respostas do autor foram além da interpretação e mudaram regra. Elas est
 | AMB-27 | v1: número de jogadores e o que é uma partida | v1 | médio | decidido: partida é uma rodada |
 | AMB-28 | v1: Critical Failure na mão inicial | v1 | baixo | decidido: fica entre as cartas de teste |
 | AMB-29 | v1: empate | v1 | baixo | decidido: vitória dividida |
+| AMB-30 | Palpite da plateia (VAR-06): o Auditor da disputa vota? | v2.2 (variante) | baixo | decidido: não vota |
+| AMB-31 | Palpite da plateia (VAR-06): de onde vem a ficha de quem acertou | v2.2 (variante) | baixo | decidido: do banco |
 
 Os números 18 e 19 ficam reservados para novos pontos da v2.2.
 
@@ -384,6 +386,30 @@ Os números 18 e 19 ficam reservados para novos pontos da v2.2.
 - **Configuração:** `v1.empate: dividido | sorteio`
 - **Impacto:** baixo
 - **Estado:** decidido pelo autor em 2026-11-09: (a), vitória dividida
+
+### AMB-30 — Palpite da plateia: o Auditor vota?
+
+- **Regras:** VAR-06 (PDF 2.2, p. 35, "plano B, fora das regras")
+- **Trecho:** "Antes de o atacante decidir se contesta, quem está fora da disputa vota com o polegar" (p. 35).
+- **Interpretações:**
+  - (a) O Auditor faz parte da disputa: votam só os jogadores que não são atacante, defensor nem Auditor.
+  - (b) "Fora da disputa" é quem não é atacante nem defensor: o Auditor vota junto.
+- **Sugestão:** (a).
+- **Configuração:** fixo no motor; só existe com `variantes.palpite_da_plateia` ligado.
+- **Impacto:** baixo
+- **Estado:** decidido pelo autor em 2026-11-10: (a), o Auditor não vota
+
+### AMB-31 — Palpite da plateia: de onde vem a ficha
+
+- **Regras:** VAR-06 (PDF 2.2, p. 35)
+- **Trecho:** "Se houver contestação, quem acertou ganha 1 ficha" (p. 35).
+- **Interpretações:**
+  - (a) Do banco, como os outros ganhos do jogo.
+  - (b) De quem errou o palpite.
+- **Sugestão:** (a).
+- **Configuração:** `variantes.premio_do_palpite` (quantas fichas o banco paga)
+- **Impacto:** baixo
+- **Estado:** decidido pelo autor em 2026-11-10: (a), do banco
 
 ## Divergências entre as fontes
 

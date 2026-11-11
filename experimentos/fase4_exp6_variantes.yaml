@@ -1,0 +1,688 @@
+# Fase 4, Experimento 6: variantes do playtest (decisões do autor em 2026-11-10).
+#
+# Cada variante sozinha, a partir da v2.2.1, cruzada com conhecimento iniciante e
+# experiente e com mesas de 4 e de 5. Mesas só de Heurísticos (o equilíbrio dos estilos).
+# O comportamento de blefe é a mistura do equilíbrio do Experimento 5 (autor, 2026-11-10):
+# cada assento é sorteado da mistura, com os mesmos pesos do Experimento 5b. 2.000 partidas
+# por cenário.
+#
+# Mecânica das variantes (docs/especificacao_v2_2.md, seção Variantes de playtest):
+# VAR-01 punição do blefe descoberto (0 ou 2 fichas); VAR-02 explicação que não confere
+# custa mais 1 ficha ao banco; VAR-03 Auditor externo que acerta 95 de 100; VAR-04 alvo
+# pelo vizinho designado (esquerda, direita, esquerda); VAR-05 no máximo 2 testes recebidos
+# por ciclo; VAR-06 palpite da plateia (AMB-30, AMB-31); VAR-07 2 compras; VAR-09 módulo.
+#
+# Os critérios foram fixados em configs/requisitos.yaml antes da execução.
+
+esquema: cf-experimento/1
+nome: fase4_exp6_variantes
+descricao: >
+  Variantes do playtest, uma de cada vez a partir da v2.2.1, com Heurísticos de
+  conhecimento iniciante e experiente e mesas de 4 e de 5: duração, distribuição de
+  ataques, fichas, tempo parado, os dois estilos, o primeiro incidente e o peso dos
+  incidentes.
+semente_mestre: 20261116
+duracao: configs/duracao.yaml
+registros_completos_um_a_cada: 1000
+
+cenarios:
+  # ---------------------------------------------------------------- 4 jogadores, iniciante
+  - nome: n4_iniciante_base
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  - nome: n4_iniciante_var01_sem_punicao
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    mudancas: {disputa.contestacao_blefe.defensor_paga: 0}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  - nome: n4_iniciante_var01_2_fichas
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    mudancas: {disputa.contestacao_blefe.defensor_paga: 2}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  - nome: n4_iniciante_var02_custo_extra
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    mudancas:
+      variantes:
+        custo_extra_da_explicacao: {valor: 1, regra: VAR-02}
+        auditor_externo: {valor: false, regra: VAR-03}
+        auditor_externo_acertos: {valor: 95, regra: MOD-02}
+        auditor_externo_julgamentos: {valor: 100, regra: MOD-02}
+        vizinhos_designados: {valor: [], regra: VAR-04}
+        limite_de_testes_recebidos: {valor: 0, regra: VAR-05}
+        palpite_da_plateia: {valor: false, regra: VAR-06}
+        premio_do_palpite: {valor: 1, regra: VAR-06}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  - nome: n4_iniciante_var03_auditor_externo
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    mudancas:
+      variantes:
+        custo_extra_da_explicacao: {valor: 0, regra: VAR-02}
+        auditor_externo: {valor: true, regra: VAR-03}
+        auditor_externo_acertos: {valor: 95, regra: MOD-02}
+        auditor_externo_julgamentos: {valor: 100, regra: MOD-02}
+        vizinhos_designados: {valor: [], regra: VAR-04}
+        limite_de_testes_recebidos: {valor: 0, regra: VAR-05}
+        palpite_da_plateia: {valor: false, regra: VAR-06}
+        premio_do_palpite: {valor: 1, regra: VAR-06}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  - nome: n4_iniciante_var04_vizinho
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    mudancas:
+      variantes:
+        custo_extra_da_explicacao: {valor: 0, regra: VAR-02}
+        auditor_externo: {valor: false, regra: VAR-03}
+        auditor_externo_acertos: {valor: 95, regra: MOD-02}
+        auditor_externo_julgamentos: {valor: 100, regra: MOD-02}
+        vizinhos_designados: {valor: [esquerda, direita, esquerda], regra: VAR-04}
+        limite_de_testes_recebidos: {valor: 0, regra: VAR-05}
+        palpite_da_plateia: {valor: false, regra: VAR-06}
+        premio_do_palpite: {valor: 1, regra: VAR-06}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  - nome: n4_iniciante_var05_limite_2
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    mudancas:
+      variantes:
+        custo_extra_da_explicacao: {valor: 0, regra: VAR-02}
+        auditor_externo: {valor: false, regra: VAR-03}
+        auditor_externo_acertos: {valor: 95, regra: MOD-02}
+        auditor_externo_julgamentos: {valor: 100, regra: MOD-02}
+        vizinhos_designados: {valor: [], regra: VAR-04}
+        limite_de_testes_recebidos: {valor: 2, regra: VAR-05}
+        palpite_da_plateia: {valor: false, regra: VAR-06}
+        premio_do_palpite: {valor: 1, regra: VAR-06}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  - nome: n4_iniciante_var06_palpite
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    mudancas:
+      variantes:
+        custo_extra_da_explicacao: {valor: 0, regra: VAR-02}
+        auditor_externo: {valor: false, regra: VAR-03}
+        auditor_externo_acertos: {valor: 95, regra: MOD-02}
+        auditor_externo_julgamentos: {valor: 100, regra: MOD-02}
+        vizinhos_designados: {valor: [], regra: VAR-04}
+        limite_de_testes_recebidos: {valor: 0, regra: VAR-05}
+        palpite_da_plateia: {valor: true, regra: VAR-06}
+        premio_do_palpite: {valor: 1, regra: VAR-06}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  - nome: n4_iniciante_var07_2_compras
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    mudancas: {planejamento.compras: 2}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  - nome: n4_iniciante_var09_modulo
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    mudancas: {modulo_seguranca_operacional: true}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  # ---------------------------------------------------------------- 4 jogadores, experiente
+  - nome: n4_experiente_base
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n4_experiente_var01_sem_punicao
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    mudancas: {disputa.contestacao_blefe.defensor_paga: 0}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n4_experiente_var01_2_fichas
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    mudancas: {disputa.contestacao_blefe.defensor_paga: 2}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n4_experiente_var02_custo_extra
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    mudancas:
+      variantes:
+        custo_extra_da_explicacao: {valor: 1, regra: VAR-02}
+        auditor_externo: {valor: false, regra: VAR-03}
+        auditor_externo_acertos: {valor: 95, regra: MOD-02}
+        auditor_externo_julgamentos: {valor: 100, regra: MOD-02}
+        vizinhos_designados: {valor: [], regra: VAR-04}
+        limite_de_testes_recebidos: {valor: 0, regra: VAR-05}
+        palpite_da_plateia: {valor: false, regra: VAR-06}
+        premio_do_palpite: {valor: 1, regra: VAR-06}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n4_experiente_var03_auditor_externo
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    mudancas:
+      variantes:
+        custo_extra_da_explicacao: {valor: 0, regra: VAR-02}
+        auditor_externo: {valor: true, regra: VAR-03}
+        auditor_externo_acertos: {valor: 95, regra: MOD-02}
+        auditor_externo_julgamentos: {valor: 100, regra: MOD-02}
+        vizinhos_designados: {valor: [], regra: VAR-04}
+        limite_de_testes_recebidos: {valor: 0, regra: VAR-05}
+        palpite_da_plateia: {valor: false, regra: VAR-06}
+        premio_do_palpite: {valor: 1, regra: VAR-06}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n4_experiente_var04_vizinho
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    mudancas:
+      variantes:
+        custo_extra_da_explicacao: {valor: 0, regra: VAR-02}
+        auditor_externo: {valor: false, regra: VAR-03}
+        auditor_externo_acertos: {valor: 95, regra: MOD-02}
+        auditor_externo_julgamentos: {valor: 100, regra: MOD-02}
+        vizinhos_designados: {valor: [esquerda, direita, esquerda], regra: VAR-04}
+        limite_de_testes_recebidos: {valor: 0, regra: VAR-05}
+        palpite_da_plateia: {valor: false, regra: VAR-06}
+        premio_do_palpite: {valor: 1, regra: VAR-06}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n4_experiente_var05_limite_2
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    mudancas:
+      variantes:
+        custo_extra_da_explicacao: {valor: 0, regra: VAR-02}
+        auditor_externo: {valor: false, regra: VAR-03}
+        auditor_externo_acertos: {valor: 95, regra: MOD-02}
+        auditor_externo_julgamentos: {valor: 100, regra: MOD-02}
+        vizinhos_designados: {valor: [], regra: VAR-04}
+        limite_de_testes_recebidos: {valor: 2, regra: VAR-05}
+        palpite_da_plateia: {valor: false, regra: VAR-06}
+        premio_do_palpite: {valor: 1, regra: VAR-06}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n4_experiente_var06_palpite
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    mudancas:
+      variantes:
+        custo_extra_da_explicacao: {valor: 0, regra: VAR-02}
+        auditor_externo: {valor: false, regra: VAR-03}
+        auditor_externo_acertos: {valor: 95, regra: MOD-02}
+        auditor_externo_julgamentos: {valor: 100, regra: MOD-02}
+        vizinhos_designados: {valor: [], regra: VAR-04}
+        limite_de_testes_recebidos: {valor: 0, regra: VAR-05}
+        palpite_da_plateia: {valor: true, regra: VAR-06}
+        premio_do_palpite: {valor: 1, regra: VAR-06}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n4_experiente_var07_2_compras
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    mudancas: {planejamento.compras: 2}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n4_experiente_var09_modulo
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    mudancas: {modulo_seguranca_operacional: true}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  # ---------------------------------------------------------------- 5 jogadores, iniciante
+  - nome: n5_iniciante_base
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  - nome: n5_iniciante_var01_sem_punicao
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    mudancas: {disputa.contestacao_blefe.defensor_paga: 0}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  - nome: n5_iniciante_var01_2_fichas
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    mudancas: {disputa.contestacao_blefe.defensor_paga: 2}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  - nome: n5_iniciante_var02_custo_extra
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    mudancas:
+      variantes:
+        custo_extra_da_explicacao: {valor: 1, regra: VAR-02}
+        auditor_externo: {valor: false, regra: VAR-03}
+        auditor_externo_acertos: {valor: 95, regra: MOD-02}
+        auditor_externo_julgamentos: {valor: 100, regra: MOD-02}
+        vizinhos_designados: {valor: [], regra: VAR-04}
+        limite_de_testes_recebidos: {valor: 0, regra: VAR-05}
+        palpite_da_plateia: {valor: false, regra: VAR-06}
+        premio_do_palpite: {valor: 1, regra: VAR-06}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  - nome: n5_iniciante_var03_auditor_externo
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    mudancas:
+      variantes:
+        custo_extra_da_explicacao: {valor: 0, regra: VAR-02}
+        auditor_externo: {valor: true, regra: VAR-03}
+        auditor_externo_acertos: {valor: 95, regra: MOD-02}
+        auditor_externo_julgamentos: {valor: 100, regra: MOD-02}
+        vizinhos_designados: {valor: [], regra: VAR-04}
+        limite_de_testes_recebidos: {valor: 0, regra: VAR-05}
+        palpite_da_plateia: {valor: false, regra: VAR-06}
+        premio_do_palpite: {valor: 1, regra: VAR-06}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  - nome: n5_iniciante_var04_vizinho
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    mudancas:
+      variantes:
+        custo_extra_da_explicacao: {valor: 0, regra: VAR-02}
+        auditor_externo: {valor: false, regra: VAR-03}
+        auditor_externo_acertos: {valor: 95, regra: MOD-02}
+        auditor_externo_julgamentos: {valor: 100, regra: MOD-02}
+        vizinhos_designados: {valor: [esquerda, direita, esquerda], regra: VAR-04}
+        limite_de_testes_recebidos: {valor: 0, regra: VAR-05}
+        palpite_da_plateia: {valor: false, regra: VAR-06}
+        premio_do_palpite: {valor: 1, regra: VAR-06}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  - nome: n5_iniciante_var05_limite_2
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    mudancas:
+      variantes:
+        custo_extra_da_explicacao: {valor: 0, regra: VAR-02}
+        auditor_externo: {valor: false, regra: VAR-03}
+        auditor_externo_acertos: {valor: 95, regra: MOD-02}
+        auditor_externo_julgamentos: {valor: 100, regra: MOD-02}
+        vizinhos_designados: {valor: [], regra: VAR-04}
+        limite_de_testes_recebidos: {valor: 2, regra: VAR-05}
+        palpite_da_plateia: {valor: false, regra: VAR-06}
+        premio_do_palpite: {valor: 1, regra: VAR-06}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  - nome: n5_iniciante_var06_palpite
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    mudancas:
+      variantes:
+        custo_extra_da_explicacao: {valor: 0, regra: VAR-02}
+        auditor_externo: {valor: false, regra: VAR-03}
+        auditor_externo_acertos: {valor: 95, regra: MOD-02}
+        auditor_externo_julgamentos: {valor: 100, regra: MOD-02}
+        vizinhos_designados: {valor: [], regra: VAR-04}
+        limite_de_testes_recebidos: {valor: 0, regra: VAR-05}
+        palpite_da_plateia: {valor: true, regra: VAR-06}
+        premio_do_palpite: {valor: 1, regra: VAR-06}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  - nome: n5_iniciante_var07_2_compras
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    mudancas: {planejamento.compras: 2}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  - nome: n5_iniciante_var09_modulo
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    mudancas: {modulo_seguranca_operacional: true}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  # ---------------------------------------------------------------- 5 jogadores, experiente
+  - nome: n5_experiente_base
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n5_experiente_var01_sem_punicao
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    mudancas: {disputa.contestacao_blefe.defensor_paga: 0}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n5_experiente_var01_2_fichas
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    mudancas: {disputa.contestacao_blefe.defensor_paga: 2}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n5_experiente_var02_custo_extra
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    mudancas:
+      variantes:
+        custo_extra_da_explicacao: {valor: 1, regra: VAR-02}
+        auditor_externo: {valor: false, regra: VAR-03}
+        auditor_externo_acertos: {valor: 95, regra: MOD-02}
+        auditor_externo_julgamentos: {valor: 100, regra: MOD-02}
+        vizinhos_designados: {valor: [], regra: VAR-04}
+        limite_de_testes_recebidos: {valor: 0, regra: VAR-05}
+        palpite_da_plateia: {valor: false, regra: VAR-06}
+        premio_do_palpite: {valor: 1, regra: VAR-06}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n5_experiente_var03_auditor_externo
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    mudancas:
+      variantes:
+        custo_extra_da_explicacao: {valor: 0, regra: VAR-02}
+        auditor_externo: {valor: true, regra: VAR-03}
+        auditor_externo_acertos: {valor: 95, regra: MOD-02}
+        auditor_externo_julgamentos: {valor: 100, regra: MOD-02}
+        vizinhos_designados: {valor: [], regra: VAR-04}
+        limite_de_testes_recebidos: {valor: 0, regra: VAR-05}
+        palpite_da_plateia: {valor: false, regra: VAR-06}
+        premio_do_palpite: {valor: 1, regra: VAR-06}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n5_experiente_var04_vizinho
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    mudancas:
+      variantes:
+        custo_extra_da_explicacao: {valor: 0, regra: VAR-02}
+        auditor_externo: {valor: false, regra: VAR-03}
+        auditor_externo_acertos: {valor: 95, regra: MOD-02}
+        auditor_externo_julgamentos: {valor: 100, regra: MOD-02}
+        vizinhos_designados: {valor: [esquerda, direita, esquerda], regra: VAR-04}
+        limite_de_testes_recebidos: {valor: 0, regra: VAR-05}
+        palpite_da_plateia: {valor: false, regra: VAR-06}
+        premio_do_palpite: {valor: 1, regra: VAR-06}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n5_experiente_var05_limite_2
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    mudancas:
+      variantes:
+        custo_extra_da_explicacao: {valor: 0, regra: VAR-02}
+        auditor_externo: {valor: false, regra: VAR-03}
+        auditor_externo_acertos: {valor: 95, regra: MOD-02}
+        auditor_externo_julgamentos: {valor: 100, regra: MOD-02}
+        vizinhos_designados: {valor: [], regra: VAR-04}
+        limite_de_testes_recebidos: {valor: 2, regra: VAR-05}
+        palpite_da_plateia: {valor: false, regra: VAR-06}
+        premio_do_palpite: {valor: 1, regra: VAR-06}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n5_experiente_var06_palpite
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    mudancas:
+      variantes:
+        custo_extra_da_explicacao: {valor: 0, regra: VAR-02}
+        auditor_externo: {valor: false, regra: VAR-03}
+        auditor_externo_acertos: {valor: 95, regra: MOD-02}
+        auditor_externo_julgamentos: {valor: 100, regra: MOD-02}
+        vizinhos_designados: {valor: [], regra: VAR-04}
+        limite_de_testes_recebidos: {valor: 0, regra: VAR-05}
+        palpite_da_plateia: {valor: true, regra: VAR-06}
+        premio_do_palpite: {valor: 1, regra: VAR-06}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n5_experiente_var07_2_compras
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    mudancas: {planejamento.compras: 2}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n5_experiente_var09_modulo
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    mudancas: {modulo_seguranca_operacional: true}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}

@@ -102,6 +102,28 @@ def intervalo_da_razao(
     return float(baixo), float(alto)
 
 
+def intervalo_do_quantil_por_grupos(
+    grupos: list[NDArray[np.float64]],
+    quantil: float,
+    rng: np.random.Generator,
+    reamostras: int = 1000,
+    confianca: float = 0.95,
+) -> Intervalo:
+    """Intervalo percentil por bootstrap para um quantil de valores agrupados por partida.
+
+    Reamostra as partidas inteiras, porque os valores de uma mesma partida não são independentes.
+    """
+    if not grupos:
+        raise ValueError("não há valores para o bootstrap do quantil")
+    estimativas = []
+    for _ in range(reamostras):
+        escolhidos = rng.integers(0, len(grupos), len(grupos))
+        estimativas.append(float(np.quantile(np.concatenate([grupos[i] for i in escolhidos]), quantil)))
+    cauda = (1 - confianca) / 2
+    baixo, alto = np.quantile(np.array(estimativas), [cauda, 1 - cauda])
+    return float(baixo), float(alto)
+
+
 def veredito(intervalo: Intervalo, zona: Intervalo) -> str:
     """Compara o intervalo de confiança com a zona de aceite."""
     baixo, alto = intervalo

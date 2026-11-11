@@ -218,8 +218,8 @@ Consequências da COR-02, confirmadas pelo autor:
 
 | ID | Tipo | Regra | Pág. | Parâmetros | Notas |
 |---|---|---|---|---|---|
-| R-7.3.1 | regra | Falhou (admitiu, nomeou teste de outra categoria ou a explicação não conferiu): o atacante ganha 1 ficha do banco e o defensor recebe Alerta X. | 8 | `disputa.falhou.atacante_ganha=1` | |
-| R-7.3.2 | regra | Defesa aceita: nada acontece para o atacante nem para o defensor. | 8 | — | |
+| R-7.3.1 | regra | Falhou (admitiu, nomeou teste de outra categoria ou a explicação não conferiu): o atacante ganha 1 ficha do banco e o defensor recebe Alerta X. | 8 | `disputa.falhou.atacante_ganha=1` | VAR-02 |
+| R-7.3.2 | regra | Defesa aceita: nada acontece para o atacante nem para o defensor. | 8 | — | VAR-06 (palpite da plateia antes desta decisão); AMB-30; AMB-31 |
 | R-7.3.3 | regra | Contestou, e o defensor tinha a carta: o atacante paga 1 ficha ao defensor. | 8 | `disputa.contestacao_verdade.atacante_paga=1` | |
 | R-7.3.4 | regra | Contestou, e era blefe: o defensor paga 1 ficha ao atacante, o atacante ganha mais 1 do banco e o defensor recebe Alerta X. | 8 | `disputa.contestacao_blefe.defensor_paga=1`; `disputa.contestacao_blefe.atacante_ganha_do_banco=1` | VAR-01 |
 | R-7.3.5 | nota | Tentar explicar nunca é pior do que admitir: uma explicação que não confere custa o mesmo que "Falhou". Pelo ganho esperado do atacante, contestar só compensa quando a chance de blefe é de pelo menos 1 em 3. | 8 | — | Oráculo de teste; REQ-04; REQ-05 |
@@ -448,19 +448,19 @@ A seção "Registro da partida" (p. 35) define o que o observador anota. O coman
 
 ## Variantes de playtest
 
-Variantes que a configuração deve permitir ligar e desligar (seção 3.2 do prompt). O valor marcado como "atual" é a regra da v2.2. O detalhamento mecânico de VAR-02, VAR-03, VAR-04 e VAR-06 será perguntado ao autor na Fase 2, antes da implementação.
+Variantes que a configuração deve permitir ligar e desligar (seção 3.2 do prompt). O valor marcado como "atual" é a regra da v2.2. A mecânica de VAR-02, VAR-03, VAR-04 e VAR-06 foi decidida pelo autor em 2026-11-10 (coluna Mecânica). No YAML, VAR-02 a VAR-06 ficam no bloco opcional `variantes`; sem o bloco, vale a regra da versão.
 
-| ID | Variante | Valores | Fonte |
-|---|---|---|---|
-| VAR-01 | Punição do blefe descoberto | sem punição; 1 ficha (atual); 2 fichas | prompt 3.2; R-7.3.4 |
-| VAR-02 | Custo da explicação que não confere | igual a "Falhou" (atual); custo extra | prompt 3.2; R-7.2.3b |
-| VAR-03 | Auditor | jogador rotativo (atual); externo, que não joga | prompt 3.2; R-7.1.1 |
-| VAR-04 | Alvo na Homologação | livre (atual); vizinho designado da v2.0 (esquerda, direita, esquerda) | prompt 3.2; PDF p. 33 |
-| VAR-05 | Limite de testes recebidos por ciclo | sem limite (atual); 2 | prompt 3.2; PDF p. 34 |
-| VAR-06 | Voto da mesa | desligado (atual); palpite da plateia sobre a posse da carta; voto sobre a explicação, antes do Auditor | prompt 3.2; PDF p. 35 |
-| VAR-07 | Compras por Planejamento | 3 (atual); 2 | prompt 3.2; PDF p. 34 |
-| VAR-08 | Número de jogadores | 4; 5 (6 só com a COR-01 desligada, para medir o problema do baralho) | prompt 3.2; R-1.2; COR-01 |
-| VAR-09 | Módulo de Segurança Operacional | desligado (jogo base); ligado | PDF seção 11 |
+| ID | Variante | Valores | Fonte | Mecânica |
+|---|---|---|---|---|
+| VAR-01 | Punição do blefe descoberto | sem punição; 1 ficha (atual); 2 fichas | prompt 3.2; R-7.3.4 | `disputa.contestacao_blefe.defensor_paga`: 0, 1 ou 2; o Alerta e o ganho do banco continuam |
+| VAR-02 | Custo da explicação que não confere | igual a "Falhou" (atual); custo extra | prompt 3.2; R-7.2.3b | além do "Falhou", o defensor perde 1 ficha para o banco (`variantes.custo_extra_da_explicacao`) |
+| VAR-03 | Auditor | jogador rotativo (atual); externo, que não joga | prompt 3.2; R-7.1.1 | o motor julga a explicação e acerta 95 de cada 100 (MOD-02, perfil experiente); todos jogam e diagnosticam |
+| VAR-04 | Alvo na Homologação | livre (atual); vizinho designado da v2.0 (esquerda, direita, esquerda) | prompt 3.2; PDF p. 33 | só o alvo muda: sem limite de testes e com o bug duplicado; sem teste legal contra o vizinho, o jogador passa |
+| VAR-05 | Limite de testes recebidos por ciclo | sem limite (atual); 2 | prompt 3.2; PDF p. 34 | quem já recebeu 2 testes no ciclo não pode ser alvo |
+| VAR-06 | Voto da mesa | desligado (atual); palpite da plateia sobre a posse da carta; voto sobre a explicação, antes do Auditor | prompt 3.2; PDF p. 35; AMB-30; AMB-31 | só o palpite do PDF: depois da conferência, quem não é atacante, defensor nem Auditor vota em segredo; os votos são revelados antes da decisão do atacante; havendo contestação, quem acertou ganha 1 ficha do banco. O bot vota "blefe" quando a chance estimada passa de 1/2. O voto sobre a explicação ficou fora |
+| VAR-07 | Compras por Planejamento | 3 (atual); 2 | prompt 3.2; PDF p. 34 | `planejamento.compras` |
+| VAR-08 | Número de jogadores | 4; 5 (6 só com a COR-01 desligada, para medir o problema do baralho) | prompt 3.2; R-1.2; COR-01 | número de jogadores do cenário |
+| VAR-09 | Módulo de Segurança Operacional | desligado (jogo base); ligado | PDF seção 11 | `modulo_seguranca_operacional` |
 
 Texto do palpite da plateia no PDF (p. 35, "plano B, fora das regras"): antes de o atacante decidir se contesta, quem está fora da disputa vota se a defesa é verdade ou blefe; se houver contestação, quem acertou ganha 1 ficha.
 

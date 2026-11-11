@@ -26,6 +26,8 @@ CONTESTAR = "contestar"
 DIAGNOSTICAR = "diagnosticar"
 PEGAR = "pegar"
 RECUSAR = "recusar"
+PALPITE_VERDADE = "palpite_verdade"
+PALPITE_BLEFE = "palpite_blefe"
 
 TIPOS = frozenset(
     {
@@ -43,6 +45,8 @@ TIPOS = frozenset(
         DIAGNOSTICAR,
         PEGAR,
         RECUSAR,
+        PALPITE_VERDADE,
+        PALPITE_BLEFE,
     }
 )
 

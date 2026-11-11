@@ -1,0 +1,42 @@
+# Fase 4, Experimento 5b: blefes bem-sucedidos no equilíbrio misto (REQ-05).
+#
+# Decisão do autor (2026-11-10): se a dinâmica do replicador do torneio de blefe terminar
+# numa mistura, o REQ-05 vale numa mesa sorteada dessa mistura. No Experimento 5
+# (resultados/fase4_exp5_blefe/20261110-231109-b02b6d4), a dinâmica corrigida (tempo
+# contínuo, passo pequeno, com teste de equilíbrio) termina numa mistura de 4 perfis, com
+# 4 e com 5 jogadores. Os pesos abaixo são essas proporções, em milésimos.
+#
+# Cada assento de cada partida é sorteado da mistura (fluxo próprio de aleatoriedade).
+
+esquema: cf-experimento/1
+nome: fase4_exp5b_blefe_equilibrio
+descricao: >
+  Blefes bem-sucedidos (REQ-05) em mesas de Heurísticos sorteadas da mistura de perfis de
+  blefe do equilíbrio do Experimento 5, com 4 e com 5 jogadores.
+semente_mestre: 20261117
+duracao: configs/duracao.yaml
+registros_completos_um_a_cada: 1000
+
+cenarios:
+  - nome: n4_mistura_do_equilibrio
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 10000
+    pesos: [325, 501, 133, 41]
+    requisitos: [REQ-05]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n5_mistura_do_equilibrio
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 10000
+    pesos: [313, 541, 133, 13]
+    requisitos: [REQ-05]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}

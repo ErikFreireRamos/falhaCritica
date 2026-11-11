@@ -14,6 +14,7 @@ import argparse
 import json
 import os
 import sys
+from datetime import UTC, datetime
 from pathlib import Path
 
 from critical_failure.auditoria import folha, registro, replay
@@ -92,8 +93,25 @@ def _relatorio(args: argparse.Namespace) -> int:
         raise ConfiguracaoInvalida(f"{args.pasta} não é a pasta de um experimento rodado: {erro!r}") from erro
     linhas = executor.ler_tabela(args.pasta)
     requisitos = carregar_requisitos(registro.RAIZ / experimento.requisitos_arquivo)
+    git = registro.info_git()
+    refeito_em_outro_codigo = git["commit"] != manifest["git"]["commit"] or (
+        bool(git["sujo"]) and not manifest["git"]["sujo"]
+    )
+    if refeito_em_outro_codigo:
+        # A execução continua a mesma; só a análise e o texto vêm de outro código. Fica registrado
+        # no manifest e no cabeçalho do relatório, com o hash novo do relatório.
+        manifest["relatorio_refeito"] = {
+            "commit": git["commit"],
+            "sujo": git["sujo"],
+            "data": datetime.now(UTC).isoformat(timespec="seconds"),
+        }
     texto = renderizar(manifest, analisar(linhas, experimento, requisitos))
     (args.pasta / "relatorio.md").write_text(texto, encoding="utf-8", newline="\n")
+    if refeito_em_outro_codigo:
+        manifest.setdefault("arquivos", {})["relatorio.md"] = executor.hash_do_arquivo(args.pasta / "relatorio.md")
+        (args.pasta / "manifest.json").write_text(
+            json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n"
+        )
     print(texto)
     return 0
 

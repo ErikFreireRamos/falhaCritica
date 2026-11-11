@@ -98,6 +98,7 @@ src/critical_failure/
   auditoria/     registro JSONL, replay, narração (v2 e v1) e Folha (só v2)
   duracao.py     modelo de duração da partida (MOD-05), tempos em configs/duracao.yaml
   experimentos/  arquivo de experimento e executor paralelo (Parquet, registros, manifest)
+  coleta.py      medidas de cada partida da v2 para os requisitos de balanceamento
   metricas/      intervalos de confiança, veredito, medida dos requisitos, matriz de estilos
                  (estilo dominante e dinâmica do replicador) e a análise completa de uma execução
   relatorios/    relatório Markdown de cada execução

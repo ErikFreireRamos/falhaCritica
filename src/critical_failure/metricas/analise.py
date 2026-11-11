@@ -24,6 +24,7 @@ from critical_failure.metricas.requisitos import (
     criterio_confirmado,
     descrever,
     desequilibrio,
+    equilibrio_interno,
     vitorias_por_bot,
 )
 
@@ -35,6 +36,7 @@ class Analise:
     estilos: list[dict[str, Any]]
     desequilibrio: list[dict[str, Any]]
     matrizes: list[MatrizDeEstilos]
+    interno: list[dict[str, Any]]
 
 
 def analisar(linhas: list[dict[str, Any]], experimento: Experimento, requisitos: dict[str, dict[str, Any]]) -> Analise:
@@ -52,4 +54,5 @@ def analisar(linhas: list[dict[str, Any]], experimento: Experimento, requisitos:
         estilos=vitorias_por_bot(linhas, experimento),
         desequilibrio=desequilibrio(linhas, experimento, requisitos),
         matrizes=matrizes,
+        interno=equilibrio_interno(linhas, experimento),
     )

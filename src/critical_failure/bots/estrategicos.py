@@ -73,6 +73,10 @@ def _probabilidade(nome: str, valor: Any) -> float:
     return float(valor)
 
 
+LIMIAR_DO_PALPITE = 0.5
+"""VAR-06 (autor, 2026-11-10): o bot vota "blefe" quando a chance estimada de blefe passa de 1/2."""
+
+
 class BotEstrategico:
     """O que é comum a todos os estilos: blefe, contestação, Auditor, leitura, diagnóstico e Lição aprendida."""
 
@@ -114,6 +118,7 @@ class BotEstrategico:
             E.RESPONDER: self._responder,
             E.CONFERIR: self._julgar,
             E.CONTESTAR: self._contestar,
+            E.PALPITAR: self._palpitar,
             E.DIAGNOSTICAR: self._diagnosticar,
             E.LICAO: self.licao,
         }
@@ -228,6 +233,18 @@ class BotEstrategico:
             f"limiar {limiar} (R-7.3.5): {'contesta' if contesta else 'aceita'}"
         )
         return Decisao(Acao(A.CONTESTAR if contesta else A.ACEITAR), motivo)
+
+    def _palpitar(self, obs: Observacao, opcoes: Sequence[Acao]) -> Decisao:
+        """VAR-06: vota "blefe" quando a chance estimada de o defensor não ter o teste nomeado passa de 1/2."""
+        disputa = obs.disputa
+        assert disputa is not None and disputa.teste_nomeado is not None
+        chance = chance_de_nao_ter(obs, self.mesa, disputa.defensor, [disputa.teste_nomeado])
+        blefe = chance > LIMIAR_DO_PALPITE
+        motivo = (
+            f"palpite: chance estimada de o defensor não ter {disputa.teste_nomeado}: {chance:.3f}; "
+            f"vota {'blefe' if blefe else 'verdade'} (limiar {LIMIAR_DO_PALPITE})"
+        )
+        return Decisao(Acao(A.PALPITE_BLEFE if blefe else A.PALPITE_VERDADE), motivo)
 
     def _diagnosticar(self, obs: Observacao, opcoes: Sequence[Acao]) -> Decisao:
         assert obs.radar_agora is not None

@@ -703,3 +703,61 @@ As decisões do autor estão na entrada anterior (estilo Heurístico; 1.000 part
 - **Intervalo do REQ-05:** razão das somas (blefes bem-sucedidos sobre blefes tentados), com bootstrap sobre as partidas, porque os blefes de uma mesma partida não são independentes.
 - **"Termina num perfil só":** pelo menos 99,9% da população, com a dinâmica parada.
 - **Semente mestre 20261115; 4 processos.**
+
+## 2026-11-10 — Fase 4, Experimento 6: variantes do playtest
+
+### Decisões do autor
+
+| Assunto | Opções | Escolha |
+|---|---|---|
+| VAR-04, vizinho designado | só o alvo; alvo e 1 teste por ciclo | **Só o alvo**: todo teste do ciclo vai para o vizinho designado (esquerda, direita, esquerda); sem limite de testes e com o bug duplicado; sem teste legal contra o vizinho, o jogador passa |
+| VAR-02, custo extra da explicação | +1 ficha ao banco; +1 ao atacante | **+1 ficha ao banco**, além do "Falhou" |
+| VAR-03, Auditor externo | 95% (perfil experiente); 100% | **95%**. Todos jogam e diagnosticam; a função não passa de mão em mão |
+| VAR-06, voto da mesa | só o palpite do PDF; as duas formas; fora do simulador | **Só o palpite do PDF**. O bot vota "blefe" quando a chance estimada passa de 1/2 |
+| AMB-30, o Auditor vota no palpite? | não; sim | **Não vota** |
+| AMB-31, de onde vem a ficha do palpite | do banco; de quem errou | **Do banco** |
+| Desenho | Heurísticos com 2.000; com 5.000; com mesa mista | **Mesas só de Heurísticos, 2.000 partidas por cenário**: 10 configurações (a base e as variantes) × 2 perfis de conhecimento × 2 tamanhos de mesa = 40 cenários, 80.000 partidas |
+| Zonas de REQ-06, REQ-07, REQ-12 e REQ-13 | confirmar; mudar | **Confirmadas** como na Fase 0. O REQ-14 fica só como descrição |
+| REQ-10, tempo parado | p90 abaixo de 5 min; mediana; só descrição | **p90 abaixo de 5 min** |
+| Blefe dos bots no Experimento 6 | mesa sorteada do equilíbrio do Experimento 5; blefe moderado e limiar | **Mesa sorteada do equilíbrio**: cada assento é sorteado da mistura de perfis de blefe do equilíbrio, com os pesos do Experimento 5b |
+
+### O que foi feito
+
+1. **Variantes no motor**, atrás do bloco opcional `variantes` do YAML (VAR-02 a VAR-06). Sem o bloco, vale a regra da versão, e o hash das versões já usadas não muda. Um experimento liga uma variante passando o bloco inteiro em `mudancas`. VAR-01, VAR-07 e VAR-09 já eram parâmetros do YAML.
+   - VAR-02: evento `custo_da_explicacao`, depois da conferência que não confere.
+   - VAR-03: o motor julga a explicação no mesmo passo da defesa, com um sorteio do fluxo do jogo (95 acertos em 100); a conferência sai sem ator, citando VAR-03.
+   - VAR-04 e VAR-05: restringem os alvos legais.
+   - VAR-06: decisão nova, `palpitar`, para cada votante. O voto é secreto até o último votar, e os votos são revelados antes da decisão do atacante. Havendo contestação, quem acertou ganha do banco.
+2. **Estado:** a disputa ganhou o campo `palpites`, que fica fora do hash enquanto vazio (`OMITIR_SE_PADRAO` em `nucleo/canonico.py`). Os registros de referência não mudaram.
+3. **Bots:** os estilos com estratégia votam no palpite; o Aleatório sorteia.
+4. **Coletor de medidas** (`coleta.py`): em toda partida da v2, testes recebidos por jogador, testes contra o menor placar, se alguém ficou com 0 ficha antes do último ciclo, tempo parado por jogador e ciclo, quem começou cobrindo a categoria-chave do incidente 1 e fichas movimentadas (no total e pelo dano de incidente). São 7 colunas novas na tabela de partidas.
+5. **Requisitos medidos:** REQ-06 (a e b), REQ-07, REQ-10, REQ-12 e REQ-13, cenário a cenário. O relatório ganhou a seção "Equilíbrio dentro da partida (descrição)", com a dispersão final do REQ-14.
+6. **Especificação:** a seção de variantes ganhou a coluna "Mecânica"; AMB-30 e AMB-31 em `docs/AMBIGUIDADES.md`.
+7. **Experimento** `experimentos/fase4_exp6_variantes.yaml`: 80.000 partidas.
+8. **Mesa sorteada de uma mistura** (`pesos` no cenário): cada assento de cada partida é sorteado entre os perfis candidatos, com pesos inteiros e um fluxo de aleatoriedade próprio (`FLUXO_DA_MESA`). A tabela ganha a coluna `bots_da_mesa`; a taxa de vitória por perfil usa a mesa sorteada; o REQ-05 recebe veredito nesse tipo de cenário.
+9. **Testes novos:** 27. Cada variante tem o seu teste, sobre partidas com os invariantes conferidos; o coletor é conferido contra os eventos; cada requisito novo tem um caso que passa e um que falha; o sorteio por pesos e a mesa sorteada têm testes próprios (o replay refaz a mesma mesa); há também uma miniatura do Experimento 6, com o relatório refeito.
+
+### Detalhes escolhidos pelo assistente, sem perguntar
+
+- **Teste de convenção:** na v2, o evento de uma variante cita a própria variante (`VAR-xx`), e o teste que exige uma regra em todo evento passou a aceitar esse formato.
+- **Variantes juntas:** o palpite da plateia com o Auditor externo não foi definido (quem votaria?), e a configuração recusa os dois juntos.
+- **REQ-06 (b):** empate no menor placar conta como teste contra o menor, e "os outros" são todos menos o atacante.
+- **REQ-07:** "antes do ciclo 3" é qualquer evento dos ciclos anteriores ao último.
+- **REQ-10:** o tempo de cada evento vem do modelo de duração. Na Produção ninguém fica parado (todos diagnosticam juntos). Numa disputa, ficam livres o atacante, o defensor e o Auditor (com o Auditor externo, só os dois primeiros). No Planejamento, só quem tem a vez. O palpite da plateia não tem tempo no modelo (0 s), porque o voto é com o polegar, enquanto o atacante decide. O intervalo vem de bootstrap sobre as partidas.
+- **REQ-12:** "cobrir" é ter, no sistema inicial, uma carta da categoria-chave do incidente 1. O intervalo trata os assentos como independentes.
+- **REQ-13:** o dano do Critical Failure não conta como dano de incidente; o total inclui todas as fontes, inclusive a pontuação final.
+- **Mistura no Experimento 6:** os pesos do equilíbrio foram medidos com conhecimento experiente e na regra sem variante; o Experimento 6 usa os mesmos pesos com conhecimento iniciante e com as variantes. O REQ-12 pede bots idênticos, e na mesa sorteada só o perfil de blefe varia (o estilo é o mesmo). Semente mestre 20261116.
+
+### Defeito achado no Experimento 5: a dinâmica do replicador parava num ponto que não era equilíbrio
+
+A primeira análise do torneio de blefe (execução `b02b6d4`) dizia que a dinâmica terminava em "nunca blefa, contesta pelo limiar" (4 jogadores) e em "nunca blefa, nunca contesta" (5 jogadores). Com isso, o REQ-05 saía inconclusivo, com a nota "nessa mesa ninguém blefa". Estava errado: nas duas mesas, outro perfil se sai melhor que esse "equilíbrio" (por exemplo, contra uma mesa de "nunca blefa, nunca contesta", quem sempre blefa e nunca contesta vence 0,463, para uma referência de 0,25).
+
+**Causa:** os perfis de blefe formam um ciclo, como pedra-papel-tesoura. Quem nunca blefa nem contesta perde para quem sempre blefa; quem sempre blefa perde para quem contesta pelo limiar; quem contesta perde para quem nunca contesta numa mesa de honestos. A versão da dinâmica em tempo discreto, com passo cheio, espirala para fora num jogo assim e chega perto de um vértice. Ali a mudança fica menor que a tolerância, e o critério de parada leu isso como equilíbrio.
+
+**Correção** (`metricas/matrizes.py`): a dinâmica passou a usar tempo contínuo, com passo pequeno (0,05). No fim, só vale como equilíbrio se nenhum perfil se sair melhor que a média ali. Dois testes novos de pedra-papel-tesoura cobrem os dois casos: o equilíbrio misto que atrai a trajetória e o que a repele. Nas duas matrizes do torneio, a dinâmica corrigida converge para o único equilíbrio simétrico do jogo linearizado, conferido por fora com a enumeração de todos os suportes. A matriz de estilos não muda: lá o Heurístico é um equilíbrio estrito.
+
+**Relatório refeito com registro:** o `cf relatorio` agora anota no manifest (`relatorio_refeito`) e no cabeçalho do relatório quando a análise é refeita com o código de outro commit. O hash novo do relatório também vai para o manifest. A execução e a tabela de partidas continuam as originais. O relatório do Experimento 5 foi refeito assim.
+
+### Experimento 5b: REQ-05 no equilíbrio misto
+
+Pela decisão do autor, com equilíbrio misto o REQ-05 vale numa mesa sorteada da mistura. O arquivo `experimentos/fase4_exp5b_blefe_equilibrio.yaml` foi gerado a partir da tabela do Experimento 5, pela análise corrigida: pesos em milésimos, arredondados pelos maiores restos. Com 4 jogadores, 325, 501, 133 e 41 (nunca blefa e nunca contesta; nunca blefa e contesta pelo limiar; sempre blefa e nunca contesta; sempre blefa e contesta pelo limiar). Com 5 jogadores, 313, 541, 133 e 13. São 10.000 partidas por tamanho de mesa; semente mestre 20261117.

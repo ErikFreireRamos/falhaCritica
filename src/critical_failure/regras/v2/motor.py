@@ -109,6 +109,15 @@ class MotorV2:
         self.passou_pode_ser_alvo = i.quem_passou_pode_ser_alvo.valor
         self.cf_limpa_alertas = i.critical_failure_limpa_alertas.valor
         self.final_por_saldo = i.final_ordem.valor == "saldo"
+        v = r.variantes  # variantes de playtest; sem o bloco, vale a regra da versão
+        self.custo_extra_explicacao = v.custo_extra_da_explicacao.valor if v else 0
+        self.auditor_externo = v.auditor_externo.valor if v else False
+        self.auditor_externo_acertos = v.auditor_externo_acertos.valor if v else 0
+        self.auditor_externo_julgamentos = v.auditor_externo_julgamentos.valor if v else 0
+        self.vizinhos_designados = tuple(v.vizinhos_designados.valor) if v else ()
+        self.limite_recebidos = v.limite_de_testes_recebidos.valor if v else 0
+        self.palpite_da_plateia = v.palpite_da_plateia.valor if v else False
+        self.premio_do_palpite = v.premio_do_palpite.valor if v else 0
 
     # ------------------------------------------------------------------ utilidades
 
@@ -330,6 +339,8 @@ class MotorV2:
             return (Acao(A.CONFERE), Acao(A.NAO_CONFERE))
         if p.tipo == E.CONTESTAR:
             return (Acao(A.ACEITAR), Acao(A.CONTESTAR))
+        if p.tipo == E.PALPITAR:
+            return (Acao(A.PALPITE_VERDADE), Acao(A.PALPITE_BLEFE))
         if p.tipo == E.DIAGNOSTICAR:
             return tuple(Acao(A.DIAGNOSTICAR, categoria=categoria) for categoria in cat.categorias)
         if p.tipo == E.LICAO:
@@ -341,11 +352,16 @@ class MotorV2:
     def _testes_legais(self, e: Estado, j: int) -> list[Acao]:
         cat = self.catalogo
         opcoes: list[Acao] = []
+        designado = self._vizinho_designado(e, j)
         for teste in _distintos(cat.nomes(e.jogadores[j].mao)):
             categoria = cat.testes[teste].categoria
             for alvo in range(e.n):
                 outro = e.jogadores[alvo]
                 if alvo == j:
+                    continue
+                if designado is not None and alvo != designado:  # VAR-04: vizinho designado
+                    continue
+                if self.limite_recebidos and self._testes_recebidos(e, alvo) >= self.limite_recebidos:  # VAR-05
                     continue
                 if categoria in outro.alertas:  # R-7.4.2: bug duplicado
                     continue
@@ -353,6 +369,21 @@ class MotorV2:
                     continue
                 opcoes.append(Acao(A.TESTAR, teste=teste, alvo=alvo))
         return opcoes
+
+    def _vizinho_designado(self, e: Estado, j: int) -> int | None:
+        """VAR-04: o único alvo permitido no ciclo; ``None`` com alvo livre."""
+        if not self.vizinhos_designados:
+            return None
+        lado = self.vizinhos_designados[(e.ciclo - 1) % len(self.vizinhos_designados)]
+        return self._esquerda(e, j) if lado == "esquerda" else (j - 1) % e.n
+
+    def _testes_recebidos(self, e: Estado, j: int) -> int:
+        """VAR-05: testes que o jogador já recebeu neste ciclo."""
+        return sum(1 for disputa in e.historico if disputa.ciclo == e.ciclo and disputa.defensor == j)
+
+    def _votantes(self, e: Estado, d: Disputa) -> list[int]:
+        """VAR-06 e AMB-30: quem está fora da disputa (nem atacante, nem defensor, nem Auditor) vota."""
+        return [j for j in self.ordem_de_jogo(e) if j not in (d.atacante, d.defensor, d.auditor)]
 
     def _auditor_da_disputa(self, e: Estado, atacante: int, defensor: int) -> int:
         """R-7.1.4 e AMB-05: o não envolvido mais próximo à esquerda do Auditor."""
@@ -560,6 +591,7 @@ class MotorV2:
                 "categoria": categoria,
                 "auditor_titular": c.e.auditor,
                 "auditor_da_disputa": auditor,
+                **({"auditor_externo": True} if self.auditor_externo else {}),
             },
             amb="AMB-05" if auditor != c.e.auditor else None,
         )
@@ -600,21 +632,96 @@ class MotorV2:
             ator=j,
             publico={"resposta": "defendeu", "teste_nomeado": teste},
             oculto={"tem_carta": tem, "blefe": not tem, "explicacao_correta": acao.explicacao_correta},
-            visivel={"tem_carta": [j], "blefe": [j], "explicacao_correta": [d.auditor]},
+            visivel={
+                "tem_carta": [j],
+                "blefe": [j],
+                "explicacao_correta": [] if self.auditor_externo else [d.auditor],
+            },
             amb="AMB-15",
+        )
+        if self.auditor_externo:
+            self._julgamento_externo(c)
+
+    def _julgamento_externo(self, c: _Ctx) -> None:
+        """VAR-03: o Auditor externo, que não joga, acerta o julgamento com a precisão da configuração (MOD-02)."""
+        e = c.e
+        d = e.disputa
+        assert d is not None
+        sorteio = int(
+            gerador(e.semente, e.partida, FLUXO_JOGO, e.contador_rng).integers(0, self.auditor_externo_julgamentos)
+        )
+        c.e = replace(e, contador_rng=e.contador_rng + 1)
+        acertou = sorteio < self.auditor_externo_acertos
+        confere = d.explicacao_correta if acertou else not d.explicacao_correta
+        veredito = A.CONFERE if confere else A.NAO_CONFERE
+        self._aplicar_veredito(
+            c,
+            veredito,
+            ator=None,
+            regra="VAR-03",
+            oculto={"sorteio": sorteio, "acertou": acertou},
         )
 
     def _conferir(self, c: _Ctx, j: int, acao: Acao) -> None:
+        self._aplicar_veredito(c, acao.tipo, ator=j, regra="R-7.2.3")
+
+    def _aplicar_veredito(
+        self, c: _Ctx, veredito: str, ator: int | None, regra: str, oculto: dict[str, Any] | None = None
+    ) -> None:
         d = c.e.disputa
         assert d is not None
-        d = replace(d, veredito=acao.tipo)
-        if acao.tipo == A.NAO_CONFERE:
+        d = replace(d, veredito=veredito)
+        publico: dict[str, Any] = {"veredito": veredito, **({"auditor": "externo"} if ator is None else {})}
+        if veredito == A.NAO_CONFERE:
             c.e = replace(c.e, disputa=d)
-            self._ev(c, "conferencia", "R-7.2.3", ator=j, publico={"veredito": acao.tipo})
+            self._ev(c, "conferencia", regra, ator=ator, publico=publico, oculto=oculto, visivel={})
+            if self.custo_extra_explicacao:
+                perdido = self._perder(c, d.defensor, self.custo_extra_explicacao)
+                self._ev(
+                    c,
+                    "custo_da_explicacao",
+                    "VAR-02",
+                    ator=d.defensor,
+                    publico={"fonte": FONTE_HOMOLOGACAO, "fichas": {str(d.defensor): -perdido}},
+                )
             self._falhou(c, "nao_confere")
             return
-        c.e = replace(c.e, disputa=replace(d, etapa=E.CONTESTAR), pendente=Pendente(E.CONTESTAR, d.atacante))
-        self._ev(c, "conferencia", "R-7.2.3", ator=j, publico={"veredito": acao.tipo})
+        votantes = self._votantes(c.e, d) if self.palpite_da_plateia else []
+        if votantes:
+            c.e = replace(c.e, disputa=replace(d, etapa=E.PALPITAR), pendente=Pendente(E.PALPITAR, votantes[0]))
+        else:
+            c.e = replace(c.e, disputa=replace(d, etapa=E.CONTESTAR), pendente=Pendente(E.CONTESTAR, d.atacante))
+        self._ev(c, "conferencia", regra, ator=ator, publico=publico, oculto=oculto, visivel={})
+
+    def _palpitar(self, c: _Ctx, j: int, acao: Acao) -> None:
+        """VAR-06: um voto do palpite da plateia. Os votos são simultâneos: ficam ocultos até o último."""
+        d = c.e.disputa
+        assert d is not None
+        blefe = acao.tipo == A.PALPITE_BLEFE
+        d = replace(d, palpites=(*d.palpites, (j, blefe)))
+        faltam = [v for v in self._votantes(c.e, d) if v not in {votante for votante, _ in d.palpites}]
+        if faltam:
+            c.e = replace(c.e, disputa=d, pendente=Pendente(E.PALPITAR, faltam[0]))
+        else:
+            c.e = replace(c.e, disputa=replace(d, etapa=E.CONTESTAR), pendente=Pendente(E.CONTESTAR, d.atacante))
+        self._ev(c, "palpite", "VAR-06", ator=j, oculto={"blefe": blefe}, visivel={"blefe": [j]}, amb="AMB-30")
+        if not faltam:
+            self._ev(
+                c,
+                "palpites_revelados",
+                "VAR-06",
+                publico={"palpites": {str(v): "blefe" if b else "verdade" for v, b in d.palpites}},
+            )
+
+    def _premiar_palpites(self, c: _Ctx, era_blefe: bool) -> None:
+        """VAR-06 e AMB-31: havendo contestação, quem acertou o palpite ganha do banco."""
+        d = c.e.disputa
+        assert d is not None
+        acertaram = [v for v, votou_blefe in d.palpites if votou_blefe == era_blefe]
+        if not acertaram or not self.premio_do_palpite:
+            return
+        fichas = {str(v): self._ganhar(c, v, self.premio_do_palpite) for v in acertaram}
+        self._ev(c, "premio_do_palpite", "VAR-06", publico={"fonte": FONTE_HOMOLOGACAO, "fichas": fichas}, amb="AMB-31")
 
     def _aceitar(self, c: _Ctx, j: int, acao: Acao) -> None:
         self._ev(c, "aceite", "R-7.3.2", ator=j)
@@ -643,6 +750,7 @@ class MotorV2:
                     "fichas": {str(d.atacante): -pago, str(d.defensor): recebido},
                 },
             )
+            self._premiar_palpites(c, era_blefe=False)
             self._encerrar_disputa(c, E.CONTESTOU_VERDADE, contestou=True)
             return
         pago, recebido = self._pagar(c, d.defensor, d.atacante, self.blefe_defensor_paga)
@@ -660,6 +768,7 @@ class MotorV2:
                 "alerta": {"jogador": d.defensor, "categoria": d.categoria},
             },
         )
+        self._premiar_palpites(c, era_blefe=True)
         self._encerrar_disputa(c, E.CONTESTOU_BLEFE, contestou=True)
 
     def _escolher_para_revelar(self, jogador: Jogador, candidatas: list[int]) -> int:
@@ -1049,6 +1158,8 @@ class MotorV2:
         A.NAO_CONFERE: _conferir,
         A.ACEITAR: _aceitar,
         A.CONTESTAR: _contestar,
+        A.PALPITE_VERDADE: _palpitar,
+        A.PALPITE_BLEFE: _palpitar,
         A.DIAGNOSTICAR: _diagnosticar,
         A.PEGAR: _pegar,
         A.RECUSAR: _recusar,

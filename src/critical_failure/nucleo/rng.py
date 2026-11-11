@@ -17,6 +17,25 @@ from __future__ import annotations
 import numpy as np
 
 FLUXO_JOGO = 0
+FLUXO_DA_MESA = 10_000
+"""Fluxo do sorteio de quem senta à mesa, numa mesa sorteada de uma mistura de perfis."""
+
+
+def sortear_por_pesos(semente: int, partida: int, assentos: int, pesos: tuple[int, ...]) -> list[int]:
+    """Sorteia, para cada assento, o índice de um perfil com chance proporcional ao seu peso inteiro."""
+    total = sum(pesos)
+    if total <= 0 or any(peso < 0 for peso in pesos):
+        raise ValueError(f"pesos inválidos: {pesos}")
+    sorteios = gerador(semente, partida, FLUXO_DA_MESA).integers(0, total, size=assentos)
+    escolhidos = []
+    for sorteio in sorteios:
+        acumulado = 0
+        for indice, peso in enumerate(pesos):
+            acumulado += peso
+            if sorteio < acumulado:
+                escolhidos.append(indice)
+                break
+    return escolhidos
 
 
 def fluxo_do_bot(assento: int) -> int:

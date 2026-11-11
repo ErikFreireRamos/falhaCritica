@@ -190,6 +190,29 @@ class Interpretacoes(_Base):
     empate: P[Literal["dividido"]]
 
 
+class Variantes(_Base):
+    """Variantes de playtest (VAR-xx), ligadas por experimento. Sem o bloco, vale a regra da versão.
+
+    Mecânica decidida pelo autor em 2026-11-10 (docs/DIARIO_DE_BORDO.md).
+    """
+
+    custo_extra_da_explicacao: Inteiro
+    """VAR-02: fichas que o defensor perde para o banco, além do "Falhou", quando a explicação não confere."""
+    auditor_externo: Logico
+    """VAR-03: o Auditor não é jogador; o motor julga a explicação com a precisão abaixo."""
+    auditor_externo_acertos: Inteiro
+    auditor_externo_julgamentos: Inteiro
+    """VAR-03 (MOD-02): o Auditor externo acerta ``acertos`` em cada ``julgamentos`` explicações."""
+    vizinhos_designados: P[list[Literal["esquerda", "direita"]]]
+    """VAR-04: o alvo de cada ciclo, em ordem; vazio é alvo livre."""
+    limite_de_testes_recebidos: Inteiro
+    """VAR-05: quem já recebeu tantos testes no ciclo não pode ser alvo; 0 é sem limite."""
+    palpite_da_plateia: Logico
+    """VAR-06: antes da contestação, quem está fora da disputa vota verdade ou blefe (AMB-30)."""
+    premio_do_palpite: Inteiro
+    """VAR-06: fichas do banco para quem acertou o palpite, se houver contestação (AMB-31)."""
+
+
 class RegrasV2(_Base):
     esquema: Literal["cf-regras/1"]
     familia: Literal["v2"]
@@ -219,6 +242,7 @@ class RegrasV2(_Base):
     final: Final
     cobertura_profunda: CoberturaProfunda
     interpretacoes: Interpretacoes
+    variantes: Variantes | None = None
 
     @model_validator(mode="after")
     def _coerencia(self) -> RegrasV2:
@@ -244,11 +268,23 @@ class RegrasV2(_Base):
             raise ValueError(f"parâmetros que precisam ser positivos: {zerados}")
         if self.sistema.cartas_iniciais.valor > self.sistema.teto.valor:
             raise ValueError("sistema.cartas_iniciais é maior que sistema.teto")
+        v = self.variantes
+        if v is not None:
+            if not 0 < v.auditor_externo_acertos.valor <= v.auditor_externo_julgamentos.valor:
+                raise ValueError("variantes: o Auditor externo precisa de 0 < acertos <= julgamentos")
+            if v.palpite_da_plateia.valor and v.auditor_externo.valor:
+                raise ValueError("variantes: palpite da plateia e Auditor externo juntos não foram definidos")
         return self
 
     def resolvida(self) -> dict[str, Any]:
-        """Configuração completa, pronta para o cabeçalho do registro."""
-        return self.model_dump(mode="json")
+        """Configuração completa, pronta para o cabeçalho do registro.
+
+        Sem variantes, o bloco fica de fora: o hash das versões já usadas não muda.
+        """
+        dados = self.model_dump(mode="json")
+        if dados.get("variantes") is None:
+            dados.pop("variantes", None)
+        return dados
 
     def hash(self) -> str:
         return sha256(self.resolvida())

@@ -35,7 +35,11 @@ def test_nenhum_numero_de_regra_no_codigo_do_motor() -> None:
 
 @pytest.mark.parametrize(
     "pasta, padrao_da_regra, minimo",
-    [(MOTOR, verificar_especificacao.PADRAO_R, 30), (MOTOR_V1, verificar_especificacao.PADRAO_V1, 15)],
+    # Na v2, o evento de uma variante de playtest cita a própria variante (VAR-xx).
+    [
+        (MOTOR, f"(?:{verificar_especificacao.PADRAO_R}|VAR-\\d{{2}})", 30),
+        (MOTOR_V1, verificar_especificacao.PADRAO_V1, 15),
+    ],
     ids=["v2", "v1"],
 )
 def test_todo_evento_do_motor_cita_uma_regra(pasta: Path, padrao_da_regra: str, minimo: int) -> None:

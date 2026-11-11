@@ -58,6 +58,9 @@ class Cenario(_Base):
     """REQ-02: o grupo de referência (a v1) com que este grupo é comparado."""
     celula: list[str] | None = None
     """Linha e coluna deste grupo numa matriz de ganhos: (estilo do bot "foco", estilo dos outros N-1)."""
+    pesos: list[int] | None = None
+    """Mesa sorteada de uma mistura: ``bots`` são os perfis candidatos e cada assento de cada partida
+    é sorteado entre eles com estes pesos inteiros (REQ-05 no equilíbrio misto)."""
     matriz: str | None = None
     """Nome da matriz de estilos (MET-07, REQ-04) a que a célula pertence. Sem nome, a célula é da
     matriz de políticas de alvo da v1 (MET-02), como no Experimento 1 da Fase 3."""
@@ -82,7 +85,14 @@ class Cenario(_Base):
                 raise ValueError(f"cenário {self.nome}: célula de matriz precisa de exatamente 1 bot com rótulo foco")
         if self.partidas < 1:
             raise ValueError("partidas precisa ser pelo menos 1")
-        if len(self.bots) not in (1, self.jogadores):
+        if self.pesos is not None:
+            if len(self.pesos) != len(self.bots) or sum(self.pesos) <= 0 or min(self.pesos) < 0:
+                raise ValueError(f"cenário {self.nome}: um peso inteiro não negativo para cada perfil candidato")
+            if self.rodizio or self.matriz is not None or any(bot.rotulo is None for bot in self.bots):
+                raise ValueError(
+                    f"cenário {self.nome}: mesa sorteada pede rótulo em cada perfil, sem rodízio nem matriz"
+                )
+        elif len(self.bots) not in (1, self.jogadores):
             raise ValueError(f"cenário {self.nome}: informe 1 bot ou um por jogador ({self.jogadores})")
         if self.rodizio and len(self.bots) != self.jogadores:
             raise ValueError(f"cenário {self.nome}: o rodízio exige um bot por assento")
@@ -104,7 +114,14 @@ class Cenario(_Base):
             for k in range(self.jogadores)
         ]
 
-    def bots_por_assento(self) -> list[BotDoCenario]:
+    def bots_por_assento(self, partida: int | None = None, semente: int | None = None) -> list[BotDoCenario]:
+        """Os bots de cada assento. Numa mesa sorteada, depende da partida e da semente."""
+        if self.pesos is not None:
+            if partida is None or semente is None:
+                raise ValueError(f"cenário {self.nome}: mesa sorteada precisa da partida e da semente")
+            from critical_failure.nucleo.rng import sortear_por_pesos
+
+            return [self.bots[i] for i in sortear_por_pesos(semente, partida, self.jogadores, tuple(self.pesos))]
         return list(self.bots) * self.jogadores if len(self.bots) == 1 else list(self.bots)
 
     def bots_identicos(self) -> bool:
@@ -167,6 +184,9 @@ def aplicar_mudancas(regras: dict[str, Any], mudancas: dict[str, Any]) -> dict[s
     """Devolve uma cópia das regras com os valores trocados por caminho pontuado."""
     novas = copy.deepcopy(regras)
     for caminho, valor in mudancas.items():
+        if "." not in caminho and caminho not in novas and isinstance(valor, dict):
+            novas[caminho] = copy.deepcopy(valor)  # bloco novo inteiro, como as variantes de playtest
+            continue
         no: Any = novas
         try:
             for parte in caminho.split("."):

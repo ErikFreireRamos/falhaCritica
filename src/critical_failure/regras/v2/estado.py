@@ -7,8 +7,10 @@ são nomes. O estado contém também o contador de aleatoriedade do jogo, para q
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any
+
+from critical_failure.nucleo.canonico import OMITIR_SE_PADRAO
 
 # Fases
 PREPARACAO = "preparacao"
@@ -25,6 +27,7 @@ AGIR = "agir"
 RESPONDER = "responder"
 CONFERIR = "conferir"
 CONTESTAR = "contestar"
+PALPITAR = "palpitar"
 DIAGNOSTICAR = "diagnosticar"
 LICAO = "licao"
 
@@ -62,6 +65,8 @@ class Disputa:
     teste_nomeado: str | None = None
     explicacao_correta: bool | None = None
     veredito: str | None = None
+    palpites: tuple[tuple[int, bool], ...] = field(default=(), metadata={OMITIR_SE_PADRAO: True})
+    """VAR-06: (votante, votou blefe) do palpite da plateia. Fica fora do hash enquanto vazio."""
 
 
 @dataclass(frozen=True, slots=True)
