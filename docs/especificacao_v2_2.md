@@ -228,8 +228,8 @@ Consequências da COR-02, confirmadas pelo autor:
 
 | ID | Tipo | Regra | Pág. | Parâmetros | Notas |
 |---|---|---|---|---|---|
-| R-7.4.1 | regra | Cada teste gasta 1 carta da mão. Não há outro limite ao número de testes. | 8 | — | VAR-05 |
-| R-7.4.2 | regra | Bug duplicado: não é permitido testar um jogador numa categoria em que ele já tem Alerta. | 8 | — | MET-03 |
+| R-7.4.1 | regra | Cada teste gasta 1 carta da mão. Não há outro limite ao número de testes. | 8 | — | VAR-05; VAR-11 |
+| R-7.4.2 | regra | Bug duplicado: não é permitido testar um jogador numa categoria em que ele já tem Alerta. | 8 | — | MET-03; VAR-10 |
 | R-7.4.2a | regra | A categoria volta a poder ser testada quando o cubo sai. | 8 | — | |
 | R-7.4.3 | regra | Quem passa guarda as cartas que tem na mão. | 8 | — | Complementa R-7.0.3 |
 | R-7.4.4 | nota | O Alerta chega antes da Produção do mesmo ciclo e sai no início do próximo Planejamento. | 8 | — | Texto ajustado pela COR-02; o PDF diz que o Alerta só pode ser corrigido no próximo Planejamento. Decorre de R-4.1 e R-6.9; REQ-14 |
@@ -461,6 +461,8 @@ Variantes que a configuração deve permitir ligar e desligar (seção 3.2 do pr
 | VAR-07 | Compras por Planejamento | 3 (atual); 2 | prompt 3.2; PDF p. 34 | `planejamento.compras` |
 | VAR-08 | Número de jogadores | 4; 5 (6 só com a COR-01 desligada, para medir o problema do baralho) | prompt 3.2; R-1.2; COR-01 | número de jogadores do cenário |
 | VAR-09 | Módulo de Segurança Operacional | desligado (jogo base); ligado | PDF seção 11 | `modulo_seguranca_operacional` |
+| VAR-10 | Bug duplicado (ablação, regra da 2.1) | proibido (atual); permitido | PDF p. 33 (histórico); R-7.4.2 | pode testar categoria em que o alvo já tem Alerta; o atacante ganha a ficha, sem cubo novo (`ablacoes.bug_duplicado_permitido`) |
+| VAR-11 | Testes por ciclo (ablação, regra da 2.1) | sem limite (atual); 1 | PDF p. 33 (histórico); R-7.4.1 | cada jogador faz no máximo 1 teste por ciclo; depois disso passa (`ablacoes.testes_por_ciclo`) |
 
 Texto do palpite da plateia no PDF (p. 35, "plano B, fora das regras"): antes de o atacante decidir se contesta, quem está fora da disputa vota se a defesa é verdade ou blefe; se houver contestação, quem acertou ganha 1 ficha.
 

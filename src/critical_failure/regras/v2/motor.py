@@ -118,6 +118,9 @@ class MotorV2:
         self.limite_recebidos = v.limite_de_testes_recebidos.valor if v else 0
         self.palpite_da_plateia = v.palpite_da_plateia.valor if v else False
         self.premio_do_palpite = v.premio_do_palpite.valor if v else 0
+        ab = r.ablacoes  # ablações: regras da 2.1 no lugar das da 2.2
+        self.bug_duplicado_permitido = ab.bug_duplicado_permitido.valor if ab else False
+        self.testes_por_ciclo = ab.testes_por_ciclo.valor if ab else 0
 
     # ------------------------------------------------------------------ utilidades
 
@@ -353,6 +356,8 @@ class MotorV2:
         cat = self.catalogo
         opcoes: list[Acao] = []
         designado = self._vizinho_designado(e, j)
+        if self.testes_por_ciclo and self._testes_feitos(e, j) >= self.testes_por_ciclo:  # VAR-11
+            return opcoes
         for teste in _distintos(cat.nomes(e.jogadores[j].mao)):
             categoria = cat.testes[teste].categoria
             for alvo in range(e.n):
@@ -363,7 +368,7 @@ class MotorV2:
                     continue
                 if self.limite_recebidos and self._testes_recebidos(e, alvo) >= self.limite_recebidos:  # VAR-05
                     continue
-                if categoria in outro.alertas:  # R-7.4.2: bug duplicado
+                if categoria in outro.alertas and not self.bug_duplicado_permitido:  # R-7.4.2; VAR-10
                     continue
                 if outro.passou and not self.passou_pode_ser_alvo:  # AMB-04
                     continue
@@ -376,6 +381,10 @@ class MotorV2:
             return None
         lado = self.vizinhos_designados[(e.ciclo - 1) % len(self.vizinhos_designados)]
         return self._esquerda(e, j) if lado == "esquerda" else (j - 1) % e.n
+
+    def _testes_feitos(self, e: Estado, j: int) -> int:
+        """VAR-11: testes que o jogador já fez neste ciclo."""
+        return sum(1 for disputa in e.historico if disputa.ciclo == e.ciclo and disputa.atacante == j)
 
     def _testes_recebidos(self, e: Estado, j: int) -> int:
         """VAR-05: testes que o jogador já recebeu neste ciclo."""

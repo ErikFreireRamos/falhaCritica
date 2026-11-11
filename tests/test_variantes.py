@@ -213,3 +213,91 @@ def test_coletor_confere_com_os_eventos() -> None:
         assert medidas["cobre_incidente_1"] == cobre
         dano = sum(abs(v) for e in eventos if e.publico.get("fonte") == "dano" for v in e.publico["fichas"].values())
         assert medidas["fichas_de_dano"] == dano <= medidas["fichas_movimentadas"]
+
+
+# ---------------------------------------------------------------- ablações (Experimento 3) e tempos por cenário
+
+
+def motor_com_ablacao(bug: bool = False, testes: int = 0) -> MotorV2:
+    bloco = {
+        "bug_duplicado_permitido": {"valor": bug, "regra": "VAR-10"},
+        "testes_por_ciclo": {"valor": testes, "regra": "VAR-11"},
+    }
+    motor = motor_de(aplicar_mudancas(regras_base(), {"ablacoes": bloco}), RAIZ / "configs")
+    assert isinstance(motor, MotorV2)
+    return motor
+
+
+def ataques_em_categoria_com_alerta(eventos: list[Any]) -> int:
+    return sum(
+        1
+        for e in eventos
+        if e.tipo == "teste" and e.publico["categoria"] in e.estado.jogadores[e.publico["defensor"]].alertas
+    )
+
+
+def test_var10_bug_duplicado_permitido() -> None:
+    base = motor_de(regras_base(), RAIZ / "configs")
+    assert isinstance(base, MotorV2)
+    assert sum(ataques_em_categoria_com_alerta(eventos) for eventos in jogar(base)) == 0
+    com_ablacao = jogar(motor_com_ablacao(bug=True), partidas=20)
+    assert sum(ataques_em_categoria_com_alerta(eventos) for eventos in com_ablacao) > 0
+    # O cubo não se repete: no máximo 1 Alerta por categoria (os invariantes já conferem a cada evento).
+    assert "ablacoes" in motor_com_ablacao(bug=True).regras.resolvida()
+    assert "ablacoes" not in base.regras.resolvida()
+
+
+def test_var11_um_teste_por_ciclo() -> None:
+    for eventos in jogar(motor_com_ablacao(testes=1), n=5):
+        por_atacante = Counter((e.ciclo, e.publico["atacante"]) for e in eventos if e.tipo == "teste")
+        assert por_atacante and max(por_atacante.values()) == 1
+
+
+def test_modelo_de_duracao_por_cenario(tmp_path: Any) -> None:
+    from critical_failure.experimentos import executor
+    from critical_failure.experimentos.config import ler_experimento
+
+    def cenario(nome: str, **extra: Any) -> dict[str, Any]:
+        bots = [{"tipo": "heuristico", "parametros": PERFIL}]
+        return {
+            "nome": nome,
+            "regras": "configs/regras_v2_2_1.yaml",
+            "jogadores": 4,
+            "partidas": 4,
+            "bots": bots,
+            **extra,
+        }
+
+    dados = {
+        "esquema": "cf-experimento/1",
+        "nome": "tempos",
+        "descricao": "Tempos por cenário.",
+        "semente_mestre": 5,
+        "duracao": "configs/duracao.yaml",
+        "registros_completos_um_a_cada": 100,
+        "cenarios": [cenario("normal"), cenario("lento", duracao="configs/duracao_mais_25.yaml")],
+    }
+    arquivo = tmp_path / "tempos.yaml"
+    arquivo.write_text(yaml.safe_dump(dados), encoding="utf-8")
+    execucao = executor.executar(ler_experimento(dados), arquivo, saida=tmp_path / "saida")
+    normal = [linha for linha in execucao.linhas if linha["cenario"] == "normal"]
+    lento = [linha for linha in execucao.linhas if linha["cenario"] == "lento"]
+    # Os tempos não mudam o jogo, só a medida.
+    assert [linha["placar"] for linha in normal] == [linha["placar"] for linha in lento]
+    assert all(b["duracao_s"] > a["duracao_s"] for a, b in zip(normal, lento, strict=True))
+    resumo = {c["nome"]: c for c in execucao.manifest["cenarios"]}
+    assert resumo["lento"]["duracao"]["arquivo"] == "configs/duracao_mais_25.yaml" and "duracao" not in resumo["normal"]
+
+
+def test_experimentos_3_e_4_sao_validos() -> None:
+    from critical_failure.experimentos.config import carregar_experimento
+
+    ablacao = carregar_experimento(RAIZ / "experimentos" / "fase4_exp3_ablacao.yaml")
+    assert len(ablacao.cenarios) == 18 and sum(c.partidas for c in ablacao.cenarios) == 36_000
+    sensibilidade = carregar_experimento(RAIZ / "experimentos" / "fase4_exp4_sensibilidade.yaml")
+    assert len(sensibilidade.cenarios) == 44 and sum(c.partidas for c in sensibilidade.cenarios) == 88_000
+    assert {c.duracao for c in sensibilidade.cenarios} == {
+        None,
+        "configs/duracao_menos_25.yaml",
+        "configs/duracao_mais_25.yaml",
+    }

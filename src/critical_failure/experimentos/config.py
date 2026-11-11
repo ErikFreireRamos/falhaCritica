@@ -58,6 +58,8 @@ class Cenario(_Base):
     """REQ-02: o grupo de referência (a v1) com que este grupo é comparado."""
     celula: list[str] | None = None
     """Linha e coluna deste grupo numa matriz de ganhos: (estilo do bot "foco", estilo dos outros N-1)."""
+    duracao: str | None = None
+    """Modelo de duração (MOD-05) deste cenário, no lugar do do experimento (sensibilidade aos tempos)."""
     pesos: list[int] | None = None
     """Mesa sorteada de uma mistura: ``bots`` são os perfis candidatos e cada assento de cada partida
     é sorteado entre eles com estes pesos inteiros (REQ-05 no equilíbrio misto)."""

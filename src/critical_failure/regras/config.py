@@ -213,6 +213,15 @@ class Variantes(_Base):
     """VAR-06: fichas do banco para quem acertou o palpite, se houver contestação (AMB-31)."""
 
 
+class Ablacoes(_Base):
+    """Ablações (Experimento 3): volta uma regra da 2.1 no lugar da regra da 2.2. Sem o bloco, vale a da versão."""
+
+    bug_duplicado_permitido: Logico
+    """VAR-10: pode testar categoria em que o alvo já tem Alerta (2.1); o atacante ganha a ficha, sem cubo novo."""
+    testes_por_ciclo: Inteiro
+    """VAR-11: quantos testes cada jogador pode fazer por ciclo (2.1: 1); 0 é sem limite (2.2)."""
+
+
 class RegrasV2(_Base):
     esquema: Literal["cf-regras/1"]
     familia: Literal["v2"]
@@ -243,6 +252,7 @@ class RegrasV2(_Base):
     cobertura_profunda: CoberturaProfunda
     interpretacoes: Interpretacoes
     variantes: Variantes | None = None
+    ablacoes: Ablacoes | None = None
 
     @model_validator(mode="after")
     def _coerencia(self) -> RegrasV2:
@@ -279,11 +289,12 @@ class RegrasV2(_Base):
     def resolvida(self) -> dict[str, Any]:
         """Configuração completa, pronta para o cabeçalho do registro.
 
-        Sem variantes, o bloco fica de fora: o hash das versões já usadas não muda.
+        Sem variantes nem ablações, os blocos ficam de fora: o hash das versões já usadas não muda.
         """
         dados = self.model_dump(mode="json")
-        if dados.get("variantes") is None:
-            dados.pop("variantes", None)
+        for bloco in ("variantes", "ablacoes"):
+            if dados.get(bloco) is None:
+                dados.pop(bloco, None)
         return dados
 
     def hash(self) -> str:

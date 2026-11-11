@@ -257,11 +257,11 @@ def _ler_yaml(caminho: Path) -> Any:
 
 def montar_lotes(experimento: Experimento, pasta_dos_registros: Path) -> tuple[list[Lote], list[dict[str, Any]]]:
     """Divide os cenários em lotes e devolve também o resumo de cada cenário para o manifest."""
-    caminho_da_duracao = RAIZ / experimento.duracao
-    duracao = carregar_duracao(caminho_da_duracao).resolvido()
+    duracao_do_experimento = carregar_duracao(RAIZ / experimento.duracao).resolvido()
     lotes: list[Lote] = []
     resumos: list[dict[str, Any]] = []
     for cenario in experimento.cenarios_expandidos():
+        duracao = carregar_duracao(RAIZ / cenario.duracao).resolvido() if cenario.duracao else duracao_do_experimento
         dados = aplicar_mudancas(_ler_yaml(RAIZ / cenario.regras), cenario.mudancas)
         motor = motor_de(dados, registro.PASTA_CONFIGS)
         regras, catalogo = motor.regras, motor.catalogo
@@ -285,6 +285,11 @@ def montar_lotes(experimento: Experimento, pasta_dos_registros: Path) -> tuple[l
                 "comparar_com": cenario.comparar_com,
                 "celula": cenario.celula,
                 "pesos": cenario.pesos,
+                **(
+                    {"duracao": {"arquivo": cenario.duracao, "sha256": carregar_duracao(RAIZ / cenario.duracao).hash()}}
+                    if cenario.duracao
+                    else {}
+                ),
                 "matriz": cenario.matriz,
                 "requisitos": cenario.requisitos,
             }

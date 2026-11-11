@@ -865,3 +865,34 @@ Valor e veredito de cada requisito por cenário (✓ passa, ✗ falha, ? inconcl
    - VAR-07 (2 compras) torna o REQ-11 impossível: com 2 cartas iniciais e 2 compras, ninguém chega a 5 cartas no ciclo 1. A partida também fica curta demais (30 a 34 min).
    - VAR-09 (módulo) quase não muda os números.
 6. **Resumo para o texto:** nenhuma variante melhora tudo. A regra atual é a melhor das 10 configurações no conjunto. O ponto fraco que sobra é o tempo parado com 5 jogadores, e a variante desenhada para ele (o palpite) não pode ser avaliada por bots.
+
+---
+
+## 2026-11-11 — Fase 4, Experimentos 3 (ablação) e 4 (sensibilidade)
+
+### Decisões do autor
+
+| Assunto | Opções | Escolha |
+|---|---|---|
+| Ablação: o que desfazer | correções COR-01 e COR-02; bug duplicado; 1 teste por ciclo; diagnóstico da 2.1 | **As correções, o bug duplicado e 1 teste por ciclo.** Hotfix, troca com sistema cheio, limite de mão, Monitorar e teste-chave único pedem mais código e ficam para depois, se for o caso |
+| Sensibilidade: o que variar | fichas iniciais; dano de incidente; tempos do modelo de duração; pagamentos da contestação | **Fichas iniciais (3 a 7), dano de incidente (sem cobertura de 1 a 3; Alerta de 0 a 2) e tempos do MOD-05 (−25% e +25%).** Os pagamentos da contestação ficaram de fora: cada valor pediria um torneio de blefe novo |
+| REQ-10 com o palpite da plateia | manter a definição; votar conta como ocupado | **Manter a definição:** quem vota continua parado no simulador; o efeito do palpite no engajamento fica para o playtest |
+
+### O que foi feito
+
+1. **Ablações no motor**, atrás do bloco opcional `ablacoes` (sem ele, vale a regra da versão, e o hash não muda): VAR-10, bug duplicado permitido, e VAR-11, testes por ciclo. Com o bug duplicado permitido, o teste numa categoria que já tem Alerta não põe um cubo novo, porque um jogador nunca tem dois Alertas da mesma categoria.
+2. **Modelo de duração por cenário** (`duracao` no cenário), registrado no manifest com o hash. Dois modelos novos, `configs/duracao_menos_25.yaml` e `configs/duracao_mais_25.yaml`, com todos os tempos multiplicados por 0,75 e 1,25.
+3. **Especificação:** VAR-10 e VAR-11 na tabela de variantes, citadas em R-7.4.1 e R-7.4.2.
+4. **Experimentos** `fase4_exp3_ablacao` (18 cenários, 36.000 partidas) e `fase4_exp4_sensibilidade` (44 cenários, 88.000 partidas).
+5. **Testes novos:** 4. Cobrem o bug duplicado, o limite de testes, os tempos por cenário (o jogo não muda, só a medida) e os arquivos dos experimentos.
+
+### Verificação
+
+- `uv run pytest`: 434 testes passam e 1 é pulado. `ruff` e `mypy` estrito sem apontamentos. Matriz 176 de 176; registros de referência sem mudança.
+
+### Detalhes escolhidos pelo assistente, sem perguntar
+
+- **Desenho dos dois experimentos:** igual ao do Experimento 6. Mesas de Heurísticos sorteadas da mistura do equilíbrio do blefe, conhecimento iniciante e experiente, mesas de 4 e de 5, 2.000 partidas por cenário e os mesmos requisitos.
+- **COR-02 desfeita:** `alertas.limpeza_no_planejamento: false` sobre a v2.2.1. **COR-01 desfeita:** `jogadores.maximo: 6`, com mesas de 6. Não há torneio de blefe com 6 jogadores, então essas mesas usam a mistura de 5.
+- **Tempos:** arredondados para o segundo mais próximo, com meio segundo para cima (por exemplo, 37,5 s vira 38 s).
+- **Sementes mestre:** 20261118 (ablação) e 20261119 (sensibilidade); 4 processos.

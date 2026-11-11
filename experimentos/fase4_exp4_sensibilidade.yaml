@@ -1,0 +1,550 @@
+# Fase 4, Experimento 4: sensibilidade (decisões do autor em 2026-11-11).
+#
+# Varia um parâmetro provisório por vez, a partir da v2.2.1:
+# - fichas iniciais: 3, 4, 6 e 7 (atual 5);
+# - dano de incidente sem cobertura: 1 e 3 (atual 2); item de Alerta: 0 e 2 (atual 1);
+# - tempos do modelo de duração (MOD-05): todos -25% e +25%. Os tempos não mudam o jogo,
+#   só a medida de duração e de tempo parado (REQ-08 e REQ-10).
+#
+# Mesas de Heurísticos sorteadas da mistura do equilíbrio do blefe (pesos do Experimento 5b),
+# conhecimento iniciante e experiente, 2.000 partidas por cenário. Os critérios foram fixados
+# em configs/requisitos.yaml antes da execução.
+
+esquema: cf-experimento/1
+nome: fase4_exp4_sensibilidade
+descricao: >
+  Sensibilidade na v2.2.1: fichas iniciais, dano de incidente e tempos do modelo de duração,
+  um de cada vez, com mesas de 4 e de 5 e conhecimento iniciante e experiente.
+semente_mestre: 20261119
+duracao: configs/duracao.yaml
+registros_completos_um_a_cada: 1000
+
+cenarios:
+  # ---------------------------------------------------------------- 4 jogadores, iniciante
+  - nome: n4_iniciante_base
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  - nome: n4_iniciante_fichas_3
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    mudancas: {fichas.iniciais: 3}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  - nome: n4_iniciante_fichas_4
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    mudancas: {fichas.iniciais: 4}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  - nome: n4_iniciante_fichas_6
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    mudancas: {fichas.iniciais: 6}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  - nome: n4_iniciante_fichas_7
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    mudancas: {fichas.iniciais: 7}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  - nome: n4_iniciante_dano_sem_cobertura_1
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    mudancas: {dano.incidente.sem_cobertura: 1}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  - nome: n4_iniciante_dano_sem_cobertura_3
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    mudancas: {dano.incidente.sem_cobertura: 3}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  - nome: n4_iniciante_dano_alerta_0
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    mudancas: {dano.incidente.alerta: 0}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  - nome: n4_iniciante_dano_alerta_2
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    mudancas: {dano.incidente.alerta: 2}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  - nome: n4_iniciante_tempos_menos_25
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    duracao: configs/duracao_menos_25.yaml
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  - nome: n4_iniciante_tempos_mais_25
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    duracao: configs/duracao_mais_25.yaml
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  # ---------------------------------------------------------------- 5 jogadores, iniciante
+  - nome: n5_iniciante_base
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  - nome: n5_iniciante_fichas_3
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    mudancas: {fichas.iniciais: 3}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  - nome: n5_iniciante_fichas_4
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    mudancas: {fichas.iniciais: 4}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  - nome: n5_iniciante_fichas_6
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    mudancas: {fichas.iniciais: 6}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  - nome: n5_iniciante_fichas_7
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    mudancas: {fichas.iniciais: 7}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  - nome: n5_iniciante_dano_sem_cobertura_1
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    mudancas: {dano.incidente.sem_cobertura: 1}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  - nome: n5_iniciante_dano_sem_cobertura_3
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    mudancas: {dano.incidente.sem_cobertura: 3}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  - nome: n5_iniciante_dano_alerta_0
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    mudancas: {dano.incidente.alerta: 0}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  - nome: n5_iniciante_dano_alerta_2
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    mudancas: {dano.incidente.alerta: 2}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  - nome: n5_iniciante_tempos_menos_25
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    duracao: configs/duracao_menos_25.yaml
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  - nome: n5_iniciante_tempos_mais_25
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    duracao: configs/duracao_mais_25.yaml
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: iniciante, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: iniciante, blefe: sempre, contestacao: limiar}}
+  # ---------------------------------------------------------------- 4 jogadores, experiente
+  - nome: n4_experiente_base
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n4_experiente_fichas_3
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    mudancas: {fichas.iniciais: 3}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n4_experiente_fichas_4
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    mudancas: {fichas.iniciais: 4}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n4_experiente_fichas_6
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    mudancas: {fichas.iniciais: 6}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n4_experiente_fichas_7
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    mudancas: {fichas.iniciais: 7}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n4_experiente_dano_sem_cobertura_1
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    mudancas: {dano.incidente.sem_cobertura: 1}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n4_experiente_dano_sem_cobertura_3
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    mudancas: {dano.incidente.sem_cobertura: 3}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n4_experiente_dano_alerta_0
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    mudancas: {dano.incidente.alerta: 0}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n4_experiente_dano_alerta_2
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    mudancas: {dano.incidente.alerta: 2}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n4_experiente_tempos_menos_25
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    duracao: configs/duracao_menos_25.yaml
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n4_experiente_tempos_mais_25
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 2000
+    duracao: configs/duracao_mais_25.yaml
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  # ---------------------------------------------------------------- 5 jogadores, experiente
+  - nome: n5_experiente_base
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n5_experiente_fichas_3
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    mudancas: {fichas.iniciais: 3}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n5_experiente_fichas_4
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    mudancas: {fichas.iniciais: 4}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n5_experiente_fichas_6
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    mudancas: {fichas.iniciais: 6}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n5_experiente_fichas_7
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    mudancas: {fichas.iniciais: 7}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n5_experiente_dano_sem_cobertura_1
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    mudancas: {dano.incidente.sem_cobertura: 1}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n5_experiente_dano_sem_cobertura_3
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    mudancas: {dano.incidente.sem_cobertura: 3}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n5_experiente_dano_alerta_0
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    mudancas: {dano.incidente.alerta: 0}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n5_experiente_dano_alerta_2
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    mudancas: {dano.incidente.alerta: 2}
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n5_experiente_tempos_menos_25
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    duracao: configs/duracao_menos_25.yaml
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n5_experiente_tempos_mais_25
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 2000
+    duracao: configs/duracao_mais_25.yaml
+    requisitos: [REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}

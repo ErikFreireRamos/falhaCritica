@@ -1,0 +1,14 @@
+# Modelo de duração (MOD-05) com todos os tempos de configs/duracao.yaml menos 25%.
+# Só para a sensibilidade do Experimento 4 (autor, 2026-11-11). Arredondamento para o
+# segundo mais próximo, com meio segundo para cima.
+
+esquema: cf-duracao/1
+
+preparacao: {valor: 135, fonte: "menos 25% de 180 s (configs/duracao.yaml)"}
+turno_de_planejamento: {valor: 23, fonte: "menos 25% de 30 s (configs/duracao.yaml)"}
+teste_admitido: {valor: 15, fonte: "menos 25% de 20 s (configs/duracao.yaml)"}
+teste_com_defesa: {valor: 45, fonte: "menos 25% de 60 s (configs/duracao.yaml)"}
+contestacao: {valor: 11, fonte: "menos 25% de 15 s (configs/duracao.yaml)"}
+passar: {valor: 4, fonte: "menos 25% de 5 s (configs/duracao.yaml)"}
+producao: {valor: 135, fonte: "menos 25% de 180 s (configs/duracao.yaml)"}
+fim_de_jogo: {valor: 135, fonte: "menos 25% de 180 s (configs/duracao.yaml)"}
