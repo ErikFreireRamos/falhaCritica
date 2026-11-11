@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import copy
 from collections import Counter
+from dataclasses import replace
 from typing import Any
 
 import pytest
@@ -251,6 +252,87 @@ def test_var11_um_teste_por_ciclo() -> None:
     for eventos in jogar(motor_com_ablacao(testes=1), n=5):
         por_atacante = Counter((e.ciclo, e.publico["atacante"]) for e in eventos if e.tipo == "teste")
         assert por_atacante and max(por_atacante.values()) == 1
+
+
+def test_var11_dois_testes_por_ciclo() -> None:
+    """Experimento 7: o meio-termo de 2 testes por ciclo usa o mesmo parâmetro do VAR-11."""
+    maximos = []
+    for eventos in jogar(motor_com_ablacao(testes=2), n=5):
+        por_atacante = Counter((e.ciclo, e.publico["atacante"]) for e in eventos if e.tipo == "teste")
+        maximos.append(max(por_atacante.values()))
+    assert max(maximos) == 2
+
+
+# ---------------------------------------------------------------- VAR-12: custo do teste (proposta)
+
+
+def motor_com_custo(custo: int = 1, a_partir_do: int = 2) -> MotorV2:
+    bloco = {
+        "custo_do_teste": {"valor": custo, "regra": "VAR-12"},
+        "teste_pago_a_partir_do": {"valor": a_partir_do, "regra": "VAR-12"},
+    }
+    motor = motor_de(aplicar_mudancas(regras_base(), {"propostas": bloco}), RAIZ / "configs")
+    assert isinstance(motor, MotorV2)
+    return motor
+
+
+def test_var12_do_segundo_teste_do_ciclo_em_diante_cada_teste_custa_1_ficha() -> None:
+    pagos = gratis = 0
+    for eventos in jogar(motor_com_custo(), partidas=12, n=4):
+        feitos: Counter[tuple[int, int]] = Counter()
+        for posicao, evento in enumerate(eventos):
+            if evento.tipo != "teste":
+                continue
+            atacante = evento.publico["atacante"]
+            feitos[(evento.ciclo, atacante)] += 1
+            seguinte = eventos[posicao + 1]
+            if feitos[(evento.ciclo, atacante)] >= 2:
+                assert seguinte.tipo == "custo_do_teste" and seguinte.regra == "VAR-12" and seguinte.amb == "AMB-32"
+                assert seguinte.publico["fichas"] == {str(atacante): -1}
+                assert seguinte.estado.jogadores[atacante].fichas == evento.estado.jogadores[atacante].fichas - 1
+                pagos += 1
+            else:
+                assert seguinte.tipo != "custo_do_teste"
+                gratis += 1
+    assert pagos and gratis
+
+
+def test_var12_sem_ficha_para_pagar_nao_faz_o_teste_pago() -> None:
+    """AMB-32 (autor, 2026-11-11): com 0 ficha, só o teste de graça do ciclo é possível."""
+    motor = motor_com_custo()
+    conferidos = 0
+    for eventos in jogar(motor, partidas=6, n=4):
+        for evento in eventos:
+            e = evento.estado
+            if e.pendente is None or e.pendente.tipo != "agir":
+                continue
+            j = e.pendente.jogador
+            if not any(d.ciclo == e.ciclo and d.atacante == j for d in e.historico):
+                continue
+            com_ficha = replace(
+                e, jogadores=tuple(replace(x, fichas=1) if k == j else x for k, x in enumerate(e.jogadores))
+            )
+            sem_ficha = replace(
+                e, jogadores=tuple(replace(x, fichas=0) if k == j else x for k, x in enumerate(e.jogadores))
+            )
+            testes_com = [a for a in motor.acoes_legais(com_ficha) if a.tipo == "testar"]
+            testes_sem = [a for a in motor.acoes_legais(sem_ficha) if a.tipo == "testar"]
+            assert testes_sem == []
+            conferidos += bool(testes_com)
+    assert conferidos
+
+
+def test_var12_configuracao() -> None:
+    base = motor_de(regras_base(), RAIZ / "configs")
+    assert "propostas" not in base.regras.resolvida()
+    assert motor_com_custo().regras.resolvida()["propostas"]["custo_do_teste"]["valor"] == 1
+    with pytest.raises(ConfiguracaoInvalida, match="teste_pago_a_partir_do"):
+        motor_com_custo(custo=1, a_partir_do=0)
+    # Sem custo, o bloco não muda o jogo.
+    sem_custo = motor_com_custo(custo=0)
+    assert [len(eventos) for eventos in jogar(sem_custo, partidas=3)] == [
+        len(eventos) for eventos in jogar(base, partidas=3)
+    ]
 
 
 def test_modelo_de_duracao_por_cenario(tmp_path: Any) -> None:

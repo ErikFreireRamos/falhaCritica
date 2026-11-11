@@ -121,6 +121,9 @@ class MotorV2:
         ab = r.ablacoes  # ablações: regras da 2.1 no lugar das da 2.2
         self.bug_duplicado_permitido = ab.bug_duplicado_permitido.valor if ab else False
         self.testes_por_ciclo = ab.testes_por_ciclo.valor if ab else 0
+        pr = r.propostas  # propostas de regra em estudo
+        self.custo_do_teste = pr.custo_do_teste.valor if pr else 0
+        self.teste_pago_a_partir_do = pr.teste_pago_a_partir_do.valor if pr else 0
 
     # ------------------------------------------------------------------ utilidades
 
@@ -358,6 +361,8 @@ class MotorV2:
         designado = self._vizinho_designado(e, j)
         if self.testes_por_ciclo and self._testes_feitos(e, j) >= self.testes_por_ciclo:  # VAR-11
             return opcoes
+        if self._custo_do_proximo_teste(e, j) > e.jogadores[j].fichas - self.fichas_minimo:  # VAR-12; AMB-32
+            return opcoes
         for teste in _distintos(cat.nomes(e.jogadores[j].mao)):
             categoria = cat.testes[teste].categoria
             for alvo in range(e.n):
@@ -385,6 +390,12 @@ class MotorV2:
     def _testes_feitos(self, e: Estado, j: int) -> int:
         """VAR-11: testes que o jogador já fez neste ciclo."""
         return sum(1 for disputa in e.historico if disputa.ciclo == e.ciclo and disputa.atacante == j)
+
+    def _custo_do_proximo_teste(self, e: Estado, j: int) -> int:
+        """VAR-12: fichas que o próximo teste do jogador neste ciclo custa; 0 se é de graça."""
+        if not self.custo_do_teste or self._testes_feitos(e, j) + 1 < self.teste_pago_a_partir_do:
+            return 0
+        return self.custo_do_teste
 
     def _testes_recebidos(self, e: Estado, j: int) -> int:
         """VAR-05: testes que o jogador já recebeu neste ciclo."""
@@ -582,6 +593,7 @@ class MotorV2:
         carta = self._carta_por_teste(jogador.mao, acao.teste)
         categoria = cat.categoria(carta)
         auditor = self._auditor_da_disputa(c.e, j, acao.alvo)
+        custo = self._custo_do_proximo_teste(c.e, j)  # VAR-12: calculado antes de a disputa entrar no histórico
         self._jog(c, j, mao=_sem(jogador.mao, carta), pegas_do_backlog=_sem(jogador.pegas_do_backlog, carta))
         c.e = replace(
             c.e,
@@ -604,6 +616,16 @@ class MotorV2:
             },
             amb="AMB-05" if auditor != c.e.auditor else None,
         )
+        if custo:
+            pago = self._perder(c, j, custo)
+            self._ev(
+                c,
+                "custo_do_teste",
+                "VAR-12",
+                ator=j,
+                publico={"fonte": FONTE_HOMOLOGACAO, "fichas": {str(j): -pago}},
+                amb="AMB-32",
+            )
 
     def _passar(self, c: _Ctx, j: int, acao: Acao) -> None:
         self._jog(c, j, passou=True)

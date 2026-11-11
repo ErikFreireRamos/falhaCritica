@@ -291,3 +291,41 @@ metricas_registradas:
       (autor, 2026-11-10): Aleatório, Construtor, Heurístico e o Caçador com
       as três políticas de alvo (líder, mais fraco, ao acaso).
     estado: confirmado  # autor, 2026-11-10
+
+  # Profundidade do jogo (Experimento 7, autor em 2026-11-11): só descrição, sem
+  # zona, para comparar as regras de testes por ciclo lado a lado. As zonas podem
+  # vir depois, com os números na mão.
+  - id: MET-08
+    nome: Escolhas por partida e escolhas apertadas
+    fonte: "autor, 2026-11-11 (profundidade do jogo)"
+    metrica: >
+      (a) Decisões com 2 ou mais opções legais, em qualquer fase, por jogador
+      e por partida. (b) Entre as decisões que o Heurístico avalia por valor
+      (compra, colocação e ação na Homologação), a fração em que a segunda
+      melhor opção fica a menos do limiar da melhor: escolhas difíceis de
+      verdade. O limiar de 0,5 ficha é a mesma escala da temperatura do
+      softmax do Heurístico. Intervalo da fração por bootstrap da razão,
+      reamostrando as partidas.
+    criterio: {limiar_da_escolha_apertada: 0.5}
+    estado: confirmado  # autor, 2026-11-11; só descrição, sem zona
+
+  - id: MET-09
+    nome: Viradas
+    fonte: "autor, 2026-11-11 (profundidade do jogo)"
+    metrica: >
+      (a) Trocas de líder isolado por partida, conferidas a cada mudança de
+      placar: troca é quando o líder isolado passa a ser outro jogador; empate
+      no topo não conta como troca. (b) Recuperação: nas partidas com líder
+      isolado no fim do ciclo 1 (o ponto de corte do REQ-02), a fração da
+      vitória que ficou com outro jogador.
+    estado: confirmado  # autor, 2026-11-11; só descrição, sem zona
+
+  - id: MET-10
+    nome: Habilidade em degraus
+    fonte: "autor, 2026-11-11 (profundidade do jogo)"
+    metrica: >
+      Taxa de vitória de 1 Heurístico normal (temperatura 0,5, o foco) numa
+      mesa com N-1 Heurísticos mais descuidados (temperatura 1, 2 ou 4), com
+      rodízio de assentos, dividida por 1/N. Quanto maior, mais jogar bem
+      rende. Generaliza o REQ-03, que compara só com o Aleatório.
+    estado: confirmado  # autor, 2026-11-11; só descrição, sem zona

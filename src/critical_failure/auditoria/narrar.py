@@ -202,6 +202,9 @@ class Narrador:
             f"{nome(alerta['jogador'])} recebe Alerta de {alerta['categoria']}.",
         )
 
+    def _ev_custo_do_teste(self, ev: Linha, p: dict[str, Any], o: dict[str, Any], quem: str) -> None:
+        self._dizer(ev, f"  Teste pago neste ciclo: {_fichas(p)} para o banco.")
+
     def _ev_passou(self, ev: Linha, p: dict[str, Any], o: dict[str, Any], quem: str) -> None:
         motivo = " automaticamente, por não ter jogada possível" if p["automatico"] else ""
         self._dizer(ev, f"{quem} passa{motivo}.")

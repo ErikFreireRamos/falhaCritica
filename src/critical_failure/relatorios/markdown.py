@@ -36,6 +36,43 @@ def _blefes(descricao: dict[str, Any]) -> str:
     return f"{_num(por_partida, 2)} ({'—' if sucesso is None else _pct(sucesso)})"
 
 
+def _medida(medida: dict[str, Any] | None, casas: int = 2) -> str:
+    """Valor e intervalo de 95%, ou travessão se a medida não foi pedida no cenário."""
+    if medida is None:
+        return "—"
+    return f"{_num(medida['valor'], casas)} ({_faixa(medida['intervalo'], casas)})"
+
+
+def _profundidade(profundidade: list[dict[str, Any]]) -> list[str]:
+    """MET-08, MET-09 e MET-10: números sem critério de aceite, para comparar regras lado a lado."""
+    linhas = [
+        "",
+        "## Profundidade (descrição)",
+        "",
+        "Números sem critério de aceite (autor, 2026-11-11), com o intervalo de 95% entre parênteses. Defesas: "
+        "testes por partida divididos por N, porque cada teste é uma defesa. Com escolha: decisões com 2 ou mais "
+        "opções legais, por jogador e por partida (MET-08). Apertadas: fração das decisões que o Heurístico avalia "
+        "por valor (compra, colocação e ação na Homologação) em que a segunda melhor opção fica a menos do limiar "
+        "da melhor (MET-08). Trocas de líder: vezes por partida em que o líder isolado passa a ser outro jogador, "
+        "conferidas a cada mudança de placar (MET-09). Recuperação: nas partidas com líder isolado no fim do "
+        "ciclo 1, a fração da vitória que ficou com outro jogador (MET-09). Foco ÷ 1/N: a taxa de vitória do "
+        "Heurístico normal numa mesa de Heurísticos mais descuidados, dividida por 1/N; 1 é jogar tão bem quanto "
+        "eles (MET-10).",
+        "",
+        "| Cenário | Partidas | Defesas por jogador | Com escolha por jogador | Apertadas | Trocas de líder "
+        "| Recuperação | Foco ÷ 1/N |",
+        "|---|---|---|---|---|---|---|---|",
+    ]
+    for p in profundidade:
+        linhas.append(
+            f"| {p['cenario']} | {p['partidas']} | {_medida(p['defesas_por_jogador'])} | "
+            f"{_medida(p.get('decisoes_com_escolha'), 1)} | {_medida(p.get('escolhas_apertadas'), 3)} | "
+            f"{_medida(p.get('trocas_de_lider'))} | {_medida(p.get('recuperacao'), 3)} | "
+            f"{_medida(p.get('foco_sobre_1_n'))} |"
+        )
+    return linhas
+
+
 def _matriz_de_alvos(manifest: dict[str, Any], estilos: list[dict[str, Any]]) -> list[str]:
     """MET-02: a taxa de vitória do bot "foco" em cada célula (política do foco x política dos outros)."""
     celulas = {
@@ -308,6 +345,8 @@ def renderizar(manifest: dict[str, Any], analise: Analise) -> str:
                 f"{_pct(d['zeradas'])} | {talvez(d['parado_p90_min'], 1)} | {talvez(d['peso_do_dano'])} | "
                 f"{_num(d['dispersao_final'], 1)} |"
             )
+    if analise.profundidade:
+        linhas += _profundidade(analise.profundidade)
     linhas += [
         "",
         "## Cenários",

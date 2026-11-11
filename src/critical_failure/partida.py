@@ -92,7 +92,13 @@ def jogar_partida(
     ouvinte: Ouvinte | None = None,
     conferir_invariantes: bool = False,
     duracao: ModeloDeDuracao | None = None,
+    limiar_da_escolha_apertada: float | None = None,
 ) -> ResultadoPartida:
+    """Joga uma partida até o fim.
+
+    ``limiar_da_escolha_apertada`` (MET-08): a margem abaixo da qual uma decisão avaliada por valor
+    conta como apertada. Sem ele, as escolhas apertadas não são contadas.
+    """
     n = len(bots)
     mesa = mesa_para(motor)
     for assento, bot in enumerate(bots):
@@ -107,6 +113,7 @@ def jogar_partida(
     blefes = blefes_bem_sucedidos = 0
     blefe_em_aberto = False
     coletor = ColetorV2(motor, duracao) if isinstance(motor, MotorV2) else None
+    com_escolha, avaliadas, apertadas = [0] * n, [0] * n, [0] * n  # MET-08
 
     def entregar(eventos: Sequence[Any], decisao: dict[str, Any] | None) -> None:
         nonlocal total, criterio, placar_no_corte, cheios, blefes, blefes_bem_sucedidos, blefe_em_aberto
@@ -145,6 +152,12 @@ def jogar_partida(
             break
         opcoes: Sequence[Any] = motor.acoes_legais(estado)
         decisao = bots[pendente.jogador].decidir(motor.observar(estado, pendente.jogador), opcoes)
+        if len(opcoes) > 1:
+            com_escolha[pendente.jogador] += 1
+        if decisao.margem is not None:
+            avaliadas[pendente.jogador] += 1
+            if limiar_da_escolha_apertada is not None and decisao.margem < limiar_da_escolha_apertada:
+                apertadas[pendente.jogador] += 1
         estado, eventos = motor.aplicar(estado, decisao.acao)
         entregar(
             eventos,
@@ -172,5 +185,14 @@ def jogar_partida(
         sistemas_cheios_no_planejamento=cheios,
         blefes=blefes,
         blefes_bem_sucedidos=blefes_bem_sucedidos,
-        medidas=coletor.resumo() if coletor is not None else {},
+        medidas=(
+            {
+                **coletor.resumo(),
+                "decisoes_com_escolha": com_escolha,
+                "decisoes_avaliadas": avaliadas,
+                "decisoes_apertadas": apertadas if limiar_da_escolha_apertada is not None else None,
+            }
+            if coletor is not None
+            else {}
+        ),
     )

@@ -1,4 +1,4 @@
-"""Toda a análise de uma execução: requisitos, descrição, estilos, desequilíbrio e matrizes.
+"""Toda a análise de uma execução: requisitos, descrição, estilos, desequilíbrio, matrizes e profundidade.
 
 O executor e o ``cf relatorio`` chamam a mesma função, então o relatório refeito
 a partir do manifest e da tabela é igual ao original.
@@ -18,6 +18,7 @@ from critical_failure.metricas.matrizes import (
     medidas_de_dominancia,
     montar_matrizes,
 )
+from critical_failure.metricas.profundidade import profundidade
 from critical_failure.metricas.requisitos import (
     Medida,
     avaliar,
@@ -37,6 +38,7 @@ class Analise:
     desequilibrio: list[dict[str, Any]]
     matrizes: list[MatrizDeEstilos]
     interno: list[dict[str, Any]]
+    profundidade: list[dict[str, Any]]
 
 
 def analisar(linhas: list[dict[str, Any]], experimento: Experimento, requisitos: dict[str, dict[str, Any]]) -> Analise:
@@ -55,4 +57,5 @@ def analisar(linhas: list[dict[str, Any]], experimento: Experimento, requisitos:
         desequilibrio=desequilibrio(linhas, experimento, requisitos),
         matrizes=matrizes,
         interno=equilibrio_interno(linhas, experimento),
+        profundidade=profundidade(linhas, experimento),
     )

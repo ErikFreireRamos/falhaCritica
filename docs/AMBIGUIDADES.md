@@ -41,6 +41,7 @@ Duas respostas do autor foram além da interpretação e mudaram regra. Elas est
 | AMB-29 | v1: empate | v1 | baixo | decidido: vitória dividida |
 | AMB-30 | Palpite da plateia (VAR-06): o Auditor da disputa vota? | v2.2 (variante) | baixo | decidido: não vota |
 | AMB-31 | Palpite da plateia (VAR-06): de onde vem a ficha de quem acertou | v2.2 (variante) | baixo | decidido: do banco |
+| AMB-32 | Custo do teste (VAR-12): quem não tem ficha para pagar pode fazer o teste pago? | v2.2 (proposta) | baixo | decidido: não pode |
 
 Os números 18 e 19 ficam reservados para novos pontos da v2.2.
 
@@ -410,6 +411,18 @@ Os números 18 e 19 ficam reservados para novos pontos da v2.2.
 - **Configuração:** `variantes.premio_do_palpite` (quantas fichas o banco paga)
 - **Impacto:** baixo
 - **Estado:** decidido pelo autor em 2026-11-10: (a), do banco
+
+### AMB-32 — Custo do teste: e quem não tem ficha?
+
+- **Regras:** VAR-12 (proposta do Experimento 7, autor em 2026-11-11)
+- **Trecho:** "a partir do 2º teste do ciclo, cada teste custa 1 ficha", na definição do autor, que não diz o que acontece com quem está com 0 ficha.
+- **Interpretações:**
+  - (a) Teste pago só é permitido a quem pode pagar: com 0 ficha, só o teste de graça do ciclo é possível.
+  - (b) O teste acontece e paga o que puder (nada, com 0 ficha): quem está zerado testa sem limite e sem custo.
+- **Sugestão:** (a).
+- **Configuração:** fixo no motor; só existe com `propostas.custo_do_teste` maior que 0.
+- **Impacto:** baixo. Só pesa para quem chega a 0 ficha no meio da partida (REQ-07: cerca de 5% das partidas).
+- **Estado:** decidido pelo autor em 2026-11-11: (a), não pode testar
 
 ## Divergências entre as fontes
 

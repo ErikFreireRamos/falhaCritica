@@ -7,7 +7,8 @@ e resume a partida em números simples que vão para a tabela do executor:
 - REQ-07: se alguém ficou com 0 ficha antes do último ciclo;
 - REQ-10: tempo parado de cada jogador em cada ciclo, pelo modelo de duração;
 - REQ-12: quem começou com a categoria-chave do incidente 1 no sistema;
-- REQ-13: fichas movimentadas, no total e pelo dano de incidente.
+- REQ-13: fichas movimentadas, no total e pelo dano de incidente;
+- MET-09: trocas de líder isolado, conferidas a cada mudança de placar.
 """
 
 from __future__ import annotations
@@ -34,6 +35,8 @@ class ColetorV2:
         self.parado: Counter[tuple[int, int]] = Counter()
         self.cobre: tuple[bool, ...] | None = None
         self.movimentado: Counter[str] = Counter()
+        self.lider: int | None = None
+        self.trocas_de_lider = 0
         self.n = 0
 
     def ver(self, evento: Evento) -> None:
@@ -61,6 +64,7 @@ class ColetorV2:
         fichas = evento.publico.get("fichas")
         if fichas:
             self.movimentado[evento.publico["fonte"]] += sum(abs(valor) for valor in fichas.values())
+            self._conferir_lider(e)
         if self.cronometro is not None and evento.fase in FASES_DOS_CICLOS:
             tempo = self.cronometro.tempo(evento)
             if tempo:
@@ -68,6 +72,18 @@ class ColetorV2:
                 for k in range(e.n):
                     if k not in envolvidos:
                         self.parado[(evento.ciclo, k)] += tempo
+
+    def _conferir_lider(self, e: E.Estado) -> None:
+        """MET-09: troca de líder é quando o líder isolado passa a ser outro jogador. Empate no topo
+        não conta como troca e não apaga o último líder isolado."""
+        placar = self.motor.placar(e)
+        maximo = max(placar)
+        lideres = [k for k, valor in enumerate(placar) if valor == maximo]
+        if len(lideres) != 1:
+            return
+        if self.lider is not None and lideres[0] != self.lider:
+            self.trocas_de_lider += 1
+        self.lider = lideres[0]
 
     def _envolvidos(self, evento: Evento) -> set[int]:
         """REQ-10: quem não está parado no tempo deste evento."""
@@ -92,4 +108,5 @@ class ColetorV2:
             "cobre_incidente_1": list(self.cobre) if self.cobre is not None else None,
             "fichas_movimentadas": sum(self.movimentado.values()),
             "fichas_de_dano": self.movimentado[FONTE_DANO],
+            "trocas_de_lider": self.trocas_de_lider,
         }

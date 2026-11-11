@@ -23,6 +23,9 @@ class Decisao:
     acao: Acao | AcaoV1
     motivo: str
     """Explicação curta da escolha, gravada no registro de auditoria."""
+    margem: float | None = None
+    """MET-08: quanto a melhor opção vale a mais que a segunda, quando o bot avalia as opções por valor.
+    ``None`` nas outras decisões. Não vai para o registro: só alimenta a medida de escolhas apertadas."""
 
 
 class Bot(Protocol):

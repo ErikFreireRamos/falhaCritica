@@ -222,6 +222,15 @@ class Ablacoes(_Base):
     """VAR-11: quantos testes cada jogador pode fazer por ciclo (2.1: 1); 0 é sem limite (2.2)."""
 
 
+class Propostas(_Base):
+    """Propostas de regra em estudo (Experimento 7, autor em 2026-11-11). Sem o bloco, vale a regra da versão."""
+
+    custo_do_teste: Inteiro
+    """VAR-12: fichas que o atacante paga ao banco ao declarar um teste pago; 0 é sem custo."""
+    teste_pago_a_partir_do: Inteiro
+    """VAR-12: o primeiro teste do ciclo que é pago (2: o 1º é de graça). Sem ficha para pagar, não testa (AMB-32)."""
+
+
 class RegrasV2(_Base):
     esquema: Literal["cf-regras/1"]
     familia: Literal["v2"]
@@ -253,6 +262,7 @@ class RegrasV2(_Base):
     interpretacoes: Interpretacoes
     variantes: Variantes | None = None
     ablacoes: Ablacoes | None = None
+    propostas: Propostas | None = None
 
     @model_validator(mode="after")
     def _coerencia(self) -> RegrasV2:
@@ -284,15 +294,18 @@ class RegrasV2(_Base):
                 raise ValueError("variantes: o Auditor externo precisa de 0 < acertos <= julgamentos")
             if v.palpite_da_plateia.valor and v.auditor_externo.valor:
                 raise ValueError("variantes: palpite da plateia e Auditor externo juntos não foram definidos")
+        p = self.propostas
+        if p is not None and p.custo_do_teste.valor and p.teste_pago_a_partir_do.valor < 1:
+            raise ValueError("propostas: com custo do teste, teste_pago_a_partir_do precisa ser pelo menos 1")
         return self
 
     def resolvida(self) -> dict[str, Any]:
         """Configuração completa, pronta para o cabeçalho do registro.
 
-        Sem variantes nem ablações, os blocos ficam de fora: o hash das versões já usadas não muda.
+        Sem variantes, ablações nem propostas, os blocos ficam de fora: o hash das versões já usadas não muda.
         """
         dados = self.model_dump(mode="json")
-        for bloco in ("variantes", "ablacoes"):
+        for bloco in ("variantes", "ablacoes", "propostas"):
             if dados.get(bloco) is None:
                 dados.pop(bloco, None)
         return dados

@@ -549,18 +549,71 @@ class BotHeuristico(BotEstrategico):
         ]
         return max(valores, default=0.0)
 
-    def _valor_da_carta(self, obs: Observacao, teste: str, nao_vistas: Counter[str]) -> float:
+    def _valor_da_carta(
+        self, obs: Observacao, teste: str, nao_vistas: Counter[str], outras: Sequence[float] = ()
+    ) -> float:
         no_sistema = self._valor_no_sistema(obs, teste, obs.sistema)
-        return max(no_sistema or 0.0, self._valor_como_municao(obs, teste, nao_vistas))
+        municao = self._municao_ajustada(obs, self._valor_como_municao(obs, teste, nao_vistas), outras)
+        return max(no_sistema or 0.0, municao)
+
+    # -- limite de testes por ciclo (VAR-11) e custo do teste (VAR-12): autor, 2026-11-11
+
+    def _limite_e_custo(self) -> tuple[int, int, int]:
+        """(testes por ciclo, custo do teste pago, primeiro teste pago); zeros na regra da versão."""
+        regras = self.mesa.regras
+        limite = regras.ablacoes.testes_por_ciclo.valor if regras.ablacoes is not None else 0
+        if regras.propostas is None:
+            return limite, 0, 0
+        return limite, regras.propostas.custo_do_teste.valor, regras.propostas.teste_pago_a_partir_do.valor
+
+    def _testes_feitos_no_ciclo(self, obs: Observacao) -> int:
+        return sum(1 for disputa in obs.historico if disputa.ciclo == obs.ciclo and disputa.atacante == obs.assento)
+
+    def _valores_da_mao(self, obs: Observacao, nao_vistas: Counter[str]) -> list[float]:
+        """Valor de ataque de cada carta da mão, na ordem da mão. Vazio sem limite nem custo (não é usado)."""
+        limite, custo, _ = self._limite_e_custo()
+        if not limite and not custo:
+            return []
+        return [self._valor_como_municao(obs, teste, nao_vistas) for teste in obs.mao]
+
+    def _municao_ajustada(self, obs: Observacao, valor: float, outras: Sequence[float]) -> float:
+        """O valor de ataque de uma carta conforme o teste do ciclo em que ela seria usada.
+
+        As cartas de ataque são usadas da mais valiosa para a menos valiosa. Além do limite de
+        testes do ciclo, a carta fica para depois e vale o valor de ataque com o desconto do futuro;
+        num teste pago, vale o melhor entre pagar agora e guardar. Sem limite nem custo, o valor
+        não muda, e o bot joga como antes.
+        """
+        limite, custo, pago_a_partir_do = self._limite_e_custo()
+        if not limite and not custo:
+            return valor
+        ordem = self._testes_feitos_no_ciclo(obs) + sum(1 for outra in outras if outra > valor) + 1
+        if limite and ordem > limite:
+            return self._desconto * valor
+        if custo and ordem >= pago_a_partir_do:
+            return max(valor - custo, self._desconto * valor)
+        return valor
+
+    def _custo_do_teste_agora(self, obs: Observacao) -> int:
+        """VAR-12: o que o próximo teste deste ciclo custa; 0 se é de graça."""
+        _, custo, pago_a_partir_do = self._limite_e_custo()
+        if custo and self._testes_feitos_no_ciclo(obs) + 1 >= pago_a_partir_do:
+            return custo
+        return 0
 
     # -- softmax
 
-    def _escolher(self, valores: list[tuple[Acao, float]], estilo: str) -> Decisao:
+    def _escolher(self, valores: list[tuple[Acao, float]], estilo: str, medir: bool = True) -> Decisao:
+        """Sorteia a ação. Com ``medir``, a decisão leva a margem entre as duas melhores opções (MET-08)."""
         maximo = max(valor for _, valor in valores)
+        margem = None
+        if medir and len(valores) > 1:
+            primeiro, segundo = sorted((valor for _, valor in valores), reverse=True)[:2]
+            margem = primeiro - segundo
         if self._temperatura == 0:
             melhores = [acao for acao, valor in valores if valor == maximo]
             acao = self._um_de(melhores)
-            return Decisao(acao, f"{estilo}: escolhe o maior valor ({maximo:.3f}) entre {len(valores)} opções")
+            return Decisao(acao, f"{estilo}: escolhe o maior valor ({maximo:.3f}) entre {len(valores)} opções", margem)
         pesos = [
             round(PRECISAO_DOS_PESOS * exp_deterministico((valor - maximo) / self._temperatura)) for _, valor in valores
         ]
@@ -579,21 +632,22 @@ class BotHeuristico(BotEstrategico):
             f"{estilo}: valores esperados (os maiores) {resumo}; softmax T={self._temperatura}, "
             f"sorteio={sorteio}/{total}"
         )
-        return Decisao(escolhida, motivo)
+        return Decisao(escolhida, motivo, margem)
 
     # -- decisões
 
     def comprar(self, obs: Observacao, opcoes: Sequence[Acao]) -> Decisao:
         nao_vistas = copias_nao_vistas(obs, self.mesa)
+        mao = self._valores_da_mao(obs, nao_vistas)
         valores: list[tuple[Acao, float]] = []
         for opcao in opcoes:
             if opcao.origem == A.ORIGEM_BACKLOG and opcao.teste is not None:
-                valores.append((opcao, self._valor_da_carta(obs, opcao.teste, nao_vistas)))
+                valores.append((opcao, self._valor_da_carta(obs, opcao.teste, nao_vistas, mao)))
             else:
                 total = sum(nao_vistas.values())
                 esperado = (
                     sum(
-                        copias * self._valor_da_carta(obs, teste, nao_vistas)
+                        copias * self._valor_da_carta(obs, teste, nao_vistas, mao)
                         for teste, copias in nao_vistas.items()
                         if copias
                     )
@@ -606,32 +660,40 @@ class BotHeuristico(BotEstrategico):
 
     def colocar(self, obs: Observacao, opcoes: Sequence[Acao]) -> Decisao:
         nao_vistas = copias_nao_vistas(obs, self.mesa)
+        mao = self._valores_da_mao(obs, nao_vistas)
         valores: list[tuple[Acao, float]] = []
         for opcao in opcoes:
             if opcao.tipo == A.COLOCAR and opcao.teste is not None:
                 no_sistema = self._valor_no_sistema(obs, opcao.teste, obs.sistema) or 0.0
-                valores.append((opcao, no_sistema - self._valor_como_municao(obs, opcao.teste, nao_vistas)))
+                outras = mao[:]
+                if outras:  # a própria carta sai da comparação com as outras da mão
+                    del outras[obs.mao.index(opcao.teste)]
+                municao = self._municao_ajustada(obs, self._valor_como_municao(obs, opcao.teste, nao_vistas), outras)
+                valores.append((opcao, no_sistema - municao))
             else:
                 valores.append((opcao, 0.0))
         return self._escolher(valores, "heurístico, colocação")
 
     def agir(self, obs: Observacao, opcoes: Sequence[Acao]) -> Decisao:
         nao_vistas = copias_nao_vistas(obs, self.mesa)
+        custo = self._custo_do_teste_agora(obs)  # VAR-12
         valores: list[tuple[Acao, float]] = []
         for opcao in opcoes:
             if opcao.tipo == A.TESTAR and opcao.teste is not None and opcao.alvo is not None:
                 guardar = self._desconto * max(self._valor_no_sistema(obs, opcao.teste, obs.sistema) or 0.0, 0.0)
-                valores.append((opcao, self._valor_de_testar(obs, opcao.teste, opcao.alvo, nao_vistas) - guardar))
+                valor = self._valor_de_testar(obs, opcao.teste, opcao.alvo, nao_vistas) - guardar
+                valores.append((opcao, valor - custo if custo else valor))
             else:
                 valores.append((opcao, 0.0))
         return self._escolher(valores, "heurístico, Homologação")
 
     def licao(self, obs: Observacao, opcoes: Sequence[Acao]) -> Decisao:
         nao_vistas = copias_nao_vistas(obs, self.mesa)
+        mao = self._valores_da_mao(obs, nao_vistas)
         valores = [
-            (opcao, self._desconto * self._valor_da_carta(obs, opcao.teste, nao_vistas))
+            (opcao, self._desconto * self._valor_da_carta(obs, opcao.teste, nao_vistas, mao))
             if opcao.tipo == A.PEGAR and opcao.teste is not None
             else (opcao, 0.0)
             for opcao in opcoes
         ]
-        return self._escolher(valores, "heurístico, Lição aprendida")
+        return self._escolher(valores, "heurístico, Lição aprendida", medir=False)

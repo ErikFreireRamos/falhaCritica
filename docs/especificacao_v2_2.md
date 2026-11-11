@@ -228,7 +228,7 @@ Consequências da COR-02, confirmadas pelo autor:
 
 | ID | Tipo | Regra | Pág. | Parâmetros | Notas |
 |---|---|---|---|---|---|
-| R-7.4.1 | regra | Cada teste gasta 1 carta da mão. Não há outro limite ao número de testes. | 8 | — | VAR-05; VAR-11 |
+| R-7.4.1 | regra | Cada teste gasta 1 carta da mão. Não há outro limite ao número de testes. | 8 | — | VAR-05; VAR-11; VAR-12; AMB-32 |
 | R-7.4.2 | regra | Bug duplicado: não é permitido testar um jogador numa categoria em que ele já tem Alerta. | 8 | — | MET-03; VAR-10 |
 | R-7.4.2a | regra | A categoria volta a poder ser testada quando o cubo sai. | 8 | — | |
 | R-7.4.3 | regra | Quem passa guarda as cartas que tem na mão. | 8 | — | Complementa R-7.0.3 |
@@ -448,7 +448,7 @@ A seção "Registro da partida" (p. 35) define o que o observador anota. O coman
 
 ## Variantes de playtest
 
-Variantes que a configuração deve permitir ligar e desligar (seção 3.2 do prompt). O valor marcado como "atual" é a regra da v2.2. A mecânica de VAR-02, VAR-03, VAR-04 e VAR-06 foi decidida pelo autor em 2026-11-10 (coluna Mecânica). No YAML, VAR-02 a VAR-06 ficam no bloco opcional `variantes`; sem o bloco, vale a regra da versão.
+Variantes que a configuração deve permitir ligar e desligar (seção 3.2 do prompt). O valor marcado como "atual" é a regra da v2.2. A mecânica de VAR-02, VAR-03, VAR-04 e VAR-06 foi decidida pelo autor em 2026-11-10 (coluna Mecânica). No YAML, VAR-02 a VAR-06 ficam no bloco opcional `variantes`; sem o bloco, vale a regra da versão. VAR-10 e VAR-11 ficam no bloco `ablacoes`, e VAR-12, proposta do Experimento 7 (autor, 2026-11-11), no bloco `propostas`.
 
 | ID | Variante | Valores | Fonte | Mecânica |
 |---|---|---|---|---|
@@ -462,7 +462,8 @@ Variantes que a configuração deve permitir ligar e desligar (seção 3.2 do pr
 | VAR-08 | Número de jogadores | 4; 5 (6 só com a COR-01 desligada, para medir o problema do baralho) | prompt 3.2; R-1.2; COR-01 | número de jogadores do cenário |
 | VAR-09 | Módulo de Segurança Operacional | desligado (jogo base); ligado | PDF seção 11 | `modulo_seguranca_operacional` |
 | VAR-10 | Bug duplicado (ablação, regra da 2.1) | proibido (atual); permitido | PDF p. 33 (histórico); R-7.4.2 | pode testar categoria em que o alvo já tem Alerta; o atacante ganha a ficha, sem cubo novo (`ablacoes.bug_duplicado_permitido`) |
-| VAR-11 | Testes por ciclo (ablação, regra da 2.1) | sem limite (atual); 1 | PDF p. 33 (histórico); R-7.4.1 | cada jogador faz no máximo 1 teste por ciclo; depois disso passa (`ablacoes.testes_por_ciclo`) |
+| VAR-11 | Testes por ciclo (ablação, regra da 2.1) | sem limite (atual); 1; 2 | PDF p. 33 (histórico); R-7.4.1 | cada jogador faz no máximo o número dado de testes por ciclo; depois disso passa (`ablacoes.testes_por_ciclo`). O valor 2 é o meio-termo do Experimento 7 |
+| VAR-12 | Custo do teste (proposta do Experimento 7) | sem custo (atual); a partir do 2º teste do ciclo, 1 ficha | autor, 2026-11-11; R-7.4.1; AMB-32 | testes sem limite, mas cada teste do ciclo a partir do indicado custa fichas ao atacante, pagas ao banco ao declarar o teste; sem fichas para pagar, não testa (`propostas.custo_do_teste`, `propostas.teste_pago_a_partir_do`) |
 
 Texto do palpite da plateia no PDF (p. 35, "plano B, fora das regras"): antes de o atacante decidir se contesta, quem está fora da disputa vota se a defesa é verdade ou blefe; se houver contestação, quem acertou ganha 1 ficha.
 

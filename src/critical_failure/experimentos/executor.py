@@ -52,8 +52,15 @@ COLUNAS_DA_COLETA = (
     "cobre_incidente_1",
     "fichas_movimentadas",
     "fichas_de_dano",
+    "trocas_de_lider",
+    "decisoes_com_escolha",
+    "decisoes_avaliadas",
+    "decisoes_apertadas",
 )
-"""Medidas de ``coleta.ColetorV2`` que viram colunas da tabela (vazias na v1)."""
+"""Medidas de cada partida da v2 (``coleta.ColetorV2`` e as escolhas do MET-08) que viram colunas
+da tabela (vazias na v1)."""
+ESCOLHAS = "MET-08"
+"""O critério confirmado do MET-08 traz o limiar da escolha apertada, usado durante as partidas."""
 ESQUEMA_DO_MANIFEST = "cf-manifest/1"
 
 ESQUEMA_DA_TABELA = pa.schema(
@@ -83,6 +90,10 @@ ESQUEMA_DA_TABELA = pa.schema(
         ("cobre_incidente_1", pa.list_(pa.bool_())),
         ("fichas_movimentadas", pa.int32()),
         ("fichas_de_dano", pa.int32()),
+        ("trocas_de_lider", pa.int16()),
+        ("decisoes_com_escolha", pa.list_(pa.int16())),
+        ("decisoes_avaliadas", pa.list_(pa.int16())),
+        ("decisoes_apertadas", pa.list_(pa.int16())),
         ("bots_da_mesa", pa.list_(pa.string())),
         ("erro", pa.string()),
         ("aviso", pa.string()),
@@ -114,6 +125,8 @@ class Lote:
     """Mesa sorteada: ``bots`` são os candidatos, e cada assento é sorteado com estes pesos."""
     rotulos: tuple[str, ...] = ()
     """Nome de cada candidato, para a coluna ``bots_da_mesa``."""
+    limiar_da_escolha_apertada: float | None = None
+    """MET-08: a margem abaixo da qual uma decisão conta como apertada; ``None`` se o cenário não mede."""
 
 
 @dataclass(frozen=True)
@@ -202,6 +215,7 @@ def rodar_lote(lote: Lote) -> list[dict[str, Any]]:
                 partida,
                 duracao=modelo,
                 conferir_invariantes=lote.conferir_invariantes,
+                limiar_da_escolha_apertada=lote.limiar_da_escolha_apertada,
             )
         except Exception as erro:  # noqa: BLE001 - REQ-09: qualquer exceção numa partida é uma falha a registrar
             saida.append(_linha_de_falha(lote, partida, erro))
@@ -257,7 +271,10 @@ def _ler_yaml(caminho: Path) -> Any:
 
 def montar_lotes(experimento: Experimento, pasta_dos_registros: Path) -> tuple[list[Lote], list[dict[str, Any]]]:
     """Divide os cenários em lotes e devolve também o resumo de cada cenário para o manifest."""
+    from critical_failure.metricas.requisitos import carregar_requisitos, criterio_confirmado
+
     duracao_do_experimento = carregar_duracao(RAIZ / experimento.duracao).resolvido()
+    escolhas = criterio_confirmado(carregar_requisitos(RAIZ / experimento.requisitos_arquivo), ESCOLHAS)
     lotes: list[Lote] = []
     resumos: list[dict[str, Any]] = []
     for cenario in experimento.cenarios_expandidos():
@@ -312,6 +329,11 @@ def montar_lotes(experimento: Experimento, pasta_dos_registros: Path) -> tuple[l
                     jogadores=cenario.jogadores,
                     pesos=tuple(cenario.pesos) if cenario.pesos is not None else None,
                     rotulos=tuple(bot.nome() for bot in bots),
+                    limiar_da_escolha_apertada=(
+                        float(escolhas["limiar_da_escolha_apertada"])
+                        if escolhas is not None and ESCOLHAS in cenario.requisitos
+                        else None
+                    ),
                 )
             )
     return lotes, resumos

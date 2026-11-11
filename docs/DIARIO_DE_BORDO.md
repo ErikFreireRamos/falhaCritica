@@ -1156,3 +1156,68 @@ Pedido do autor (2026-11-11): "Gosto da ideia de medir profundidade de forma exp
 - Do autor: disparar de novo o workflow "Teste de mutação" e mandar o log se falhar.
 - Do autor: decidir quando investigar a profundidade (seção acima), e as definições e zonas das medidas.
 - Continuam as pendências do resumo da Fase 4: v2.3 ou revisão da zona do REQ-13; a parte "acima de 60 minutos" do REQ-08; a redação dos trechos marcados em `regras/`; cronometrar as ações no playtest (MOD-05).
+
+---
+
+## 2026-11-11 — Fase 4, Experimento 7: profundidade do jogo
+
+O autor pediu para investigar a profundidade agora ("vamos fazer o teste de profundidade"), enquanto o workflow de mutação rodava no Actions.
+
+### Decisões do autor
+
+| Assunto | Opções | Escolha |
+|---|---|---|
+| Medidas de profundidade | escolhas apertadas; viradas; habilidade em degraus; variedade de estilos (matriz e replicador por regra, cerca de 45 min cada) | **Escolhas apertadas, viradas e habilidade em degraus.** Defesas por jogador, REQ-11 e a vantagem do líder (REQ-02) entram de qualquer jeito |
+| Regras comparadas com a atual (sem limite) | 1, 2 ou 3 testes por ciclo; custo crescente | **1 e 2 testes por ciclo (VAR-11) e custo do teste**, variante nova (VAR-12) |
+| Heurístico nas regras com limite | ajustar o bot; rodar as duas versões; não ajustar | **Ajustar o bot:** além do limite, a carta de ataque vale com o desconto do futuro; sem limite, joga como antes |
+| Veredito | só descrição; zonas já | **Só descrição:** MET-08 a MET-10, sem zona |
+| Custo do teste (VAR-12) | o 3º teste do ciclo custa 1; o 2º custa 1; custo que sobe | **Do 2º teste do ciclo em diante, 1 ficha cada**, paga ao banco ao declarar o teste |
+| Limiar da escolha apertada | 0,5; 0,25; 1 ficha | **0,5 ficha**, a escala da temperatura do softmax |
+| Viradas | trocas de líder e recuperação; só no fim de cada ciclo; só a recuperação | **Trocas de líder isolado a cada mudança de placar, e recuperação** depois do ciclo 1 |
+| Mesas | degraus com temperatura 1, 2 e 4; só 2; degraus também com iniciante | **Temperatura 1, 2 e 4**, experiente, 4 e 5 jogadores |
+| AMB-32: custo do teste com 0 ficha | não pode fazer o teste pago; testa de graça | **Não pode:** com 0 ficha, só o teste de graça do ciclo |
+
+### O que foi feito
+
+1. **VAR-12, custo do teste**, no bloco opcional novo `propostas` (`custo_do_teste`, `teste_pago_a_partir_do`). O motor recusa o teste pago a quem não pode pagar (AMB-32) e registra o pagamento no evento `custo_do_teste`, que cita VAR-12 e AMB-32; a narração conta o pagamento. Sem o bloco, nada muda e o hash das regras já usadas continua o mesmo. Registrada na tabela de variantes da especificação, em R-7.4.1 e no AMB-32.
+2. **Heurístico ciente do limite e do custo:**
+   - as cartas de ataque são ordenadas pelo valor de ataque; a carta que cairia além do limite de testes do ciclo vale o valor de ataque com o desconto do futuro (0,8);
+   - num teste pago, a carta vale o maior entre pagar agora (valor menos o custo) e guardar (valor com desconto);
+   - na Homologação, o custo do teste entra no valor de testar.
+
+   Vale na compra, na colocação e na Lição aprendida. Sem limite nem custo, o valor não muda.
+3. **Medidas por partida:**
+   - para cada jogador, as decisões com 2 ou mais opções legais, as avaliadas por valor e as apertadas (a margem entre as duas melhores opções sai do Heurístico na própria `Decisao`, sem ir para o registro de auditoria);
+   - as trocas de líder isolado (coletor).
+
+   Quatro colunas novas no Parquet. O limiar sai do critério do MET-08 em `configs/requisitos.yaml`, lido pelo executor, e só vale nos cenários que pedem o MET-08.
+4. **Análise e relatório:** `metricas/profundidade.py` calcula, por grupo de cenários, as defesas por jogador, as decisões com escolha, a fração apertada (bootstrap da razão), as trocas de líder, a recuperação e a vitória do foco dividida por 1/N, todas com o intervalo de 95%. O relatório ganhou a seção "Profundidade (descrição)".
+5. **MET-08, MET-09 e MET-10** registradas em `configs/requisitos.yaml` como confirmadas, sem zona.
+6. **`experimentos/fase4_exp7_profundidade.yaml`:** 40 cenários, 80.000 partidas, semente mestre 20261122.
+   - Principal: as 4 regras × iniciante e experiente × 4 e 5 jogadores, com mesas de Heurísticos sorteadas da mistura do equilíbrio do blefe (pesos do Experimento 5b) e 2.000 partidas por cenário. Mede os REQ do Experimento 3, o MET-08 e o MET-09.
+   - Degraus: as 4 regras × 4 e 5 jogadores × temperatura 1, 2 e 4, com rodízio e 2.000 partidas por cenário. Mede o MET-10.
+
+### Verificação
+
+- **O ajuste não muda o jogo sem limite nem custo:** 40 partidas só de Heurísticos, com perfis variados, dão exatamente o mesmo resultado no código do commit anterior e no novo, e os registros de referência não mudaram.
+- Testes novos:
+  - VAR-12: o 2º teste em diante paga 1 ficha; com 0 ficha não há teste pago; validação da configuração;
+  - VAR-11 com 2 testes;
+  - ajuste do bot e margem da escolha;
+  - trocas de líder e contagem das escolhas;
+  - arquivo do experimento e miniatura com relatório refeito igual.
+- `uv run pytest`: 463 testes passam, 1 pulado. `ruff`, `mypy` estrito, verificador e matriz (176 de 176) sem apontamentos.
+
+### Detalhes escolhidos pelo assistente, sem perguntar
+
+- **Bloco `propostas`** para a VAR-12, separado de `ablacoes` (que guarda regras da 2.1) e de `variantes` (as do playtest, com todos os campos obrigatórios). O cenário base do Experimento 7 não tem bloco nenhum, ao contrário da base do Experimento 3, que tinha `ablacoes` com os valores da 2.2; o jogo é o mesmo.
+- **Ordem das cartas de ataque no ajuste do bot:** pelo valor de ataque de cada carta da mão, com as de valor igual empatadas a favor da carta avaliada. É uma simplificação: uma carta que vale mais no sistema do que no ataque também entra na conta.
+- **Escolhas avaliadas:** só compra, colocação e ação na Homologação, como na definição aprovada; a Lição aprendida, que o Heurístico também avalia por valor, fica de fora.
+- **Recuperação:** na mesma amostra do REQ-02, as partidas com líder isolado no fim do ciclo 1; vitória dividida conta pela fatia.
+- **Trocas de líder:** conferidas depois de cada evento que move fichas, inclusive a pontuação final.
+- **Degraus:** todos os bots experientes, blefe metade e contestação pelo limiar, e só a temperatura muda (o foco fica com a do perfil, 0,5). O MET-10 só é pedido nos degraus, e o MET-08 e o MET-09 só no principal.
+- **Nada no `HISTORICO_REGRAS.md`:** a VAR-12 é proposta em estudo, não muda a regra vigente (como as ablações VAR-10 e VAR-11).
+
+### Observação antecipada
+
+Na miniatura, a fração de escolhas apertadas ficou perto de 0,8 em todas as regras. Com o limiar de 0,5 ficha, a maior parte das decisões do Heurístico já é "apertada", e a medida pode não separar as regras. O resultado completo dirá; se for o caso, o limiar é decisão do autor.
