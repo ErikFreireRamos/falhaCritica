@@ -8,7 +8,7 @@
   },
   "arquivos": {
     "partidas.parquet": "sha256:38f75072de921995d150d4b604b3403d9342970491c5cc4dfe6c8e2f932387c9",
-    "relatorio.md": "sha256:1a0db3a439b4b046195b18405de44168dd9f7038fceac1b049fc348e7226ac03"
+    "relatorio.md": "sha256:040797427a9da09cec476f3e320c65be9bc37f82023b137322ec9232b0c08c86"
   },
   "cenarios": [
     {
@@ -50311,6 +50311,11 @@
   "processos": 4,
   "registros_completos": 684,
   "registros_nao_gravados": 0,
+  "relatorio_refeito": {
+    "commit": "e387763559897a2eb9d78375b46ae21b4e1df4cc",
+    "data": "2026-11-11T00:41:57+00:00",
+    "sujo": false
+  },
   "requisitos": {
     "arquivo": "configs/requisitos.yaml",
     "sha256": "sha256:f23d815a3c91ac01999a7ac5e20e0ba974a98c11d0a4dff3a113328e476bfe5e"

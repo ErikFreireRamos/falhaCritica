@@ -761,3 +761,29 @@ A primeira análise do torneio de blefe (execução `b02b6d4`) dizia que a dinâ
 ### Experimento 5b: REQ-05 no equilíbrio misto
 
 Pela decisão do autor, com equilíbrio misto o REQ-05 vale numa mesa sorteada da mistura. O arquivo `experimentos/fase4_exp5b_blefe_equilibrio.yaml` foi gerado a partir da tabela do Experimento 5, pela análise corrigida: pesos em milésimos, arredondados pelos maiores restos. Com 4 jogadores, 325, 501, 133 e 41 (nunca blefa e nunca contesta; nunca blefa e contesta pelo limiar; sempre blefa e nunca contesta; sempre blefa e contesta pelo limiar). Com 5 jogadores, 313, 541, 133 e 13. São 10.000 partidas por tamanho de mesa; semente mestre 20261117.
+
+### Resultado do Experimento 5 (`fase4_exp5_blefe`)
+
+Execução oficial no commit `b02b6d4`, árvore limpa: 180.000 partidas em 4.760 s com 4 processos, nenhuma falha (REQ-09 passa). Relatório em `resultados/fase4_exp5_blefe/20261110-231109-b02b6d4/relatorio.md`. O relatório original, com a análise do replicador com defeito, está no commit `e387763`. A versão atual foi refeita com o código corrigido, e o refazimento está registrado no manifest e no cabeçalho do relatório.
+
+| Requisito | Resultado |
+|---|---|
+| REQ-04, nenhum perfil dominante | **passa** com 4 e com 5 jogadores: nenhum perfil puro de blefe é a melhor resposta contra todas as mesas |
+| REQ-05, blefes bem-sucedidos | **sem veredito aqui**: o equilíbrio é misto, então o veredito sai do Experimento 5b, com a mesa sorteada da mistura |
+
+**O equilíbrio do blefe é misto** (dinâmica do replicador corrigida):
+
+| Perfil | 4 jogadores | 5 jogadores |
+|---|---|---|
+| Nunca blefa, contesta pelo limiar | 50,1% | 54,1% |
+| Nunca blefa, nunca contesta | 32,5% | 31,3% |
+| Sempre blefa, nunca contesta | 13,3% | 13,3% |
+| Sempre blefa, contesta pelo limiar | 4,1% | 1,3% |
+
+**Blefes nas populações puras** (só descrição): quem nunca contesta deixa passar cerca de 81% dos blefes; quem sempre contesta, nenhum; e quem contesta pelo limiar deixa passar só 1,6% (4 jogadores) a 2,7% (5 jogadores).
+
+### Observações (cuidado ao ler)
+
+1. **O blefe está equilibrado no sentido de jogo:** nenhum perfil puro domina, e os perfis formam um ciclo. Blefar sempre ganha de quem nunca contesta; contestar pelo limiar ganha de quem blefa; não contestar ganha numa mesa de honestos. No equilíbrio, cerca de 1 em cada 6 jogadores blefa sempre. É o comportamento que a regra de contestação (R-7.3.5) pretendia criar.
+2. **Contestar pelo limiar pega quase todo blefe** (só 1,6% a 2,7% passam). Os bots contam as cartas já vistas (MOD-09) e sabem quando um teste nomeado está esgotado. Jogadores humanos não contam tão bem: a taxa real de blefes que passam deve ficar entre esse número e os 81% de quem nunca contesta. O veredito do REQ-05 vale para bots que contam cartas.
+3. **"Contestar pelo limiar" é o perfil mais comum no equilíbrio**, e o mesmo de todos os experimentos anteriores. Por isso aqueles resultados não estão longe do comportamento de equilíbrio. O blefe "metade das vezes" usado antes, porém, não aparece no equilíbrio: quem blefa, blefa sempre.
