@@ -1221,3 +1221,61 @@ O autor pediu para investigar a profundidade agora ("vamos fazer o teste de prof
 ### Observação antecipada
 
 Na miniatura, a fração de escolhas apertadas ficou perto de 0,8 em todas as regras. Com o limiar de 0,5 ficha, a maior parte das decisões do Heurístico já é "apertada", e a medida pode não separar as regras. O resultado completo dirá; se for o caso, o limiar é decisão do autor.
+
+### Resultado do Experimento 7 (`fase4_exp7_profundidade`)
+
+Execução oficial no commit `3a2f2e0`, árvore limpa: 80.000 partidas em 1.501 s com 4 processos, nenhuma falha (REQ-09 passa). Relatório em `resultados/fase4_exp7_profundidade/20261111-183119-3a2f2e0/relatorio.md`.
+
+**Profundidade** (intervalos de 95% no relatório; aqui, a faixa entre os 4 cenários de cada regra: iniciante e experiente, 4 e 5 jogadores):
+
+| Regra | Duração mediana (min, 4 e 5 jog.) | Defesas por jogador | Decisões com escolha por jogador | Escolhas apertadas | Trocas de líder | Recuperação | Vantagem do líder |
+|---|---|---|---|---|---|---|---|
+| Sem limite (atual) | 38,2 a 38,5 e 44,2 a 44,6 | 5,4 a 5,7 | 32,6 a 33,7 | 0,81 a 0,83 | 3,5 a 4,2 | 0,56 a 0,63 | 0,15 a 0,19 |
+| 1 teste por ciclo (VAR-11) | 28,2 a 28,3 e 31,4 a 31,8 | 2,2 a 2,3 | 22,2 a 22,9 | 0,81 a 0,85 | 3,5 a 4,0 | 0,52 a 0,58 | 0,22 a 0,27 |
+| 2 testes por ciclo (VAR-11) | 33,2 a 33,5 e 37,8 a 38,2 | 3,9 a 4,1 | 27,4 a 28,4 | 0,82 a 0,85 | 3,5 a 4,0 | 0,54 a 0,60 | 0,18 a 0,21 |
+| Custo do 2º teste em diante (VAR-12) | 33,5 a 33,7 e 38,6 a 39,1 | 3,9 a 4,3 | 28,9 a 30,4 | 0,79 a 0,81 | 3,8 a 4,3 | 0,54 a 0,61 | 0,18 a 0,22 |
+
+**Habilidade em degraus (MET-10):** vitória do Heurístico normal dividida por 1/N, contra Heurísticos com temperatura 1, 2 e 4.
+
+| Regra | 4 jogadores (T 1 / 2 / 4) | 5 jogadores (T 1 / 2 / 4) |
+|---|---|---|
+| Sem limite (atual) | 1,31 / 1,58 / 1,88 | 1,43 / 1,83 / 2,10 |
+| 1 teste por ciclo | 1,21 / 1,51 / 1,60 | 1,28 / 1,55 / 1,78 |
+| 2 testes por ciclo | 1,27 / 1,51 / 1,68 | 1,36 / 1,68 / 1,92 |
+| Custo do teste | 1,29 / 1,61 / 1,86 | 1,48 / 1,78 / 2,10 |
+
+**Requisitos** (✓ passa, ✗ falha, ? inconclusivo; mesma legenda do Experimento 6):
+
+| Cenário | REQ-06a | REQ-06b | REQ-07 | REQ-08 | REQ-10 | REQ-11 | REQ-12 | REQ-13 |
+|---|---|---|---|---|---|---|---|---|
+| n4_iniciante_base | 1,36✓ | 0,42✓ | 0,06✓ | 38,2✗ | 5,8✗ | 0,57✓ | 0,07✓ | 0,22✓ |
+| n4_iniciante_var11_1_teste | 1,66✗ | 0,46✗ | 0,09✓ | 28,2✗ | 3,3✓ | 0,59✓ | 0,10? | 0,23✓ |
+| n4_iniciante_var11_2_testes | 1,48✓ | 0,44? | 0,07✓ | 33,2✗ | 4,4✓ | 0,58✓ | 0,07✓ | 0,22✓ |
+| n4_iniciante_var12_custo | 1,46✓ | 0,44? | 0,17✗ | 33,5✗ | 4,8✓ | 0,59✓ | 0,09? | 0,20? |
+| n4_experiente_base | 1,37✓ | 0,43? | 0,05✓ | 38,5✗ | 5,8✗ | 0,52✓ | 0,03✓ | 0,17✗ |
+| n4_experiente_var11_1_teste | 1,66✗ | 0,47✗ | 0,05✓ | 28,3✗ | 3,3✓ | 0,53✓ | 0,07✓ | 0,19✗ |
+| n4_experiente_var11_2_testes | 1,47✓ | 0,44✗ | 0,05✓ | 33,5✗ | 4,6✓ | 0,52✓ | 0,05✓ | 0,18✗ |
+| n4_experiente_var12_custo | 1,48✓ | 0,43? | 0,10? | 33,7✗ | 4,8✓ | 0,53✓ | 0,05✓ | 0,16✗ |
+| n5_iniciante_base | 1,41✓ | 0,34✓ | 0,07✓ | 44,2✓ | 9,0✗ | 0,57✓ | 0,08? | 0,22✓ |
+| n5_iniciante_var11_1_teste | 1,76✗ | 0,39✗ | 0,11? | 31,4✗ | 4,9✓ | 0,58✓ | 0,09? | 0,23✓ |
+| n5_iniciante_var11_2_testes | 1,52✗ | 0,36✗ | 0,09✓ | 37,8✗ | 6,9✗ | 0,57✓ | 0,08✓ | 0,22✓ |
+| n5_iniciante_var12_custo | 1,50? | 0,36✗ | 0,20✗ | 38,6✗ | 7,3✗ | 0,58✓ | 0,08✓ | 0,20? |
+| n5_experiente_base | 1,43✓ | 0,34✓ | 0,06✓ | 44,6✓ | 9,2✗ | 0,51✓ | 0,05✓ | 0,17✗ |
+| n5_experiente_var11_1_teste | 1,77✗ | 0,39✗ | 0,05✓ | 31,8✗ | 4,9✓ | 0,51✓ | 0,08✓ | 0,19✗ |
+| n5_experiente_var11_2_testes | 1,53✗ | 0,36✗ | 0,05✓ | 38,2✗ | 6,9✗ | 0,51✓ | 0,05✓ | 0,18✗ |
+| n5_experiente_var12_custo | 1,52✗ | 0,36✗ | 0,15✗ | 39,1✗ | 7,5✗ | 0,51✓ | 0,06✓ | 0,16✗ |
+
+### Observações (cuidado ao ler)
+
+1. **A intuição do autor se confirma: testes sem limite dão o jogo mais profundo das quatro regras.** É a regra com mais decisões por jogador (cerca de 33), mais defesas (cerca de 5,5), a menor vantagem do líder, a maior recuperação e, junto com o custo do teste, aquela em que jogar bem mais rende (degraus). 1 teste por ciclo é a mais rasa em todas essas medidas: um terço a menos de decisões, 60% menos defesas, o líder do ciclo 1 vence mais, e o jogador bom se destaca menos dos descuidados (com temperatura 4, 1,60 contra 1,88 com 4 jogadores).
+2. **Os meios-termos ficam no meio, e nenhum resolve tudo.** 2 testes por ciclo e o custo do teste encurtam a partida em cerca de 5 min, cortam cerca de um quarto das defesas e de 10% a 17% das decisões e passam no tempo parado com 4 jogadores (REQ-10: 4,4 e 4,8 min), mas não com 5 (6,9 e 7,3 min). Os dois pioram a duração com 4 jogadores, que já era curta (REQ-08: 33 min), e levam a de 5 para baixo de 40 min.
+3. **O custo do teste mantém a habilidade, mas zera mais gente.** É o meio-termo que menos tira da habilidade (degraus quase iguais aos da regra atual) e o que mais mexe nas viradas (trocas de líder um pouco acima da regra atual). Em compensação, pagar fichas leva mais jogadores a 0 antes do último ciclo: o REQ-07 falha com iniciantes (0,17 e 0,20) e com 5 experientes (0,15). E o dano de incidente pesa menos (REQ-13 cai).
+4. **2 testes por ciclo concentram os ataques com 5 jogadores:** o REQ-06 falha nas duas partes, como com 1 teste, mas mais perto da zona (1,52 contra 1,77).
+5. **A fração de escolhas apertadas não separa as regras** (0,79 a 0,85 em todas), como a miniatura já indicava. Com o limiar de 0,5 ficha, a maior parte das decisões do Heurístico já é "apertada". Para essa medida dizer algo, o limiar teria de ser menor, ou a medida trocada. É decisão do autor.
+6. **As trocas de líder quase não mudam com o limite** (3,5 a 4,3 por partida em todas as regras). Quem muda é a recuperação depois do ciclo 1 e a vantagem do líder, que juntas dizem que, com menos testes, o começo da partida pesa mais.
+
+### Pendências
+
+- Do autor: o limiar da escolha apertada (observação 5), se a medida continua.
+- Do autor: se algum meio-termo vira candidato a v2.2.2, sabendo que nenhum passa no tempo parado com 5 jogadores e que os dois deixam a partida com 4 jogadores ainda mais curta (REQ-08).
+- Do autor: disparar de novo o workflow "Teste de mutação", se ainda não foi, e mandar o log se falhar.
