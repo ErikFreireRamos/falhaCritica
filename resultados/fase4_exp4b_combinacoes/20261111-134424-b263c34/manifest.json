@@ -1,0 +1,2326 @@
+{
+  "ambiente": {
+    "motor": "0.1.0",
+    "numpy": "2.5.4",
+    "plataforma": "Windows-11-10.0.26200-SP0",
+    "pyarrow": "26.0.1",
+    "python": "3.12.0"
+  },
+  "arquivos": {
+    "partidas.parquet": "sha256:bc2ef1bfe5b8b4e1aff63e6257269c011d44dd45c43e7d071df7cb63d237e6a3",
+    "relatorio.md": "sha256:475abc8d8fd790740a12461c6c95572a9ab96636403c82e781e20a3351d40697"
+  },
+  "cenarios": [
+    {
+      "bots": [
+        {
+          "parametros": {
+            "blefe": "nunca",
+            "conhecimento": "iniciante",
+            "contestacao": "nunca"
+          },
+          "rotulo": "blefa_nunca_contesta_nunca",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "nunca",
+            "conhecimento": "iniciante",
+            "contestacao": "limiar"
+          },
+          "rotulo": "blefa_nunca_contesta_limiar",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "sempre",
+            "conhecimento": "iniciante",
+            "contestacao": "nunca"
+          },
+          "rotulo": "blefa_sempre_contesta_nunca",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "sempre",
+            "conhecimento": "iniciante",
+            "contestacao": "limiar"
+          },
+          "rotulo": "blefa_sempre_contesta_limiar",
+          "tipo": "heuristico"
+        }
+      ],
+      "catalogo_hash": "sha256:89a8b5427c62009c7ce16a105b7d7de2e0d950035f7803edee091dc067937362",
+      "celula": null,
+      "comparar_com": null,
+      "config_hash": "sha256:60ad08b41b4c4b60f71006dfeda6e2f85e8d576c11631b450363e462e19e3285",
+      "familia": "v2",
+      "grupo": "n4_iniciante_fichas_5_dano_2",
+      "jogadores": 4,
+      "matriz": null,
+      "mudancas": {
+        "dano.incidente.sem_cobertura": 2,
+        "fichas.iniciais": 5
+      },
+      "nome": "n4_iniciante_fichas_5_dano_2",
+      "partidas": 2000,
+      "pesos": [
+        325,
+        501,
+        133,
+        41
+      ],
+      "regras": "configs/regras_v2_2_1.yaml",
+      "requisitos": [
+        "REQ-06",
+        "REQ-07",
+        "REQ-08",
+        "REQ-10",
+        "REQ-11",
+        "REQ-12",
+        "REQ-13"
+      ],
+      "versao": "v2.2.1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "blefe": "nunca",
+            "conhecimento": "iniciante",
+            "contestacao": "nunca"
+          },
+          "rotulo": "blefa_nunca_contesta_nunca",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "nunca",
+            "conhecimento": "iniciante",
+            "contestacao": "limiar"
+          },
+          "rotulo": "blefa_nunca_contesta_limiar",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "sempre",
+            "conhecimento": "iniciante",
+            "contestacao": "nunca"
+          },
+          "rotulo": "blefa_sempre_contesta_nunca",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "sempre",
+            "conhecimento": "iniciante",
+            "contestacao": "limiar"
+          },
+          "rotulo": "blefa_sempre_contesta_limiar",
+          "tipo": "heuristico"
+        }
+      ],
+      "catalogo_hash": "sha256:89a8b5427c62009c7ce16a105b7d7de2e0d950035f7803edee091dc067937362",
+      "celula": null,
+      "comparar_com": null,
+      "config_hash": "sha256:61b09722477f8d06f1cff629599fc611f27803485e981143c3c1c6ad8dc4b883",
+      "familia": "v2",
+      "grupo": "n4_iniciante_fichas_5_dano_3",
+      "jogadores": 4,
+      "matriz": null,
+      "mudancas": {
+        "dano.incidente.sem_cobertura": 3,
+        "fichas.iniciais": 5
+      },
+      "nome": "n4_iniciante_fichas_5_dano_3",
+      "partidas": 2000,
+      "pesos": [
+        325,
+        501,
+        133,
+        41
+      ],
+      "regras": "configs/regras_v2_2_1.yaml",
+      "requisitos": [
+        "REQ-06",
+        "REQ-07",
+        "REQ-08",
+        "REQ-10",
+        "REQ-11",
+        "REQ-12",
+        "REQ-13"
+      ],
+      "versao": "v2.2.1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "blefe": "nunca",
+            "conhecimento": "iniciante",
+            "contestacao": "nunca"
+          },
+          "rotulo": "blefa_nunca_contesta_nunca",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "nunca",
+            "conhecimento": "iniciante",
+            "contestacao": "limiar"
+          },
+          "rotulo": "blefa_nunca_contesta_limiar",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "sempre",
+            "conhecimento": "iniciante",
+            "contestacao": "nunca"
+          },
+          "rotulo": "blefa_sempre_contesta_nunca",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "sempre",
+            "conhecimento": "iniciante",
+            "contestacao": "limiar"
+          },
+          "rotulo": "blefa_sempre_contesta_limiar",
+          "tipo": "heuristico"
+        }
+      ],
+      "catalogo_hash": "sha256:89a8b5427c62009c7ce16a105b7d7de2e0d950035f7803edee091dc067937362",
+      "celula": null,
+      "comparar_com": null,
+      "config_hash": "sha256:30ca332f7f8c8bb909eab942af9f356bacc185ae055aedb912f970ca423135ae",
+      "familia": "v2",
+      "grupo": "n4_iniciante_fichas_6_dano_2",
+      "jogadores": 4,
+      "matriz": null,
+      "mudancas": {
+        "dano.incidente.sem_cobertura": 2,
+        "fichas.iniciais": 6
+      },
+      "nome": "n4_iniciante_fichas_6_dano_2",
+      "partidas": 2000,
+      "pesos": [
+        325,
+        501,
+        133,
+        41
+      ],
+      "regras": "configs/regras_v2_2_1.yaml",
+      "requisitos": [
+        "REQ-06",
+        "REQ-07",
+        "REQ-08",
+        "REQ-10",
+        "REQ-11",
+        "REQ-12",
+        "REQ-13"
+      ],
+      "versao": "v2.2.1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "blefe": "nunca",
+            "conhecimento": "iniciante",
+            "contestacao": "nunca"
+          },
+          "rotulo": "blefa_nunca_contesta_nunca",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "nunca",
+            "conhecimento": "iniciante",
+            "contestacao": "limiar"
+          },
+          "rotulo": "blefa_nunca_contesta_limiar",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "sempre",
+            "conhecimento": "iniciante",
+            "contestacao": "nunca"
+          },
+          "rotulo": "blefa_sempre_contesta_nunca",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "sempre",
+            "conhecimento": "iniciante",
+            "contestacao": "limiar"
+          },
+          "rotulo": "blefa_sempre_contesta_limiar",
+          "tipo": "heuristico"
+        }
+      ],
+      "catalogo_hash": "sha256:89a8b5427c62009c7ce16a105b7d7de2e0d950035f7803edee091dc067937362",
+      "celula": null,
+      "comparar_com": null,
+      "config_hash": "sha256:97ff489d1678c0735b6e6d64c4137500143f9df97849d67beac2a2c08e027cd5",
+      "familia": "v2",
+      "grupo": "n4_iniciante_fichas_6_dano_3",
+      "jogadores": 4,
+      "matriz": null,
+      "mudancas": {
+        "dano.incidente.sem_cobertura": 3,
+        "fichas.iniciais": 6
+      },
+      "nome": "n4_iniciante_fichas_6_dano_3",
+      "partidas": 2000,
+      "pesos": [
+        325,
+        501,
+        133,
+        41
+      ],
+      "regras": "configs/regras_v2_2_1.yaml",
+      "requisitos": [
+        "REQ-06",
+        "REQ-07",
+        "REQ-08",
+        "REQ-10",
+        "REQ-11",
+        "REQ-12",
+        "REQ-13"
+      ],
+      "versao": "v2.2.1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "blefe": "nunca",
+            "conhecimento": "iniciante",
+            "contestacao": "nunca"
+          },
+          "rotulo": "blefa_nunca_contesta_nunca",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "nunca",
+            "conhecimento": "iniciante",
+            "contestacao": "limiar"
+          },
+          "rotulo": "blefa_nunca_contesta_limiar",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "sempre",
+            "conhecimento": "iniciante",
+            "contestacao": "nunca"
+          },
+          "rotulo": "blefa_sempre_contesta_nunca",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "sempre",
+            "conhecimento": "iniciante",
+            "contestacao": "limiar"
+          },
+          "rotulo": "blefa_sempre_contesta_limiar",
+          "tipo": "heuristico"
+        }
+      ],
+      "catalogo_hash": "sha256:89a8b5427c62009c7ce16a105b7d7de2e0d950035f7803edee091dc067937362",
+      "celula": null,
+      "comparar_com": null,
+      "config_hash": "sha256:60ad08b41b4c4b60f71006dfeda6e2f85e8d576c11631b450363e462e19e3285",
+      "familia": "v2",
+      "grupo": "n5_iniciante_fichas_5_dano_2",
+      "jogadores": 5,
+      "matriz": null,
+      "mudancas": {
+        "dano.incidente.sem_cobertura": 2,
+        "fichas.iniciais": 5
+      },
+      "nome": "n5_iniciante_fichas_5_dano_2",
+      "partidas": 2000,
+      "pesos": [
+        313,
+        541,
+        133,
+        13
+      ],
+      "regras": "configs/regras_v2_2_1.yaml",
+      "requisitos": [
+        "REQ-06",
+        "REQ-07",
+        "REQ-08",
+        "REQ-10",
+        "REQ-11",
+        "REQ-12",
+        "REQ-13"
+      ],
+      "versao": "v2.2.1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "blefe": "nunca",
+            "conhecimento": "iniciante",
+            "contestacao": "nunca"
+          },
+          "rotulo": "blefa_nunca_contesta_nunca",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "nunca",
+            "conhecimento": "iniciante",
+            "contestacao": "limiar"
+          },
+          "rotulo": "blefa_nunca_contesta_limiar",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "sempre",
+            "conhecimento": "iniciante",
+            "contestacao": "nunca"
+          },
+          "rotulo": "blefa_sempre_contesta_nunca",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "sempre",
+            "conhecimento": "iniciante",
+            "contestacao": "limiar"
+          },
+          "rotulo": "blefa_sempre_contesta_limiar",
+          "tipo": "heuristico"
+        }
+      ],
+      "catalogo_hash": "sha256:89a8b5427c62009c7ce16a105b7d7de2e0d950035f7803edee091dc067937362",
+      "celula": null,
+      "comparar_com": null,
+      "config_hash": "sha256:61b09722477f8d06f1cff629599fc611f27803485e981143c3c1c6ad8dc4b883",
+      "familia": "v2",
+      "grupo": "n5_iniciante_fichas_5_dano_3",
+      "jogadores": 5,
+      "matriz": null,
+      "mudancas": {
+        "dano.incidente.sem_cobertura": 3,
+        "fichas.iniciais": 5
+      },
+      "nome": "n5_iniciante_fichas_5_dano_3",
+      "partidas": 2000,
+      "pesos": [
+        313,
+        541,
+        133,
+        13
+      ],
+      "regras": "configs/regras_v2_2_1.yaml",
+      "requisitos": [
+        "REQ-06",
+        "REQ-07",
+        "REQ-08",
+        "REQ-10",
+        "REQ-11",
+        "REQ-12",
+        "REQ-13"
+      ],
+      "versao": "v2.2.1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "blefe": "nunca",
+            "conhecimento": "iniciante",
+            "contestacao": "nunca"
+          },
+          "rotulo": "blefa_nunca_contesta_nunca",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "nunca",
+            "conhecimento": "iniciante",
+            "contestacao": "limiar"
+          },
+          "rotulo": "blefa_nunca_contesta_limiar",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "sempre",
+            "conhecimento": "iniciante",
+            "contestacao": "nunca"
+          },
+          "rotulo": "blefa_sempre_contesta_nunca",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "sempre",
+            "conhecimento": "iniciante",
+            "contestacao": "limiar"
+          },
+          "rotulo": "blefa_sempre_contesta_limiar",
+          "tipo": "heuristico"
+        }
+      ],
+      "catalogo_hash": "sha256:89a8b5427c62009c7ce16a105b7d7de2e0d950035f7803edee091dc067937362",
+      "celula": null,
+      "comparar_com": null,
+      "config_hash": "sha256:30ca332f7f8c8bb909eab942af9f356bacc185ae055aedb912f970ca423135ae",
+      "familia": "v2",
+      "grupo": "n5_iniciante_fichas_6_dano_2",
+      "jogadores": 5,
+      "matriz": null,
+      "mudancas": {
+        "dano.incidente.sem_cobertura": 2,
+        "fichas.iniciais": 6
+      },
+      "nome": "n5_iniciante_fichas_6_dano_2",
+      "partidas": 2000,
+      "pesos": [
+        313,
+        541,
+        133,
+        13
+      ],
+      "regras": "configs/regras_v2_2_1.yaml",
+      "requisitos": [
+        "REQ-06",
+        "REQ-07",
+        "REQ-08",
+        "REQ-10",
+        "REQ-11",
+        "REQ-12",
+        "REQ-13"
+      ],
+      "versao": "v2.2.1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "blefe": "nunca",
+            "conhecimento": "iniciante",
+            "contestacao": "nunca"
+          },
+          "rotulo": "blefa_nunca_contesta_nunca",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "nunca",
+            "conhecimento": "iniciante",
+            "contestacao": "limiar"
+          },
+          "rotulo": "blefa_nunca_contesta_limiar",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "sempre",
+            "conhecimento": "iniciante",
+            "contestacao": "nunca"
+          },
+          "rotulo": "blefa_sempre_contesta_nunca",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "sempre",
+            "conhecimento": "iniciante",
+            "contestacao": "limiar"
+          },
+          "rotulo": "blefa_sempre_contesta_limiar",
+          "tipo": "heuristico"
+        }
+      ],
+      "catalogo_hash": "sha256:89a8b5427c62009c7ce16a105b7d7de2e0d950035f7803edee091dc067937362",
+      "celula": null,
+      "comparar_com": null,
+      "config_hash": "sha256:97ff489d1678c0735b6e6d64c4137500143f9df97849d67beac2a2c08e027cd5",
+      "familia": "v2",
+      "grupo": "n5_iniciante_fichas_6_dano_3",
+      "jogadores": 5,
+      "matriz": null,
+      "mudancas": {
+        "dano.incidente.sem_cobertura": 3,
+        "fichas.iniciais": 6
+      },
+      "nome": "n5_iniciante_fichas_6_dano_3",
+      "partidas": 2000,
+      "pesos": [
+        313,
+        541,
+        133,
+        13
+      ],
+      "regras": "configs/regras_v2_2_1.yaml",
+      "requisitos": [
+        "REQ-06",
+        "REQ-07",
+        "REQ-08",
+        "REQ-10",
+        "REQ-11",
+        "REQ-12",
+        "REQ-13"
+      ],
+      "versao": "v2.2.1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "blefe": "nunca",
+            "conhecimento": "experiente",
+            "contestacao": "nunca"
+          },
+          "rotulo": "blefa_nunca_contesta_nunca",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "nunca",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "blefa_nunca_contesta_limiar",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "sempre",
+            "conhecimento": "experiente",
+            "contestacao": "nunca"
+          },
+          "rotulo": "blefa_sempre_contesta_nunca",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "sempre",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "blefa_sempre_contesta_limiar",
+          "tipo": "heuristico"
+        }
+      ],
+      "catalogo_hash": "sha256:89a8b5427c62009c7ce16a105b7d7de2e0d950035f7803edee091dc067937362",
+      "celula": null,
+      "comparar_com": null,
+      "config_hash": "sha256:60ad08b41b4c4b60f71006dfeda6e2f85e8d576c11631b450363e462e19e3285",
+      "familia": "v2",
+      "grupo": "n4_experiente_fichas_5_dano_2",
+      "jogadores": 4,
+      "matriz": null,
+      "mudancas": {
+        "dano.incidente.sem_cobertura": 2,
+        "fichas.iniciais": 5
+      },
+      "nome": "n4_experiente_fichas_5_dano_2",
+      "partidas": 2000,
+      "pesos": [
+        325,
+        501,
+        133,
+        41
+      ],
+      "regras": "configs/regras_v2_2_1.yaml",
+      "requisitos": [
+        "REQ-06",
+        "REQ-07",
+        "REQ-08",
+        "REQ-10",
+        "REQ-11",
+        "REQ-12",
+        "REQ-13"
+      ],
+      "versao": "v2.2.1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "blefe": "nunca",
+            "conhecimento": "experiente",
+            "contestacao": "nunca"
+          },
+          "rotulo": "blefa_nunca_contesta_nunca",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "nunca",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "blefa_nunca_contesta_limiar",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "sempre",
+            "conhecimento": "experiente",
+            "contestacao": "nunca"
+          },
+          "rotulo": "blefa_sempre_contesta_nunca",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "sempre",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "blefa_sempre_contesta_limiar",
+          "tipo": "heuristico"
+        }
+      ],
+      "catalogo_hash": "sha256:89a8b5427c62009c7ce16a105b7d7de2e0d950035f7803edee091dc067937362",
+      "celula": null,
+      "comparar_com": null,
+      "config_hash": "sha256:61b09722477f8d06f1cff629599fc611f27803485e981143c3c1c6ad8dc4b883",
+      "familia": "v2",
+      "grupo": "n4_experiente_fichas_5_dano_3",
+      "jogadores": 4,
+      "matriz": null,
+      "mudancas": {
+        "dano.incidente.sem_cobertura": 3,
+        "fichas.iniciais": 5
+      },
+      "nome": "n4_experiente_fichas_5_dano_3",
+      "partidas": 2000,
+      "pesos": [
+        325,
+        501,
+        133,
+        41
+      ],
+      "regras": "configs/regras_v2_2_1.yaml",
+      "requisitos": [
+        "REQ-06",
+        "REQ-07",
+        "REQ-08",
+        "REQ-10",
+        "REQ-11",
+        "REQ-12",
+        "REQ-13"
+      ],
+      "versao": "v2.2.1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "blefe": "nunca",
+            "conhecimento": "experiente",
+            "contestacao": "nunca"
+          },
+          "rotulo": "blefa_nunca_contesta_nunca",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "nunca",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "blefa_nunca_contesta_limiar",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "sempre",
+            "conhecimento": "experiente",
+            "contestacao": "nunca"
+          },
+          "rotulo": "blefa_sempre_contesta_nunca",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "sempre",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "blefa_sempre_contesta_limiar",
+          "tipo": "heuristico"
+        }
+      ],
+      "catalogo_hash": "sha256:89a8b5427c62009c7ce16a105b7d7de2e0d950035f7803edee091dc067937362",
+      "celula": null,
+      "comparar_com": null,
+      "config_hash": "sha256:30ca332f7f8c8bb909eab942af9f356bacc185ae055aedb912f970ca423135ae",
+      "familia": "v2",
+      "grupo": "n4_experiente_fichas_6_dano_2",
+      "jogadores": 4,
+      "matriz": null,
+      "mudancas": {
+        "dano.incidente.sem_cobertura": 2,
+        "fichas.iniciais": 6
+      },
+      "nome": "n4_experiente_fichas_6_dano_2",
+      "partidas": 2000,
+      "pesos": [
+        325,
+        501,
+        133,
+        41
+      ],
+      "regras": "configs/regras_v2_2_1.yaml",
+      "requisitos": [
+        "REQ-06",
+        "REQ-07",
+        "REQ-08",
+        "REQ-10",
+        "REQ-11",
+        "REQ-12",
+        "REQ-13"
+      ],
+      "versao": "v2.2.1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "blefe": "nunca",
+            "conhecimento": "experiente",
+            "contestacao": "nunca"
+          },
+          "rotulo": "blefa_nunca_contesta_nunca",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "nunca",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "blefa_nunca_contesta_limiar",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "sempre",
+            "conhecimento": "experiente",
+            "contestacao": "nunca"
+          },
+          "rotulo": "blefa_sempre_contesta_nunca",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "sempre",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "blefa_sempre_contesta_limiar",
+          "tipo": "heuristico"
+        }
+      ],
+      "catalogo_hash": "sha256:89a8b5427c62009c7ce16a105b7d7de2e0d950035f7803edee091dc067937362",
+      "celula": null,
+      "comparar_com": null,
+      "config_hash": "sha256:97ff489d1678c0735b6e6d64c4137500143f9df97849d67beac2a2c08e027cd5",
+      "familia": "v2",
+      "grupo": "n4_experiente_fichas_6_dano_3",
+      "jogadores": 4,
+      "matriz": null,
+      "mudancas": {
+        "dano.incidente.sem_cobertura": 3,
+        "fichas.iniciais": 6
+      },
+      "nome": "n4_experiente_fichas_6_dano_3",
+      "partidas": 2000,
+      "pesos": [
+        325,
+        501,
+        133,
+        41
+      ],
+      "regras": "configs/regras_v2_2_1.yaml",
+      "requisitos": [
+        "REQ-06",
+        "REQ-07",
+        "REQ-08",
+        "REQ-10",
+        "REQ-11",
+        "REQ-12",
+        "REQ-13"
+      ],
+      "versao": "v2.2.1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "blefe": "nunca",
+            "conhecimento": "experiente",
+            "contestacao": "nunca"
+          },
+          "rotulo": "blefa_nunca_contesta_nunca",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "nunca",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "blefa_nunca_contesta_limiar",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "sempre",
+            "conhecimento": "experiente",
+            "contestacao": "nunca"
+          },
+          "rotulo": "blefa_sempre_contesta_nunca",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "sempre",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "blefa_sempre_contesta_limiar",
+          "tipo": "heuristico"
+        }
+      ],
+      "catalogo_hash": "sha256:89a8b5427c62009c7ce16a105b7d7de2e0d950035f7803edee091dc067937362",
+      "celula": null,
+      "comparar_com": null,
+      "config_hash": "sha256:60ad08b41b4c4b60f71006dfeda6e2f85e8d576c11631b450363e462e19e3285",
+      "familia": "v2",
+      "grupo": "n5_experiente_fichas_5_dano_2",
+      "jogadores": 5,
+      "matriz": null,
+      "mudancas": {
+        "dano.incidente.sem_cobertura": 2,
+        "fichas.iniciais": 5
+      },
+      "nome": "n5_experiente_fichas_5_dano_2",
+      "partidas": 2000,
+      "pesos": [
+        313,
+        541,
+        133,
+        13
+      ],
+      "regras": "configs/regras_v2_2_1.yaml",
+      "requisitos": [
+        "REQ-06",
+        "REQ-07",
+        "REQ-08",
+        "REQ-10",
+        "REQ-11",
+        "REQ-12",
+        "REQ-13"
+      ],
+      "versao": "v2.2.1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "blefe": "nunca",
+            "conhecimento": "experiente",
+            "contestacao": "nunca"
+          },
+          "rotulo": "blefa_nunca_contesta_nunca",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "nunca",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "blefa_nunca_contesta_limiar",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "sempre",
+            "conhecimento": "experiente",
+            "contestacao": "nunca"
+          },
+          "rotulo": "blefa_sempre_contesta_nunca",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "sempre",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "blefa_sempre_contesta_limiar",
+          "tipo": "heuristico"
+        }
+      ],
+      "catalogo_hash": "sha256:89a8b5427c62009c7ce16a105b7d7de2e0d950035f7803edee091dc067937362",
+      "celula": null,
+      "comparar_com": null,
+      "config_hash": "sha256:61b09722477f8d06f1cff629599fc611f27803485e981143c3c1c6ad8dc4b883",
+      "familia": "v2",
+      "grupo": "n5_experiente_fichas_5_dano_3",
+      "jogadores": 5,
+      "matriz": null,
+      "mudancas": {
+        "dano.incidente.sem_cobertura": 3,
+        "fichas.iniciais": 5
+      },
+      "nome": "n5_experiente_fichas_5_dano_3",
+      "partidas": 2000,
+      "pesos": [
+        313,
+        541,
+        133,
+        13
+      ],
+      "regras": "configs/regras_v2_2_1.yaml",
+      "requisitos": [
+        "REQ-06",
+        "REQ-07",
+        "REQ-08",
+        "REQ-10",
+        "REQ-11",
+        "REQ-12",
+        "REQ-13"
+      ],
+      "versao": "v2.2.1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "blefe": "nunca",
+            "conhecimento": "experiente",
+            "contestacao": "nunca"
+          },
+          "rotulo": "blefa_nunca_contesta_nunca",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "nunca",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "blefa_nunca_contesta_limiar",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "sempre",
+            "conhecimento": "experiente",
+            "contestacao": "nunca"
+          },
+          "rotulo": "blefa_sempre_contesta_nunca",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "sempre",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "blefa_sempre_contesta_limiar",
+          "tipo": "heuristico"
+        }
+      ],
+      "catalogo_hash": "sha256:89a8b5427c62009c7ce16a105b7d7de2e0d950035f7803edee091dc067937362",
+      "celula": null,
+      "comparar_com": null,
+      "config_hash": "sha256:30ca332f7f8c8bb909eab942af9f356bacc185ae055aedb912f970ca423135ae",
+      "familia": "v2",
+      "grupo": "n5_experiente_fichas_6_dano_2",
+      "jogadores": 5,
+      "matriz": null,
+      "mudancas": {
+        "dano.incidente.sem_cobertura": 2,
+        "fichas.iniciais": 6
+      },
+      "nome": "n5_experiente_fichas_6_dano_2",
+      "partidas": 2000,
+      "pesos": [
+        313,
+        541,
+        133,
+        13
+      ],
+      "regras": "configs/regras_v2_2_1.yaml",
+      "requisitos": [
+        "REQ-06",
+        "REQ-07",
+        "REQ-08",
+        "REQ-10",
+        "REQ-11",
+        "REQ-12",
+        "REQ-13"
+      ],
+      "versao": "v2.2.1"
+    },
+    {
+      "bots": [
+        {
+          "parametros": {
+            "blefe": "nunca",
+            "conhecimento": "experiente",
+            "contestacao": "nunca"
+          },
+          "rotulo": "blefa_nunca_contesta_nunca",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "nunca",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "blefa_nunca_contesta_limiar",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "sempre",
+            "conhecimento": "experiente",
+            "contestacao": "nunca"
+          },
+          "rotulo": "blefa_sempre_contesta_nunca",
+          "tipo": "heuristico"
+        },
+        {
+          "parametros": {
+            "blefe": "sempre",
+            "conhecimento": "experiente",
+            "contestacao": "limiar"
+          },
+          "rotulo": "blefa_sempre_contesta_limiar",
+          "tipo": "heuristico"
+        }
+      ],
+      "catalogo_hash": "sha256:89a8b5427c62009c7ce16a105b7d7de2e0d950035f7803edee091dc067937362",
+      "celula": null,
+      "comparar_com": null,
+      "config_hash": "sha256:97ff489d1678c0735b6e6d64c4137500143f9df97849d67beac2a2c08e027cd5",
+      "familia": "v2",
+      "grupo": "n5_experiente_fichas_6_dano_3",
+      "jogadores": 5,
+      "matriz": null,
+      "mudancas": {
+        "dano.incidente.sem_cobertura": 3,
+        "fichas.iniciais": 6
+      },
+      "nome": "n5_experiente_fichas_6_dano_3",
+      "partidas": 2000,
+      "pesos": [
+        313,
+        541,
+        133,
+        13
+      ],
+      "regras": "configs/regras_v2_2_1.yaml",
+      "requisitos": [
+        "REQ-06",
+        "REQ-07",
+        "REQ-08",
+        "REQ-10",
+        "REQ-11",
+        "REQ-12",
+        "REQ-13"
+      ],
+      "versao": "v2.2.1"
+    }
+  ],
+  "comando": "cf experimento experimentos/fase4_exp4b_combinacoes.yaml --oficial --processos 4",
+  "duracao": {
+    "arquivo": "configs/duracao.yaml",
+    "sha256": "sha256:9bb2aa16f286d032e76e1ae026a9acd891fcab591867d7c4b45f0d29a65ff756"
+  },
+  "esquema": "cf-manifest/1",
+  "experimento": {
+    "arquivo": "experimentos/fase4_exp4b_combinacoes.yaml",
+    "conteudo": {
+      "cenarios": [
+        {
+          "bots": [
+            {
+              "parametros": {
+                "blefe": "nunca",
+                "conhecimento": "iniciante",
+                "contestacao": "nunca"
+              },
+              "rotulo": "blefa_nunca_contesta_nunca",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "nunca",
+                "conhecimento": "iniciante",
+                "contestacao": "limiar"
+              },
+              "rotulo": "blefa_nunca_contesta_limiar",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "sempre",
+                "conhecimento": "iniciante",
+                "contestacao": "nunca"
+              },
+              "rotulo": "blefa_sempre_contesta_nunca",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "sempre",
+                "conhecimento": "iniciante",
+                "contestacao": "limiar"
+              },
+              "rotulo": "blefa_sempre_contesta_limiar",
+              "tipo": "heuristico"
+            }
+          ],
+          "celula": null,
+          "comparar_com": null,
+          "duracao": null,
+          "grupo": null,
+          "jogadores": 4,
+          "matriz": null,
+          "mudancas": {
+            "dano.incidente.sem_cobertura": 2,
+            "fichas.iniciais": 5
+          },
+          "nome": "n4_iniciante_fichas_5_dano_2",
+          "partidas": 2000,
+          "pesos": [
+            325,
+            501,
+            133,
+            41
+          ],
+          "regras": "configs/regras_v2_2_1.yaml",
+          "requisitos": [
+            "REQ-06",
+            "REQ-07",
+            "REQ-08",
+            "REQ-10",
+            "REQ-11",
+            "REQ-12",
+            "REQ-13"
+          ],
+          "rodizio": false
+        },
+        {
+          "bots": [
+            {
+              "parametros": {
+                "blefe": "nunca",
+                "conhecimento": "iniciante",
+                "contestacao": "nunca"
+              },
+              "rotulo": "blefa_nunca_contesta_nunca",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "nunca",
+                "conhecimento": "iniciante",
+                "contestacao": "limiar"
+              },
+              "rotulo": "blefa_nunca_contesta_limiar",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "sempre",
+                "conhecimento": "iniciante",
+                "contestacao": "nunca"
+              },
+              "rotulo": "blefa_sempre_contesta_nunca",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "sempre",
+                "conhecimento": "iniciante",
+                "contestacao": "limiar"
+              },
+              "rotulo": "blefa_sempre_contesta_limiar",
+              "tipo": "heuristico"
+            }
+          ],
+          "celula": null,
+          "comparar_com": null,
+          "duracao": null,
+          "grupo": null,
+          "jogadores": 4,
+          "matriz": null,
+          "mudancas": {
+            "dano.incidente.sem_cobertura": 3,
+            "fichas.iniciais": 5
+          },
+          "nome": "n4_iniciante_fichas_5_dano_3",
+          "partidas": 2000,
+          "pesos": [
+            325,
+            501,
+            133,
+            41
+          ],
+          "regras": "configs/regras_v2_2_1.yaml",
+          "requisitos": [
+            "REQ-06",
+            "REQ-07",
+            "REQ-08",
+            "REQ-10",
+            "REQ-11",
+            "REQ-12",
+            "REQ-13"
+          ],
+          "rodizio": false
+        },
+        {
+          "bots": [
+            {
+              "parametros": {
+                "blefe": "nunca",
+                "conhecimento": "iniciante",
+                "contestacao": "nunca"
+              },
+              "rotulo": "blefa_nunca_contesta_nunca",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "nunca",
+                "conhecimento": "iniciante",
+                "contestacao": "limiar"
+              },
+              "rotulo": "blefa_nunca_contesta_limiar",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "sempre",
+                "conhecimento": "iniciante",
+                "contestacao": "nunca"
+              },
+              "rotulo": "blefa_sempre_contesta_nunca",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "sempre",
+                "conhecimento": "iniciante",
+                "contestacao": "limiar"
+              },
+              "rotulo": "blefa_sempre_contesta_limiar",
+              "tipo": "heuristico"
+            }
+          ],
+          "celula": null,
+          "comparar_com": null,
+          "duracao": null,
+          "grupo": null,
+          "jogadores": 4,
+          "matriz": null,
+          "mudancas": {
+            "dano.incidente.sem_cobertura": 2,
+            "fichas.iniciais": 6
+          },
+          "nome": "n4_iniciante_fichas_6_dano_2",
+          "partidas": 2000,
+          "pesos": [
+            325,
+            501,
+            133,
+            41
+          ],
+          "regras": "configs/regras_v2_2_1.yaml",
+          "requisitos": [
+            "REQ-06",
+            "REQ-07",
+            "REQ-08",
+            "REQ-10",
+            "REQ-11",
+            "REQ-12",
+            "REQ-13"
+          ],
+          "rodizio": false
+        },
+        {
+          "bots": [
+            {
+              "parametros": {
+                "blefe": "nunca",
+                "conhecimento": "iniciante",
+                "contestacao": "nunca"
+              },
+              "rotulo": "blefa_nunca_contesta_nunca",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "nunca",
+                "conhecimento": "iniciante",
+                "contestacao": "limiar"
+              },
+              "rotulo": "blefa_nunca_contesta_limiar",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "sempre",
+                "conhecimento": "iniciante",
+                "contestacao": "nunca"
+              },
+              "rotulo": "blefa_sempre_contesta_nunca",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "sempre",
+                "conhecimento": "iniciante",
+                "contestacao": "limiar"
+              },
+              "rotulo": "blefa_sempre_contesta_limiar",
+              "tipo": "heuristico"
+            }
+          ],
+          "celula": null,
+          "comparar_com": null,
+          "duracao": null,
+          "grupo": null,
+          "jogadores": 4,
+          "matriz": null,
+          "mudancas": {
+            "dano.incidente.sem_cobertura": 3,
+            "fichas.iniciais": 6
+          },
+          "nome": "n4_iniciante_fichas_6_dano_3",
+          "partidas": 2000,
+          "pesos": [
+            325,
+            501,
+            133,
+            41
+          ],
+          "regras": "configs/regras_v2_2_1.yaml",
+          "requisitos": [
+            "REQ-06",
+            "REQ-07",
+            "REQ-08",
+            "REQ-10",
+            "REQ-11",
+            "REQ-12",
+            "REQ-13"
+          ],
+          "rodizio": false
+        },
+        {
+          "bots": [
+            {
+              "parametros": {
+                "blefe": "nunca",
+                "conhecimento": "iniciante",
+                "contestacao": "nunca"
+              },
+              "rotulo": "blefa_nunca_contesta_nunca",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "nunca",
+                "conhecimento": "iniciante",
+                "contestacao": "limiar"
+              },
+              "rotulo": "blefa_nunca_contesta_limiar",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "sempre",
+                "conhecimento": "iniciante",
+                "contestacao": "nunca"
+              },
+              "rotulo": "blefa_sempre_contesta_nunca",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "sempre",
+                "conhecimento": "iniciante",
+                "contestacao": "limiar"
+              },
+              "rotulo": "blefa_sempre_contesta_limiar",
+              "tipo": "heuristico"
+            }
+          ],
+          "celula": null,
+          "comparar_com": null,
+          "duracao": null,
+          "grupo": null,
+          "jogadores": 5,
+          "matriz": null,
+          "mudancas": {
+            "dano.incidente.sem_cobertura": 2,
+            "fichas.iniciais": 5
+          },
+          "nome": "n5_iniciante_fichas_5_dano_2",
+          "partidas": 2000,
+          "pesos": [
+            313,
+            541,
+            133,
+            13
+          ],
+          "regras": "configs/regras_v2_2_1.yaml",
+          "requisitos": [
+            "REQ-06",
+            "REQ-07",
+            "REQ-08",
+            "REQ-10",
+            "REQ-11",
+            "REQ-12",
+            "REQ-13"
+          ],
+          "rodizio": false
+        },
+        {
+          "bots": [
+            {
+              "parametros": {
+                "blefe": "nunca",
+                "conhecimento": "iniciante",
+                "contestacao": "nunca"
+              },
+              "rotulo": "blefa_nunca_contesta_nunca",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "nunca",
+                "conhecimento": "iniciante",
+                "contestacao": "limiar"
+              },
+              "rotulo": "blefa_nunca_contesta_limiar",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "sempre",
+                "conhecimento": "iniciante",
+                "contestacao": "nunca"
+              },
+              "rotulo": "blefa_sempre_contesta_nunca",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "sempre",
+                "conhecimento": "iniciante",
+                "contestacao": "limiar"
+              },
+              "rotulo": "blefa_sempre_contesta_limiar",
+              "tipo": "heuristico"
+            }
+          ],
+          "celula": null,
+          "comparar_com": null,
+          "duracao": null,
+          "grupo": null,
+          "jogadores": 5,
+          "matriz": null,
+          "mudancas": {
+            "dano.incidente.sem_cobertura": 3,
+            "fichas.iniciais": 5
+          },
+          "nome": "n5_iniciante_fichas_5_dano_3",
+          "partidas": 2000,
+          "pesos": [
+            313,
+            541,
+            133,
+            13
+          ],
+          "regras": "configs/regras_v2_2_1.yaml",
+          "requisitos": [
+            "REQ-06",
+            "REQ-07",
+            "REQ-08",
+            "REQ-10",
+            "REQ-11",
+            "REQ-12",
+            "REQ-13"
+          ],
+          "rodizio": false
+        },
+        {
+          "bots": [
+            {
+              "parametros": {
+                "blefe": "nunca",
+                "conhecimento": "iniciante",
+                "contestacao": "nunca"
+              },
+              "rotulo": "blefa_nunca_contesta_nunca",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "nunca",
+                "conhecimento": "iniciante",
+                "contestacao": "limiar"
+              },
+              "rotulo": "blefa_nunca_contesta_limiar",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "sempre",
+                "conhecimento": "iniciante",
+                "contestacao": "nunca"
+              },
+              "rotulo": "blefa_sempre_contesta_nunca",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "sempre",
+                "conhecimento": "iniciante",
+                "contestacao": "limiar"
+              },
+              "rotulo": "blefa_sempre_contesta_limiar",
+              "tipo": "heuristico"
+            }
+          ],
+          "celula": null,
+          "comparar_com": null,
+          "duracao": null,
+          "grupo": null,
+          "jogadores": 5,
+          "matriz": null,
+          "mudancas": {
+            "dano.incidente.sem_cobertura": 2,
+            "fichas.iniciais": 6
+          },
+          "nome": "n5_iniciante_fichas_6_dano_2",
+          "partidas": 2000,
+          "pesos": [
+            313,
+            541,
+            133,
+            13
+          ],
+          "regras": "configs/regras_v2_2_1.yaml",
+          "requisitos": [
+            "REQ-06",
+            "REQ-07",
+            "REQ-08",
+            "REQ-10",
+            "REQ-11",
+            "REQ-12",
+            "REQ-13"
+          ],
+          "rodizio": false
+        },
+        {
+          "bots": [
+            {
+              "parametros": {
+                "blefe": "nunca",
+                "conhecimento": "iniciante",
+                "contestacao": "nunca"
+              },
+              "rotulo": "blefa_nunca_contesta_nunca",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "nunca",
+                "conhecimento": "iniciante",
+                "contestacao": "limiar"
+              },
+              "rotulo": "blefa_nunca_contesta_limiar",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "sempre",
+                "conhecimento": "iniciante",
+                "contestacao": "nunca"
+              },
+              "rotulo": "blefa_sempre_contesta_nunca",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "sempre",
+                "conhecimento": "iniciante",
+                "contestacao": "limiar"
+              },
+              "rotulo": "blefa_sempre_contesta_limiar",
+              "tipo": "heuristico"
+            }
+          ],
+          "celula": null,
+          "comparar_com": null,
+          "duracao": null,
+          "grupo": null,
+          "jogadores": 5,
+          "matriz": null,
+          "mudancas": {
+            "dano.incidente.sem_cobertura": 3,
+            "fichas.iniciais": 6
+          },
+          "nome": "n5_iniciante_fichas_6_dano_3",
+          "partidas": 2000,
+          "pesos": [
+            313,
+            541,
+            133,
+            13
+          ],
+          "regras": "configs/regras_v2_2_1.yaml",
+          "requisitos": [
+            "REQ-06",
+            "REQ-07",
+            "REQ-08",
+            "REQ-10",
+            "REQ-11",
+            "REQ-12",
+            "REQ-13"
+          ],
+          "rodizio": false
+        },
+        {
+          "bots": [
+            {
+              "parametros": {
+                "blefe": "nunca",
+                "conhecimento": "experiente",
+                "contestacao": "nunca"
+              },
+              "rotulo": "blefa_nunca_contesta_nunca",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "nunca",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "blefa_nunca_contesta_limiar",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "sempre",
+                "conhecimento": "experiente",
+                "contestacao": "nunca"
+              },
+              "rotulo": "blefa_sempre_contesta_nunca",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "sempre",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "blefa_sempre_contesta_limiar",
+              "tipo": "heuristico"
+            }
+          ],
+          "celula": null,
+          "comparar_com": null,
+          "duracao": null,
+          "grupo": null,
+          "jogadores": 4,
+          "matriz": null,
+          "mudancas": {
+            "dano.incidente.sem_cobertura": 2,
+            "fichas.iniciais": 5
+          },
+          "nome": "n4_experiente_fichas_5_dano_2",
+          "partidas": 2000,
+          "pesos": [
+            325,
+            501,
+            133,
+            41
+          ],
+          "regras": "configs/regras_v2_2_1.yaml",
+          "requisitos": [
+            "REQ-06",
+            "REQ-07",
+            "REQ-08",
+            "REQ-10",
+            "REQ-11",
+            "REQ-12",
+            "REQ-13"
+          ],
+          "rodizio": false
+        },
+        {
+          "bots": [
+            {
+              "parametros": {
+                "blefe": "nunca",
+                "conhecimento": "experiente",
+                "contestacao": "nunca"
+              },
+              "rotulo": "blefa_nunca_contesta_nunca",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "nunca",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "blefa_nunca_contesta_limiar",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "sempre",
+                "conhecimento": "experiente",
+                "contestacao": "nunca"
+              },
+              "rotulo": "blefa_sempre_contesta_nunca",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "sempre",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "blefa_sempre_contesta_limiar",
+              "tipo": "heuristico"
+            }
+          ],
+          "celula": null,
+          "comparar_com": null,
+          "duracao": null,
+          "grupo": null,
+          "jogadores": 4,
+          "matriz": null,
+          "mudancas": {
+            "dano.incidente.sem_cobertura": 3,
+            "fichas.iniciais": 5
+          },
+          "nome": "n4_experiente_fichas_5_dano_3",
+          "partidas": 2000,
+          "pesos": [
+            325,
+            501,
+            133,
+            41
+          ],
+          "regras": "configs/regras_v2_2_1.yaml",
+          "requisitos": [
+            "REQ-06",
+            "REQ-07",
+            "REQ-08",
+            "REQ-10",
+            "REQ-11",
+            "REQ-12",
+            "REQ-13"
+          ],
+          "rodizio": false
+        },
+        {
+          "bots": [
+            {
+              "parametros": {
+                "blefe": "nunca",
+                "conhecimento": "experiente",
+                "contestacao": "nunca"
+              },
+              "rotulo": "blefa_nunca_contesta_nunca",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "nunca",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "blefa_nunca_contesta_limiar",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "sempre",
+                "conhecimento": "experiente",
+                "contestacao": "nunca"
+              },
+              "rotulo": "blefa_sempre_contesta_nunca",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "sempre",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "blefa_sempre_contesta_limiar",
+              "tipo": "heuristico"
+            }
+          ],
+          "celula": null,
+          "comparar_com": null,
+          "duracao": null,
+          "grupo": null,
+          "jogadores": 4,
+          "matriz": null,
+          "mudancas": {
+            "dano.incidente.sem_cobertura": 2,
+            "fichas.iniciais": 6
+          },
+          "nome": "n4_experiente_fichas_6_dano_2",
+          "partidas": 2000,
+          "pesos": [
+            325,
+            501,
+            133,
+            41
+          ],
+          "regras": "configs/regras_v2_2_1.yaml",
+          "requisitos": [
+            "REQ-06",
+            "REQ-07",
+            "REQ-08",
+            "REQ-10",
+            "REQ-11",
+            "REQ-12",
+            "REQ-13"
+          ],
+          "rodizio": false
+        },
+        {
+          "bots": [
+            {
+              "parametros": {
+                "blefe": "nunca",
+                "conhecimento": "experiente",
+                "contestacao": "nunca"
+              },
+              "rotulo": "blefa_nunca_contesta_nunca",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "nunca",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "blefa_nunca_contesta_limiar",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "sempre",
+                "conhecimento": "experiente",
+                "contestacao": "nunca"
+              },
+              "rotulo": "blefa_sempre_contesta_nunca",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "sempre",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "blefa_sempre_contesta_limiar",
+              "tipo": "heuristico"
+            }
+          ],
+          "celula": null,
+          "comparar_com": null,
+          "duracao": null,
+          "grupo": null,
+          "jogadores": 4,
+          "matriz": null,
+          "mudancas": {
+            "dano.incidente.sem_cobertura": 3,
+            "fichas.iniciais": 6
+          },
+          "nome": "n4_experiente_fichas_6_dano_3",
+          "partidas": 2000,
+          "pesos": [
+            325,
+            501,
+            133,
+            41
+          ],
+          "regras": "configs/regras_v2_2_1.yaml",
+          "requisitos": [
+            "REQ-06",
+            "REQ-07",
+            "REQ-08",
+            "REQ-10",
+            "REQ-11",
+            "REQ-12",
+            "REQ-13"
+          ],
+          "rodizio": false
+        },
+        {
+          "bots": [
+            {
+              "parametros": {
+                "blefe": "nunca",
+                "conhecimento": "experiente",
+                "contestacao": "nunca"
+              },
+              "rotulo": "blefa_nunca_contesta_nunca",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "nunca",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "blefa_nunca_contesta_limiar",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "sempre",
+                "conhecimento": "experiente",
+                "contestacao": "nunca"
+              },
+              "rotulo": "blefa_sempre_contesta_nunca",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "sempre",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "blefa_sempre_contesta_limiar",
+              "tipo": "heuristico"
+            }
+          ],
+          "celula": null,
+          "comparar_com": null,
+          "duracao": null,
+          "grupo": null,
+          "jogadores": 5,
+          "matriz": null,
+          "mudancas": {
+            "dano.incidente.sem_cobertura": 2,
+            "fichas.iniciais": 5
+          },
+          "nome": "n5_experiente_fichas_5_dano_2",
+          "partidas": 2000,
+          "pesos": [
+            313,
+            541,
+            133,
+            13
+          ],
+          "regras": "configs/regras_v2_2_1.yaml",
+          "requisitos": [
+            "REQ-06",
+            "REQ-07",
+            "REQ-08",
+            "REQ-10",
+            "REQ-11",
+            "REQ-12",
+            "REQ-13"
+          ],
+          "rodizio": false
+        },
+        {
+          "bots": [
+            {
+              "parametros": {
+                "blefe": "nunca",
+                "conhecimento": "experiente",
+                "contestacao": "nunca"
+              },
+              "rotulo": "blefa_nunca_contesta_nunca",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "nunca",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "blefa_nunca_contesta_limiar",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "sempre",
+                "conhecimento": "experiente",
+                "contestacao": "nunca"
+              },
+              "rotulo": "blefa_sempre_contesta_nunca",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "sempre",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "blefa_sempre_contesta_limiar",
+              "tipo": "heuristico"
+            }
+          ],
+          "celula": null,
+          "comparar_com": null,
+          "duracao": null,
+          "grupo": null,
+          "jogadores": 5,
+          "matriz": null,
+          "mudancas": {
+            "dano.incidente.sem_cobertura": 3,
+            "fichas.iniciais": 5
+          },
+          "nome": "n5_experiente_fichas_5_dano_3",
+          "partidas": 2000,
+          "pesos": [
+            313,
+            541,
+            133,
+            13
+          ],
+          "regras": "configs/regras_v2_2_1.yaml",
+          "requisitos": [
+            "REQ-06",
+            "REQ-07",
+            "REQ-08",
+            "REQ-10",
+            "REQ-11",
+            "REQ-12",
+            "REQ-13"
+          ],
+          "rodizio": false
+        },
+        {
+          "bots": [
+            {
+              "parametros": {
+                "blefe": "nunca",
+                "conhecimento": "experiente",
+                "contestacao": "nunca"
+              },
+              "rotulo": "blefa_nunca_contesta_nunca",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "nunca",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "blefa_nunca_contesta_limiar",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "sempre",
+                "conhecimento": "experiente",
+                "contestacao": "nunca"
+              },
+              "rotulo": "blefa_sempre_contesta_nunca",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "sempre",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "blefa_sempre_contesta_limiar",
+              "tipo": "heuristico"
+            }
+          ],
+          "celula": null,
+          "comparar_com": null,
+          "duracao": null,
+          "grupo": null,
+          "jogadores": 5,
+          "matriz": null,
+          "mudancas": {
+            "dano.incidente.sem_cobertura": 2,
+            "fichas.iniciais": 6
+          },
+          "nome": "n5_experiente_fichas_6_dano_2",
+          "partidas": 2000,
+          "pesos": [
+            313,
+            541,
+            133,
+            13
+          ],
+          "regras": "configs/regras_v2_2_1.yaml",
+          "requisitos": [
+            "REQ-06",
+            "REQ-07",
+            "REQ-08",
+            "REQ-10",
+            "REQ-11",
+            "REQ-12",
+            "REQ-13"
+          ],
+          "rodizio": false
+        },
+        {
+          "bots": [
+            {
+              "parametros": {
+                "blefe": "nunca",
+                "conhecimento": "experiente",
+                "contestacao": "nunca"
+              },
+              "rotulo": "blefa_nunca_contesta_nunca",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "nunca",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "blefa_nunca_contesta_limiar",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "sempre",
+                "conhecimento": "experiente",
+                "contestacao": "nunca"
+              },
+              "rotulo": "blefa_sempre_contesta_nunca",
+              "tipo": "heuristico"
+            },
+            {
+              "parametros": {
+                "blefe": "sempre",
+                "conhecimento": "experiente",
+                "contestacao": "limiar"
+              },
+              "rotulo": "blefa_sempre_contesta_limiar",
+              "tipo": "heuristico"
+            }
+          ],
+          "celula": null,
+          "comparar_com": null,
+          "duracao": null,
+          "grupo": null,
+          "jogadores": 5,
+          "matriz": null,
+          "mudancas": {
+            "dano.incidente.sem_cobertura": 3,
+            "fichas.iniciais": 6
+          },
+          "nome": "n5_experiente_fichas_6_dano_3",
+          "partidas": 2000,
+          "pesos": [
+            313,
+            541,
+            133,
+            13
+          ],
+          "regras": "configs/regras_v2_2_1.yaml",
+          "requisitos": [
+            "REQ-06",
+            "REQ-07",
+            "REQ-08",
+            "REQ-10",
+            "REQ-11",
+            "REQ-12",
+            "REQ-13"
+          ],
+          "rodizio": false
+        }
+      ],
+      "conferir_invariantes": true,
+      "descricao": "Combinações de fichas iniciais (5 e 6) e dano de incidente sem cobertura (2 e 3) na v2.2.1, com mesas de 4 e de 5 e conhecimento iniciante e experiente.\n",
+      "duracao": "configs/duracao.yaml",
+      "esquema": "cf-experimento/1",
+      "nome": "fase4_exp4b_combinacoes",
+      "registros_completos_um_a_cada": 1000,
+      "requisitos_arquivo": "configs/requisitos.yaml",
+      "semente_mestre": 20261120
+    },
+    "sha256": "sha256:afa624e32fc85e86279d9615819195b90a1e951d4dadcbccdc9b1cffcef3ab3b"
+  },
+  "falhas": 0,
+  "git": {
+    "commit": "b263c34a024da3f580a612a9602c38e213282fb9",
+    "sujo": false
+  },
+  "inicio": "2026-11-11T13:44:24+00:00",
+  "invariantes_conferidos_a_cada_evento": true,
+  "oficial": true,
+  "partidas": 32000,
+  "processos": 4,
+  "registros_completos": 32,
+  "registros_nao_gravados": 0,
+  "requisitos": {
+    "arquivo": "configs/requisitos.yaml",
+    "sha256": "sha256:f23d815a3c91ac01999a7ac5e20e0ba974a98c11d0a4dff3a113328e476bfe5e"
+  },
+  "segundos": 1029.5,
+  "semente_mestre": 20261120,
+  "vereditos": {
+    "REQ-06": [
+      "passa"
+    ],
+    "REQ-07": [
+      "falha",
+      "inconclusivo",
+      "passa"
+    ],
+    "REQ-08": [
+      "falha",
+      "passa"
+    ],
+    "REQ-09": [
+      "inconclusivo"
+    ],
+    "REQ-10": [
+      "falha"
+    ],
+    "REQ-11": [
+      "passa"
+    ],
+    "REQ-12": [
+      "inconclusivo",
+      "passa"
+    ],
+    "REQ-13": [
+      "falha",
+      "passa"
+    ]
+  }
+}

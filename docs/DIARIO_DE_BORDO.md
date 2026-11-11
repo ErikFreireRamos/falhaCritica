@@ -1021,3 +1021,32 @@ Execução oficial no commit `73762b5`, árvore limpa: 88.000 partidas em 1.421 
 ### O que foi feito
 
 - `experimentos/fase4_exp4b_combinacoes.yaml`: 16 cenários (4 combinações × 2 perfis de conhecimento × mesas de 4 e de 5), 32.000 partidas, com o mesmo desenho do Experimento 4. Semente mestre 20261120. Um teste confere o arquivo.
+
+### Resultado do Experimento 4b (`fase4_exp4b_combinacoes`)
+
+Execução oficial no commit `b263c34`, árvore limpa: 32.000 partidas em 1.030 s com 4 processos, nenhuma falha. O REQ-09 saiu inconclusivo só porque o experimento tem menos de 50.000 partidas. Relatório em `resultados/fase4_exp4b_combinacoes/20261111-134424-b263c34/relatorio.md`. Mesma legenda da tabela do Experimento 6.
+
+| Cenário | REQ-06a | REQ-06b | REQ-07 | REQ-08 | REQ-10 | REQ-11 | REQ-12 | REQ-13 |
+|---|---|---|---|---|---|---|---|---|
+| n4_iniciante_fichas_5_dano_2 | 1,37✓ | 0,42✓ | 0,07✓ | 38,5✗ | 5,8✗ | 0,57✓ | 0,08? | 0,22✓ |
+| n4_iniciante_fichas_5_dano_3 | 1,36✓ | 0,40✓ | 0,29✗ | 38,6✗ | 5,8✗ | 0,62✓ | 0,08? | 0,26✓ |
+| n4_iniciante_fichas_6_dano_2 | 1,37✓ | 0,42✓ | 0,02✓ | 38,5✗ | 5,8✗ | 0,57✓ | 0,08? | 0,21✓ |
+| n4_iniciante_fichas_6_dano_3 | 1,36✓ | 0,40✓ | 0,15✗ | 38,6✗ | 5,8✗ | 0,62✓ | 0,08? | 0,26✓ |
+| n4_experiente_fichas_5_dano_2 | 1,37✓ | 0,42✓ | 0,05✓ | 38,8✗ | 5,8✗ | 0,52✓ | 0,06✓ | 0,17✗ |
+| n4_experiente_fichas_5_dano_3 | 1,38✓ | 0,42✓ | 0,20✗ | 38,8✗ | 5,8✗ | 0,52✓ | 0,05✓ | 0,22✓ |
+| n4_experiente_fichas_6_dano_2 | 1,37✓ | 0,42✓ | 0,01✓ | 38,8✗ | 5,8✗ | 0,52✓ | 0,06✓ | 0,17✗ |
+| n4_experiente_fichas_6_dano_3 | 1,38✓ | 0,42✓ | 0,09✓ | 38,8✗ | 5,8✗ | 0,52✓ | 0,06✓ | 0,22✓ |
+| n5_iniciante_fichas_5_dano_2 | 1,40✓ | 0,34✓ | 0,07✓ | 44,3✓ | 9,2✗ | 0,57✓ | 0,07✓ | 0,21✓ |
+| n5_iniciante_fichas_5_dano_3 | 1,41✓ | 0,33✓ | 0,34✗ | 44,5✓ | 9,2✗ | 0,61✓ | 0,07✓ | 0,26✓ |
+| n5_iniciante_fichas_6_dano_2 | 1,40✓ | 0,34✓ | 0,02✓ | 44,3✓ | 9,2✗ | 0,57✓ | 0,07✓ | 0,21✓ |
+| n5_iniciante_fichas_6_dano_3 | 1,41✓ | 0,33✓ | 0,17✗ | 44,5✓ | 9,2✗ | 0,61✓ | 0,07✓ | 0,26✓ |
+| n5_experiente_fichas_5_dano_2 | 1,42✓ | 0,34✓ | 0,04✓ | 44,5✓ | 9,2✗ | 0,51✓ | 0,06✓ | 0,17✗ |
+| n5_experiente_fichas_5_dano_3 | 1,43✓ | 0,33✓ | 0,24✗ | 44,6✓ | 9,2✗ | 0,52✓ | 0,06✓ | 0,22✓ |
+| n5_experiente_fichas_6_dano_2 | 1,42✓ | 0,34✓ | 0,02✓ | 44,5✓ | 9,2✗ | 0,51✓ | 0,06✓ | 0,17✗ |
+| n5_experiente_fichas_6_dano_3 | 1,43✓ | 0,33✓ | 0,10? | 44,6✓ | 9,2✗ | 0,52✓ | 0,06✓ | 0,22✓ |
+
+### Observações (cuidado ao ler)
+
+1. **Nenhuma combinação satisfaz iniciantes e experientes ao mesmo tempo.** Com 6 fichas e dano 3, os experientes passam no REQ-13 (0,22) e no REQ-07 (0,09 com 4 jogadores; 0,10, inconclusivo, com 5), mas os iniciantes zeram cedo demais (REQ-07: 0,15 e 0,17). Com 6 fichas e dano 2, o REQ-07 passa para todos (0,01 a 0,02), mas o REQ-13 continua falhando com experientes (0,17).
+2. **O conflito é entre os públicos, não entre os números.** Quem sabe o conteúdo se cobre e sofre pouco dano; quem não sabe sofre muito. Um dano que pesa para o experiente zera o iniciante. Não foi medido, mas uma saída plausível é aceitar que o incidente pese menos para quem já domina o conteúdo (rever a zona do REQ-13), em vez de mexer no dano. É decisão do autor, e o playtest com alunos é que dirá qual público importa mais.
+3. **Nada muda na duração, no tempo parado nem na distribuição de ataques:** fichas e dano não alteram as decisões dos bots, só o placar.
