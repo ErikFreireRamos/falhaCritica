@@ -1006,3 +1006,18 @@ Execução oficial no commit `73762b5`, árvore limpa: 88.000 partidas em 1.421 
 - Do autor: decidir se haverá uma v2.3, por exemplo com a combinação de dano e fichas da observação 2, antes da Fase 5 ou depois do playtest.
 - Do autor: a parte "acima de 60 minutos" do REQ-08; a redação dos trechos marcados em `regras/`.
 - Para o playtest: cronometrar as ações (MOD-05) e registrar o tempo parado.
+
+---
+
+## 2026-11-11 — Fase 4, Experimento 4b: combinações de fichas e dano
+
+### Decisões do autor
+
+| Assunto | Opções | Escolha |
+|---|---|---|
+| O que fazer com a tensão entre REQ-07 e REQ-13 antes da Fase 5 | experimento de combinações; ir direto para a Fase 5; criar a v2.3 já | **Experimento de combinações**, sem criar v2.3: fichas iniciais (5, 6) × dano sem cobertura (2, 3) |
+| Onde rodar o teste de mutação (Fase 5) | GitHub Actions sob demanda; Docker local; os dois | **GitHub Actions, sob demanda** |
+
+### O que foi feito
+
+- `experimentos/fase4_exp4b_combinacoes.yaml`: 16 cenários (4 combinações × 2 perfis de conhecimento × mesas de 4 e de 5), 32.000 partidas, com o mesmo desenho do Experimento 4. Semente mestre 20261120. Um teste confere o arquivo.

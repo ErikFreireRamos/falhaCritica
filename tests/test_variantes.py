@@ -296,6 +296,11 @@ def test_experimentos_3_e_4_sao_validos() -> None:
     assert len(ablacao.cenarios) == 18 and sum(c.partidas for c in ablacao.cenarios) == 36_000
     sensibilidade = carregar_experimento(RAIZ / "experimentos" / "fase4_exp4_sensibilidade.yaml")
     assert len(sensibilidade.cenarios) == 44 and sum(c.partidas for c in sensibilidade.cenarios) == 88_000
+    combinacoes = carregar_experimento(RAIZ / "experimentos" / "fase4_exp4b_combinacoes.yaml")
+    assert len(combinacoes.cenarios) == 16 and sum(c.partidas for c in combinacoes.cenarios) == 32_000
+    assert {tuple(sorted(c.mudancas.items())) for c in combinacoes.cenarios} == {
+        (("dano.incidente.sem_cobertura", d), ("fichas.iniciais", f)) for f in (5, 6) for d in (2, 3)
+    }
     assert {c.duracao for c in sensibilidade.cenarios} == {
         None,
         "configs/duracao_menos_25.yaml",
