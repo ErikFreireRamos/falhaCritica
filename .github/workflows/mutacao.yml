@@ -1,0 +1,42 @@
+# Teste de mutação (Fase 5, autor em 2026-11-11): sob demanda, no Linux (o mutmut não roda no
+# Windows nativo). Muta o motor (regras/v2 e regras/v1, configurado em pyproject.toml) e roda os
+# testes de regra, de propriedades e os registros de referência contra cada mutante. Para rodar,
+# abra a aba Actions do repositório, escolha "Teste de mutação" e clique em "Run workflow".
+# O campo "mutantes" aceita nomes ou padrões do mutmut (por exemplo, "critical_failure.regras.v1*");
+# vazio, roda todos.
+name: Teste de mutação
+
+on:
+  workflow_dispatch:
+    inputs:
+      mutantes:
+        description: "Mutantes a rodar (vazio: todos os do motor)"
+        required: false
+        default: ""
+
+jobs:
+  mutacao:
+    runs-on: ubuntu-latest
+    timeout-minutes: 345
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - name: Instalar dependências
+        run: uv sync --locked
+      - name: Rodar o mutmut
+        env:
+          MUTANTES: ${{ inputs.mutantes }}
+        run: uv run --with mutmut==3.2.0 mutmut run --max-children 4 $MUTANTES
+      - name: Resumo
+        if: always()
+        run: |
+          uv run --with mutmut==3.2.0 mutmut results > mutacao.txt 2>&1 || true
+          uv run --with mutmut==3.2.0 mutmut export-cicd-stats > /dev/null 2>&1 || true
+          tail -n 40 mutacao.txt || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: resultado-da-mutacao
+          path: |
+            mutacao.txt
+            mutants/mutmut-cicd-stats.json

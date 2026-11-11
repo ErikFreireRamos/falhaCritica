@@ -1050,3 +1050,46 @@ Execução oficial no commit `b263c34`, árvore limpa: 32.000 partidas em 1.030 
 1. **Nenhuma combinação satisfaz iniciantes e experientes ao mesmo tempo.** Com 6 fichas e dano 3, os experientes passam no REQ-13 (0,22) e no REQ-07 (0,09 com 4 jogadores; 0,10, inconclusivo, com 5), mas os iniciantes zeram cedo demais (REQ-07: 0,15 e 0,17). Com 6 fichas e dano 2, o REQ-07 passa para todos (0,01 a 0,02), mas o REQ-13 continua falhando com experientes (0,17).
 2. **O conflito é entre os públicos, não entre os números.** Quem sabe o conteúdo se cobre e sofre pouco dano; quem não sabe sofre muito. Um dano que pesa para o experiente zera o iniciante. Não foi medido, mas uma saída plausível é aceitar que o incidente pese menos para quem já domina o conteúdo (rever a zona do REQ-13), em vez de mexer no dano. É decisão do autor, e o playtest com alunos é que dirá qual público importa mais.
 3. **Nada muda na duração, no tempo parado nem na distribuição de ataques:** fichas e dano não alteram as decisões dos bots, só o placar.
+
+---
+
+## 2026-11-11 — Fase 5: metamórficos, fuzzing, mutação e suíte noturna
+
+### Decisões do autor
+
+| Assunto | Opções | Escolha |
+|---|---|---|
+| Critério dos testes metamórficos | dois níveis; só diferença não significativa; só equivalência ±0,02 | **Dois níveis.** Na suíte normal, poucas partidas e sementes fixas; passa se o intervalo de 99% da diferença contém 0. Na noturna, mais partidas e equivalência: o intervalo de 95% da diferença inteiro dentro de ±0,02 |
+| Suíte noturna | toda noite, reduzida; uma vez por semana | **Toda noite, às 3h de Brasília**, se houve envio no dia |
+| Teste de mutação | GitHub Actions sob demanda; Docker local; os dois | **GitHub Actions, sob demanda** (decidido na entrada do Experimento 4b) |
+| MR-3 com estilos diferentes e o sentido da mesa invertido | virar medida; margem maior; tirar | **Virar medida.** O efeito de vizinho vai para o relatório noturno, sem veredito, e o teste metamórfico passa a ser o do prompt, com bots idênticos |
+| MR-2 sem precisão bastante com 10 mil partidas | 30 mil em 4 processos; margem ±0,03 | **30 mil partidas por lado, em 4 processos** |
+
+### O que foi feito
+
+1. **Testes metamórficos** (`tests/test_metamorficos.py`):
+   - MR-1, exata: trocar os nomes de duas duplas de categorias no catálogo inteiro dá as mesmas partidas, evento por evento. O motor e os bots não dependem do nome da categoria.
+   - MR-2, estatística: girar as faces do dado do Critical Failure entre as categorias, o que também muda a ordem das categorias, não muda a vitória por posição.
+   - MR-3, exata: com bots idênticos, inverter a ordem dos assentos dá as mesmas partidas.
+2. **Fuzzing** (`tests/test_fuzzing.py`, com hypothesis): sequências de ações que misturam ações legais e quaisquer, na v2 e na v1, com os invariantes conferidos a cada passo; ações gravadas malformadas; regras, experimento e modelo de duração com um valor estragado ou uma chave apagada; registro de auditoria com um valor adulterado. Tudo o que é recusado tem de ser `ErroCF` (ação ilegal, configuração inválida, registro divergente); qualquer outra exceção é defeito. São 20 casos por teste na suíte normal e 400 na noturna.
+3. **Suíte noturna** (`.github/workflows/noturna.yml`): roda os testes com `CF_NOTURNO=1` e o `experimentos/noturno.yaml`, que tem a mesa de equilíbrio reduzida (2.000 partidas) e o efeito de vizinho (a mesma mesa mista nos dois sentidos, com rodízio). A noite falha se alguma partida falhar. O relatório fica como artefato.
+4. **Replay:** o modo `acoes` passou a conferir a linha final inteira (ver Achados).
+5. **Teste de mutação** (`.github/workflows/mutacao.yml` e `[tool.mutmut]` no `pyproject.toml`): muta o motor (`regras/v2` e `regras/v1`) e roda os testes de regra, de propriedades e os registros de referência contra cada mutante. Os testes lentos e os de convenção ficam de fora, porque os de convenção leem o código-fonte, e o código mutado tem números e textos trocados de propósito. O mutmut fica fixado em 3.2.0 e só é instalado no próprio workflow, então o `uv.lock` não muda.
+
+### Verificação
+
+- `uv run pytest`: 448 testes coletados, todos passam (1 é pulado). `ruff` e `mypy` estrito sem apontamentos. Matriz 176 de 176; registros de referência sem mudança.
+- Nível noturno rodado nesta máquina (`CF_NOTURNO=1`), para metamórficos e fuzzing: 13 min; tudo passa depois da correção do replay.
+
+### Achados
+
+- **Efeito de vizinho:** na mesa mista com rodízio, o Heurístico vence de 1,6 a 4,3 pontos a mais quando joga logo depois do Aleatório do que logo depois do Construtor. O Backlog é comprado em sequência, e quem joga antes muda o que sobra. É uma propriedade do jogo, não um defeito, e passa a ser medido toda noite.
+- **O fuzzing não achou nenhum erro sem controle** no motor, nas configurações nem no replay.
+- **O fuzzing longo achou uma brecha na auditoria:** no replay pelo modo `acoes`, a linha final só conferia o placar, os vencedores e o hash do estado. Um registro com o critério de desempate adulterado passava. O mesmo valia para o placar por fonte, o número de eventos e a duração estimada. Agora o replay refaz a linha final inteira a partir dos eventos (`replay._fim_refeito`) e a compara campo a campo; um teste de regressão adultera cada campo do fim, nos dois modos. Os registros de referência continuam passando.
+- **A MR-2 não mostra efeito**, mas pede muitas partidas para provar a equivalência: com 10 mil por lado, o intervalo ainda passava de ±0,02 em duas posições.
+
+### Detalhes escolhidos pelo assistente, sem perguntar
+
+- **Transformações:** na MR-1, Desempenho troca com Flexibilidade e Interação com Confiabilidade. Na MR-2, cada categoria do jogo base passa a sair na face do dado da categoria seguinte.
+- **Fuzzing:** o hypothesis escolhe a semente e a dose de caos (de 0 a 10 em 10), e um gerador derivado da semente sorteia cada passo (até 600 por partida). No replay adulterado, a decisão do bot, a data e a duração não são conferidas, e por isso adulterar esses campos não precisa ser detectado.
+- **Teste de mutação: ainda não rodou.** Sem login no GitHub, não consigo dispará-lo. A configuração do mutmut 3 não foi validada em Linux; se a primeira execução falhar, o log mostra o ajuste que falta.

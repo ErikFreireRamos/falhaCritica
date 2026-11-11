@@ -1,0 +1,51 @@
+# Suíte noturna (Fase 5, autor em 2026-11-11): toda noite, às 3h de Brasília, se houve envio
+# nas últimas 24 horas. Roda os testes com CF_NOTURNO=1 (metamórficos grandes, com equivalência
+# de ±0,02, e fuzzing longo) e uma rodada reduzida da mesa de equilíbrio. O relatório fica como
+# artefato. Também pode ser disparada à mão na aba Actions.
+name: Suíte noturna
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+jobs:
+  noturna:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Houve envio nas últimas 24 horas?
+        id: envio
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ -n "$(git log --since='24 hours ago' --format=%H | head -n 1)" ]; then
+            echo "rodar=sim" >> "$GITHUB_OUTPUT"
+          else
+            echo "rodar=nao" >> "$GITHUB_OUTPUT"
+            echo "Nenhum envio nas últimas 24 horas: nada a fazer."
+          fi
+      - uses: astral-sh/setup-uv@v5
+        if: steps.envio.outputs.rodar == 'sim'
+      - name: Instalar dependências
+        if: steps.envio.outputs.rodar == 'sim'
+        run: uv sync --locked
+      - name: Testes completos, metamórficos grandes e fuzzing longo
+        if: steps.envio.outputs.rodar == 'sim'
+        env:
+          CF_NOTURNO: "1"
+        run: uv run pytest
+      - name: Rodada reduzida da mesa de equilíbrio
+        if: steps.envio.outputs.rodar == 'sim'
+        run: |
+          uv run cf experimento experimentos/noturno.yaml --oficial --processos 4 --saida resultados/noturno
+          uv run python -c "import json, sys; m = json.load(open('resultados/noturno/manifest.json', encoding='utf-8')); print('falhas:', m['falhas']); sys.exit(1 if m['falhas'] else 0)"
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.envio.outputs.rodar == 'sim'
+        with:
+          name: relatorio-noturno
+          path: |
+            resultados/noturno/relatorio.md
+            resultados/noturno/manifest.json
+            resultados/noturno/registros/

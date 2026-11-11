@@ -54,3 +54,18 @@ plugins = ["pydantic.mypy"]
 [[tool.mypy.overrides]]
 module = ["pyarrow", "pyarrow.*"]
 ignore_missing_imports = true
+
+[tool.mutmut]
+# Teste de mutação (Fase 5): roda no GitHub Actions (.github/workflows/mutacao.yml), não no Windows.
+# Muta só o motor. Ficam de fora os testes lentos (experimentos, variantes, metamórficos e fuzzing)
+# e os de convenção, que leem o código-fonte e não fazem sentido sobre o código mutado.
+paths_to_mutate = ["src/critical_failure/regras/v2/", "src/critical_failure/regras/v1/"]
+tests_dir = ["tests/"]
+also_copy = ["configs/", "regras/", "docs/", "scripts/", "experimentos/"]
+pytest_add_cli_args = [
+    "--ignore=tests/test_experimentos.py",
+    "--ignore=tests/test_variantes.py",
+    "--ignore=tests/test_metamorficos.py",
+    "--ignore=tests/test_fuzzing.py",
+    "--ignore=tests/test_convencoes.py",
+]

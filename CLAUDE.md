@@ -62,6 +62,7 @@ O estado atual está na última entrada do diário.
 ```
 uv sync                                            # instala o ambiente (Python 3.12)
 uv run pytest                                      # todos os testes
+CF_NOTURNO=1 uv run pytest                         # nível noturno: metamórficos grandes e fuzzing longo
 uv run ruff format . && uv run ruff check .        # formatação e estilo
 uv run mypy                                        # tipos, modo estrito, em src/
 uv run python scripts/verificar_especificacao.py   # confere especificações, ambiguidades e requisitos
@@ -107,7 +108,7 @@ configs/         regras por versão (v2.2, v2.2.1, v1), catálogo gerado, requis
 experimentos/    um YAML por experimento
 resultados/      saída dos experimentos; só manifest.json e relatorio.md vão para o git
 regras/          texto das regras por versão
-tests/           testes por regra, propriedades, convenções e registros de referência
+tests/           testes por regra, propriedades, metamórficos, fuzzing, convenções e registros de referência
 scripts/         verificador, matriz, catálogo e registros de referência
 ```
 
@@ -117,4 +118,7 @@ Os motores (`regras/v2/` e `regras/v1/`, menos o `config.py` da v1) não podem t
 
 - Windows, Python 3.12 (`py -3.12`), `uv` instalado. Sem `gh`.
 - A pasta fica dentro do OneDrive: o diretório de resultados deve ser configurável.
-- `mutmut` não roda no Windows nativo (precisa de `fork`): na Fase 5, usar o Linux da CI ou Docker.
+- `mutmut` não roda no Windows nativo (precisa de `fork`): o teste de mutação roda no GitHub Actions, sob demanda
+  (`.github/workflows/mutacao.yml`, configurado em `[tool.mutmut]` do `pyproject.toml`).
+- Suíte noturna: `.github/workflows/noturna.yml`, às 3h de Brasília, se houve envio no dia; roda os testes com
+  `CF_NOTURNO=1` e `experimentos/noturno.yaml`, e guarda o relatório como artefato.

@@ -1,0 +1,59 @@
+# Suíte noturna (Fase 5): rodada reduzida da mesa de equilíbrio, para pegar regressões.
+# Mesas de Heurísticos experientes sorteadas da mistura do equilíbrio do blefe (pesos do
+# Experimento 5b), 1.000 partidas com 4 e 1.000 com 5 jogadores. A semente é fixa: com o
+# mesmo código, o resultado é o mesmo toda noite.
+
+esquema: cf-experimento/1
+nome: noturno
+descricao: >
+  Rodada reduzida da mesa de equilíbrio da v2.2.1 (suíte noturna).
+semente_mestre: 20261121
+duracao: configs/duracao.yaml
+registros_completos_um_a_cada: 500
+
+cenarios:
+  - nome: n4_equilibrio
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 1000
+    requisitos: [REQ-05, REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [325, 501, 133, 41]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  - nome: n5_equilibrio
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 5
+    partidas: 1000
+    requisitos: [REQ-05, REQ-06, REQ-07, REQ-08, REQ-10, REQ-11, REQ-12, REQ-13]
+    pesos: [313, 541, 133, 13]
+    bots:
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_nunca, parametros: {conhecimento: experiente, blefe: nunca, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_nunca_contesta_limiar, parametros: {conhecimento: experiente, blefe: nunca, contestacao: limiar}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_nunca, parametros: {conhecimento: experiente, blefe: sempre, contestacao: nunca}}
+      - {tipo: heuristico, rotulo: blefa_sempre_contesta_limiar, parametros: {conhecimento: experiente, blefe: sempre, contestacao: limiar}}
+  # Efeito de vizinho (medida, sem veredito; autor, 2026-11-11): a mesma mesa mista nos dois
+  # sentidos, com rodízio. A diferença da taxa de vitória de cada estilo entre os dois grupos
+  # mostra quanto importa quem joga antes de quem (o Backlog é comprado em sequência).
+  - nome: vizinhos_sentido_original
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 1000
+    rodizio: true
+    bots:
+      - {tipo: heuristico, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: construtor, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: cacador, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: aleatorio, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+  - nome: vizinhos_sentido_invertido
+    regras: configs/regras_v2_2_1.yaml
+    jogadores: 4
+    partidas: 1000
+    rodizio: true
+    bots:
+      - {tipo: aleatorio, parametros: {explicacao_correta: 0.85, precisao_auditor: 0.95}}
+      - {tipo: cacador, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar, alvo: lider}}
+      - {tipo: construtor, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}
+      - {tipo: heuristico, parametros: {conhecimento: experiente, blefe: metade, contestacao: limiar}}

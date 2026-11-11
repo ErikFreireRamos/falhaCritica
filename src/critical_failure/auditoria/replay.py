@@ -21,11 +21,12 @@ from critical_failure.auditoria.registro import (
     Linha,
     gerar_linhas,
     linha_do_evento,
+    linha_do_fim,
 )
 from critical_failure.bots.fabrica import criar_bot
-from critical_failure.duracao import ler_duracao
-from critical_failure.nucleo.canonico import como_dict, sha256
+from critical_failure.duracao import Cronometro, ler_duracao
 from critical_failure.nucleo.erros import ErroCF, RegistroDivergente
+from critical_failure.partida import ResultadoPartida, somar_fontes
 from critical_failure.regras.familias import Motor, motor_de
 
 MODO_ACOES = "acoes"
@@ -68,6 +69,7 @@ def _por_acoes(linhas: list[Linha], motor: Motor) -> int:
     esperadas = [linha for linha in linhas if linha.get("registro") == EVENTO]
     estado: Any
     estado, eventos = motor.preparar(cabecalho["jogadores"], cabecalho["semente_mestre"], cabecalho["partida"])
+    todos = list(eventos)
     geradas = [linha_do_evento(seq, evento, None) for seq, evento in enumerate(eventos)]
     conferidas = 0
     while True:
@@ -86,22 +88,41 @@ def _por_acoes(linhas: list[Linha], motor: Motor) -> int:
         if decisao.get("opcoes") != legais:
             raise RegistroDivergente(f"evento {conferidas}: as opções gravadas não são as ações legais do motor")
         estado, eventos = motor.aplicar(estado, motor.acao_de_dict(decisao.get("acao")))  # type: ignore[arg-type]
+        todos += eventos
         geradas += [linha_do_evento(len(geradas) + k, evento, None) for k, evento in enumerate(eventos)]
     if estado.pendente is not None:
         raise RegistroDivergente("o registro terminou, mas a partida refeita ainda não acabou")
-    final: dict[str, Any] = {
-        "placar_final": list(motor.placar(estado)),
-        "vencedores": list(estado.vencedores),
-        "estado_hash_final": sha256(como_dict(estado)),
-    }
-    gravado = {
-        "placar_final": (fim.get("placar") or {}).get("final"),
-        "vencedores": fim.get("vencedores"),
-        "estado_hash_final": fim.get("estado_hash_final"),
-    }
-    if final != gravado:
-        raise RegistroDivergente(f"o fim da partida diverge. Registro: {gravado}. Reexecução: {final}")
+    _comparar(fim, _fim_refeito(cabecalho, motor, estado, todos))
     return conferidas
+
+
+def _fim_refeito(cabecalho: Linha, motor: Motor, estado: Any, eventos: list[Any]) -> Linha:
+    """A linha ``fim`` inteira, refeita a partir dos eventos: placar por fonte, critério, duração e hash.
+
+    Assim nenhum campo do fim fica sem conferência no modo ``acoes`` (o fuzzing da Fase 5
+    achou o critério de desempate sem conferência).
+    """
+    fontes: list[dict[str, int]] = [dict.fromkeys(motor.fontes, 0) for _ in range(cabecalho["jogadores"])]
+    modelo = (cabecalho.get("modelos") or {}).get("duracao")
+    cronometro = Cronometro(ler_duracao(modelo)) if modelo is not None else None
+    criterio = ""
+    for evento in eventos:
+        somar_fontes(fontes, evento)
+        if cronometro is not None:
+            cronometro.somar(evento)
+        if evento.tipo == "fim_de_jogo":
+            criterio = evento.publico["criterio"]
+    resultado = ResultadoPartida(
+        n_jogadores=cabecalho["jogadores"],
+        placar=motor.placar(estado),
+        vencedores=estado.vencedores,
+        criterio=criterio,
+        fontes=tuple(fontes),
+        eventos=len(eventos),
+        estado_final=estado,
+        duracao_s=cronometro.segundos if cronometro is not None else None,
+    )
+    return linha_do_fim(resultado)
 
 
 def _por_bots(linhas: list[Linha], motor: Motor) -> int:

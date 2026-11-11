@@ -961,3 +961,13 @@ def test_experimento_5b_e_valido() -> None:
     for cenario in lido.cenarios:
         assert cenario.pesos is not None and sum(cenario.pesos) == 1000 and cenario.requisitos == ["REQ-05"]
         assert len(cenario.pesos) == len(cenario.bots) == 4
+
+
+def test_experimento_noturno_e_valido() -> None:
+    lido = carregar_experimento(RAIZ / "experimentos" / "noturno.yaml")
+    equilibrio = [c for c in lido.cenarios if c.pesos is not None]
+    assert [c.jogadores for c in equilibrio] == [4, 5] and all(sum(c.pesos or []) == 1000 for c in equilibrio)
+    vizinhos = {c.nome: c for c in lido.cenarios if c.rodizio}
+    original, invertido = vizinhos["vizinhos_sentido_original"], vizinhos["vizinhos_sentido_invertido"]
+    assert [b.tipo for b in invertido.bots] == [b.tipo for b in reversed(original.bots)]
+    assert sum(c.partidas for c in lido.cenarios_expandidos()) == 2000 + 2 * 4000
