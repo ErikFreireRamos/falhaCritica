@@ -896,3 +896,36 @@ Valor e veredito de cada requisito por cenário (✓ passa, ✗ falha, ? inconcl
 - **COR-02 desfeita:** `alertas.limpeza_no_planejamento: false` sobre a v2.2.1. **COR-01 desfeita:** `jogadores.maximo: 6`, com mesas de 6. Não há torneio de blefe com 6 jogadores, então essas mesas usam a mistura de 5.
 - **Tempos:** arredondados para o segundo mais próximo, com meio segundo para cima (por exemplo, 37,5 s vira 38 s).
 - **Sementes mestre:** 20261118 (ablação) e 20261119 (sensibilidade); 4 processos.
+
+### Resultado do Experimento 3 (`fase4_exp3_ablacao`)
+
+Execução oficial no commit `f925943`, árvore limpa: 36.000 partidas em 592 s com 4 processos, nenhuma falha. O REQ-09 saiu inconclusivo só porque o experimento tem menos de 50.000 partidas. Relatório em `resultados/fase4_exp3_ablacao/20261111-080955-f925943/relatorio.md`. Mesma legenda da tabela do Experimento 6.
+
+| Cenário | REQ-06a | REQ-06b | REQ-07 | REQ-08 | REQ-10 | REQ-11 | REQ-12 | REQ-13 |
+|---|---|---|---|---|---|---|---|---|
+| n4_iniciante_base | 1,36✓ | 0,42✓ | 0,06✓ | 38,3✗ | 5,8✗ | 0,57✓ | 0,07✓ | 0,21✓ |
+| n4_iniciante_sem_cor02 | 1,33✓ | 0,42✓ | 0,07✓ | 37,9✗ | 5,8✗ | 0,57✓ | 0,08? | 0,25✓ |
+| n4_iniciante_var10_bug_duplicado | 1,44✓ | 0,42✓ | 0,06✓ | 38,2✗ | 5,8✗ | 0,57✓ | 0,08? | 0,20✓ |
+| n4_iniciante_var11_1_teste | 1,67✗ | 0,47✗ | 0,08✓ | 28,2✗ | 3,3✓ | 0,57✓ | 0,08? | 0,23✓ |
+| n4_experiente_base | 1,38✓ | 0,42✓ | 0,05✓ | 38,8✗ | 5,8✗ | 0,51✓ | 0,06✓ | 0,17✗ |
+| n4_experiente_sem_cor02 | 1,35✓ | 0,42✓ | 0,05✓ | 38,8✗ | 5,9✗ | 0,51✓ | 0,05✓ | 0,19✗ |
+| n4_experiente_var10_bug_duplicado | 1,43✓ | 0,43✓ | 0,04✓ | 38,3✗ | 5,8✗ | 0,51✓ | 0,05✓ | 0,16✗ |
+| n4_experiente_var11_1_teste | 1,65✗ | 0,47✗ | 0,04✓ | 28,5✗ | 3,3✓ | 0,51✓ | 0,06✓ | 0,18✗ |
+| n5_iniciante_base | 1,40✓ | 0,34✓ | 0,07✓ | 44,5✓ | 9,2✗ | 0,57✓ | 0,05✓ | 0,21✓ |
+| n5_iniciante_sem_cor02 | 1,36✓ | 0,34✓ | 0,08✓ | 44,2✓ | 9,0✗ | 0,57✓ | 0,05✓ | 0,25✓ |
+| n5_iniciante_var10_bug_duplicado | 1,50? | 0,34✓ | 0,06✓ | 43,7✓ | 9,0✗ | 0,57✓ | 0,08✓ | 0,20✓ |
+| n5_iniciante_var11_1_teste | 1,76✗ | 0,40✗ | 0,10? | 31,6✗ | 4,9✓ | 0,57✓ | 0,08✓ | 0,23✓ |
+| n5_experiente_base | 1,43✓ | 0,34✓ | 0,05✓ | 44,7✓ | 9,2✗ | 0,51✓ | 0,04✓ | 0,17✗ |
+| n5_experiente_sem_cor02 | 1,41✓ | 0,35? | 0,05✓ | 45,1✓ | 9,4✗ | 0,51✓ | 0,06✓ | 0,19✗ |
+| n5_experiente_var10_bug_duplicado | 1,52✗ | 0,35? | 0,04✓ | 43,7✓ | 8,9✗ | 0,51✓ | 0,05✓ | 0,16✗ |
+| n5_experiente_var11_1_teste | 1,77✗ | 0,39✗ | 0,04✓ | 31,8✗ | 4,9✓ | 0,51✓ | 0,07✓ | 0,18✗ |
+| n6_iniciante_sem_cor01 | 1,44✓ | 0,29✓ | 0,08✓ | 50,8✗ | 12,2✗ | 0,57✓ | 0,06✓ | 0,21✓ |
+| n6_experiente_sem_cor01 | 1,46✓ | 0,29✓ | 0,06✓ | 51,0✗ | 12,3✗ | 0,51✓ | 0,05✓ | 0,17✗ |
+
+### Observações (cuidado ao ler)
+
+1. **COR-01 (máximo de 5 jogadores) se confirma.** Com 6 jogadores, a mediana da duração passa de 50 min (50,8 a 51,0) e o tempo parado chega a 12 min por ciclo. Todas as partidas reembaralham o descarte, e em 0,1% delas faltou carta para comprar.
+2. **COR-02 (Alertas saem no Planejamento) muda pouco os requisitos.** Sem ela, o Alerta fica mais tempo, o dano de incidente pesa um pouco mais (REQ-13 de 0,21 para 0,25 com iniciantes) e o placar médio cai de 7,3 para 5,7 fichas. Nenhum veredito muda de lado por causa dela.
+3. **O bug duplicado da 2.2 espalha os ataques, como o PDF diz.** Com a regra da 2.1 (permitido), a razão máximo/média de testes recebidos sobe (de 1,36 a 1,43 para 1,43 a 1,52) e o REQ-06a falha com 5 jogadores experientes.
+4. **"Sem limite de testes" (2.2) contra "1 teste por ciclo" (2.1):** o limite da 2.1 resolve o tempo parado (REQ-10 passa: 3,3 e 4,9 min), mas encurta a partida para 28 a 32 min e concentra os testes no menor placar (REQ-06 falha). Na 2.2, testar mais tem custo em tempo, e o teste por ciclo não é a saída: a partida fica curta demais.
+5. **Resumo:** cada mudança da v2.2 desfeita piora algum requisito, ou não melhora nenhum. O ponto fraco que sobra, o tempo parado, vem justamente do teste sem limite, que dá valor às cartas guardadas.
