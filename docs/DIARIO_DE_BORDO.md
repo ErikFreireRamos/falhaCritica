@@ -1093,3 +1093,66 @@ Execução oficial no commit `b263c34`, árvore limpa: 32.000 partidas em 1.030 
 - **Transformações:** na MR-1, Desempenho troca com Flexibilidade e Interação com Confiabilidade. Na MR-2, cada categoria do jogo base passa a sair na face do dado da categoria seguinte.
 - **Fuzzing:** o hypothesis escolhe a semente e a dose de caos (de 0 a 10 em 10), e um gerador derivado da semente sorteia cada passo (até 600 por partida). No replay adulterado, a decisão do bot, a data e a duração não são conferidas, e por isso adulterar esses campos não precisa ser detectado.
 - **Teste de mutação: ainda não rodou.** Sem login no GitHub, não consigo dispará-lo. A configuração do mutmut 3 não foi validada em Linux; se a primeira execução falhar, o log mostra o ajuste que falta.
+
+---
+
+## 2026-11-11 — Fase 5: correção do teste de mutação; profundidade guardada para depois
+
+### O que aconteceu
+
+A primeira execução do workflow "Teste de mutação", disparada pelo autor, parou na etapa de estatísticas (`running stats`) com `BadTestExecutionCommandsException`: o pytest saiu com o código 4, erro de uso. Todos os mutantes ficaram "not checked". A falha foi reproduzida nesta máquina, rodando a mesma etapa do mutmut 3.2.0 sobre uma cópia do repositório, com os mesmos argumentos e o mesmo código de saída. Duas causas:
+
+1. **O mutmut 3.2.0 não lê o `[tool.mutmut]` do `pyproject.toml`**, só o `setup.cfg`. Por isso mutou o `src/` inteiro (CLI, partida, métricas, relatórios...), não copiou `configs/` e os outros arquivos de `also_copy`, e não aplicou os `--ignore` dos testes lentos.
+2. **O mutmut 3.2.0 quebra modelos pydantic.** Ao mutar um método de classe (por exemplo, `RegrasV2.resolvida`), ele põe o dicionário de mutantes dentro da classe como atributo sem anotação de tipo, e o pydantic recusa a classe. O `tests/conftest.py` não importa, e o pytest sai com o código 4 antes de rodar qualquer teste.
+
+### O que foi feito
+
+1. **mutmut 3.2.0 → 3.8.1**, a versão atual, instalada só no workflow (o `uv.lock` não muda). A 3.8 lê o `[tool.mutmut]` do `pyproject.toml`, põe os dicionários de mutantes fora das classes (os modelos pydantic continuam válidos) e não muta funções decoradas.
+2. **`[tool.mutmut]` com as chaves da 3.8:**
+   - `source_paths = ["src/"]`: o pacote inteiro é copiado, para continuar importável;
+   - `only_mutate`: só `regras/v2` e `regras/v1`;
+   - `pytest_add_cli_args_test_selection = ["tests/"]`, no lugar de `tests_dir`;
+   - `also_copy` e os `--ignore` continuam como estavam, menos o de `test_variantes.py` (ver detalhes).
+3. **Workflow:** o passo do mutmut tem limite próprio de 330 min, abaixo dos 345 do job. Se o tempo acabar, o resumo e o artefato saem com os mutantes já avaliados, porque o mutmut grava o resultado de cada mutante ao terminar. O resumo também imprime `mutmut-cicd-stats.json`, com a contagem por situação.
+
+### Verificação
+
+- **Reprodução da falha:** a etapa de estatísticas do 3.2.0, rodada nesta máquina sobre uma cópia do repositório, sai com o código 4 e os mesmos argumentos do log (`-q --strict-markers -x -q --import-mode=append`). A mensagem do pytest é o `PydanticUserError` ao importar `tests/conftest.py`.
+- **Com a 3.8.1**, a mesma cópia passa por todas as etapas que não dependem de `fork`:
+  - geração: 13 arquivos mutados, todos do motor, com 4.822 mutantes;
+  - coleta de estatísticas, com 356 testes;
+  - rodada limpa dos testes e falha forçada.
+
+  A emulação para no primeiro `os.fork`, que não existe no Windows. A avaliação dos mutantes em si só roda no Linux, no Actions.
+- **Mutantes sem nenhum teste:** 20, contra 169 antes de `test_variantes.py` voltar. São `Acao.sem_explicacao` (10), `carregar_regras_v1` (7) e `contagem_por_atributo` (3), usados só fora dos testes selecionados.
+- **Tempo:** somando, para cada mutante, a duração de todos os testes que passam pela função mutada, o pior caso dá cerca de 53 h de testes, ou cerca de 13 h com 4 processos. Na prática o `-x` para no primeiro teste que falha, e a maioria dos mutantes morre rápido, mas o total pode passar do limite. Se passar, a saída é rodar em partes pelo campo "mutantes" do workflow, por exemplo `critical_failure.regras.v1*` e depois `critical_failure.regras.v2.motor*`.
+
+### Ideia guardada para investigar depois: medir a profundidade do jogo de forma explícita
+
+Pedido do autor (2026-11-11): "Gosto da ideia de medir profundidade de forma explícita, deixe isso guardado/registrado em algum lugar para que possamos investigar depois." Nada foi implementado; as definições e as zonas serão perguntadas ao autor antes de qualquer medição.
+
+**De onde veio.** O autor perguntou se os testes sem limite por ciclo aumentam a profundidade do jogo, e se 1 teste por ciclo seria pouco divertido. Pelos dados da ablação (Experimento 3, VAR-11), 1 teste por ciclo encurta a partida (28 a 32 min contra 38 a 44 min) e resolve o tempo parado (REQ-10 passa), mas reduz os testes por partida a cerca de 40% e as defesas por jogador de cerca de 5,5 para cerca de 2,2, concentra os ataques no último colocado (REQ-06a e REQ-06b falham) e aumenta a vantagem do líder (de 0,16 a 0,18 para 0,21 a 0,23 com 4 jogadores). Isso apoia a intuição do autor, mas o simulador não mede profundidade diretamente: hoje são só indícios.
+
+**Medidas candidatas** (a definir com o autor):
+
+| Medida | O que diria | Observação |
+|---|---|---|
+| Distância de habilidade: vitória do Heurístico contra a de um bot mais fraco que jogue de verdade | Se jogar bem faz diferença | Generaliza o REQ-03, que hoje compara só com o Aleatório |
+| Decisões não triviais por jogador e por partida (pontos de decisão com mais de uma ação legal, ou em que as opções têm valores diferentes para o Heurístico) | Quantas escolhas o jogador faz de verdade | Precisa de definição; a segunda forma usa a avaliação do Heurístico |
+| Variedade de estilos no equilíbrio (quantos perfis ficam com peso no replicador, ou a entropia da população) | Se há mais de um jeito bom de jogar | Usa as matrizes de estilos que já existem (MET-07) |
+| Defesas e explicações por jogador e por partida | Quanta prática de teste de software o jogo dá | É o lado pedagógico; já se conta nos eventos |
+| Tensão entre construir e atacar (REQ-11) e vantagem do líder (REQ-02) | Se a escolha central e a reação de quem está atrás continuam vivas | Já medidas |
+
+**Comparação candidata:** a regra atual (testes sem limite), 1 teste por ciclo (VAR-11) e um limite de 2 testes feitos por ciclo, que ainda não existe, com essas medidas lado a lado. Para a comparação ser justa, o Heurístico teria de ser ajustado para conhecer o limite: hoje ele avalia as cartas como se pudesse testar sem limite, o que puxa contra as regras com limite. Também cabe testar o "custo crescente" (por exemplo, o terceiro teste do ciclo custa 1 ficha).
+
+### Detalhes escolhidos pelo assistente, sem perguntar
+
+- **Versão do mutmut:** 3.8.1, a mais nova, no lugar da 3.2.0 que eu tinha escolhido. Continua sendo ferramenta só do workflow, não dependência do projeto.
+- **`test_variantes.py` volta para o teste de mutação.** Eu o tinha excluído como lento, mas ele leva cerca de 8 s e é o único que exercita o código das variantes (palpite, Auditor externo, limites de testes). Sem ele, 169 mutantes ficavam sem nenhum teste.
+- **Emulação no Windows:** para conferir antes de mandar ao Actions, o mutmut rodou numa cópia do repositório fora do OneDrive, com três remendos só no script de emulação: um módulo `resource` vazio, `platform.system` respondendo "Linux" durante a importação e `set_start_method` desligado. Nada disso vai para o projeto.
+
+### Pendências
+
+- Do autor: disparar de novo o workflow "Teste de mutação" e mandar o log se falhar.
+- Do autor: decidir quando investigar a profundidade (seção acima), e as definições e zonas das medidas.
+- Continuam as pendências do resumo da Fase 4: v2.3 ou revisão da zona do REQ-13; a parte "acima de 60 minutos" do REQ-08; a redação dos trechos marcados em `regras/`; cronometrar as ações no playtest (MOD-05).

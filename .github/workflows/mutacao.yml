@@ -24,15 +24,19 @@ jobs:
       - name: Instalar dependências
         run: uv sync --locked
       - name: Rodar o mutmut
+        # Limite do passo abaixo do limite do job: se o tempo acabar, o resumo e o artefato saem
+        # mesmo assim, com os mutantes já avaliados (o mutmut grava o resultado de cada um).
+        timeout-minutes: 330
         env:
           MUTANTES: ${{ inputs.mutantes }}
-        run: uv run --with mutmut==3.2.0 mutmut run --max-children 4 $MUTANTES
+        run: uv run --with mutmut==3.8.1 mutmut run --max-children 4 $MUTANTES
       - name: Resumo
         if: always()
         run: |
-          uv run --with mutmut==3.2.0 mutmut results > mutacao.txt 2>&1 || true
-          uv run --with mutmut==3.2.0 mutmut export-cicd-stats > /dev/null 2>&1 || true
+          uv run --with mutmut==3.8.1 mutmut results > mutacao.txt 2>&1 || true
+          uv run --with mutmut==3.8.1 mutmut export-cicd-stats > /dev/null 2>&1 || true
           tail -n 40 mutacao.txt || true
+          cat mutants/mutmut-cicd-stats.json || true
       - uses: actions/upload-artifact@v4
         if: always()
         with:
