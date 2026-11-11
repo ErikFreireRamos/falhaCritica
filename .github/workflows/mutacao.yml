@@ -1,23 +1,62 @@
 # Teste de mutação (Fase 5, autor em 2026-11-11): sob demanda, no Linux (o mutmut não roda no
 # Windows nativo). Muta o motor (regras/v2 e regras/v1, configurado em pyproject.toml) e roda os
-# testes de regra, de propriedades e os registros de referência contra cada mutante. Para rodar,
-# abra a aba Actions do repositório, escolha "Teste de mutação" e clique em "Run workflow".
-# O campo "mutantes" aceita nomes ou padrões do mutmut (por exemplo, "critical_failure.regras.v1*");
-# vazio, roda todos.
+# testes de regra, de propriedades, de variantes e os registros de referência contra cada mutante.
+# Para rodar, abra a aba Actions do repositório, escolha "Teste de mutação" e clique em "Run workflow".
+#
+# Os cerca de 4.900 mutantes rodam em partes, em paralelo (.github/mutacao_partes.txt), e o job "juntar"
+# soma o resultado no artefato "resultado-da-mutacao". Cada parte tem o seu runner: se um mutante
+# derrubar o runner, só aquela parte se perde. Cada processo do mutmut tem um limite de memória, para
+# um mutante que entra em laço morrer com MemoryError (conta como morto) em vez de esgotar a memória
+# do runner, como na execução de 2026-11-11, que caiu no mutante 2.045.
+#
+# O campo "mutantes" aceita nomes ou padrões do mutmut, separados por espaço (por exemplo,
+# "critical_failure.regras.v1*"), e roda só eles, numa parte só; vazio, roda todas as partes.
 name: Teste de mutação
 
 on:
   workflow_dispatch:
     inputs:
       mutantes:
-        description: "Mutantes a rodar (vazio: todos os do motor)"
+        description: "Mutantes a rodar, numa parte só (vazio: todos, nas partes de .github/mutacao_partes.txt)"
         required: false
         default: ""
 
 jobs:
+  planejar:
+    runs-on: ubuntu-latest
+    outputs:
+      partes: ${{ steps.partes.outputs.partes }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: partes
+        env:
+          MUTANTES: ${{ inputs.mutantes }}
+        run: |
+          python3 - >> "$GITHUB_OUTPUT" <<'FIM'
+          import json, os
+          pedido = os.environ["MUTANTES"].strip()
+          if pedido:
+              partes = [pedido]
+          else:
+              with open(".github/mutacao_partes.txt", encoding="utf-8") as arquivo:
+                  partes = [linha.strip() for linha in arquivo if linha.strip() and not linha.startswith("#")]
+          print("partes=" + json.dumps(partes, ensure_ascii=False))
+          FIM
+
   mutacao:
+    name: mutação (parte ${{ strategy.job-index }})
+    needs: planejar
     runs-on: ubuntu-latest
     timeout-minutes: 345
+    strategy:
+      fail-fast: false
+      matrix:
+        parte: ${{ fromJSON(needs.planejar.outputs.partes) }}
+    env:
+      # Menos memória reservada por processo; não muda nenhum resultado.
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MALLOC_ARENA_MAX: "2"
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
@@ -25,22 +64,71 @@ jobs:
         run: uv sync --locked
       - name: Rodar o mutmut
         # Limite do passo abaixo do limite do job: se o tempo acabar, o resumo e o artefato saem
-        # mesmo assim, com os mutantes já avaliados (o mutmut grava o resultado de cada um).
+        # mesmo assim, com os mutantes já avaliados.
         timeout-minutes: 330
         env:
-          MUTANTES: ${{ inputs.mutantes }}
-        run: uv run --with mutmut==3.8.1 mutmut run --max-children 4 $MUTANTES
+          PARTE: ${{ matrix.parte }}
+        run: |
+          set -f  # os padrões têm * e não podem virar nomes de arquivo
+          echo "memória: $(free -m | awk '/Mem:/ {print $2}') MB; processadores: $(nproc)"
+          ulimit -v 4194304  # 4 GB de memória virtual por processo (o principal e os 2 filhos)
+          uv run --with mutmut==3.8.1 mutmut run --max-children 2 $PARTE
       - name: Resumo
         if: always()
         run: |
-          uv run --with mutmut==3.8.1 mutmut results > mutacao.txt 2>&1 || true
+          uv run --with mutmut==3.8.1 mutmut results 2>&1 | grep -v ': not checked' > mutacao.txt || true
           uv run --with mutmut==3.8.1 mutmut export-cicd-stats > /dev/null 2>&1 || true
           tail -n 40 mutacao.txt || true
           cat mutants/mutmut-cicd-stats.json || true
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: resultado-da-mutacao
+          name: resultado-da-mutacao-${{ strategy.job-index }}
           path: |
             mutacao.txt
             mutants/mutmut-cicd-stats.json
+
+  juntar:
+    needs: mutacao
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: resultado-da-mutacao-*
+          path: partes
+      - name: Somar as partes
+        run: |
+          python3 - <<'FIM'
+          import json, pathlib
+          campos = ["killed", "survived", "timeout", "no_tests", "suspicious", "segfault", "skipped",
+                    "check_was_interrupted_by_user"]
+          soma = dict.fromkeys(campos, 0)
+          sem_resultado, linhas = [], []
+          for pasta in sorted(pathlib.Path("partes").iterdir()):
+              estatisticas = pasta / "mutants" / "mutmut-cicd-stats.json"
+              if estatisticas.exists():
+                  dados = json.loads(estatisticas.read_text(encoding="utf-8"))
+                  for campo in campos:
+                      soma[campo] += dados.get(campo, 0)
+              else:
+                  sem_resultado.append(pasta.name)
+              resultados = pasta / "mutacao.txt"
+              if resultados.exists():
+                  linhas += [l for l in resultados.read_text(encoding="utf-8", errors="replace").splitlines() if l.strip()]
+          avaliados = sum(soma.values())
+          decididos = soma["killed"] + soma["survived"]
+          resumo = [f"{campo}: {valor}" for campo, valor in soma.items()]
+          resumo.append(f"avaliados: {avaliados}")
+          if decididos:
+              resumo.append(f"escore (mortos / (mortos + sobreviventes)): {soma['killed'] / decididos:.3f}")
+          if sem_resultado:
+              resumo.append(f"partes sem resultado (o runner caiu?): {', '.join(sem_resultado)}")
+          texto = "\n".join(resumo + ["", "Mutantes não mortos:"] + linhas) + "\n"
+          pathlib.Path("mutacao-total.txt").write_text(texto, encoding="utf-8")
+          print("\n".join(resumo))
+          FIM
+      - uses: actions/upload-artifact@v4
+        with:
+          name: resultado-da-mutacao
+          path: mutacao-total.txt

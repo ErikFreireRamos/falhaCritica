@@ -1,0 +1,23 @@
+# Partes do teste de mutação (.github/workflows/mutacao.yml): uma por linha, cada uma com os
+# padrões de nome de mutante do mutmut separados por espaço (fnmatch: * vale qualquer coisa).
+# Os métodos são separados pela inicial do nome sem os _ do começo; a última parte de cada
+# motor pega o complemento, então método novo cai em alguma parte. Contagem de 2026-11-11:
+# 4.883 mutantes, nenhuma parte com mais de 660.
+# resto: v1 e v2 fora do motor, e as funções do motor fora das classes
+critical_failure.regras.v1.[!m]* critical_failure.regras.v2.[!m]* critical_failure.regras.v?.motor.x_* critical_failure.regras.v?.motor.xǁ_Ctxǁ*
+# motor da v1, métodos de a a e, i e j
+critical_failure.regras.v1.motor.xǁMotorV1ǁ[abcdeij]* critical_failure.regras.v1.motor.xǁMotorV1ǁ_[abcdeij]* critical_failure.regras.v1.motor.xǁMotorV1ǁ__[abcdeij]*
+# motor da v1, os outros métodos
+critical_failure.regras.v1.motor.xǁMotorV1ǁ[!_abcdeij]* critical_failure.regras.v1.motor.xǁMotorV1ǁ_[!_abcdeij]* critical_failure.regras.v1.motor.xǁMotorV1ǁ__[!_abcdeij]*
+# motor da v2, métodos com a, b, g, j, l, o, s, v
+critical_failure.regras.v2.motor.xǁMotorV2ǁ[abgjlosv]* critical_failure.regras.v2.motor.xǁMotorV2ǁ_[abgjlosv]* critical_failure.regras.v2.motor.xǁMotorV2ǁ__[abgjlosv]*
+# motor da v2, métodos com c e e
+critical_failure.regras.v2.motor.xǁMotorV2ǁ[ce]* critical_failure.regras.v2.motor.xǁMotorV2ǁ_[ce]* critical_failure.regras.v2.motor.xǁMotorV2ǁ__[ce]*
+# motor da v2, métodos com d, f, i
+critical_failure.regras.v2.motor.xǁMotorV2ǁ[dfi]* critical_failure.regras.v2.motor.xǁMotorV2ǁ_[dfi]* critical_failure.regras.v2.motor.xǁMotorV2ǁ__[dfi]*
+# motor da v2, métodos com pa, pe e r
+critical_failure.regras.v2.motor.xǁMotorV2ǁp[ae]* critical_failure.regras.v2.motor.xǁMotorV2ǁ_p[ae]* critical_failure.regras.v2.motor.xǁMotorV2ǁ__p[ae]* critical_failure.regras.v2.motor.xǁMotorV2ǁr* critical_failure.regras.v2.motor.xǁMotorV2ǁ_r* critical_failure.regras.v2.motor.xǁMotorV2ǁ__r*
+# motor da v2, os outros métodos com p
+critical_failure.regras.v2.motor.xǁMotorV2ǁp[!ae]* critical_failure.regras.v2.motor.xǁMotorV2ǁ_p[!ae]* critical_failure.regras.v2.motor.xǁMotorV2ǁ__p[!ae]*
+# motor da v2, os outros métodos
+critical_failure.regras.v2.motor.xǁMotorV2ǁ[!_abgjlosvcedfipr]* critical_failure.regras.v2.motor.xǁMotorV2ǁ_[!_abgjlosvcedfipr]* critical_failure.regras.v2.motor.xǁMotorV2ǁ__[!_abgjlosvcedfipr]*

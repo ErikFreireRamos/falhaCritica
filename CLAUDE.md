@@ -120,6 +120,7 @@ Os motores (`regras/v2/` e `regras/v1/`, menos o `config.py` da v1) não podem t
 - Windows, Python 3.12 (`py -3.12`), `uv` instalado. Sem `gh`.
 - A pasta fica dentro do OneDrive: o diretório de resultados deve ser configurável.
 - `mutmut` não roda no Windows nativo (precisa de `fork`): o teste de mutação roda no GitHub Actions, sob demanda
-  (`.github/workflows/mutacao.yml`, configurado em `[tool.mutmut]` do `pyproject.toml`).
+  (`.github/workflows/mutacao.yml`, configurado em `[tool.mutmut]` do `pyproject.toml`), em partes paralelas
+  (`.github/mutacao_partes.txt`) e com limite de memória por processo; o job `juntar` soma as partes.
 - Suíte noturna: `.github/workflows/noturna.yml`, às 3h de Brasília, se houve envio no dia; roda os testes com
   `CF_NOTURNO=1` e `experimentos/noturno.yaml`, e guarda o relatório como artefato.

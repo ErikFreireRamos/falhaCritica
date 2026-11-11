@@ -71,3 +71,6 @@ pytest_add_cli_args = [
     "--ignore=tests/test_fuzzing.py",
     "--ignore=tests/test_convencoes.py",
 ]
+# Um mutante em laço é dado como timeout depois de 10 vezes o tempo estimado dos seus testes (o
+# padrão do mutmut é 30 vezes, o que faz cada laço gastar até meia hora de processador).
+timeout_multiplier = 5.0

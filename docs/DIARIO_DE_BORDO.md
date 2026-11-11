@@ -1279,3 +1279,29 @@ Execução oficial no commit `3a2f2e0`, árvore limpa: 80.000 partidas em 1.501 
 - Do autor: o limiar da escolha apertada (observação 5), se a medida continua.
 - Do autor: se algum meio-termo vira candidato a v2.2.2, sabendo que nenhum passa no tempo parado com 5 jogadores e que os dois deixam a partida com 4 jogadores ainda mais curta (REQ-08).
 - Do autor: disparar de novo o workflow "Teste de mutação", se ainda não foi, e mandar o log se falhar.
+
+---
+
+## 2026-11-11 — Fase 5: teste de mutação em partes, com limite de memória
+
+### O que aconteceu
+
+A segunda execução do workflow "Teste de mutação", já com o mutmut 3.8.1, passou da etapa que falhava e avaliou 2.045 dos 4.822 mutantes: 1.825 mortos, 193 sobreviventes, 20 sem teste e 7 com timeout. Nesse ponto, o GitHub acusou "The hosted runner lost communication with the server", o erro de quando o runner fica sem memória ou sem processador. Nada foi salvo, porque o runner caiu antes do resumo. A causa mais provável é um mutante que deixa a partida em laço: os testes guardam os eventos de cada passo, e a memória cresce até o limite de passos. Os 7 timeouts mostram que há mutantes assim.
+
+### O que foi feito
+
+1. **Partes paralelas:** os mutantes foram divididos em 9 partes, de 301 a 658 mutantes cada (4.883 com o código do Experimento 7) (`.github/mutacao_partes.txt`). Cada parte roda no seu próprio runner, então um runner que cai só perde a sua parte. A divisão é pelos padrões de nome do mutmut: fora do motor, e cada motor pela inicial do método. A última parte de cada motor pega o complemento, então um método novo sempre cai em alguma parte. Com os nomes dos mutantes gerados nesta máquina, antes e depois do Experimento 7 (4.822 e 4.883), cada mutante caiu em exatamente uma parte.
+2. **Limite de memória:** cada processo do mutmut (o principal e os 2 filhos) tem 4 GB de memória virtual (`ulimit -v`). Um mutante em laço morre com MemoryError, e o teste que falha conta o mutante como morto, em vez de esgotar a memória do runner. O BLAS e o malloc usam menos memória reservada (`OPENBLAS_NUM_THREADS`, `OMP_NUM_THREADS`, `MALLOC_ARENA_MAX`), sem mudar resultado nenhum. Cada parte roda com 2 filhos, não com 4.
+3. **Timeout:** `timeout_multiplier = 5.0` no `[tool.mutmut]`. Um mutante em laço é dado como timeout depois de 10 vezes o tempo estimado dos seus testes, e não mais 30 vezes, que dava até meia hora de processador por laço.
+4. **Job `juntar`:** soma as estatísticas das partes, calcula o escore (mortos sobre mortos mais sobreviventes), lista os mutantes não mortos e aponta as partes que ficaram sem resultado, no artefato "resultado-da-mutacao".
+5. O campo "mutantes" do workflow continua valendo: com ele preenchido, roda só aqueles padrões, numa parte só.
+
+### Detalhes escolhidos pelo assistente, sem perguntar
+
+- O número de partes, a divisão pelas iniciais, os 4 GB por processo, os 2 filhos por parte e o `timeout_multiplier` são ajustes da ferramenta: não mudam o que é testado, só como roda. Um limite de memória baixo demais apareceria logo, porque a rodada limpa dos testes falharia antes de qualquer mutante.
+- `tests/test_profundidade.py` entra no teste de mutação, como o de variantes: é rápido e exercita a VAR-12 e o ajuste do Heurístico.
+- **Emulação no Windows**, como na correção anterior, com o código atual e uma das partes: geração, estatísticas, rodada limpa e falha forçada passam; para no `fork`.
+
+### Pendências
+
+- Do autor: disparar de novo o workflow "Teste de mutação" e mandar o resumo do job `juntar` (ou o log, se falhar). Se o repositório for privado, as 9 partes consomem minutos do Actions em paralelo.
