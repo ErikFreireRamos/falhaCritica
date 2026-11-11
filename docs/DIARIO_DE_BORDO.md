@@ -929,3 +929,80 @@ Execução oficial no commit `f925943`, árvore limpa: 36.000 partidas em 592 s 
 3. **O bug duplicado da 2.2 espalha os ataques, como o PDF diz.** Com a regra da 2.1 (permitido), a razão máximo/média de testes recebidos sobe (de 1,36 a 1,43 para 1,43 a 1,52) e o REQ-06a falha com 5 jogadores experientes.
 4. **"Sem limite de testes" (2.2) contra "1 teste por ciclo" (2.1):** o limite da 2.1 resolve o tempo parado (REQ-10 passa: 3,3 e 4,9 min), mas encurta a partida para 28 a 32 min e concentra os testes no menor placar (REQ-06 falha). Na 2.2, testar mais tem custo em tempo, e o teste por ciclo não é a saída: a partida fica curta demais.
 5. **Resumo:** cada mudança da v2.2 desfeita piora algum requisito, ou não melhora nenhum. O ponto fraco que sobra, o tempo parado, vem justamente do teste sem limite, que dá valor às cartas guardadas.
+
+### Resultado do Experimento 4 (`fase4_exp4_sensibilidade`)
+
+Execução oficial no commit `73762b5`, árvore limpa: 88.000 partidas em 1.421 s com 4 processos, nenhuma falha (REQ-09 passa). Relatório em `resultados/fase4_exp4_sensibilidade/20261111-082054-73762b5/relatorio.md`. Mesma legenda da tabela do Experimento 6.
+
+| Cenário | REQ-06a | REQ-06b | REQ-07 | REQ-08 | REQ-10 | REQ-11 | REQ-12 | REQ-13 |
+|---|---|---|---|---|---|---|---|---|
+| n4_iniciante_base | 1,35✓ | 0,42✓ | 0,06✓ | 38,4✗ | 5,8✗ | 0,59✓ | 0,08✓ | 0,22✓ |
+| n4_iniciante_dano_alerta_0 | 1,35✓ | 0,42✓ | 0,03✓ | 38,4✗ | 5,8✗ | 0,60✓ | 0,08? | 0,19✗ |
+| n4_iniciante_dano_alerta_2 | 1,36✓ | 0,42✓ | 0,13✗ | 38,4✗ | 5,8✗ | 0,57✓ | 0,08✓ | 0,24✓ |
+| n4_iniciante_dano_sem_cobertura_1 | 1,37✓ | 0,44✗ | 0,01✓ | 38,2✗ | 5,8✗ | 0,52✓ | 0,04✓ | 0,16✗ |
+| n4_iniciante_dano_sem_cobertura_3 | 1,36✓ | 0,41✓ | 0,27✗ | 38,6✗ | 5,8✗ | 0,62✓ | 0,10? | 0,27✓ |
+| n4_iniciante_fichas_3 | 1,35✓ | 0,42✓ | 0,46✗ | 38,4✗ | 5,8✗ | 0,59✓ | 0,08✓ | 0,22✓ |
+| n4_iniciante_fichas_4 | 1,35✓ | 0,42✓ | 0,17✗ | 38,4✗ | 5,8✗ | 0,59✓ | 0,08✓ | 0,22✓ |
+| n4_iniciante_fichas_6 | 1,35✓ | 0,42✓ | 0,02✓ | 38,4✗ | 5,8✗ | 0,59✓ | 0,08✓ | 0,22✓ |
+| n4_iniciante_fichas_7 | 1,35✓ | 0,42✓ | 0,00✓ | 38,4✗ | 5,8✗ | 0,59✓ | 0,08? | 0,21✓ |
+| n4_iniciante_tempos_mais_25 | 1,35✓ | 0,42✓ | 0,06✓ | 48,1✓ | 7,2✗ | 0,59✓ | 0,08✓ | 0,22✓ |
+| n4_iniciante_tempos_menos_25 | 1,35✓ | 0,42✓ | 0,06✓ | 28,9✗ | 4,3✓ | 0,59✓ | 0,08? | 0,22✓ |
+| n4_experiente_base | 1,38✓ | 0,42✓ | 0,04✓ | 38,7✗ | 5,8✗ | 0,51✓ | 0,03✓ | 0,17✗ |
+| n4_experiente_dano_alerta_0 | 1,38✓ | 0,42✓ | 0,02✓ | 38,7✗ | 5,8✗ | 0,53✓ | 0,03✓ | 0,15✗ |
+| n4_experiente_dano_alerta_2 | 1,38✓ | 0,42✓ | 0,10? | 38,7✗ | 5,8✗ | 0,49✓ | 0,03✓ | 0,19✗ |
+| n4_experiente_dano_sem_cobertura_1 | 1,36✓ | 0,44? | 0,01✓ | 38,6✗ | 5,8✗ | 0,50✓ | 0,04✓ | 0,12✗ |
+| n4_experiente_dano_sem_cobertura_3 | 1,37✓ | 0,42✓ | 0,19✗ | 38,8✗ | 5,8✗ | 0,52✓ | 0,06✓ | 0,22✓ |
+| n4_experiente_fichas_3 | 1,38✓ | 0,42✓ | 0,34✗ | 38,7✗ | 5,8✗ | 0,51✓ | 0,03✓ | 0,17✗ |
+| n4_experiente_fichas_4 | 1,38✓ | 0,42✓ | 0,13✗ | 38,7✗ | 5,8✗ | 0,51✓ | 0,03✓ | 0,17✗ |
+| n4_experiente_fichas_6 | 1,38✓ | 0,42✓ | 0,01✓ | 38,7✗ | 5,8✗ | 0,51✓ | 0,03✓ | 0,17✗ |
+| n4_experiente_fichas_7 | 1,38✓ | 0,42✓ | 0,00✓ | 38,7✗ | 5,8✗ | 0,51✓ | 0,03✓ | 0,17✗ |
+| n4_experiente_tempos_mais_25 | 1,38✓ | 0,42✓ | 0,04✓ | 48,4✓ | 7,2✗ | 0,51✓ | 0,03✓ | 0,17✗ |
+| n4_experiente_tempos_menos_25 | 1,38✓ | 0,42✓ | 0,04✓ | 29,1✗ | 4,3✓ | 0,51✓ | 0,03✓ | 0,17✗ |
+| n5_iniciante_base | 1,41✓ | 0,34✓ | 0,08✓ | 44,2✓ | 9,0✗ | 0,58✓ | 0,07✓ | 0,21✓ |
+| n5_iniciante_dano_alerta_0 | 1,40✓ | 0,34✓ | 0,04✓ | 44,3✓ | 9,2✗ | 0,60✓ | 0,07✓ | 0,18✗ |
+| n5_iniciante_dano_alerta_2 | 1,40✓ | 0,33✓ | 0,17✗ | 44,3✓ | 9,0✗ | 0,57✓ | 0,07✓ | 0,24✓ |
+| n5_iniciante_dano_sem_cobertura_1 | 1,40✓ | 0,36✗ | 0,01✓ | 44,1✓ | 8,9✗ | 0,52✓ | 0,04✓ | 0,16✗ |
+| n5_iniciante_dano_sem_cobertura_3 | 1,41✓ | 0,33✓ | 0,32✗ | 44,5✓ | 9,2✗ | 0,62✓ | 0,09? | 0,26✓ |
+| n5_iniciante_fichas_3 | 1,41✓ | 0,34✓ | 0,52✗ | 44,2✓ | 9,0✗ | 0,58✓ | 0,07✓ | 0,21✓ |
+| n5_iniciante_fichas_4 | 1,41✓ | 0,34✓ | 0,23✗ | 44,2✓ | 9,0✗ | 0,58✓ | 0,07✓ | 0,21✓ |
+| n5_iniciante_fichas_6 | 1,41✓ | 0,34✓ | 0,02✓ | 44,2✓ | 9,0✗ | 0,58✓ | 0,07✓ | 0,21✓ |
+| n5_iniciante_fichas_7 | 1,41✓ | 0,34✓ | 0,01✓ | 44,2✓ | 9,0✗ | 0,58✓ | 0,07✓ | 0,21✓ |
+| n5_iniciante_tempos_mais_25 | 1,41✓ | 0,34✓ | 0,08✓ | 55,4✗ | 11,3✗ | 0,58✓ | 0,07✓ | 0,21✓ |
+| n5_iniciante_tempos_menos_25 | 1,41✓ | 0,34✓ | 0,08✓ | 33,4✗ | 6,8✗ | 0,58✓ | 0,07✓ | 0,21✓ |
+| n5_experiente_base | 1,43✓ | 0,35✓ | 0,05✓ | 44,5✓ | 9,2✗ | 0,52✓ | 0,07✓ | 0,17✗ |
+| n5_experiente_dano_alerta_0 | 1,43✓ | 0,34✓ | 0,03✓ | 44,5✓ | 9,2✗ | 0,53✓ | 0,07✓ | 0,15✗ |
+| n5_experiente_dano_alerta_2 | 1,43✓ | 0,34✓ | 0,13✗ | 44,5✓ | 9,1✗ | 0,51✓ | 0,07✓ | 0,20✗ |
+| n5_experiente_dano_sem_cobertura_1 | 1,43✓ | 0,36✗ | 0,01✓ | 44,4✓ | 9,0✗ | 0,50✓ | 0,04✓ | 0,12✗ |
+| n5_experiente_dano_sem_cobertura_3 | 1,42✓ | 0,33✓ | 0,24✗ | 44,6✓ | 9,2✗ | 0,53✓ | 0,07✓ | 0,22✓ |
+| n5_experiente_fichas_3 | 1,43✓ | 0,35? | 0,40✗ | 44,5✓ | 9,2✗ | 0,52✓ | 0,07✓ | 0,17✗ |
+| n5_experiente_fichas_4 | 1,43✓ | 0,35✓ | 0,15✗ | 44,5✓ | 9,2✗ | 0,52✓ | 0,07✓ | 0,17✗ |
+| n5_experiente_fichas_6 | 1,43✓ | 0,35✓ | 0,02✓ | 44,5✓ | 9,2✗ | 0,52✓ | 0,07✓ | 0,17✗ |
+| n5_experiente_fichas_7 | 1,43✓ | 0,35✓ | 0,00✓ | 44,5✓ | 9,2✗ | 0,52✓ | 0,07✓ | 0,17✗ |
+| n5_experiente_tempos_mais_25 | 1,43✓ | 0,35✓ | 0,05✓ | 55,7✗ | 11,5✗ | 0,52✓ | 0,07✓ | 0,17✗ |
+| n5_experiente_tempos_menos_25 | 1,43✓ | 0,35? | 0,05✓ | 33,5✗ | 6,9✗ | 0,52✓ | 0,07✓ | 0,17✗ |
+
+### Observações (cuidado ao ler)
+
+1. **Fichas iniciais: 5 é o mínimo que passa no REQ-07.** Com 3 fichas, 34% a 52% das partidas têm alguém em 0 ficha antes do ciclo 3; com 4, de 13% a 23% (falha); com 5, de 4% a 8% (passa); com 6, de 1% a 2%; com 7, quase nenhuma. As outras medidas não mudam: os bots não decidem pelo número de fichas, então o valor só muda o piso. O PDF acertou o mínimo; 6 daria folga.
+2. **O REQ-07 e o REQ-13 puxam para lados opostos.** Com experientes, o peso dos incidentes só passa de 0,20 com o dano sem cobertura em 3 (0,22), e aí o REQ-07 falha (19% a 32% das partidas com alguém zerado). Mais dano por Alerta (2) também ajuda o REQ-13 e derruba o REQ-07 com iniciantes. Dano menor (sem cobertura 1 ou Alerta 0) faz o REQ-13 falhar também com iniciantes. Uma combinação, por exemplo dano 3 com 6 fichas iniciais, pode satisfazer os dois. Isso é uma interação, que não foi medida aqui.
+3. **Duração e tempo parado dependem dos tempos provisórios.** Com todos os tempos +25%, a mesa de 4 passa a durar 48 min (REQ-08 passa) e a de 5 estoura (55 min). Com −25%, as duas ficam curtas demais (29 e 33 min), e o tempo parado passa com 4 jogadores (4,3 min). O REQ-08 e o REQ-10 só podem ser julgados de verdade com os tempos cronometrados no playtest. O que não depende dos tempos é a relação entre 4 e 5 jogadores: a de 5 dura cerca de 15% mais e fica cerca de 55% mais tempo parada.
+
+## Fase 4 — resumo
+
+**Melhor estilo (MET-07, REQ-03, REQ-04, REQ-11):** o Heurístico é o melhor estilo e o equilíbrio da dinâmica do replicador; o Construtor vem logo atrás. Construir vence caçar na v2.2.1, e nenhum Caçador é melhor resposta a mesa nenhuma, a não ser a de Aleatórios. Mesmo assim, os dois estilos aparecem dentro das decisões do Heurístico (REQ-11 passa). Entre os Caçadores, atacar o líder é o melhor, o contrário da v1.
+
+**Blefe (REQ-04, REQ-05):** nenhum perfil puro domina. O equilíbrio é misto, com cerca de 1 em cada 6 jogadores blefando sempre, e nele cerca de 39% dos blefes dão certo, no meio da faixa do PDF.
+
+**O jogo está balanceado?** Com o comportamento de equilíbrio, a v2.2.1 passa na equidade de assento com bots aleatórios (REQ-01), na anti bola de neve (REQ-02), na habilidade (REQ-03), em nenhuma estratégia dominante (REQ-04), no blefe (REQ-05), na distribuição de ataques (REQ-06), nas fichas (REQ-07), na robustez (REQ-09), nos dois estilos (REQ-11) e no primeiro incidente (REQ-12). Os pontos fracos:
+- o tempo parado (REQ-10), sobretudo com 5 jogadores;
+- o peso dos incidentes para experientes (REQ-13);
+- a duração com 4 jogadores, curta demais pelos tempos provisórios (REQ-08);
+- a vantagem do primeiro jogador com bots que jogam bem, na borda da zona (REQ-01).
+
+**Variantes, ablação e sensibilidade:** nenhuma variante do playtest melhora tudo, e as mudanças da v2.2 se justificam todas. Os números mais sensíveis são as fichas iniciais (5 é o mínimo) e o dano de incidente (em tensão com as fichas). Os tempos do MOD-05 decidem os vereditos de duração e de tempo parado.
+
+### Pendências
+
+- Do autor: decidir se haverá uma v2.3, por exemplo com a combinação de dano e fichas da observação 2, antes da Fase 5 ou depois do playtest.
+- Do autor: a parte "acima de 60 minutos" do REQ-08; a redação dos trechos marcados em `regras/`.
+- Para o playtest: cronometrar as ações (MOD-05) e registrar o tempo parado.
