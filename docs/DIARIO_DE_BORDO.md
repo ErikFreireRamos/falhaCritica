@@ -801,3 +801,67 @@ Execução oficial no commit `e17bbf2`, árvore limpa: 20.000 partidas em 318 s 
 1. **Os números do PDF batem com o equilíbrio:** com a contestação de R-7.3.4 e R-7.3.5, a mistura estável de comportamentos faz cerca de 39% dos blefes darem certo, no meio da faixa de 30% a 50% que o PDF pede para o playtest.
 2. **Na mesa de equilíbrio, os perfis vencem perto de 1/N**, como se espera de um equilíbrio. Quem sempre blefa fica um pouco abaixo (0,234 com 4 jogadores, intervalo de 0,223 a 0,246), porque a dinâmica usa uma aproximação linear.
 3. **A duração depende muito de como a mesa contesta.** Na mesa de equilíbrio há 3,3 contestações por partida com 4 jogadores, contra cerca de 9,5 com o blefe moderado. As medianas caem para 38,7 min (4 jogadores) e 44,6 min (5), contra 45,7 e 55,1 nos Experimentos 2 e 3. É só descrição (o REQ-08 não foi medido aqui), mas a duração com 5 jogadores, que estourava os 50 min, fica dentro da faixa com o comportamento de equilíbrio.
+
+### Resultado do Experimento 6 (`fase4_exp6_variantes`)
+
+Execução oficial no commit `cf01dd6`, árvore limpa: 80.000 partidas em 1.350 s com 4 processos, nenhuma falha (REQ-09 passa). Relatório em `resultados/fase4_exp6_variantes/20261111-004839-cf01dd6/relatorio.md`. Mesas de Heurísticos sorteadas da mistura do equilíbrio do blefe.
+
+Valor e veredito de cada requisito por cenário (✓ passa, ✗ falha, ? inconclusivo). REQ-06a: razão máximo/média de testes recebidos (até 1,5). REQ-06b: fração dos testes contra o menor placar (até 0,43 com 4 jogadores e 0,35 com 5). REQ-07: partidas com alguém em 0 ficha antes do ciclo 3 (até 0,10). REQ-08: mediana da duração em minutos (40 a 50). REQ-10: percentil 90 do tempo parado por jogador e ciclo, em minutos (até 5). REQ-11: sistema cheio ao fim do 1º Planejamento (0,10 a 0,90). REQ-12: vantagem de quem começa cobrindo a chave do incidente 1 (até ±0,10). REQ-13: dano de incidente sobre fichas movimentadas (0,20 a 0,60).
+
+| Cenário | REQ-06a | REQ-06b | REQ-07 | REQ-08 | REQ-10 | REQ-11 | REQ-12 | REQ-13 |
+|---|---|---|---|---|---|---|---|---|
+| n4_iniciante_base | 1,36✓ | 0,42✓ | 0,07✓ | 38,4✗ | 5,8✗ | 0,58✓ | 0,07✓ | 0,22✓ |
+| n4_iniciante_var01_2_fichas | 1,36✓ | 0,41✓ | 0,09? | 38,4✗ | 5,8✗ | 0,58✓ | 0,06✓ | 0,21✓ |
+| n4_iniciante_var01_sem_punicao | 1,36✓ | 0,42✓ | 0,07✓ | 38,4✗ | 5,8✗ | 0,58✓ | 0,06✓ | 0,22✓ |
+| n4_iniciante_var02_custo_extra | 1,36✓ | 0,40✓ | 0,19✗ | 38,4✗ | 5,8✗ | 0,58✓ | 0,06✓ | 0,20✗ |
+| n4_iniciante_var03_auditor_externo | 1,35✓ | 0,42✓ | 0,06✓ | 38,5✗ | 7,3✗ | 0,58✓ | 0,07✓ | 0,22✓ |
+| n4_iniciante_var04_vizinho | 1,49? | 0,43? | 0,08✓ | 34,6✗ | 5,0✓ | 0,58✓ | 0,06✓ | 0,22✓ |
+| n4_iniciante_var05_limite_2 | 1,16✓ | 0,44? | 0,08✓ | 34,0✗ | 4,7✓ | 0,58✓ | 0,08✓ | 0,22✓ |
+| n4_iniciante_var06_palpite | 1,36✓ | 0,42✓ | 0,07✓ | 38,4✗ | 5,8✗ | 0,58✓ | 0,06✓ | 0,21✓ |
+| n4_iniciante_var07_2_compras | 1,54✗ | 0,44? | 0,10? | 30,3✗ | 4,1✓ | 0,00✗ | 0,09? | 0,24✓ |
+| n4_iniciante_var09_modulo | 1,36✓ | 0,42✓ | 0,07✓ | 37,6✗ | 5,7✗ | 0,55✓ | 0,08? | 0,24✓ |
+| n4_experiente_base | 1,38✓ | 0,42✓ | 0,03✓ | 38,7✗ | 5,8✗ | 0,51✓ | 0,03✓ | 0,17✗ |
+| n4_experiente_var01_2_fichas | 1,38✓ | 0,42✓ | 0,06✓ | 38,7✗ | 5,8✗ | 0,51✓ | 0,03✓ | 0,17✗ |
+| n4_experiente_var01_sem_punicao | 1,38✓ | 0,42✓ | 0,03✓ | 38,7✗ | 5,8✗ | 0,51✓ | 0,03✓ | 0,18✗ |
+| n4_experiente_var02_custo_extra | 1,38✓ | 0,41✓ | 0,05✓ | 38,7✗ | 5,8✗ | 0,51✓ | 0,02✓ | 0,17✗ |
+| n4_experiente_var03_auditor_externo | 1,37✓ | 0,42✓ | 0,04✓ | 38,7✗ | 7,4✗ | 0,51✓ | 0,05✓ | 0,17✗ |
+| n4_experiente_var04_vizinho | 1,49? | 0,43? | 0,03✓ | 34,9✗ | 5,0? | 0,51✓ | 0,04✓ | 0,18✗ |
+| n4_experiente_var05_limite_2 | 1,17✓ | 0,45✗ | 0,03✓ | 34,3✗ | 4,7✓ | 0,51✓ | 0,03✓ | 0,18✗ |
+| n4_experiente_var06_palpite | 1,38✓ | 0,42✓ | 0,03✓ | 38,7✗ | 5,8✗ | 0,51✓ | 0,03✓ | 0,17✗ |
+| n4_experiente_var07_2_compras | 1,56✗ | 0,44? | 0,04✓ | 30,4✗ | 4,0✓ | 0,00✗ | 0,07✓ | 0,18✗ |
+| n4_experiente_var09_modulo | 1,37✓ | 0,43✓ | 0,05✓ | 37,7✗ | 5,6✗ | 0,49✓ | 0,05✓ | 0,19✗ |
+| n5_iniciante_base | 1,40✓ | 0,34✓ | 0,07✓ | 44,2✓ | 9,0✗ | 0,57✓ | 0,06✓ | 0,22✓ |
+| n5_iniciante_var01_2_fichas | 1,40✓ | 0,34✓ | 0,09? | 44,2✓ | 9,0✗ | 0,57✓ | 0,06✓ | 0,21✓ |
+| n5_iniciante_var01_sem_punicao | 1,40✓ | 0,34✓ | 0,06✓ | 44,2✓ | 9,0✗ | 0,57✓ | 0,06✓ | 0,22✓ |
+| n5_iniciante_var02_custo_extra | 1,40✓ | 0,33✓ | 0,21✗ | 44,2✓ | 9,0✗ | 0,57✓ | 0,06✓ | 0,20✗ |
+| n5_iniciante_var03_auditor_externo | 1,40✓ | 0,34✓ | 0,08✓ | 44,4✓ | 10,2✗ | 0,57✓ | 0,05✓ | 0,22✓ |
+| n5_iniciante_var04_vizinho | 1,55✗ | 0,35? | 0,09? | 39,0✗ | 7,7✗ | 0,57✓ | 0,07✓ | 0,23✓ |
+| n5_iniciante_var05_limite_2 | 1,17✓ | 0,36✗ | 0,09✓ | 38,9✗ | 7,0✗ | 0,57✓ | 0,08✓ | 0,22✓ |
+| n5_iniciante_var06_palpite | 1,40✓ | 0,34✓ | 0,06✓ | 44,2✓ | 9,0✗ | 0,57✓ | 0,06✓ | 0,21✓ |
+| n5_iniciante_var07_2_compras | 1,61✗ | 0,36✗ | 0,12✗ | 34,2✗ | 6,3✗ | 0,00✗ | 0,08✓ | 0,24✓ |
+| n5_iniciante_var09_modulo | 1,40✓ | 0,34✓ | 0,09? | 43,3✓ | 8,8✗ | 0,55✓ | 0,08✓ | 0,23✓ |
+| n5_experiente_base | 1,42✓ | 0,35? | 0,06✓ | 44,6✓ | 9,2✗ | 0,50✓ | 0,04✓ | 0,17✗ |
+| n5_experiente_var01_2_fichas | 1,42✓ | 0,34✓ | 0,08✓ | 44,6✓ | 9,2✗ | 0,50✓ | 0,03✓ | 0,17✗ |
+| n5_experiente_var01_sem_punicao | 1,42✓ | 0,35? | 0,05✓ | 44,5✓ | 9,2✗ | 0,50✓ | 0,04✓ | 0,18✗ |
+| n5_experiente_var02_custo_extra | 1,42✓ | 0,34✓ | 0,09? | 44,6✓ | 9,2✗ | 0,50✓ | 0,03✓ | 0,17✗ |
+| n5_experiente_var03_auditor_externo | 1,42✓ | 0,34✓ | 0,06✓ | 44,6✓ | 10,2✗ | 0,50✓ | 0,03✓ | 0,17✗ |
+| n5_experiente_var04_vizinho | 1,55✗ | 0,35? | 0,05✓ | 39,5✗ | 7,9✗ | 0,50✓ | 0,05✓ | 0,18✗ |
+| n5_experiente_var05_limite_2 | 1,20✓ | 0,36✗ | 0,05✓ | 39,3✗ | 7,2✗ | 0,50✓ | 0,04✓ | 0,18✗ |
+| n5_experiente_var06_palpite | 1,42✓ | 0,34✓ | 0,05✓ | 44,6✓ | 9,2✗ | 0,50✓ | 0,04✓ | 0,17✗ |
+| n5_experiente_var07_2_compras | 1,64✗ | 0,36✗ | 0,04✓ | 34,2✗ | 6,2✗ | 0,00✗ | 0,06✓ | 0,19✗ |
+| n5_experiente_var09_modulo | 1,43✓ | 0,35✓ | 0,05✓ | 43,5✓ | 8,8✗ | 0,48✓ | 0,06✓ | 0,19✗ |
+
+### Observações (cuidado ao ler)
+
+1. **A v2.2.1, com o comportamento de equilíbrio, passa em REQ-06, REQ-07, REQ-11 e REQ-12** com 4 e com 5 jogadores, para iniciantes e experientes.
+2. **Tempo parado (REQ-10) é o problema maior:** o percentil 90 fica em 5,8 min por ciclo com 4 jogadores e em 9 min com 5. Com 5 jogadores, nenhuma variante o traz para menos de 5 min. Os tempos do MOD-05 são provisórios, mas a diferença entre 4 e 5 jogadores vem da estrutura: mais disputas em que cada um não está.
+3. **A duração (REQ-08) falha com 4 jogadores por ser curta demais** (38,4 a 38,7 min). Com 5 jogadores passa (44 min). O comportamento de equilíbrio contesta pouco (2 a 4 contestações por partida, contra cerca de 9,5 com o blefe moderado), e a partida encurta.
+4. **O peso dos incidentes (REQ-13) depende do conhecimento:** passa com iniciantes (0,21 a 0,24) e falha com experientes (0,17 a 0,19). Quem sabe o conteúdo diagnostica e se cobre melhor, e o incidente pesa menos.
+5. **O que cada variante faz:**
+   - VAR-01 (punição de 0 ou 2 fichas) e VAR-06 (palpite) quase não mudam nada que o simulador mede. O palpite existe para engajar quem está parado, e isso um bot não mede; pela definição do REQ-10, quem vota continua contando como parado.
+   - VAR-02 (custo extra da explicação) derruba o REQ-07 para iniciantes (19% a 21% das partidas com alguém em 0 ficha), porque iniciantes erram muitas explicações.
+   - VAR-03 (Auditor externo) piora o tempo parado (7,3 min com 4 jogadores), porque ninguém da mesa fica ocupado como Auditor.
+   - VAR-04 (vizinho designado) e VAR-05 (limite de 2 testes) encurtam a partida e o tempo parado, mas deixam a duração abaixo de 40 min. O VAR-04 concentra os testes (REQ-06a até 1,55); o VAR-05 os espalha, mas aumenta a fração contra o menor placar (REQ-06b falha com 5 jogadores).
+   - VAR-07 (2 compras) torna o REQ-11 impossível: com 2 cartas iniciais e 2 compras, ninguém chega a 5 cartas no ciclo 1. A partida também fica curta demais (30 a 34 min).
+   - VAR-09 (módulo) quase não muda os números.
+6. **Resumo para o texto:** nenhuma variante melhora tudo. A regra atual é a melhor das 10 configurações no conjunto. O ponto fraco que sobra é o tempo parado com 5 jogadores, e a variante desenhada para ele (o palpite) não pode ser avaliada por bots.
