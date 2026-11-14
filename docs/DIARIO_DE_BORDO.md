@@ -1404,3 +1404,50 @@ As 8 lacunas reais:
 
 - Do autor: as partes 0 e 7 da mutação. Dá para copiar de novo o passo "Resumo" daquela execução, ou rodar de novo; agora o resultado sai também no resumo da execução.
 - Do autor: uma nova execução completa mostraria o escore com os testes novos. Não é urgente: os mutantes-alvo já foram conferidos à mão.
+
+---
+
+## 2026-11-14 — Fase 5: as partes 0 e 7 do teste de mutação
+
+O autor mandou o passo "Resumo" das partes 0 e 7. As contagens fecham com as partes: 634 e 467 mutantes. A parte 7 veio completa. Da parte 0, só aparecem as últimas 40 das 126 linhas de mutantes não mortos: os 20 sem teste já eram conhecidos, e não se sabe quais são 64 dos sobreviventes e os 2 timeouts.
+
+| Parte | Mutantes | Mortos | Sobreviventes | Sem teste | Timeout |
+|---|---|---|---|---|---|
+| 0 (v1 e v2 fora do motor, funções soltas do motor) | 634 | 508 | 104 | 20 | 2 |
+| 7 (motor da v2, outros métodos com p) | 467 | 452 | 15 | 0 | 0 |
+| 1 a 6 e 8 (entrada anterior) | 3.782 | 3.548 | 223 | 0 | 11 |
+| **Total** | **4.883** | **4.508** | **342** | **20** | **13** |
+
+**Escore total: 4.508 / (4.508 + 342) = 0,930.** A parte 0 é a mais fraca (0,83).
+
+### O que as partes 0 e 7 mostram
+
+- **Ponto de corte da v2 (REQ-02), 9 mutantes:** outro gancho de medida, da mesma categoria que o autor mandou cobrir. Ganhou um teste evento a evento em `tests/test_medidas.py`; os mutantes conferidos à mão morrem.
+- **Palpite da plateia (VAR-06), 5:** variante, fica como está, como decidido.
+- **`preparar`, 1:** equivalente com 3 ciclos (sempre há incidente para a vaga Próximo).
+- **Invariantes da v1 (22 dos visíveis):** nenhum teste entrega um estado inválido para ver a violação acusada. Os testes só conferem que estados válidos passam. Por isso sobrevive até o mutante que desliga a conferência inteira (`achadas = None`). Os testes de propriedades e o fuzzing também só conferem estados válidos. É provável que as invariantes da v2 tenham a mesma lacuna entre as linhas que não apareceram.
+- **Observação da v1 (11):** campos como `fase`, `vez`, `historico`, `testes_feitos` e os da disputa podem ser trocados por `None` sem que nenhum teste perceba; `decisao_pedida` também aparece para quem não está na vez. A v2 tem `test_observacao.py`; a v1 só confere as mãos, os sistemas e as cartas reveladas.
+- **Leitura de ação da v1 vinda do registro (7):** 5 são textos de mensagem; 1 aceita `cartas` como texto em vez de lista; 1 é equivalente.
+
+### Decisão do autor
+
+| Assunto | Opções | Escolha |
+|---|---|---|
+| Lacunas da parte 0 | invariantes; observação da v1; ação da v1 vinda do registro; rodar a parte 0 de novo para ver as linhas cortadas | **Invariantes.** A observação da v1 e a leitura de ação da v1 ficam como estão, e a parte 0 não roda de novo por enquanto |
+
+### O que foi feito
+
+1. **`tests/test_medidas.py`:** o ponto de corte da v2 (REQ-02) é conferido evento a evento: o corte aparece só no fim do ciclo 1, e o placar do resultado é o daquele momento.
+2. **`tests/test_invariantes.py`, testes negativos das invariantes, na v1 e na v2:** cada teste entrega um estado com uma violação de propósito e confere a mensagem exata, e que `conferir` levanta `ViolacaoDeInvariante` com o mesmo texto.
+   - Violações da v2: carta duplicada, Backlog grande, sistema acima do teto, fichas negativas, Alerta repetido ou fora do jogo, carta revelada fora do sistema, carta pega do Backlog que sumiu, acertos demais, marcadores fora da mesa, Auditor fora de lugar, fim com decisão pendente ou sem vencedor, partida em andamento sem decisão, disputa fora da Homologação.
+   - Violações da v1: carta duplicada, Critical Failure no sistema, mão grande, testes demais, soma errada de mão e testes, carta revelada fora do sistema, fim com decisão pendente ou sem vencedor, partida em andamento sem decisão, disputa fora da fase de testes.
+   - Também conferidos: o modo fora de repouso, a mensagem com várias violações juntas, a preparação (que não é conferida na v2, e na v1 só é conferida quando já há baralho) e o baralho vazio durante os testes.
+
+### Verificação
+
+- **Os mutantes-alvo morrem,** com a mutação aplicada à mão numa cópia e o teste rodado: os 4 do ponto de corte da v2 conferidos e 13 das invariantes, entre eles desligar a conferência inteira (`achadas = None`), mudar o padrão de `em_repouso`, inverter a condição da preparação, do fim de jogo e do Auditor, e trocar uma mensagem. Sem mutação, os testes passam.
+- `uv run pytest`: 502 testes passam, 1 pulado. `ruff`, `mypy`, verificador e matriz (176 de 176) sem apontamentos.
+
+### Pendências
+
+- Do autor: uma execução completa do teste de mutação mediria o escore com os testes novos. Os mutantes-alvo já foram conferidos à mão, e a lista completa da parte 0 sairia no resumo da execução.

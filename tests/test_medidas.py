@@ -61,3 +61,21 @@ def test_blefes_contados_evento_a_evento() -> None:
     assert jogar_partida(motor, honestos, 11, 0).blefes == 0
     v1 = carregar_motor(RAIZ / "configs" / "regras_v1.yaml")
     assert jogar_partida(v1, [criar_bot("construtor", PERFIL, "v1") for _ in range(4)], 11, 0).blefes == 0
+
+
+def test_ponto_de_corte_no_fim_do_ciclo_1() -> None:
+    """REQ-02: o corte é o placar no fim do ciclo 1, e só lá; conferido evento a evento."""
+    from critical_failure.bots.fabrica import criar_bot
+    from critical_failure.regras.familias import carregar_motor
+
+    motor = carregar_motor(RAIZ / "configs" / "regras_v2_2_1.yaml")
+    eventos: list[Any] = []
+    bots = [criar_bot("heuristico", PERFIL) for _ in range(4)]
+    resultado = jogar_partida(motor, bots, 9, 0, ouvinte=lambda evento, _decisao: eventos.append(evento))
+    fins = [i for i, ev in enumerate(eventos) if ev.tipo == "fim_do_ciclo"]
+    assert fins  # o último ciclo termina no fim de jogo, sem fim_do_ciclo
+    corte = fins[0]
+    assert eventos[corte].publico["ciclo_encerrado"] == 1
+    for posicao, evento in enumerate(eventos):
+        assert (motor.ponto_de_corte(evento) is not None) == (posicao == corte)
+    assert resultado.placar_no_corte == tuple(j.fichas for j in eventos[corte].estado.jogadores)
