@@ -1471,3 +1471,39 @@ As Fases 0, 1, 1b, 2, 3, 4 e 5 estão entregues: 12 execuções oficiais, 891.00
 
 - Caminho e estrutura do arquivo de resumo.
 - **Hipótese não medida no resumo (3.9 e S6):** a vantagem da ordem pode vir da escolha do Backlog no ciclo 1 e de o marcador de primeiro jogador não passar por todos em 3 ciclos. Está marcada como não medida.
+
+---
+
+## 2026-11-14 — Detalhe do REQ-13 e proposta de máximo de 4 jogadores
+
+O autor perguntou se a regra atual é diferente da do início dos testes, achou boa a proposta de no máximo 4 jogadores e pediu o detalhe da proposta para o peso dos incidentes com experientes.
+
+### Respostas
+
+- **A regra é a mesma do início dos testes.** A v2.2.1 foi criada em 09/11, na Fase 0, antes de existir simulador. Desde a Fase 1b, todos os experimentos usaram a v2.2.1 como base. Variantes, ablações, propostas e sensibilidade só mudaram configurações de experimento, e nenhuma virou regra. Em relação ao PDF, a v2.2.1 tem as correções COR-01 e COR-02 e os esclarecimentos AMB-01 a AMB-15.
+- **Máximo de 4 jogadores:** o mínimo hoje também é 4 (R-1.2), então o jogo passaria a ser só para 4. Ficou aguardando a decisão do autor: só 4, de 3 a 4 (exige medir a mesa de 3, nunca simulada) ou manter de 4 a 5 e recomendar 4.
+
+### Amostra descritiva do REQ-13 (não oficial)
+
+As 4 bases do Experimento 6 (iniciante e experiente, 4 e 5 jogadores), com 400 partidas por cenário e todos os registros completos, rodadas fora do repositório. A razão bate com a oficial (0,169 e 0,216 contra 0,171 e 0,215).
+
+| Por jogador e partida, 4 jogadores | Iniciante | Experiente |
+|---|---|---|
+| Dano de incidente | 3,3 | 2,7 |
+| Ganho do diagnóstico | 1,2 | 2,4 |
+| Critical Failure | 2,7 | 2,8 |
+| Total movimentado | 15,2 | 16,1 |
+| Incidentes sem dano | 49% | 58% |
+| Diagnóstico certo | 39% | 79% |
+
+- Cerca de dois terços da queda do REQ-13 com experientes vêm do dano menor, e um terço das fichas a mais do diagnóstico.
+- Lidas de outras formas, as medidas passam para os dois públicos: com o Critical Failure, 0,40 e 0,34; com o incidente inteiro (dano e diagnóstico), 0,29 e 0,32.
+- **A exclusão do Critical Failure do REQ-13 foi escolha do assistente** no Experimento 6 e não foi perguntada. Ela muda o veredito e agora está com o autor.
+
+### O que foi feito
+
+- `docs/RESUMO_DOS_RESULTADOS.md`: detalhe da S2 (máximo de 4) e da S3 (REQ-13), com as opções A a E. A sugestão é A, com C ao lado como descrição.
+
+### Pendências
+
+- Do autor: máximo de 4 jogadores (só 4; de 3 a 4; recomendar 4) e REQ-13 (opções A a E, e se o Critical Failure conta).

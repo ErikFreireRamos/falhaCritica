@@ -168,6 +168,58 @@ Quatro regras comparadas: a atual (sem limite), 1 teste por ciclo, 2 testes por 
 | S7 | **Variantes do playtest** | VAR-07 torna o REQ-11 impossível; VAR-02 zera iniciantes; VAR-03 piora o tempo parado; VAR-01, VAR-06 e VAR-09 quase não mudam o que se mede | levar todas ao playtest; descartar as que falham | **Descartar VAR-07, VAR-02 e VAR-03.** Levar ao playtest só as que medem o que o bot não alcança, como o palpite (VAR-06) |
 | S8 | **Construir contra caçar** | Caçar puro nunca é a melhor resposta, mas o melhor jogador mistura as duas coisas, e o REQ-11 passa | manter; criar uma variante que premie o teste certeiro (não medida) | **Manter.** O desenho já faz o bom jogador atacar quando vale a pena. Só criar a variante se o autor quiser que o Caçador puro seja viável |
 
+### Detalhe da S2: máximo de 4 jogadores
+
+- **Hoje o mínimo também é 4** (R-1.2: 4 a 5 jogadores). Com o máximo em 4, o jogo passa a ser só para exatamente 4 jogadores. Numa turma, isso pede mesas de 4 (uma turma de 30 deixa 2 alunos de fora ou exige uma mesa diferente).
+- **O que sai com a mesa de 5:** o pior tempo parado (9 min por ciclo, contra 5,8 com 4). Com 4 jogadores, o REQ-10 ainda falha com os tempos provisórios, mas passa se os tempos reais forem 25% menores.
+- **Nada precisa ser rodado de novo para 4 jogadores:** uma partida de 4 é igual nas duas versões. Só o rótulo e o hash das regras mudam.
+- **Mesa de 3 nunca foi simulada.** Se o autor quiser 3 a 4, é preciso medir antes. Hipótese não medida: com 3, o atacante, o defensor e o Auditor são todos os jogadores, e ninguém fica parado na disputa.
+
+### Detalhe da S3: o peso dos incidentes para experientes (REQ-13)
+
+**O que o REQ-13 mede:** a fração de todas as fichas movimentadas na partida (ganhos e perdas de todas as fontes) que vem do dano dos 3 incidentes. A intenção vem do PDF (p. 34), na linha do parâmetro "Dano de incidente": "incidentes pesam, mas não decidem a partida sozinhos". A zona numérica, de 0,20 a 0,60, foi proposta na Fase 0 e confirmada pelo autor.
+
+**Para onde vão as fichas.** Amostra descritiva de 400 partidas por cenário, com a configuração da base do Experimento 6 e os registros completos. Não é execução oficial. A razão bate com a oficial (0,169 e 0,216, contra 0,171 e 0,215).
+
+| Fichas por jogador por partida, 4 jogadores | Iniciante | Experiente |
+|---|---|---|
+| Dano de incidente (perda) | 3,3 | 2,7 |
+| Diagnóstico certo (ganho) | 1,2 | 2,4 |
+| Homologação (ganho / perda) | 4,4 / 0,5 | 3,9 / 0,8 |
+| Critical Failure (perda) | 2,7 | 2,8 |
+| Pontuação final (ganho) | 3,2 | 3,5 |
+| **Total movimentado** | **15,2** | **16,1** |
+| **REQ-13 (dano ÷ total)** | **0,22** | **0,17** |
+
+- **O experiente perde menos no incidente.** Ele sai sem dano nenhum em 58% dos incidentes, contra 49% do iniciante. Fica sem cobertura em 32% contra 39%, porque lê melhor o Radar e se prepara. Tem Alerta na categoria em 11% contra 18%, porque defende melhor na Homologação.
+- **E ganha mais no próprio incidente.** Ele acerta o diagnóstico em 79% das vezes, contra 39% do iniciante, e isso aumenta o total movimentado.
+- **Os dois efeitos se somam.** Trocar só o dano do iniciante pelo do experiente leva a razão de 0,22 para 0,19. Trocar só as outras fontes leva a 0,20. Cerca de dois terços da queda vêm do dano menor, e um terço das fichas a mais do diagnóstico.
+- **No Critical Failure, o conhecimento não protege:** a categoria é sorteada no dado e não há diagnóstico. Os dois públicos perdem cerca de 2,8 fichas.
+
+**A mesma partida, lida de outras formas** (amostra descritiva; 4 e 5 jogadores):
+
+| Medida | Iniciante | Experiente |
+|---|---|---|
+| Atual: só o dano dos 3 incidentes | 0,22 / 0,21 | 0,17 / 0,18 |
+| Dano dos incidentes e do Critical Failure | 0,40 / 0,39 | 0,34 / 0,35 |
+| Incidente inteiro: dano e ganho do diagnóstico | 0,29 / 0,29 | 0,32 / 0,32 |
+
+Lido como incidente inteiro, o incidente **não pesa menos para o experiente. Pesa um pouco mais**, só que como ganho, e não como perda. É a mensagem do jogo: quem sabe o conteúdo transforma o incidente em oportunidade.
+
+**Ficar fora do REQ-13 o dano do Critical Failure foi escolha do assistente**, registrada no diário (Experimento 6) como detalhe e não perguntada. Ela muda o veredito, por isso precisa da confirmação do autor.
+
+**Opções:**
+
+| Opção | O que muda | Veredito com experientes |
+|---|---|---|
+| A. Manter a medida e a zona; explicar a falha com experientes como achado | nada | falha (0,17), com explicação |
+| B. Contar o Critical Failure como incidente | definição da medida | passa (0,34) |
+| C. Medir o incidente inteiro (dano e diagnóstico) | definição da medida | passa (0,32) |
+| D. Piso menor para experientes (por exemplo, 0,15) | zona | passa |
+| E. Mais dano, ou dano 3 com 6 fichas | regra | passa, mas os iniciantes zeram cedo (REQ-07 falha) |
+
+**Sugestão: A, com C como descrição ao lado, sem veredito.** A regra não muda, o critério fixado antes da medição não muda, e o texto do TCC ganha a explicação de por que o requisito falha com experientes e por que isso é o comportamento desejado. B, C e D mudam o critério depois de ver o resultado. Se o autor escolher uma delas, o texto precisa declarar isso.
+
 **Se o autor quiser uma v2.2.2 ou v2.3 antes do playtest**, a mudança mais defensável pelos dados é nenhuma na mecânica. Ficariam só a revisão das zonas do REQ-08 e do REQ-13 e, talvez, a recomendação de 4 jogadores. Pela convenção do projeto, qualquer mudança de regra cria um arquivo novo em `regras/`, uma entrada em `docs/HISTORICO_REGRAS.md` e um YAML novo.
 
 ---
