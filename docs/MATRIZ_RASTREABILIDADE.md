@@ -129,7 +129,7 @@ Para cada item de `docs/especificacao_v2_2.md` e `docs/especificacao_v1.md`: ond
 | R-8.0.4 | regra | `regras/v2/motor.py:921` | `test_exemplo_de_dano_do_pdf`, `test_so_a_categoria_chave_pontua` | coberta |
 | R-8.0.4a | regra | `regras/v2/motor.py:924` | `test_so_a_categoria_chave_pontua`, `test_so_o_diagnostico_pela_categoria_chave_da_ficha` | coberta |
 | R-8.0.5 | regra | `regras/v2/motor.py:950` | `test_exemplo_de_dano_do_pdf`, `test_itens_de_dano_do_incidente` | coberta |
-| R-8.0.5a | regra | `regras/v2/motor.py:944` | `test_comprovar_cobertura_revela_o_minimo` | coberta |
+| R-8.0.5a | regra | `regras/v2/motor.py:944` | `test_comprovar_cobertura_prefere_a_carta_que_a_mesa_ja_conhece`, `test_comprovar_cobertura_revela_o_minimo` | coberta |
 | R-8.0.5b | regra | — | `test_exemplo_da_categoria_secundaria_do_pdf` | coberta |
 | R-8.0.6 | regra | `regras/v2/motor.py:964`, `regras/v2/motor.py:974`, `regras/v2/motor.py:980` | `test_licao_aprendida`, `test_licao_aprendida_sem_carta_da_categoria_nao_acontece` | coberta |
 | R-8.0.6a | regra | `regras/v2/motor.py:975` | `test_licao_aprendida` | coberta |
@@ -203,12 +203,12 @@ Para cada item de `docs/especificacao_v2_2.md` e `docs/especificacao_v1.md`: ond
 | V1-4.3.4a | regra | — | `test_cada_um_testa_na_sua_vez_ate_usar_as_tres_cartas` | coberta |
 | V1-4.3.5 | regra | `regras/v1/motor.py:267` | `test_testa_qualquer_adversario_com_qualquer_carta_da_mao` | coberta |
 | V1-4.3.6 | regra | `regras/v1/motor.py:294`, `regras/v1/motor.py:353` | `test_declarar_que_nao_tem_e_falha_encontrada` | coberta |
-| V1-4.3.7 | regra | `regras/v1/motor.py:357`, `regras/v1/motor.py:366` | `test_declaracao_aceita_e_defesa_bem_sucedida` | coberta |
+| V1-4.3.7 | regra | `regras/v1/motor.py:357`, `regras/v1/motor.py:366` | `test_declaracao_aceita_e_defesa_bem_sucedida`, `test_so_a_declaracao_de_quem_tem_a_cor_leva_explicacao` | coberta |
 | V1-4.3.8 | regra | `regras/v1/motor.py:287` | `test_declaracao_aceita_e_defesa_bem_sucedida` | coberta |
 | V1-4.3.9 | regra | `regras/v1/motor.py:311`, `regras/v1/motor.py:315` | `test_duvida_pede_a_definicao_e_o_atacante_decide` | coberta |
 | V1-4.3.10 | regra | — | `test_duvida_pede_a_definicao_e_o_atacante_decide` | coberta |
-| V1-4.3.10a | regra | `regras/v1/motor.py:301`, `regras/v1/motor.py:305` | `test_blefe_aceito_pela_verdade_se_a_configuracao_pedir`, `test_declaracao_aceita_e_defesa_bem_sucedida` | coberta |
-| V1-4.3.10b | regra | `regras/v1/motor.py:334`, `regras/v1/motor.py:343` | `test_contestou_e_era_verdade` | coberta |
+| V1-4.3.10a | regra | `regras/v1/motor.py:301`, `regras/v1/motor.py:305` | `test_blefe_aceito_pela_verdade_se_a_configuracao_pedir`, `test_declaracao_aceita_e_defesa_bem_sucedida` e mais 1 | coberta |
+| V1-4.3.10b | regra | `regras/v1/motor.py:334`, `regras/v1/motor.py:343` | `test_contestacao_revela_a_carta_que_a_mesa_ja_conhece`, `test_contestou_e_era_verdade` | coberta |
 | V1-4.3.11 | regra | `regras/v1/motor.py:339`, `regras/v1/motor.py:340` | `test_contestou_e_era_verdade` | coberta |
 | V1-4.3.12 | regra | `regras/v1/motor.py:245`, `regras/v1/motor.py:344` | `test_contestou_e_era_blefe` | coberta |
 | V1-4.3.13 | regra | `regras/v1/motor.py:424`, `regras/v1/motor.py:428` | `test_cada_um_testa_na_sua_vez_ate_usar_as_tres_cartas` | coberta |

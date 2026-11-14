@@ -1327,3 +1327,80 @@ O script do `juntar` foi rodado nesta máquina com 3 partes falsas, uma delas se
 ### Pendências
 
 - Do autor: disparar de novo o workflow "Teste de mutação". Se o serviço de artefatos falhar de novo, os números de cada parte estarão no resumo da execução.
+
+---
+
+## 2026-11-14 — Fase 5: resultado parcial do teste de mutação
+
+### De onde vêm os números
+
+Execução da 3ª versão do workflow (9 partes), no commit `7c6d9c5`; o código do motor é o mesmo do commit atual. O autor mandou, na pasta `mutação/` (fora do git):
+- os artefatos das partes 1 a 4;
+- o log do passo "Resumo" das partes 5, 6 e 8.
+
+Os arquivos das partes 0 e 7 chegaram vazios. Do log da parte 6, só aparecem 40 das 47 linhas de mutantes não mortos, porque o passo mostrava as últimas 40.
+
+| Parte | Mutantes | Mortos | Sobreviventes | Timeout |
+|---|---|---|---|---|
+| 1 (motor da v1, a a e, i, j) | 585 | 563 | 22 | 0 |
+| 2 (motor da v1, os outros) | 612 | 602 | 10 | 0 |
+| 3 (motor da v2, a, b, g, j, l, o, s, v) | 547 | 476 | 71 | 0 |
+| 4 (motor da v2, c e e) | 658 | 638 | 16 | 4 |
+| 5 (motor da v2, d, f, i) | 570 | 531 | 39 | 0 |
+| 6 (motor da v2, pa, pe, r) | 509 | 462 | 40 | 7 |
+| 8 (motor da v2, os outros) | 301 | 276 | 25 | 0 |
+| **Soma (7 de 9 partes)** | **3.782** | **3.548** | **223** | **11** |
+
+Escore das 7 partes: 3.548 / (3.548 + 223) = **0,941**. Faltam as partes 0 (634 mutantes: v1 e v2 fora do motor, mais as funções soltas do motor) e 7 (467: os outros métodos do motor da v2 com p).
+
+### O que sobreviveu
+
+Diff de cada mutante gerado nesta máquina, sobre a cópia mutada do mesmo código (227 dos 234 não mortos; faltam os 7 que o log da parte 6 cortou).
+
+| Categoria | Mutantes | Leitura |
+|---|---|---|
+| Variantes do playtest (VAR-02 a VAR-06) | 74 | Os testes das variantes conferem o comportamento geral, não o detalhe. Sobrevivem, por exemplo: o Auditor externo que nunca erra (VAR-03), o palpite com o voto invertido e o prêmio para quem errou (VAR-06), o vizinho da direita (VAR-04) e a contagem de testes recebidos (VAR-05) |
+| Detalhe de evento do registro em situação rara | 51 | Regra citada, chave do `publico`, `oculto` ou `visivel`, ou o `ator`, em eventos que não aparecem nos registros de referência: troca de carta repetida na preparação, reposição impossível do Backlog, limpeza de Alertas no Critical Failure (AMB-12), defesa que nomeia teste de outra categoria, custo do teste (VAR-12) |
+| Ganchos de medida dos requisitos | 33 | `sistemas_cheios_no_planejamento`, `blefe_na_defesa`, `defesa_aceita` e o ponto de corte da v1: os testes deles estão em `test_experimentos.py`, que fica fora da mutação por ser lento |
+| Texto de mensagem de erro | 32 | Equivalentes: os testes conferem o tipo do erro (`AcaoIlegal`), não o texto |
+| Timeout | 11 | Laços infinitos; na prática, detectados |
+| Conferência de invariantes enfraquecida | 4 | Equivalentes para o jogo: só deixam a conferência mais fraca |
+| Outros, provavelmente equivalentes | 14 | `False` trocado por `None` (os dois são falsos); padrões que só valem com um bloco que não está ligado; `linha[2:]` igual a `linha[1:]` com 3 ciclos; `fichas.minimo` igual a 0; campo que já tem o valor certo antes da troca |
+| **Lacunas reais nas regras do jogo base** | **8** | Abaixo |
+
+As 8 lacunas reais:
+
+1. **Qual carta revelar:** na Produção da v2 (`_escolher_para_revelar`) e na contestação da v1 (`_contestar`), o motor prefere uma carta que já está revelada. Inverter a preferência não é detectado.
+2. **Defesa com teste de outra categoria (v2):** o teste nomeado não ir para a disputa (3 mutantes) não é detectado. Ele aparece depois no histórico que os bots veem.
+3. **Validação dos campos de uma ação:** na defesa da v2 e na declaração da v1, uma ação com um campo que não devia estar ali passa (2 mutantes).
+4. **AMB-20, interpretação alternativa da v1** ("blefe aceito resolvido pela verdade"): o caminho dela não tem teste (1 mutante). A interpretação em uso é a do autor ("vale a declaração").
+
+### Decisão do autor
+
+| Assunto | Opções | Escolha |
+|---|---|---|
+| Lacunas a fechar | as 8 do jogo base; as das variantes VAR-02 a VAR-06; os ganchos de medida; as regras citadas nos eventos | **As 8 lacunas do jogo base e os ganchos de medida.** As variantes e os detalhes de evento ficam como estão |
+
+### O que foi feito
+
+1. **Testes novos para as 8 lacunas:**
+   - `test_producao.py`: a cobertura comprovada prefere a carta que a mesa já conhece (AMB-11);
+   - `test_v1.py`:
+     - a contestação revela a carta já conhecida;
+     - só a declaração de quem tem a cor leva explicação;
+     - com o AMB-20 alternativo, quem tem a cor defende com sucesso;
+   - `test_homologacao.py`:
+     - a defesa com `categoria` ou com `origem` é recusada;
+     - o teste nomeado de outra categoria fica no histórico.
+2. **Ganchos de medida:** os testes de sistemas cheios e de blefes contados saíram de `test_experimentos.py` (fora da mutação) para `tests/test_medidas.py`, que o mutmut roda. O teste do ponto de corte da v1 passou a conferir o gancho evento a evento: na partida dele, o placar no corte se repete em outros pontos, e por isso trocar o corte de lugar não mudava o resultado.
+
+### Verificação
+
+- **Cada teste novo mata o mutante que o motivou.** A mutação foi aplicada à mão numa cópia do projeto e o teste correspondente rodado: os 11 mutantes-alvo morrem (revelação na v1 e na v2, teste nomeado no histórico, campos da defesa, declaração da v1, AMB-20 alternativo, ponto de corte da v1 de dois jeitos, sistemas cheios, defesa aceita e blefe na defesa da v2), e sem mutação os testes passam.
+- **Um sobrevivente é equivalente:** na v1, `blefe_na_defesa` devolver `True` não muda nada, porque a `defesa_aceita` da v1 sempre devolve `None` e o blefe marcado nunca é contado.
+- `uv run pytest`: 467 testes passam, 1 pulado. `ruff`, `mypy`, verificador e matriz (176 de 176) sem apontamentos.
+
+### Pendências
+
+- Do autor: as partes 0 e 7 da mutação. Dá para copiar de novo o passo "Resumo" daquela execução, ou rodar de novo; agora o resultado sai também no resumo da execução.
+- Do autor: uma nova execução completa mostraria o escore com os testes novos. Não é urgente: os mutantes-alvo já foram conferidos à mão.

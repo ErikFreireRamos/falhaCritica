@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from dataclasses import replace
+
 import pytest
 from conftest import avancar, criar_motor, diagnosticar, fichas, jogar, montar, tipos, todos, um
 
@@ -226,6 +228,20 @@ def test_comprovar_cobertura_revela_o_minimo(motor: MotorV2) -> None:
     assert observar(estado, 2, cat).jogadores[0].reveladas == ("Escalabilidade",)
     # Quem não tem carta da categoria não revela nada.
     assert 2 not in comprovadas and estado.jogadores[2].reveladas == ()
+
+
+@pytest.mark.regra("R-8.0.5a")
+def test_comprovar_cobertura_prefere_a_carta_que_a_mesa_ja_conhece(motor: MotorV2) -> None:
+    """AMB-11: com duas cartas da categoria-chave, revela a que já foi revelada antes (nada novo)."""
+    cat = motor.catalogo
+    estado = montar(motor, fase=E.PRODUCAO, agora="01", sistemas=[["Carga", "Pico"], [], [], []])
+    pico = next(carta for carta in estado.jogadores[0].sistema if cat.teste(carta) == "Pico")
+    ana = replace(estado.jogadores[0], reveladas=(pico,))
+    estado = replace(estado, jogadores=(ana, *estado.jogadores[1:]))
+    estado, eventos = diagnosticar(motor, estado, ["Desempenho"] * 4)
+    comprovadas = {ev.ator: ev.publico["carta"] for ev in todos(eventos, "cobertura_comprovada")}
+    assert comprovadas[0] == "Pico"
+    assert cat.nomes(estado.jogadores[0].reveladas) == ["Pico"]
 
 
 @pytest.mark.regra("R-8.1.4")

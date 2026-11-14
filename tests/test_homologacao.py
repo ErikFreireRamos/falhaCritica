@@ -247,6 +247,11 @@ def test_defesa_precisa_dizer_se_a_explicacao_esta_correta(motor: MotorV2) -> No
         motor.aplicar(estado, Acao("defender", teste="Teste que não existe", explicacao_correta=True))
     with pytest.raises(AcaoIlegal):
         motor.aplicar(estado, Acao("defender", teste="Carga", alvo=2, explicacao_correta=True))
+    # Campos de outras ações também são recusados, cada um sozinho (achado do teste de mutação).
+    with pytest.raises(AcaoIlegal):
+        motor.aplicar(estado, Acao("defender", teste="Carga", categoria="Desempenho", explicacao_correta=True))
+    with pytest.raises(AcaoIlegal):
+        motor.aplicar(estado, Acao("defender", teste="Carga", origem="backlog", explicacao_correta=True))
 
 
 @pytest.mark.regra("R-7.2.2c")
@@ -258,6 +263,8 @@ def test_nomear_teste_de_outra_categoria_conta_como_falhou(motor: MotorV2) -> No
     assert um(eventos, "falhou").publico["motivo"] == "outra_categoria"
     assert fichas(estado) == [6, 5, 5, 5] and estado.jogadores[1].alertas == ("Desempenho",)
     assert "conferencia" not in tipos(eventos)
+    # O teste nomeado fica no histórico que a mesa vê (achado do teste de mutação).
+    assert estado.historico[-1].teste_nomeado == "Regressão"
 
 
 @pytest.mark.regra("R-7.2.4", "R-7.3.2")

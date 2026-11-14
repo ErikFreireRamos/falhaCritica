@@ -317,6 +317,26 @@ def test_blefe_aceito_pela_verdade_se_a_configuracao_pedir() -> None:
     assert nomes(motor, estado.jogadores[0].sistema) == [RECOVERY]
 
 
+@pytest.mark.regra("V1-4.3.10a")
+def test_pela_verdade_quem_tem_a_cor_defende_com_sucesso() -> None:
+    """O outro lado do AMB-20 alternativo: declaração verdadeira aceita é defesa bem-sucedida."""
+    dados = ler_yaml(REGRAS_V1)
+    dados["interpretacoes"]["blefe_aceito"]["valor"] = "verdade"
+    motor = MotorV1(ler_regras_v1(dados))
+    estado = montar_v1(motor, sistemas=[[], [STRESS], [], []], maos=[[LOAD], [], [], []])
+    estado, eventos = jogar(motor, estado, ataque(LOAD, 1), TEM, ACEITAR)
+    assert "falha_encontrada" not in tipos(eventos)
+    assert nomes(motor, estado.jogadores[1].sistema) == [STRESS, LOAD]
+
+
+@pytest.mark.regra("V1-4.3.7")
+def test_so_a_declaracao_de_quem_tem_a_cor_leva_explicacao(motor: MotorV1) -> None:
+    estado = montar_v1(motor, sistemas=[[], [RECOVERY], [], []], maos=[[LOAD], [], [], []])
+    estado, _ = jogar(motor, estado, ataque(LOAD, 1))
+    with pytest.raises(AcaoIlegal):
+        motor.aplicar(estado, AcaoV1(A.DECLARAR, tem=False, explicacao_correta=True))
+
+
 @pytest.mark.regra("V1-4.3.9", "V1-4.3.10")
 def test_duvida_pede_a_definicao_e_o_atacante_decide(motor: MotorV1) -> None:
     estado = montar_v1(motor, sistemas=[[], [STRESS], [], []], maos=[[LOAD], [], [], []])
@@ -342,6 +362,18 @@ def test_contestou_e_era_verdade(motor: MotorV1) -> None:
     assert sorted(nomes(motor, estado.jogadores[1].sistema)) == sorted([STRESS, LOAD, AUTHENTICATION])
     assert estado.jogadores[0].sistema == () and estado.descarte == ()
     assert estado.historico[-1].resultado == E.CONTESTOU_VERDADE
+
+
+@pytest.mark.regra("V1-4.3.10b")
+def test_contestacao_revela_a_carta_que_a_mesa_ja_conhece(motor: MotorV1) -> None:
+    """Com duas cartas da cor, revela a que já foi revelada antes (nada novo)."""
+    estado = montar_v1(motor, sistemas=[[], [STRESS, SCALABILITY], [], []], maos=[[LOAD], [], [], []])
+    escala = next(carta for carta in estado.jogadores[1].sistema if motor.catalogo.cartas[carta] == SCALABILITY)
+    bruno = replace(estado.jogadores[1], reveladas=(escala,))
+    estado = replace(estado, jogadores=(estado.jogadores[0], bruno, *estado.jogadores[2:]))
+    estado, eventos = jogar(motor, estado, ataque(LOAD, 1), TEM, DUVIDAR, CONTESTAR)
+    contestacao = next(ev for ev in eventos if ev.tipo == "contestacao")
+    assert contestacao.publico == {"tinha_a_cor": True, "carta_revelada": SCALABILITY}
 
 
 @pytest.mark.regra("V1-4.3.12")
@@ -485,6 +517,12 @@ def test_ponto_de_corte_quando_todos_fizeram_o_primeiro_teste(motor: MotorV1) ->
     )
     esperado = tuple(len(j.sistema) for j in eventos[indice].estado.jogadores)
     assert resultado.placar_no_corte == esperado
+    # Evento a evento: o corte só aparece no fim da disputa em que todos fizeram o primeiro teste.
+    # Nesta partida o placar se repete em outros pontos, então só o resultado não basta (achado do
+    # teste de mutação).
+    for posicao, ev in enumerate(eventos):
+        corte = motor.ponto_de_corte(ev)
+        assert (corte is not None) == (posicao == indice)
 
 
 # ---------------------------------------------------------------- bots da v1
