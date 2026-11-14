@@ -291,25 +291,33 @@ def _primeiro_incidente(
 def _peso_dos_incidentes(
     cenario: Cenario, indice: int, linhas: list[dict[str, Any]], criterio: dict[str, Any], semente: int
 ) -> list[Medida]:
-    """REQ-13: dano de incidente dividido pelo total de fichas movimentadas (ganhos e perdas, todas as fontes)."""
-    partidas = [linha for linha in _da_coleta(linhas, "fichas_movimentadas") if linha["fichas_movimentadas"] > 0]
+    """REQ-13 (definição do autor em 2026-11-14): fichas movimentadas pelos incidentes, o dano e o ganho do
+    diagnóstico, divididas pelo total de fichas movimentadas (ganhos e perdas, todas as fontes). Uma tabela de
+    antes dessa definição não tem a coluna do diagnóstico, e o requisito não é medido nela."""
+    partidas = [
+        linha
+        for linha in _da_coleta(_da_coleta(linhas, "fichas_movimentadas"), "fichas_de_diagnostico")
+        if linha["fichas_movimentadas"] > 0
+    ]
     if not partidas:
         return []
-    dano = np.array([linha["fichas_de_dano"] for linha in partidas], dtype=np.float64)
+    incidente = np.array(
+        [linha["fichas_de_dano"] + linha["fichas_de_diagnostico"] for linha in partidas], dtype=np.float64
+    )
     total = np.array([linha["fichas_movimentadas"] for linha in partidas], dtype=np.float64)
     zona = (float(criterio["minimo"]), float(criterio["maximo"]))
-    intervalo = intervalo_da_razao(dano, total, rng_da_analise(semente, 74_000 + indice))
+    intervalo = intervalo_da_razao(incidente, total, rng_da_analise(semente, 74_000 + indice))
     return [
         Medida(
             PESO_DOS_INCIDENTES,
             cenario.nome,
-            "dano de incidente / fichas movimentadas",
-            float(dano.sum() / total.sum()),
+            "fichas dos incidentes (dano e diagnóstico) / fichas movimentadas",
+            float(incidente.sum() / total.sum()),
             intervalo,
             zona,
             veredito(intervalo, zona),
             len(partidas),
-            nota="o dano do Critical Failure não conta como dano de incidente",
+            nota="o Critical Failure não conta como incidente",
         )
     ]
 
@@ -358,7 +366,8 @@ MEDIDAS_POR_CENARIO = {
 
 
 def equilibrio_interno(linhas: list[dict[str, Any]], experimento: Experimento) -> list[dict[str, Any]]:
-    """Descrição, sem critério, do equilíbrio dentro da partida (REQ-06, 07, 10, 12, 13 e 14), por cenário."""
+    """Descrição, sem critério, do equilíbrio dentro da partida (REQ-06, 07, 10, 12, 13 e 14), por cenário.
+    O peso do dano (só o dano, a definição do REQ-13 até 2026-11-14) continua como descrição."""
     resultado: list[dict[str, Any]] = []
     for nome, cenarios in _unidades_de_descricao(experimento).items():
         nomes = {cenario.nome for cenario in cenarios}
@@ -385,6 +394,11 @@ def equilibrio_interno(linhas: list[dict[str, Any]], experimento: Experimento) -
                 "parado_p90_min": float(np.quantile(np.concatenate(parado), 0.9)) / 60 if parado else None,
                 "peso_do_dano": (
                     sum(linha["fichas_de_dano"] for linha in com_coleta) / movimentadas if movimentadas else None
+                ),
+                "peso_do_incidente": (
+                    sum(linha["fichas_de_dano"] + linha["fichas_de_diagnostico"] for linha in com_coleta) / movimentadas
+                    if movimentadas and all(linha.get("fichas_de_diagnostico") is not None for linha in com_coleta)
+                    else None
                 ),
                 "dispersao_final": float(
                     np.mean([max(linha["placar"]) - min(linha["placar"]) for linha in com_coleta])

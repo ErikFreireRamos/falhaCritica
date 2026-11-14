@@ -754,7 +754,8 @@ def _linhas_da_coleta(partidas: int, **colunas: Any) -> list[dict[str, Any]]:
         "parado_s": [120] * 12,
         "cobre_incidente_1": [True, False, False, False],
         "fichas_movimentadas": 40,
-        "fichas_de_dano": 12,
+        "fichas_de_dano": 8,
+        "fichas_de_diagnostico": 4,
     }
     return [{**base, "partida": i, **colunas} for i in range(partidas)]
 
@@ -774,9 +775,12 @@ def _linhas_da_coleta(partidas: int, **colunas: Any) -> list[dict[str, Any]]:
         # O único que começa cobrindo sempre vence: diferença de 1 menos 0.
         ("REQ-12", {}, "falha"),
         ("REQ-12", {"cobre_incidente_1": [False, False, False, False]}, None),
-        # 12 de 40 fichas vêm do dano de incidente: 0,30, dentro de 0,20 a 0,60.
+        # 12 de 40 fichas vêm dos incidentes (8 de dano e 4 de diagnóstico): 0,30, dentro de 0,20 a 0,60.
         ("REQ-13", {}, "passa"),
-        ("REQ-13", {"fichas_de_dano": 30}, "falha"),
+        ("REQ-13", {"fichas_de_dano": 26}, "falha"),
+        # O ganho do diagnóstico conta (opção C do autor): só o dano, 4 de 40, daria 0,10 e falharia.
+        ("REQ-13", {"fichas_de_dano": 4, "fichas_de_diagnostico": 6}, "passa"),
+        ("REQ-13", {"fichas_de_dano": 4, "fichas_de_diagnostico": 0}, "falha"),
     ],
 )
 def test_medidas_do_experimento_6(requisito: str, colunas: dict[str, Any], esperado: str | None) -> None:
@@ -805,6 +809,21 @@ def test_medidas_ignoram_tabela_sem_as_colunas_da_coleta() -> None:
     requisitos = carregar_requisitos(RAIZ / "configs" / "requisitos.yaml")
     assert [m for m in avaliar(antigas, lido, requisitos) if m.requisito in reqs] == []
     assert equilibrio_interno(antigas, lido) == []
+
+
+def test_req13_nao_e_medido_em_tabela_de_antes_da_coluna_do_diagnostico() -> None:
+    """Tabela de antes de 2026-11-14: sem a coluna do diagnóstico, o REQ-13 não é medido, e o peso do dano
+    continua na descrição."""
+    from critical_failure.metricas.requisitos import avaliar, carregar_requisitos, equilibrio_interno
+
+    lido = ler_experimento(experimento(cenarios=[{**experimento()["cenarios"][0], "requisitos": ["REQ-13"]}]))
+    antigas = [{k: v for k, v in linha.items() if k != "fichas_de_diagnostico"} for linha in _linhas_da_coleta(50)]
+    requisitos = carregar_requisitos(RAIZ / "configs" / "requisitos.yaml")
+    assert [m for m in avaliar(antigas, lido, requisitos) if m.requisito == "REQ-13"] == []
+    (descricao,) = equilibrio_interno(antigas, lido)
+    assert descricao["peso_do_dano"] == pytest.approx(0.2) and descricao["peso_do_incidente"] is None
+    (descricao,) = equilibrio_interno(_linhas_da_coleta(50), lido)
+    assert descricao["peso_do_dano"] == pytest.approx(0.2) and descricao["peso_do_incidente"] == pytest.approx(0.3)
 
 
 def test_experimento_6_e_valido() -> None:

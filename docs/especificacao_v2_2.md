@@ -1,6 +1,6 @@
 # Especificação das regras — Critical Failure v2.2 (revisão atual: v2.2.1)
 
-**Versão especificada:** v2.2.1, que é a v2.2 com as correções COR-01 e COR-02. O texto corrido das regras está em `regras/v2.2.1.md`; o da v2.2 impressa, em `regras/v2.2.md`. Os números de página deste documento são os do PDF da v2.2.
+**Versão especificada:** v2.2.2, que é a v2.2 com as correções COR-01 a COR-03 (a COR-03 só muda o texto, e as partidas são as mesmas da v2.2.1). O texto corrido das regras está em `regras/v2.2.2.md`; o da v2.2 impressa, em `regras/v2.2.md`. Os números de página deste documento são os do PDF da v2.2.
 
 **Fonte:** `docs/Critical_Failure_-_Regras_Completas_2.2.pdf` (35 páginas, atualização de 17 de outubro de 2026). É a fonte da verdade para a v2.2, com uma exceção: as correções do autor listadas na seção "Correções do autor" (`COR-<nn>`) são posteriores ao PDF e valem sobre ele até que o PDF seja atualizado. Em qualquer outro ponto em que este documento e o PDF divergirem, vale o PDF e este documento deve ser corrigido.
 
@@ -50,12 +50,13 @@ Sentido horário é o mesmo que "para a esquerda". No simulador os assentos são
 
 Decisões do autor posteriores ao PDF de 17 de outubro de 2026. Valem sobre o PDF até que ele seja atualizado; a atualização do PDF é pendência do autor. Cada correção está também em `docs/HISTORICO_REGRAS.md`.
 
-O comportamento impresso no PDF continua disponível pela chave de configuração indicada, desligado por padrão, para o simulador medir o efeito de cada mudança.
+O comportamento impresso no PDF continua disponível pela chave de configuração indicada, desligado por padrão, para o simulador medir o efeito de cada mudança. A COR-03 não tem chave: é uma recomendação do texto e não muda nenhuma partida.
 
 | ID | Data | Regras afetadas | No PDF 2.2 | Correção | Origem | Configuração |
 |---|---|---|---|---|---|---|
 | COR-01 | 2026-11-09 | R-1.2 | 4 a 6 jogadores | 4 a 5 jogadores | AMB-06: com 6 jogadores o baralho pode acabar | `jogadores.maximo` |
 | COR-02 | 2026-11-09 | R-6.9 (nova); R-6.2b (revogada); R-6.8, R-7.4.4 e R-8.1.5 (notas ajustadas) | O Alerta fica até o jogador colocar uma carta da categoria ou até um incidente da categoria | Todos os cubos de Alerta saem no início de cada Planejamento; colocar carta não remove mais Alerta | Resposta do autor a AMB-12 | `alertas.limpeza_no_planejamento` |
+| COR-03 | 2026-11-14 | R-1.2 | 4 a 6 jogadores, sem recomendação | 4 a 5 jogadores, com 4 recomendado; a contagem não inclui um Auditor externo | Experimentos 6 e 7: com 5 jogadores, a partida dura mais e o tempo parado é maior | — (só texto) |
 
 Consequências da COR-02, confirmadas pelo autor:
 
@@ -67,7 +68,7 @@ Consequências da COR-02, confirmadas pelo autor:
 | ID | Tipo | Regra | Pág. | Parâmetros | Notas |
 |---|---|---|---|---|---|
 | R-1.1 | regra | Vence quem terminar a partida com mais Fichas de Reputação. | 1 | — | Desempate em R-9.2.7 e R-9.2.8 |
-| R-1.2 | regra | A partida tem de 4 a 5 jogadores. | 1 | `jogadores.minimo=4`; `jogadores.maximo=5` | COR-01: o PDF diz 4 a 6; VAR-08; AMB-06 |
+| R-1.2 | regra | A partida tem de 4 a 5 jogadores. | 1 | `jogadores.minimo=4`; `jogadores.maximo=5` | COR-01: o PDF diz 4 a 6; COR-03: 4 é o recomendado; VAR-08; AMB-06 |
 | R-1.3 | regra | A partida tem 3 ciclos, seguidos do Critical Failure e da revelação final. | 1 | `ciclos=3` | Detalhe em R-4.1 e R-4.2 |
 | R-1.4 | definicao | As 7 categorias do jogo base são Desempenho, Compatibilidade, Interação, Confiabilidade, Segurança da Informação, Manutenibilidade e Flexibilidade. | 1 | `categorias.base=7` | 8ª categoria em R-11.1 |
 | R-1.5 | nota | A duração estimada é de 40 a 50 minutos, a validar no playtest. | 1 | — | REQ-08 |

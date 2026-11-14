@@ -7,7 +7,7 @@ e resume a partida em números simples que vão para a tabela do executor:
 - REQ-07: se alguém ficou com 0 ficha antes do último ciclo;
 - REQ-10: tempo parado de cada jogador em cada ciclo, pelo modelo de duração;
 - REQ-12: quem começou com a categoria-chave do incidente 1 no sistema;
-- REQ-13: fichas movimentadas, no total e pelo dano de incidente;
+- REQ-13: fichas movimentadas, no total, pelo dano de incidente e pelo diagnóstico;
 - MET-09: trocas de líder isolado, conferidas a cada mudança de placar.
 """
 
@@ -19,7 +19,7 @@ from typing import Any
 from critical_failure.duracao import Cronometro, ModeloDeDuracao
 from critical_failure.regras.v2 import estado as E
 from critical_failure.regras.v2.estado import Evento
-from critical_failure.regras.v2.motor import FONTE_DANO, MotorV2
+from critical_failure.regras.v2.motor import FONTE_DANO, FONTE_DIAGNOSTICO, MotorV2
 
 FASES_DOS_CICLOS = (E.PLANEJAMENTO, E.HOMOLOGACAO, E.PRODUCAO)
 
@@ -108,5 +108,6 @@ class ColetorV2:
             "cobre_incidente_1": list(self.cobre) if self.cobre is not None else None,
             "fichas_movimentadas": sum(self.movimentado.values()),
             "fichas_de_dano": self.movimentado[FONTE_DANO],
+            "fichas_de_diagnostico": self.movimentado[FONTE_DIAGNOSTICO],
             "trocas_de_lider": self.trocas_de_lider,
         }

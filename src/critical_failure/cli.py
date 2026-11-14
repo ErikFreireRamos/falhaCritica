@@ -30,7 +30,7 @@ from critical_failure.nucleo.erros import ConfiguracaoInvalida, ErroCF
 from critical_failure.regras.familias import carregar_motor
 from critical_failure.relatorios.markdown import renderizar
 
-REGRAS_PADRAO = registro.PASTA_CONFIGS / "regras_v2_2_1.yaml"
+REGRAS_PADRAO = registro.PASTA_CONFIGS / "regras_v2_2_2.yaml"
 DURACAO_PADRAO = registro.PASTA_CONFIGS / "duracao.yaml"
 
 

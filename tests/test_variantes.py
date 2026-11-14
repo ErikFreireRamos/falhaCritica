@@ -214,6 +214,10 @@ def test_coletor_confere_com_os_eventos() -> None:
         assert medidas["cobre_incidente_1"] == cobre
         dano = sum(abs(v) for e in eventos if e.publico.get("fonte") == "dano" for v in e.publico["fichas"].values())
         assert medidas["fichas_de_dano"] == dano <= medidas["fichas_movimentadas"]
+        acertos = [e for e in eventos if e.tipo == "diagnostico_pontuado" and e.publico.get("fichas")]
+        diagnostico = sum(v for e in acertos for v in e.publico["fichas"].values())
+        assert medidas["fichas_de_diagnostico"] == diagnostico > 0
+        assert dano + diagnostico <= medidas["fichas_movimentadas"]
 
 
 # ---------------------------------------------------------------- ablações (Experimento 3) e tempos por cenário

@@ -1507,3 +1507,36 @@ As 4 bases do Experimento 6 (iniciante e experiente, 4 e 5 jogadores), com 400 p
 ### Pendências
 
 - Do autor: máximo de 4 jogadores (só 4; de 3 a 4; recomendar 4) e REQ-13 (opções A a E, e se o Critical Failure conta).
+
+---
+
+## 2026-11-14 — v2.2.2 (4 jogadores recomendados) e REQ-13 redefinido
+
+### Decisões do autor
+
+| Assunto | Opções | Escolha |
+|---|---|---|
+| Número de jogadores | só 4; de 3 a 4 (medir a mesa de 3); de 4 a 5 com 4 recomendado | **"Até 5 jogadores com 4 sendo o recomendado (isso não considera o auditor externo)"**: a contagem é só de jogadores |
+| Como registrar a recomendação | v2.2.2 agora; guardar para a próxima versão; editar a v2.2.1 | **v2.2.2 agora**, que passa a ser a versão atual |
+| REQ-13 | A manter e explicar; B contar o Critical Failure; C incidente inteiro (dano e diagnóstico); D piso menor para experientes; E mais dano | **C**: o REQ-13 passa a medir as fichas movimentadas pelos incidentes, o dano e o ganho do diagnóstico, sobre todas as fichas movimentadas. Zona mantida (0,20 a 0,60). A opção C, como apresentada, deixa o Critical Failure de fora |
+| Veredito oficial do REQ-13 novo | repetir o Experimento 6; só as 4 bases; não rodar agora | **Repetir o Experimento 6**, com a mesma semente |
+
+A sugestão do assistente era A, com C só como descrição. O autor escolheu C. **A definição do REQ-13 mudou depois da medição**, e o texto do TCC precisa dizer isso.
+
+### O que foi feito
+
+1. **v2.2.2 (COR-03):** `regras/v2.2.2.md`, cópia da v2.2.1 com "Jogadores: 4 a 5; recomendado: 4", a seção "O que muda na revisão 2.2.2" e o histórico da revisão. `configs/regras_v2_2_2.yaml` tem os mesmos números da v2.2.1; mudam só a versão, o texto e a lista de correções. Registrada em `docs/HISTORICO_REGRAS.md` (iteração 2), na especificação (tabela de correções e R-1.2), em `regras/README.md` e no `CLAUDE.md`.
+2. **REQ-13, opção C:**
+   - o coletor conta as fichas do diagnóstico (`fichas_de_diagnostico`, coluna nova do Parquet);
+   - a medida do REQ-13 soma o dano e o diagnóstico;
+   - o relatório ganhou a coluna "Peso do incidente" na descrição, ao lado do "Peso do dano", que continua como descrição;
+   - `configs/requisitos.yaml` registra a nova definição e a data.
+   Numa tabela de antes da coluna nova, o REQ-13 não é medido e o peso do dano continua na descrição.
+3. **Testes:** a v2.2.2 joga, evento por evento, as mesmas partidas da v2.2.1 com 4 e com 5 jogadores; o YAML só muda no rótulo; o `cf jogar` usa a v2.2.2 por padrão; o REQ-13 conta o diagnóstico (um caso que falharia só com o dano passa); a tabela antiga não é medida; as fichas do diagnóstico batem com os eventos.
+
+### Detalhes escolhidos pelo assistente, sem perguntar
+
+- **A COR-03 não tem chave de configuração**, ao contrário da convenção das correções: ela não muda nenhuma partida, e não há comportamento a desligar.
+- **O `cf jogar` passa a usar a v2.2.2 por padrão.** Os testes e os registros de referência continuam com a v2.2.1, que joga igual.
+- **A repetição do Experimento 6 usa o mesmo arquivo**, com a v2.2.1 e a mesma semente, para conferir o determinismo: as colunas antigas devem sair idênticas às da execução de 11/11. O resultado vale para a v2.2.2, que joga igual.
+- **`mutação/` no `.gitignore`:** a pasta com os logs do teste de mutação, que o autor mandou e que fica fora do git, deixava a árvore suja e impedia a execução oficial.

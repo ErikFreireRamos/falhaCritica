@@ -6,7 +6,8 @@ Um arquivo por versão das regras. Enquanto o jogo estiver em ajuste, a fonte da
 |---|---|---|---|---|
 | [v1.md](v1.md) | v1 | 2025 | Artigo do SBQS 2025, seções 4.2 e 4.3, com as decisões AMB-20 a AMB-29 | Linha de base da comparação |
 | [v2.2.md](v2.2.md) | v2.2 | 2026-10-17 | Transcrição do PDF `docs/Critical_Failure_-_Regras_Completas_2.2.pdf` | Referência impressa; não editar |
-| [v2.2.1.md](v2.2.1.md) | v2.2.1 | 2026-11-09 | v2.2 com as correções COR-01 e COR-02 e os esclarecimentos AMB-01 a AMB-15 | **Versão atual** |
+| [v2.2.1.md](v2.2.1.md) | v2.2.1 | 2026-11-09 | v2.2 com as correções COR-01 e COR-02 e os esclarecimentos AMB-01 a AMB-15 | Usada nos experimentos das Fases 1b a 5; não editar |
+| [v2.2.2.md](v2.2.2.md) | v2.2.2 | 2026-11-14 | v2.2.1 com a recomendação de 4 jogadores (COR-03); só o texto muda | **Versão atual** |
 
 ## Como ler as marcas
 

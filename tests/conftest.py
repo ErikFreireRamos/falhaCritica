@@ -54,7 +54,7 @@ def criar_motor(caminho: Path = REGRAS_ATUAIS, **mudancas: Any) -> MotorV2:
 
 @pytest.fixture(scope="session")
 def motor() -> MotorV2:
-    """Regras atuais (v2.2.1)."""
+    """Regras da v2.2.1, usada nos experimentos; as partidas são as mesmas da v2.2.2, a atual."""
     return criar_motor()
 
 

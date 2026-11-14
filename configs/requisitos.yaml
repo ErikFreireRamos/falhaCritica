@@ -201,11 +201,15 @@ requisitos:
     tipo: regra
     fonte: "PDF 2.2 p. 34 (Dano de incidente)"
     metrica: >
-      Participação do dano de incidentes no total de fichas movimentadas na
-      partida (ganhos mais perdas, de todas as fontes).
+      Participação dos incidentes no total de fichas movimentadas na partida
+      (ganhos mais perdas, de todas as fontes). Conta o incidente inteiro: o
+      dano e o ganho do diagnóstico. O Critical Failure não conta como
+      incidente. Até 2026-11-14 a medida contava só o dano; a definição mudou
+      depois da medição, por decisão do autor (opção C), e o dano sozinho
+      continua nos relatórios como descrição.
     zona: "entre 0.20 e 0.60"
     criterio: {minimo: 0.20, maximo: 0.60}
-    estado: confirmado  # autor, 2026-11-10
+    estado: confirmado  # autor, 2026-11-10; medida redefinida pelo autor em 2026-11-14
 
   - id: REQ-14
     nome: Sem Hotfix, o placar não dispersa demais

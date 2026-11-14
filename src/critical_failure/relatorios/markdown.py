@@ -333,17 +333,19 @@ def renderizar(manifest: dict[str, Any], analise: Analise) -> str:
             "testes: máximo sobre a média de testes recebidos na partida (REQ-06a). Contra o menor: fração dos "
             "testes contra quem tinha o menor placar (REQ-06b). Zeradas: partidas com alguém em 0 ficha antes do "
             "último ciclo (REQ-07). Parado: percentil 90 do tempo parado por jogador e ciclo, pelos tempos "
-            "provisórios do MOD-05 (REQ-10). Peso do dano: dano de incidente sobre as fichas movimentadas "
-            "(REQ-13). Dispersão: placar do primeiro menos o do último no fim (REQ-14).",
+            "provisórios do MOD-05 (REQ-10). Peso do incidente: fichas movimentadas pelos incidentes, o dano e o "
+            "ganho do diagnóstico, sobre todas as fichas movimentadas (REQ-13). Peso do dano: só o dano de incidente, "
+            "a definição do REQ-13 até 2026-11-14. Dispersão: placar do primeiro menos o do último no fim (REQ-14).",
             "",
-            "| Cenário | Razão de testes | Contra o menor | Zeradas | Parado p90 (min) | Peso do dano | Dispersão |",
-            "|---|---|---|---|---|---|---|",
+            "| Cenário | Razão de testes | Contra o menor | Zeradas | Parado p90 (min) | Peso do incidente "
+            "| Peso do dano | Dispersão |",
+            "|---|---|---|---|---|---|---|---|",
         ]
         for d in analise.interno:
             linhas.append(
                 f"| {d['cenario']} | {talvez(d['razao_de_testes'], 2)} | {talvez(d['contra_o_menor'])} | "
-                f"{_pct(d['zeradas'])} | {talvez(d['parado_p90_min'], 1)} | {talvez(d['peso_do_dano'])} | "
-                f"{_num(d['dispersao_final'], 1)} |"
+                f"{_pct(d['zeradas'])} | {talvez(d['parado_p90_min'], 1)} | {talvez(d['peso_do_incidente'])} | "
+                f"{talvez(d['peso_do_dano'])} | {_num(d['dispersao_final'], 1)} |"
             )
     if analise.profundidade:
         linhas += _profundidade(analise.profundidade)

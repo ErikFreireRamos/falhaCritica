@@ -19,3 +19,6 @@ resultados/**
 !resultados/**/
 !resultados/**/manifest.json
 !resultados/**/relatorio.md
+
+# Logs do teste de mutação enviados pelo autor (2026-11-14); ficam fora do git
+mutação/

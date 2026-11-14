@@ -9,7 +9,7 @@ Para cada item de `docs/especificacao_v2_2.md` e `docs/especificacao_v1.md`: ond
 | ID | Tipo | Código | Testes | Situação |
 |---|---|---|---|---|
 | R-1.1 | regra | `regras/v2/motor.py:1116`, `regras/v2/motor.py:1135` | `test_vence_quem_tem_mais_fichas` | coberta |
-| R-1.2 | regra | `regras/v2/motor.py:205` | `test_numero_de_jogadores_fora_do_intervalo`, `test_v2_2_impressa_difere_da_atual_so_nas_duas_correcoes` | coberta |
+| R-1.2 | regra | `regras/v2/motor.py:205` | `test_numero_de_jogadores_fora_do_intervalo`, `test_partidas_da_v2_2_2_sao_as_da_v2_2_1` e mais 1 | coberta |
 | R-1.3 | regra | — | `test_depois_do_terceiro_ciclo_vem_o_critical_failure_e_a_pontuacao` | coberta |
 | R-1.4 | definicao | — | `test_componentes_do_catalogo` | coberta |
 | R-1.5 | nota | — | — | não exige teste |
