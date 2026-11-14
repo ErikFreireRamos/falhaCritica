@@ -1451,3 +1451,23 @@ O autor mandou o passo "Resumo" das partes 0 e 7. As contagens fecham com as par
 ### Pendências
 
 - Do autor: uma execução completa do teste de mutação mediria o escore com os testes novos. Os mutantes-alvo já foram conferidos à mão, e a lista completa da parte 0 sairia no resumo da execução.
+
+---
+
+## 2026-11-14 — Resumo dos resultados e fim das fases
+
+O autor encerrou o trabalho com a mutação ("não vamos ver mais com a mutação") e pediu um arquivo de resumo com os principais pontos, sugestões de mudança de regra e outros pontos importantes.
+
+### O que foi feito
+
+- **`docs/RESUMO_DOS_RESULTADOS.md`:** respostas curtas (melhor estilo, balanceamento, bola de neve, blefe, profundidade), o que cada fase entregou, os achados de cada experimento, a tabela dos 13 requisitos confirmados, a confiança no simulador, 8 sugestões de mudança de regra (S1 a S8), os limites para o texto do TCC e as pendências.
+- **As sugestões não foram aplicadas.** Cada uma traz os dados, as opções e uma sugestão, para o autor decidir. A regra vigente continua sendo a v2.2.1.
+
+### Situação das fases
+
+As Fases 0, 1, 1b, 2, 3, 4 e 5 estão entregues: 12 execuções oficiais, 891.000 partidas, nenhuma falha. O que falta são as decisões do autor listadas no resumo (zonas do REQ-08 e do REQ-13, uma eventual v2.2.2 ou v2.3, o limiar do MET-08, o REQ-14 e os MET-02 a MET-06, a redação dos trechos marcados em `regras/`) e o playtest, com as ações cronometradas.
+
+### Detalhes escolhidos pelo assistente, sem perguntar
+
+- Caminho e estrutura do arquivo de resumo.
+- **Hipótese não medida no resumo (3.9 e S6):** a vantagem da ordem pode vir da escolha do Backlog no ciclo 1 e de o marcador de primeiro jogador não passar por todos em 3 ciclos. Está marcada como não medida.
