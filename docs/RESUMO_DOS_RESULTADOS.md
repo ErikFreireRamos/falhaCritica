@@ -1,6 +1,6 @@
 # Resumo dos resultados do simulador
 
-Situação em 14/11/2026, depois do commit `7953e75`. As regras vigentes são as da **v2.2.1**.
+Situação em 14/11/2026. As regras vigentes são as da **v2.2.2**, que só muda o texto da v2.2.1 (4 jogadores recomendados). Todos os experimentos usaram a v2.2.1, que joga igual.
 
 Cada número vem do `docs/DIARIO_DE_BORDO.md` e dos relatórios em `resultados/<experimento>/<execução>/relatorio.md`, que registram o commit, a semente e o hash das regras. As **sugestões de mudança de regra** (seção 5) são propostas para o autor decidir. Nenhuma delas foi aplicada.
 
@@ -11,7 +11,7 @@ Cada número vem do `docs/DIARIO_DE_BORDO.md` e dos relatórios em `resultados/<
 | Pergunta | Resposta |
 |---|---|
 | Qual é o melhor estilo? | **O Heurístico**, que mistura construir e atacar conforme o valor de cada jogada. O Construtor fica logo atrás. Os Caçadores puros perdem para os dois. |
-| O jogo está balanceado? | **Em grande parte, sim.** De 13 requisitos confirmados, 9 passam com folga, 3 passam só em parte e 1 falha: o tempo parado. |
+| O jogo está balanceado? | **Em grande parte, sim.** De 13 requisitos confirmados, 10 passam, 2 passam só em parte e 1 falha: o tempo parado. |
 | A v2 resolveu a bola de neve da v1? | **Sim.** A vantagem de quem lidera depois do ciclo 1 cai de cerca de 0,40 na v1 para cerca de 0,09 na v2.2.1. |
 | O blefe funciona como o PDF pede? | **Sim.** Nenhum perfil de blefe domina. No equilíbrio, cerca de 39% dos blefes dão certo, dentro da faixa de 30% a 50%. |
 | Testes sem limite dão um jogo mais profundo? | **Sim.** É a regra com mais decisões, mais defesas, menos vantagem do líder e mais retorno para quem joga bem. |
@@ -31,7 +31,7 @@ Cada número vem do `docs/DIARIO_DE_BORDO.md` e dos relatórios em `resultados/<
 | 4 | Melhor estilo; Experimentos 3 (ablação), 4 e 4b (sensibilidade e combinações), 5 e 5b (blefe), 6 (variantes do playtest) e 7 (profundidade) |
 | 5 | Testes metamórficos, fuzzing, teste de mutação e suíte noturna |
 
-**Volume:** 12 execuções oficiais, **891.000 partidas, nenhuma falha.** Todas rodaram com a árvore do git limpa e podem ser refeitas pela semente.
+**Volume:** 13 execuções oficiais, **971.000 partidas, nenhuma falha** (contando a repetição do Experimento 6 em 14/11). Todas rodaram com a árvore do git limpa e podem ser refeitas pela semente.
 
 ---
 
@@ -75,11 +75,11 @@ Valores das mesas de Heurísticos sorteadas do equilíbrio do blefe (Experimento
 | REQ-06 Distribuição de ataques | **passa** | razão de 1,35 a 1,43; fração contra o menor de 0,34 a 0,43, perto do limite com experientes (alguns cenários inconclusivos) | até 1,5; até 1/(N−1) + 0,10 |
 | REQ-07 Fichas não zeram cedo | **passa** | de 0,03 a 0,08 | até 0,10 |
 | REQ-08 Duração | **em parte** | 5 jogadores: 44 min (passa). 4 jogadores: 38 min (**curta demais**) | mediana de 40 a 50 min |
-| REQ-09 Robustez | **passa** | 0 falhas em 891.000 partidas | 0 em ≥ 50.000 |
+| REQ-09 Robustez | **passa** | 0 falhas em 971.000 partidas | 0 em ≥ 50.000 |
 | REQ-10 Tempo parado | **falha** | percentil 90 de 5,8 min (4 jogadores) e 9,0 min (5) | abaixo de 5 min |
 | REQ-11 Os dois estilos aparecem | **passa** | de 0,50 a 0,58 | 0,10 a 0,90 |
 | REQ-12 1º incidente não decide | **passa** | de 0,03 a 0,08 | até 0,10 |
-| REQ-13 Incidentes pesam | **em parte** | iniciantes de 0,21 a 0,22 (passa); experientes 0,17 (**falha**) | 0,20 a 0,60 |
+| REQ-13 Incidentes pesam | **passa** | 0,29 com iniciantes e 0,32 com experientes, contando o dano e o ganho do diagnóstico. Só com o dano (a definição até 14/11), seria 0,22 e 0,17, e falharia com experientes | 0,20 a 0,60 |
 
 O REQ-08 e o REQ-10 dependem dos tempos do modelo de duração (MOD-05), que ainda são provisórios. Com todos os tempos 25% maiores, a mesa de 4 passa a durar 48 min. Com todos 25% menores, o tempo parado com 4 jogadores passa (4,3 min). O que não depende dos tempos: **a mesa de 5 dura cerca de 15% mais que a de 4 e fica cerca de 55% mais tempo parada.**
 
@@ -142,7 +142,7 @@ Quatro regras comparadas: a atual (sem limite), 1 teste por ciclo, 2 testes por 
 
 | Verificação | Resultado |
 |---|---|
-| Determinismo | mesma configuração e mesma semente geram o mesmo registro byte a byte, no Windows e no Linux. Uma execução refeita deu a tabela de partidas com o mesmo SHA-256 |
+| Determinismo | mesma configuração e mesma semente geram o mesmo registro byte a byte, no Windows e no Linux. Uma execução refeita deu a tabela de partidas com o mesmo SHA-256, e a repetição do Experimento 6, três dias e muitos commits depois, deu as 80.000 partidas idênticas |
 | Auditoria | toda partida pode gerar um registro JSONL que o `replay` refaz e confere evento a evento; cada evento cita a regra que o justificou |
 | Testes | 502 passam (1 pulado); todo item de regra da especificação tem teste (176 de 176 na matriz de rastreabilidade) |
 | Metamórficos | trocar nomes de categorias, girar o dado do Critical Failure e inverter a ordem da mesa não mudam o que não deveriam mudar |
@@ -160,8 +160,8 @@ Quatro regras comparadas: a atual (sem limite), 1 teste por ciclo, 2 testes por 
 | # | Ponto | O que os dados mostram | Opções | Sugestão |
 |---|---|---|---|---|
 | S1 | **Limite de testes** | Sem limite é a regra mais profunda. 1 ou 2 testes por ciclo e o custo do teste encurtam a partida, mas tiram profundidade e não resolvem o tempo parado com 5 jogadores | manter sem limite; adotar 2 testes por ciclo; adotar o custo do teste | **Manter sem limite.** Os meios-termos ficam guardados como variantes (VAR-11 e VAR-12) para comparar no playtest, se for o caso |
-| S2 | **Tempo parado (REQ-10)** | Falha em tudo o que não limita os testes: 5,8 min com 4 jogadores e 9 min com 5. A diferença entre 4 e 5 é estrutural. Os tempos ainda são estimados | não mudar antes de cronometrar; recomendar 4 jogadores como a mesa ideal; avaliar o palpite da plateia (VAR-06) com pessoas; criar um limite de tempo para a explicação (não medido) | **Cronometrar no playtest antes de mudar a regra.** Se o tempo parado se confirmar, recomendar mesas de 4 e avaliar o palpite com pessoas, que é a variante desenhada para isso e que os bots não conseguem medir |
-| S3 | **Peso dos incidentes para experientes (REQ-13)** | 0,17 com experientes, para uma zona de 0,20 a 0,60. Aumentar o dano faz os iniciantes zerarem cedo. Nenhuma combinação de fichas e dano serve aos dois públicos | rever a zona do REQ-13 para experientes; dano 3 com 6 fichas; manter | **Rever a zona, não o dano.** Quem domina o conteúdo sofrer menos com os incidentes é coerente com o objetivo do jogo, porque o conhecimento protege. O playtest com alunos diz qual público importa mais |
+| S2 | **Tempo parado (REQ-10)** | Falha em tudo o que não limita os testes: 5,8 min com 4 jogadores e 9 min com 5. A diferença entre 4 e 5 é estrutural. Os tempos ainda são estimados | não mudar antes de cronometrar; recomendar 4 jogadores como a mesa ideal; avaliar o palpite da plateia (VAR-06) com pessoas; criar um limite de tempo para a explicação (não medido) | **Cronometrar no playtest antes de mudar a regra.** Se o tempo parado se confirmar, recomendar mesas de 4 e avaliar o palpite com pessoas, que é a variante desenhada para isso e que os bots não conseguem medir. **Decidido em 14/11: 4 recomendado, até 5 (v2.2.2).** |
+| S3 | **Peso dos incidentes para experientes (REQ-13)** | 0,17 com experientes, para uma zona de 0,20 a 0,60. Aumentar o dano faz os iniciantes zerarem cedo. Nenhuma combinação de fichas e dano serve aos dois públicos | rever a zona do REQ-13 para experientes; dano 3 com 6 fichas; manter | **Rever a zona, não o dano.** Quem domina o conteúdo sofrer menos com os incidentes é coerente com o objetivo do jogo, porque o conhecimento protege. O playtest com alunos diz qual público importa mais. **Decidido em 14/11: opção C (detalhe abaixo).** |
 | S4 | **Fichas iniciais** | 5 é o mínimo que passa no REQ-07; 6 dá folga (de 1% a 2% de partidas com alguém zerado) e não muda mais nada | manter 5; passar para 6 | **Manter 5.** Passar para 6 só se o playtest mostrar alunos zerando cedo |
 | S5 | **Duração com 4 jogadores (REQ-08)** | 38 min, abaixo da faixa de 40 a 50. O autor considera bom encurtar desde que não se perca profundidade, e a regra atual é a mais profunda | rever a zona (por exemplo, só o teto de 50 min); manter a zona e esperar os tempos reais | **Rever a zona do REQ-08** e decidir junto a parte "acima de 60 minutos". Não mudar a regra |
 | S6 | **Vantagem da ordem (REQ-01)** | Com bots que jogam bem, o 1º vence cerca de 2,5 pontos acima de 1/N e o último cerca de 2,5 abaixo, na borda da zona | manter; medir uma compensação (por exemplo, 1 ficha a mais para os últimos da ordem do ciclo 1) | **Manter e observar no playtest.** O efeito é pequeno. Se o autor quiser tratar, a compensação precisa ser medida antes de virar regra |
@@ -170,12 +170,16 @@ Quatro regras comparadas: a atual (sem limite), 1 teste por ciclo, 2 testes por 
 
 ### Detalhe da S2: máximo de 4 jogadores
 
+**Decisão do autor (14/11):** de 4 a 5 jogadores, com 4 recomendado; a contagem não inclui um Auditor externo. Virou a v2.2.2 (COR-03), que só muda o texto.
+
 - **Hoje o mínimo também é 4** (R-1.2: 4 a 5 jogadores). Com o máximo em 4, o jogo passa a ser só para exatamente 4 jogadores. Numa turma, isso pede mesas de 4 (uma turma de 30 deixa 2 alunos de fora ou exige uma mesa diferente).
 - **O que sai com a mesa de 5:** o pior tempo parado (9 min por ciclo, contra 5,8 com 4). Com 4 jogadores, o REQ-10 ainda falha com os tempos provisórios, mas passa se os tempos reais forem 25% menores.
 - **Nada precisa ser rodado de novo para 4 jogadores:** uma partida de 4 é igual nas duas versões. Só o rótulo e o hash das regras mudam.
 - **Mesa de 3 nunca foi simulada.** Se o autor quiser 3 a 4, é preciso medir antes. Hipótese não medida: com 3, o atacante, o defensor e o Auditor são todos os jogadores, e ninguém fica parado na disputa.
 
 ### Detalhe da S3: o peso dos incidentes para experientes (REQ-13)
+
+**Decisão do autor (14/11): opção C.** O REQ-13 passa a contar o incidente inteiro (dano e ganho do diagnóstico), sem o Critical Failure, com a mesma zona. Na repetição oficial do Experimento 6, passa em todos os 40 cenários: 0,293 com iniciantes e 0,320 com experientes na regra atual, e de 0,27 a 0,35 nas variantes. O dano sozinho continua nos relatórios como descrição.
 
 **O que o REQ-13 mede:** a fração de todas as fichas movimentadas na partida (ganhos e perdas de todas as fontes) que vem do dano dos 3 incidentes. A intenção vem do PDF (p. 34), na linha do parâmetro "Dano de incidente": "incidentes pesam, mas não decidem a partida sozinhos". A zona numérica, de 0,20 a 0,60, foi proposta na Fase 0 e confirmada pelo autor.
 
@@ -220,7 +224,7 @@ Lido como incidente inteiro, o incidente **não pesa menos para o experiente. Pe
 
 **Sugestão: A, com C como descrição ao lado, sem veredito.** A regra não muda, o critério fixado antes da medição não muda, e o texto do TCC ganha a explicação de por que o requisito falha com experientes e por que isso é o comportamento desejado. B, C e D mudam o critério depois de ver o resultado. Se o autor escolher uma delas, o texto precisa declarar isso.
 
-**Se o autor quiser uma v2.2.2 ou v2.3 antes do playtest**, a mudança mais defensável pelos dados é nenhuma na mecânica. Ficariam só a revisão das zonas do REQ-08 e do REQ-13 e, talvez, a recomendação de 4 jogadores. Pela convenção do projeto, qualquer mudança de regra cria um arquivo novo em `regras/`, uma entrada em `docs/HISTORICO_REGRAS.md` e um YAML novo.
+**Decisões do autor em 14/11:** a S2 virou a **v2.2.2** (de 4 a 5 jogadores, com 4 recomendado, COR-03), e a S3 virou a **opção C** (o REQ-13 conta o incidente inteiro). A mecânica não mudou. As demais sugestões continuam abertas.
 
 ---
 
@@ -233,7 +237,8 @@ Lido como incidente inteiro, o incidente **não pesa menos para o experiente. Pe
 5. **Os bots contam cartas.** O REQ-05 vale para quem conta; com pessoas, mais blefes devem passar.
 6. **A validação da v1 se apoia em 6 partidas do artigo.** O simulador reproduz o mecanismo da bola de neve, mas não a taxa de desequilíbrio do artigo pelo critério principal.
 7. **A v1 foi só observada**, nunca ajustada, como linha de base.
-8. **As medidas de profundidade (MET-08 a MET-10) são só descrição**, sem zona de aceite. A das escolhas apertadas, com o limiar atual, não separa as regras.
+8. **A definição do REQ-13 mudou depois da medição** (decisão do autor em 14/11): até então contava só o dano e falhava com experientes. As duas leituras estão nos relatórios.
+9. **As medidas de profundidade (MET-08 a MET-10) são só descrição**, sem zona de aceite. A das escolhas apertadas, com o limiar atual, não separa as regras.
 
 ---
 
@@ -241,8 +246,8 @@ Lido como incidente inteiro, o incidente **não pesa menos para o experiente. Pe
 
 **Decisões do autor**
 
-- Rever as zonas do REQ-08 (incluindo a parte "acima de 60 minutos") e do REQ-13 para experientes (S3 e S5).
-- Decidir se haverá uma v2.2.2 ou v2.3 antes do playtest (seção 5).
+- Rever a zona do REQ-08, incluindo a parte "acima de 60 minutos" (S5).
+- As sugestões S1, S4, S6, S7 e S8, se alguma deve virar regra antes do playtest (a v2.2.2 já está criada).
 - Limiar da escolha apertada (MET-08): baixar o limiar, trocar a medida ou deixá-la de lado.
 - REQ-14 (Hotfix) e MET-02 a MET-06, ainda aguardando decisão.
 - Revisar a redação dos trechos marcados em `regras/v2.2.1.md` e `regras/v1.md`.

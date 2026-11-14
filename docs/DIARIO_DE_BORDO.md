@@ -1540,3 +1540,14 @@ A sugestão do assistente era A, com C só como descrição. O autor escolheu C.
 - **O `cf jogar` passa a usar a v2.2.2 por padrão.** Os testes e os registros de referência continuam com a v2.2.1, que joga igual.
 - **A repetição do Experimento 6 usa o mesmo arquivo**, com a v2.2.1 e a mesma semente, para conferir o determinismo: as colunas antigas devem sair idênticas às da execução de 11/11. O resultado vale para a v2.2.2, que joga igual.
 - **`mutação/` no `.gitignore`:** a pasta com os logs do teste de mutação, que o autor mandou e que fica fora do git, deixava a árvore suja e impedia a execução oficial.
+
+### Resultado da repetição do Experimento 6 (`fase4_exp6_variantes`)
+
+Execução oficial no commit `0564baa`, árvore limpa: 80.000 partidas em 1.173 s com 7 processos, nenhuma falha (REQ-09 passa). Relatório em `resultados/fase4_exp6_variantes/20261114-145900-0564baa/relatorio.md`.
+
+- **Determinismo:** todas as colunas da tabela de 11/11 saíram idênticas, partida por partida, com outro número de processos (7 em vez de 4) e depois de todos os commits das Fases 4 e 5. As colunas novas são a do diagnóstico e as do Experimento 7.
+- **REQ-13, nova definição: passa nos 40 cenários.** Regra atual: 0,293 (0,290 a 0,295) com iniciantes e 0,320 (0,317 a 0,322) com experientes, iguais com 4 e com 5 jogadores, porque a medida é por jogador. Variantes: de 0,267 (VAR-02 com iniciantes) a 0,352 (VAR-07 com experientes).
+- **Só o dano**, agora como descrição, dá os mesmos números de antes: 0,215 com iniciantes e 0,171 a 0,173 com experientes.
+- Os outros requisitos têm os mesmos vereditos da execução de 11/11, como deviam: as partidas são as mesmas.
+
+O resumo (`docs/RESUMO_DOS_RESULTADOS.md`) foi atualizado: v2.2.2 como versão vigente, o REQ-13 passa, 10 requisitos passam, 2 passam em parte e 1 falha.
