@@ -159,14 +159,14 @@ Quatro regras comparadas: a atual (sem limite), 1 teste por ciclo, 2 testes por 
 
 | # | Ponto | O que os dados mostram | Opções | Sugestão |
 |---|---|---|---|---|
-| S1 | **Limite de testes** | Sem limite é a regra mais profunda. 1 ou 2 testes por ciclo e o custo do teste encurtam a partida, mas tiram profundidade e não resolvem o tempo parado com 5 jogadores | manter sem limite; adotar 2 testes por ciclo; adotar o custo do teste | **Manter sem limite.** Os meios-termos ficam guardados como variantes (VAR-11 e VAR-12) para comparar no playtest, se for o caso |
+| S1 | **Limite de testes** | Sem limite é a regra mais profunda. 1 ou 2 testes por ciclo e o custo do teste encurtam a partida, mas tiram profundidade e não resolvem o tempo parado com 5 jogadores | manter sem limite; adotar 2 testes por ciclo; adotar o custo do teste | **Manter sem limite.** Os meios-termos ficam guardados como variantes (VAR-11 e VAR-12) para comparar no playtest, se for o caso **Decidido em 14/11: manter sem limite; 1 ou 2 testes por ciclo (VAR-11) e o custo do teste (VAR-12) ficam guardados como variantes.** |
 | S2 | **Tempo parado (REQ-10)** | Falha em tudo o que não limita os testes: 5,8 min com 4 jogadores e 9 min com 5. A diferença entre 4 e 5 é estrutural. Os tempos ainda são estimados | não mudar antes de cronometrar; recomendar 4 jogadores como a mesa ideal; avaliar o palpite da plateia (VAR-06) com pessoas; criar um limite de tempo para a explicação (não medido) | **Cronometrar no playtest antes de mudar a regra.** Se o tempo parado se confirmar, recomendar mesas de 4 e avaliar o palpite com pessoas, que é a variante desenhada para isso e que os bots não conseguem medir. **Decidido em 14/11: 4 recomendado, até 5 (v2.2.2).** |
 | S3 | **Peso dos incidentes para experientes (REQ-13)** | 0,17 com experientes, para uma zona de 0,20 a 0,60. Aumentar o dano faz os iniciantes zerarem cedo. Nenhuma combinação de fichas e dano serve aos dois públicos | rever a zona do REQ-13 para experientes; dano 3 com 6 fichas; manter | **Rever a zona, não o dano.** Quem domina o conteúdo sofrer menos com os incidentes é coerente com o objetivo do jogo, porque o conhecimento protege. O playtest com alunos diz qual público importa mais. **Decidido em 14/11: opção C (detalhe abaixo).** |
-| S4 | **Fichas iniciais** | 5 é o mínimo que passa no REQ-07; 6 dá folga (de 1% a 2% de partidas com alguém zerado) e não muda mais nada | manter 5; passar para 6 | **Manter 5.** Passar para 6 só se o playtest mostrar alunos zerando cedo |
-| S5 | **Duração com 4 jogadores (REQ-08)** | 38 min, abaixo da faixa de 40 a 50. O autor considera bom encurtar desde que não se perca profundidade, e a regra atual é a mais profunda | rever a zona (por exemplo, só o teto de 50 min); manter a zona e esperar os tempos reais | **Rever a zona do REQ-08** e decidir junto a parte "acima de 60 minutos". Não mudar a regra |
-| S6 | **Vantagem da ordem (REQ-01)** | Com bots que jogam bem, o 1º vence cerca de 2,5 pontos acima de 1/N e o último cerca de 2,5 abaixo, na borda da zona | manter; medir uma compensação (por exemplo, 1 ficha a mais para os últimos da ordem do ciclo 1) | **Manter e observar no playtest.** O efeito é pequeno. Se o autor quiser tratar, a compensação precisa ser medida antes de virar regra |
-| S7 | **Variantes do playtest** | VAR-07 torna o REQ-11 impossível; VAR-02 zera iniciantes; VAR-03 piora o tempo parado; VAR-01, VAR-06 e VAR-09 quase não mudam o que se mede | levar todas ao playtest; descartar as que falham | **Descartar VAR-07, VAR-02 e VAR-03.** Levar ao playtest só as que medem o que o bot não alcança, como o palpite (VAR-06) |
-| S8 | **Construir contra caçar** | Caçar puro nunca é a melhor resposta, mas o melhor jogador mistura as duas coisas, e o REQ-11 passa | manter; criar uma variante que premie o teste certeiro (não medida) | **Manter.** O desenho já faz o bom jogador atacar quando vale a pena. Só criar a variante se o autor quiser que o Caçador puro seja viável |
+| S4 | **Fichas iniciais** | 5 é o mínimo que passa no REQ-07; 6 dá folga (de 1% a 2% de partidas com alguém zerado) e não muda mais nada | manter 5; passar para 6 | **Manter 5.** Passar para 6 só se o playtest mostrar alunos zerando cedo **Decidido em 14/11: manter 5.** |
+| S5 | **Duração com 4 jogadores (REQ-08)** | 38 min, abaixo da faixa de 40 a 50. O autor considera bom encurtar desde que não se perca profundidade, e a regra atual é a mais profunda | rever a zona (por exemplo, só o teto de 50 min); manter a zona e esperar os tempos reais | **Rever a zona do REQ-08** e decidir junto a parte "acima de 60 minutos". Não mudar a regra **Decidido em 14/11: não alterar nada (nem a regra nem a zona; a parte "acima de 60 minutos" continua só como descrição).** |
+| S6 | **Vantagem da ordem (REQ-01)** | Com bots que jogam bem, o 1º vence cerca de 2,5 pontos acima de 1/N e o último cerca de 2,5 abaixo, na borda da zona | manter; medir uma compensação (por exemplo, 1 ficha a mais para os últimos da ordem do ciclo 1) | **Manter e observar no playtest.** O efeito é pequeno. Se o autor quiser tratar, a compensação precisa ser medida antes de virar regra **Decidido em 14/11: não tratar.** |
+| S7 | **Variantes do playtest** | VAR-07 torna o REQ-11 impossível; VAR-02 zera iniciantes; VAR-03 piora o tempo parado; VAR-01, VAR-06 e VAR-09 quase não mudam o que se mede | levar todas ao playtest; descartar as que falham | **Descartar VAR-07, VAR-02 e VAR-03.** Levar ao playtest só as que medem o que o bot não alcança, como o palpite (VAR-06) **Decidido em 14/11: não alterar nenhuma variante e registrar o que os dados mostraram** (especificação, seção "Situação das variantes"). |
+| S8 | **Construir contra caçar** | Caçar puro nunca é a melhor resposta, mas o melhor jogador mistura as duas coisas, e o REQ-11 passa | manter; criar uma variante que premie o teste certeiro (não medida) | **Manter.** O desenho já faz o bom jogador atacar quando vale a pena. Só criar a variante se o autor quiser que o Caçador puro seja viável **Decidido em 14/11: não alterar e registrar a possibilidade** (especificação, "Possibilidades registradas"). |
 
 ### Detalhe da S2: máximo de 4 jogadores
 
@@ -224,7 +224,7 @@ Lido como incidente inteiro, o incidente **não pesa menos para o experiente. Pe
 
 **Sugestão: A, com C como descrição ao lado, sem veredito.** A regra não muda, o critério fixado antes da medição não muda, e o texto do TCC ganha a explicação de por que o requisito falha com experientes e por que isso é o comportamento desejado. B, C e D mudam o critério depois de ver o resultado. Se o autor escolher uma delas, o texto precisa declarar isso.
 
-**Decisões do autor em 14/11:** a S2 virou a **v2.2.2** (de 4 a 5 jogadores, com 4 recomendado, COR-03), e a S3 virou a **opção C** (o REQ-13 conta o incidente inteiro). A mecânica não mudou. As demais sugestões continuam abertas.
+**Decisões do autor em 14/11:** a S2 virou a **v2.2.2** (de 4 a 5 jogadores, com 4 recomendado, COR-03), e a S3 virou a **opção C** (o REQ-13 conta o incidente inteiro). As outras seis ficaram sem mudança de regra: S1 mantém os testes sem limite e guarda as alternativas como variantes; S4 mantém 5 fichas; S5 não altera nada; S6 não é tratada; S7 e S8 ficam registradas na especificação (seção "Variantes de playtest"). **A mecânica do jogo não mudou: a regra que vai para o playtest é a v2.2.2.**
 
 ---
 
@@ -246,11 +246,9 @@ Lido como incidente inteiro, o incidente **não pesa menos para o experiente. Pe
 
 **Decisões do autor**
 
-- Rever a zona do REQ-08, incluindo a parte "acima de 60 minutos" (S5).
-- As sugestões S1, S4, S6, S7 e S8, se alguma deve virar regra antes do playtest (a v2.2.2 já está criada).
 - Limiar da escolha apertada (MET-08): baixar o limiar, trocar a medida ou deixá-la de lado.
 - REQ-14 (Hotfix) e MET-02 a MET-06, ainda aguardando decisão.
-- Revisar a redação dos trechos marcados em `regras/v2.2.1.md` e `regras/v1.md`.
+- Revisar a redação dos trechos marcados em `regras/v2.2.2.md` e `regras/v1.md`.
 
 **Para o playtest**
 

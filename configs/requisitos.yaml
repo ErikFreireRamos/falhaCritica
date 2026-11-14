@@ -144,7 +144,8 @@ requisitos:
       (MOD-05), para N = 4 e 5 (o PDF pede 4 a 6; o máximo passou a 5 pela
       COR-01). Os tempos por ação estão em configs/duracao.yaml e são
       provisórios. A fração de partidas acima de 60 minutos é relatada como
-      descrição (percentil 90), sem critério, até o autor decidir.
+      descrição (percentil 90), sem critério (autor, 2026-11-14: não alterar
+      a zona nem acrescentar critério).
     zona: "mediana entre 40 e 50 minutos em cada N"
     criterio: {minimo: 40, maximo: 50}
     estado: confirmado  # autor, 2026-11-10: zona do PDF (p. 35) e tempos provisórios de MOD-05

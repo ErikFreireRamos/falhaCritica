@@ -1551,3 +1551,29 @@ Execução oficial no commit `0564baa`, árvore limpa: 80.000 partidas em 1.173 
 - Os outros requisitos têm os mesmos vereditos da execução de 11/11, como deviam: as partidas são as mesmas.
 
 O resumo (`docs/RESUMO_DOS_RESULTADOS.md`) foi atualizado: v2.2.2 como versão vigente, o REQ-13 passa, 10 requisitos passam, 2 passam em parte e 1 falha.
+
+---
+
+## 2026-11-14 — Decisões sobre as sugestões S1 e S4 a S8
+
+| Sugestão | Opções | Escolha do autor |
+|---|---|---|
+| S1, limite de testes | manter sem limite; 2 testes por ciclo; custo do teste | **Manter sem limite.** As alternativas (VAR-11 com 1 e 2, VAR-12) ficam guardadas como variantes |
+| S4, fichas iniciais | manter 5; passar para 6 | **Manter 5** |
+| S5, duração com 4 jogadores (REQ-08) | rever a zona; manter e esperar os tempos reais | **Não alterar nada:** zona de 40 a 50 min mantida; a parte "acima de 60 minutos" continua só como descrição, sem critério |
+| S6, vantagem da ordem (REQ-01) | manter; medir uma compensação | **Não tratar** |
+| S7, variantes do playtest | descartar VAR-07, VAR-02 e VAR-03; levar todas | **Não alterar, mas registrar** o que os dados mostraram |
+| S8, construir contra caçar | manter; variante que premie o teste certeiro | **Não alterar, mas registrar** a possibilidade |
+
+### O que foi feito
+
+- `docs/especificacao_v2_2.md`, seção "Variantes de playtest": tabela "Situação das variantes depois dos experimentos", com o que os dados mostraram de cada uma (VAR-01 a VAR-12, exceto a VAR-08), e a lista "Possibilidades registradas, não implementadas nem medidas": o prêmio pelo teste certeiro (S8) e o limite de tempo para a explicação (ideia da S2 para o tempo parado).
+- `configs/requisitos.yaml`, REQ-08: a fração acima de 60 minutos fica como descrição por decisão do autor, e não mais "até o autor decidir".
+- `docs/RESUMO_DOS_RESULTADOS.md`: as seis sugestões marcadas como decididas, e as pendências atualizadas.
+
+**A mecânica do jogo não mudou.** A regra que vai para o playtest é a v2.2.2.
+
+### Detalhes escolhidos pelo assistente, sem perguntar
+
+- As possibilidades registradas não ganharam identificador VAR, porque não estão implementadas.
+- O limite de tempo para a explicação, citado na S2, entrou na lista de possibilidades junto com a da S8.

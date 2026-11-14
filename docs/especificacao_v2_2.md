@@ -466,6 +466,29 @@ Variantes que a configuração deve permitir ligar e desligar (seção 3.2 do pr
 | VAR-11 | Testes por ciclo (ablação, regra da 2.1) | sem limite (atual); 1; 2 | PDF p. 33 (histórico); R-7.4.1 | cada jogador faz no máximo o número dado de testes por ciclo; depois disso passa (`ablacoes.testes_por_ciclo`). O valor 2 é o meio-termo do Experimento 7 |
 | VAR-12 | Custo do teste (proposta do Experimento 7) | sem custo (atual); a partir do 2º teste do ciclo, 1 ficha | autor, 2026-11-11; R-7.4.1; AMB-32 | testes sem limite, mas cada teste do ciclo a partir do indicado custa fichas ao atacante, pagas ao banco ao declarar o teste; sem fichas para pagar, não testa (`propostas.custo_do_teste`, `propostas.teste_pago_a_partir_do`) |
 
+### Situação das variantes depois dos experimentos (autor, 2026-11-14)
+
+Nenhuma variante virou regra, e todas continuam disponíveis na configuração. O que os dados mostraram fica registrado aqui para o playtest e para versões futuras.
+
+| ID | O que os dados mostraram | Situação |
+|---|---|---|
+| VAR-01 | Punição de 0 ou 2 fichas quase não muda o que o simulador mede (Experimento 6) | registrada; regra atual mantida |
+| VAR-02 | Iniciantes zeram cedo: de 19% a 21% das partidas com alguém em 0 ficha (REQ-07 falha) | registrada como desaconselhada pelos dados; regra atual mantida |
+| VAR-03 | Piora o tempo parado: 7,3 min por ciclo com 4 jogadores, contra 5,8 | registrada como desaconselhada pelos dados; regra atual mantida |
+| VAR-04 | Encurta a partida e o tempo parado, mas concentra os testes e deixa a partida curta demais | registrada; regra atual mantida |
+| VAR-05 | Encurta a partida, mas os testes se concentram no menor placar com 5 jogadores | registrada; regra atual mantida |
+| VAR-06 | Nada muda no que o bot mede; o efeito no engajamento de quem espera só se mede com pessoas | registrada como candidata ao playtest; regra atual mantida |
+| VAR-07 | Ninguém chega a 5 cartas no ciclo 1 (REQ-11 impossível); partida de 30 a 34 min | registrada como desaconselhada pelos dados; regra atual mantida |
+| VAR-09 | Quase nada muda | registrada; o módulo continua opcional |
+| VAR-10 | A regra da 2.1 concentra os ataques (Experimento 3) | registrada; a proibição da 2.2 continua |
+| VAR-11 | 1 ou 2 testes por ciclo encurtam a partida, mas tiram profundidade (Experimentos 3 e 7) | guardada como variante; testes sem limite continuam (autor) |
+| VAR-12 | O custo do teste encurta a partida e mantém a habilidade, mas zera mais jogadores (Experimento 7) | guardada como variante; testes sem limite continuam (autor) |
+
+**Possibilidades registradas, não implementadas nem medidas:**
+
+- **Prêmio pelo teste certeiro:** uma variante que dê mais ao atacante quando o teste encontra a falha, para o Caçador puro ser competitivo. Hoje ele nunca é a melhor resposta, mas o melhor jogador mistura construir e atacar (REQ-11 passa). O autor decidiu não alterar a regra (2026-11-14).
+- **Limite de tempo para a explicação:** uma ideia para o tempo parado (REQ-10), a avaliar depois de cronometrar o playtest.
+
 Texto do palpite da plateia no PDF (p. 35, "plano B, fora das regras"): antes de o atacante decidir se contesta, quem está fora da disputa vota se a defesa é verdade ou blefe; se houver contestação, quem acertou ganha 1 ficha.
 
 ## Hipóteses de modelo
