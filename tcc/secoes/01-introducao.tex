@@ -1,0 +1,61 @@
+\section{Introdução}
+\label{sec:introducao}
+
+O teste de software é uma das principais atividades para garantir a qualidade e a confiabilidade de um
+sistema \cite{ahamed2010}. Dentro dele, o teste não funcional, que verifica desempenho, segurança,
+confiabilidade, usabilidade e outras características de qualidade, ainda recebe pouco espaço nos cursos de
+graduação, apesar da sua relevância na indústria \cite{garousi2020}. Diferentemente do teste funcional, que
+verifica se o sistema faz o que foi especificado, o teste não funcional avalia \emph{como} o sistema se comporta
+sob diferentes condições, o que o torna mais abstrato e mais difícil de ensinar \cite{paschoal2018}. Aulas
+expositivas e exercícios isolados costumam ser insuficientes para que os estudantes liguem as definições dos
+livros a decisões práticas \cite{valle2015,vanhanen2018}.
+
+Jogos educacionais vêm sendo usados para enfrentar esse problema no ensino de teste de software
+\cite{costa2024debug,gomes2021gamut,beppe2018greatest,jesus2020}. Nesse contexto, a primeira versão do
+\emph{Critical Failure} foi criada na disciplina de Teste de Software do Centro de Informática da UFPB
+\cite{oliveira2025critical}. Nela, os jogadores montam um ``sistema'' com cartas de testes não funcionais, testam
+os sistemas dos colegas e podem blefar ao se defender. Dezessete estudantes jogaram e avaliaram o jogo de forma
+positiva, mas a aplicação também revelou um problema de projeto: em quatro das seis partidas observadas, o
+vencedor terminou com pontuação muito acima dos demais. Quem saía na frente acumulava vantagem, e os
+jogadores tendiam a atacar os mais fracos, e não o líder \cite{oliveira2025critical}. O próprio artigo sugeriu
+investigar se esse comportamento vinha da inexperiência dos jogadores ou de uma falha da dinâmica do jogo.
+
+Corrigir o balanceamento de um jogo pede muitas partidas. Com pessoas, cada partida leva quase uma hora, e
+algumas dezenas de partidas não bastam para separar o efeito de uma regra do acaso, do estilo dos jogadores ou
+da ordem à mesa. Este trabalho trata o jogo como um \emph{sistema sob teste}: o balanceamento é escrito como um
+conjunto de requisitos não funcionais com critério de aceite, e um simulador joga milhares de partidas entre
+bots para verificar esses requisitos antes de levar as regras de volta à sala de aula. Assim, o trabalho aplica
+teste não funcional ao próprio jogo que ensina teste não funcional.
+
+\subsection{Objetivo e perguntas de pesquisa}
+
+O objetivo deste trabalho é redesenhar as regras do Critical Failure e verificar, por simulação, se a nova versão
+é balanceada, comparando estilos de jogo diferentes para identificar o melhor estilo e as fraquezas das regras.
+Duas perguntas de pesquisa orientam o trabalho:
+
+\begin{itemize}
+  \item \textbf{QP1:} as novas regras reduzem o desequilíbrio observado na primeira versão?
+  \item \textbf{QP2:} como os estudantes avaliam a experiência com a segunda versão?
+\end{itemize}
+
+\subsection{Contribuições}
+
+As contribuições deste trabalho são:
+\begin{enumerate}
+  \item a segunda versão das regras do Critical Failure (v2.2.2), alinhada à ISO/IEC 25010:2023
+    \cite{iso25010}, com cada correção e cada interpretação registradas;
+  \item um simulador de partidas determinístico e auditável, em que toda partida pode ser refeita e cada evento
+    cita a regra que o justificou;
+  \item um conjunto de 13 requisitos de balanceamento com zonas de aceite fixadas antes da medição, e a
+    verificação deles em 971 mil partidas;
+  \item a comparação de seis estilos de jogo e de perfis de blefe, de variantes, da retirada de cada mudança
+    de regra (ablação) e da sensibilidade dos parâmetros;
+  \item a avaliação de um playtest com estudantes, ligada aos resultados do simulador.
+\end{enumerate}
+
+\subsection{Organização do texto}
+
+A Seção~\ref{sec:relacionados} apresenta os trabalhos relacionados. A Seção~\ref{sec:metodologia} descreve a
+metodologia, baseada em \emph{Design Science Research}. A Seção~\ref{sec:implementacao} apresenta as regras da
+segunda versão e o simulador. A Seção~\ref{sec:resultados} traz os resultados, as lições aprendidas e as
+limitações. A Seção~\ref{sec:conclusoes} conclui o trabalho e aponta trabalhos futuros.

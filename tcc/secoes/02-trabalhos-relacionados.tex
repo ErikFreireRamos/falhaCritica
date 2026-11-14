@@ -1,0 +1,74 @@
+\section{Trabalhos Relacionados}
+\label{sec:relacionados}
+
+Os trabalhos relacionados se dividem em três grupos: jogos para o ensino de teste de software, jogos
+educacionais desenvolvidos e avaliados em trabalhos de conclusão de curso da UFPB, e o uso de agentes
+artificiais para avaliar e balancear jogos.
+
+\subsection{Jogos para o ensino de teste de software}
+
+O \emph{Debug} é um jogo de cartas cooperativo, criado numa disciplina de graduação, para explorar níveis e
+tipos de teste de software \cite{costa2024debug}. O \emph{GAMUT} usa uma narrativa de fantasia medieval para
+ensinar teste de unidade \cite{gomes2021gamut}. No \emph{GreaTest}, os jogadores assumem o papel de analistas de
+teste e escolhem o tipo de teste adequado a cada cenário \cite{beppe2018greatest}. O \emph{Sojourner under
+Sabotage} é um jogo sério no navegador em que o jogador corrige componentes sabotados de uma nave usando teste
+de unidade e depuração \cite{straubinger2025sojourner}. O \emph{JADE} é um jogo de tabuleiro para ensinar
+ergonomia de software \cite{jeandaubias2023jade}. Experiências com gamificação contínua em disciplinas de teste
+também mostram ganho de engajamento \cite{straubinger2024ci,jesus2020,blanco2023}.
+
+A primeira versão do Critical Failure \cite{oliveira2025critical} ocupou uma lacuna desses trabalhos, voltados
+principalmente ao teste funcional: é um jogo de cartas competitivo sobre teste não funcional e atributos de
+qualidade. Os jogos citados foram avaliados pela percepção dos estudantes. Nenhum deles relata uma verificação
+sistemática do equilíbrio entre os jogadores antes da aplicação em sala.
+
+\subsection{Jogos educacionais em trabalhos de conclusão de curso da UFPB}
+
+No repositório institucional da UFPB há trabalhos de conclusão de curso que desenvolvem jogos de cartas para o
+ensino de computação: o \emph{Computer Cards}, sobre arquitetura de computadores no ensino fundamental
+\cite{oliveira2022computercards}; o \emph{BI-NA-RI-OH}, sobre aritmética binária \cite{soares2023binarioh}; e o
+\emph{Logic Challenge}, sobre lógica \cite{abreu2021logic}. Outro trabalho avalia um jogo de tabuleiro para o
+ensino de redes de computadores com o modelo MEEGA+ \cite{martins2020redes,petri2017meega}. No Centro de
+Informática, um trabalho aplicou testes automatizados a um jogo sério, o GiroJampa, com testes de unidade e
+medição de cobertura \cite{ramos2023girojampa}. Nenhum desses trabalhos trata de jogo para o ensino de teste de
+software nem de balanceamento verificado por simulação.
+
+\subsection{Balanceamento e playtesting com agentes}
+
+O uso de agentes artificiais para avaliar o projeto de jogos tem uma linha de pesquisa própria.
+Jaffe et al., por exemplo, mediram o balanceamento de jogos competitivos comparando a força de
+jogadores com restrições impostas, numa abordagem chamada \emph{restricted play} \cite{jaffe2012}.
+Silva et al. usaram agentes com heurísticas diferentes para jogar grandes quantidades de partidas
+de um jogo de tabuleiro moderno e encontrar problemas de projeto, como estratégias que dominam e situações não
+previstas pelas regras \cite{silva2017ttr}. Volz et al. mostraram que é possível balancear
+automaticamente o baralho de um jogo de cartas com algoritmos evolutivos e simulação \cite{volz2016}.
+Holmgård et al. propuseram \emph{personas} procedurais, agentes com estilos de jogo distintos, para
+testar automaticamente os níveis de um jogo \cite{holmgard2019}.
+
+Este trabalho se apoia nessa linha, com três diferenças. Primeiro, o jogo é educacional, e parte das decisões do
+jogador depende de conhecimento sobre o conteúdo, como explicar um teste ou diagnosticar um incidente. Por isso
+o simulador modela o conhecimento do estudante como probabilidade de acerto. Segundo, o balanceamento é
+escrito como requisitos com critério de aceite fixado antes da medição, como em um teste de aceitação. Terceiro,
+o próprio simulador é verificado com técnicas de teste de software, como testes metamórficos, testes baseados
+em propriedades e teste de mutação. A Tabela~\ref{tab:relacionados} resume a comparação.
+
+\begin{table}[ht]
+  \centering
+  \caption{Comparação entre os trabalhos relacionados e este trabalho}
+  \label{tab:relacionados}
+  \small
+  \begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}p{3.9cm} >{\raggedright\arraybackslash}p{2.2cm}
+      >{\raggedright\arraybackslash}p{1.9cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}p{2.5cm}}
+    \toprule
+    Trabalho & Tipo & Modo & Escopo & Balanceamento verificado \\
+    \midrule
+    Debug \cite{costa2024debug} & Analógico (cartas) & Cooperativo & Níveis e tipos de teste & Não \\
+    GAMUT \cite{gomes2021gamut} & Digital (narrativa web) & Individual & Teste de unidade & Não \\
+    GreaTest \cite{beppe2018greatest} & Analógico (cartas) & Competitivo & Teste funcional em geral & Não \\
+    Sojourner under Sabotage \cite{straubinger2025sojourner} & Digital (jogo sério) & Individual & Teste de unidade e depuração & Não \\
+    JADE \cite{jeandaubias2023jade} & Analógico (tabuleiro) & Cooperativo & Ergonomia de software & Não \\
+    Critical Failure v1 \cite{oliveira2025critical} & Analógico (cartas) & Competitivo & Teste não funcional e atributos de qualidade & Por observação (6 partidas) \\
+    Agentes para balanceamento \cite{jaffe2012} \cite{silva2017ttr} \cite{volz2016} & Jogos de entretenimento & Competitivo & Projeto de jogos & Por simulação \\
+    \textbf{Este trabalho} & Analógico (cartas) e simulador & Competitivo & Teste não funcional (ISO/IEC 25010:2023) & Por simulação, com requisitos e critério de aceite \\
+    \bottomrule
+  \end{tabularx}
+\end{table}

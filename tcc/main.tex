@@ -1,0 +1,84 @@
+% Versão inicial do TCC (formato artigo, modelo SBC), escrita em 2026-11-14.
+% Estrutura espelhada no artigo do SBQS 2025 (docs/Critical_Failure_Artigo.pdf), por orientação.
+% Compilar: pdflatex main && bibtex main && pdflatex main && pdflatex main
+% Fonte de cada número: docs/RESUMO_DOS_RESULTADOS.md e os relatorio.md citados em comentários.
+
+\documentclass[12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+% O babel e o hyperref vêm antes do sbc-template: na ordem inversa, o gancho de fim de preâmbulo do
+% sbc-template (que ajusta a bibliografia quando há hyperref) quebra o babel com a versão de 2026 do
+% LaTeX ("Undefined control sequence" em \begin{document}).
+\usepackage[brazilian]{babel}
+\usepackage[hidelinks]{hyperref}
+\usepackage{sbc-template}
+\usepackage{graphicx,url}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage[table]{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,calc}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{enumitem}
+
+% Marcador do que o autor ainda precisa completar ou revisar.
+\newcommand{\pendente}[1]{\textcolor{red}{\textbf{[Pendente:} #1\textbf{]}}}
+
+\sloppy
+
+\title{Critical Failure 2: redesenho e verificação do balanceamento por simulação de um jogo de cartas para
+o ensino de testes não funcionais}
+
+\author{Erik Freire Ramos\inst{1}, Yuska Paola Costa Aguiar\inst{1} (orientadora)}
+
+\address{Centro de Informática -- Universidade Federal da Paraíba (UFPB)\\
+  João Pessoa -- PB -- Brasil}
+
+\begin{document}
+
+\input{capa}
+
+\maketitle
+
+\begin{abstract}
+  Critical Failure is a card game for teaching non-functional testing and the quality characteristics of
+  ISO/IEC 25010. Its first classroom use showed unbalanced matches: the leader tended to keep winning.
+  This work redesigns the rules (version 2) and verifies their balance before new classroom sessions, treating
+  balance as a set of non-functional requirements with acceptance criteria. A deterministic, auditable
+  simulator played 971,000 matches between bots with different playing styles. The leader's advantage after the
+  first cycle fell from about 0.40 in version 1 to about 0.09 in version 2; 10 of 13 balance requirements pass,
+  and the best style mixes building and attacking. A playtest with 7 respondents reported fun and clear links to
+  the course content, with the bluffing phase as the most confusing part.
+\end{abstract}
+
+\begin{resumo}
+  O Critical Failure é um jogo de cartas para o ensino de testes não funcionais e das características de
+  qualidade da ISO/IEC 25010. Na primeira aplicação em sala, as partidas foram desequilibradas: quem liderava
+  tendia a continuar vencendo. Este trabalho redesenha as regras (versão 2) e verifica o seu balanceamento antes
+  de novas aplicações, tratando o balanceamento como um conjunto de requisitos não funcionais com critério de
+  aceite. Um simulador determinístico e auditável jogou 971 mil partidas entre bots com estilos diferentes.
+  A vantagem de quem lidera após o primeiro ciclo caiu de cerca de 0,40 na versão 1 para cerca de 0,09 na
+  versão 2; 10 de 13 requisitos de balanceamento passam, e o melhor estilo mistura construir e atacar. Um
+  playtest com 7 respondentes relatou diversão e relação clara com a disciplina, com a fase de blefe como a
+  parte mais confusa.
+\end{resumo}
+
+\noindent\textbf{Palavras-chave:} teste não funcional; jogos educacionais; balanceamento de jogos;
+simulação; ISO/IEC 25010.
+
+\input{secoes/01-introducao}
+\input{secoes/02-trabalhos-relacionados}
+\input{secoes/03-metodologia}
+\input{secoes/04-implementacao}
+\input{secoes/05-resultados}
+\input{secoes/06-conclusoes}
+\input{secoes/07-artefatos}
+
+\bibliographystyle{sbc}
+\bibliography{referencias}
+
+\end{document}

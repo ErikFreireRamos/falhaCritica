@@ -1,0 +1,26 @@
+% Vantagem do líder (REQ-02): v1 contra v2.2.1, mesmas mesas mistas e mesmas sementes.
+% fonte: resultados/fase3_exp2_v1_contra_v2/20261110-212034-f447f4b/relatorio.md
+\begin{tikzpicture}
+  \begin{axis}[
+      ybar,
+      bar width=18pt,
+      width=0.75\linewidth,
+      height=5.2cm,
+      ymin=0, ymax=0.5,
+      ylabel={Vantagem do líder},
+      symbolic x coords={4 jogadores,5 jogadores},
+      xtick=data,
+      enlarge x limits=0.45,
+      legend style={at={(0.5,1.04)}, anchor=south, legend columns=-1, font=\footnotesize},
+      nodes near coords,
+      every node near coord/.append style={font=\scriptsize, /pgf/number format/fixed,
+        /pgf/number format/precision=3, /pgf/number format/use comma},
+      yticklabel style={/pgf/number format/fixed, /pgf/number format/use comma},
+      ymajorgrids=true,
+      grid style={gray!25},
+    ]
+    \addplot[fill=red!45, draw=red!70!black] coordinates {(4 jogadores,0.392) (5 jogadores,0.419)};
+    \addplot[fill=blue!45, draw=blue!70!black] coordinates {(4 jogadores,0.087) (5 jogadores,0.091)};
+    \legend{v1, v2.2.1}
+  \end{axis}
+\end{tikzpicture}

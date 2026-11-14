@@ -1,0 +1,158 @@
+\section{Metodologia}
+\label{sec:metodologia}
+
+O trabalho segue a abordagem de \emph{Design Science Research} (DSR), em que artefatos são projetados para
+resolver um problema prático e avaliados em ciclos iterativos \cite{hevner2004,wieringa2014}. Os artefatos são as
+regras da segunda versão do Critical Failure e o simulador de partidas. Cada ciclo tem três etapas
+(Figura~\ref{fig:ciclo}): as regras são redesenhadas; o simulador verifica o balanceamento com milhares de
+partidas entre bots; e as regras verificadas vão para pessoas, em playtests e aplicações em sala. O que cada
+etapa encontra volta para ajustar as regras.
+
+\begin{figure}[ht]
+  \centering
+  \input{figuras/ciclo-dsr}
+  \caption{Ciclo de Design Science Research do trabalho}
+  \label{fig:ciclo}
+\end{figure}
+
+A ordem real das etapas neste trabalho foi a seguinte. As versões 2.0, 2.1 e 2.2 das regras foram projetadas a
+partir dos problemas da primeira versão. A versão 2.2 foi jogada num playtest com estudantes, entre outubro e
+novembro de 2026. Em seguida, o simulador foi construído e verificou a versão 2.2. Ele levou a duas correções
+(versão 2.2.1) e, depois dos experimentos, a uma recomendação de número de jogadores (versão 2.2.2).
+
+\subsection{Redesenho das regras}
+
+O ponto de partida foi a primeira versão (v1), descrita no artigo do SBQS 2025 \cite{oliveira2025critical}. A
+v1 deixou quatro problemas:
+\begin{itemize}
+  \item partidas desequilibradas, em que o líder acumulava vantagem;
+  \item jogadores atacando os mais fracos, e não o líder;
+  \item regras confusas para quem jogava pela primeira vez, sobretudo a diferença entre as cartas do sistema e
+    as da mão, e a pontuação;
+  \item inconsistências na tabela de cartas publicada, como testes de Desempenho listados em Usabilidade e a
+    categoria Compatibilidade com 6 cartas em vez de 9.
+\end{itemize}
+
+As versões 2.0 a 2.2 reorganizaram o jogo em ciclos de Planejamento, Homologação e Produção. A Seção~\ref{sec:implementacao}
+descreve as regras. As mudanças principais da 2.1 em relação à 2.0 foram:
+\begin{itemize}
+  \item a classificação passou para as categorias da ISO/IEC 25010:2023 \cite{iso25010};
+  \item o baralho passou para 63 cartas e 29 testes;
+  \item o placar passou a ser feito em fichas;
+  \item o alvo na Homologação ficou livre, sem limite de testes;
+  \item foi proibido testar a mesma categoria de um jogador que já tem Alerta nela (o ``bug duplicado'');
+  \item o Hotfix foi retirado.
+\end{itemize}
+A 2.2 reescreveu os incidentes: a frente traz só o relato, e o verso, o gabarito.
+
+Durante a especificação do simulador, cada regra virou um item numerado (por exemplo, R-7.3.4). Cada ponto
+ambíguo ou omisso virou uma entrada de um registro de ambiguidades: foram 30, 10 delas da v1, todas decididas pelo autor. Três
+decisões mudaram as regras e geraram novas versões, cada uma com o seu arquivo de texto e o seu arquivo de
+configuração:
+\begin{itemize}
+  \item \textbf{COR-01:} máximo de 5 jogadores, em vez de 6, porque com 6 a preparação e os três Planejamentos
+    pedem 71 cartas, e o baralho tem 63;
+  \item \textbf{COR-02:} todos os Alertas saem no início de cada Planejamento;
+  \item \textbf{COR-03:} 4 jogadores como número recomendado, depois dos experimentos (Seção~\ref{sec:resultados}).
+\end{itemize}
+Toda correção fica atrás de uma chave de configuração, de modo que a regra impressa continua disponível para medir
+o efeito da mudança.
+
+\subsection{O simulador como sistema sob teste}
+
+O simulador trata o jogo como um sistema sob teste. Os bots fazem o papel de usuários virtuais, como num teste de
+carga, e o balanceamento é escrito como requisitos não funcionais com critério de aceite. A
+Tabela~\ref{tab:requisitos} lista os 13 requisitos. A medida e a zona de aceite de cada um foram confirmadas pelo
+autor antes do primeiro experimento que o mede, para que o critério não fosse escolhido depois de ver o
+resultado.
+
+\begin{table}[ht]
+  \centering
+  \caption{Requisitos de balanceamento e zonas de aceite}
+  \label{tab:requisitos}
+  \footnotesize
+  \begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}p{3.1cm} >{\raggedright\arraybackslash}X
+      >{\raggedright\arraybackslash}p{3.3cm}}
+    \toprule
+    Requisito & Medida & Zona de aceite \\
+    \midrule
+    REQ-01 Equidade de assento & Taxa de vitória de cada posição na ordem, com bots iguais & $1/N \pm 0{,}02$ \\
+    REQ-02 Anti bola de neve & Vantagem do líder: chance de vencer de quem lidera sozinho no fim do ciclo~1, menos $1/N$ & v2 menor que a v1 por $\geq 0{,}05$ \\
+    REQ-03 Habilidade importa & Vitória do bot Heurístico contra bots Aleatórios & acima de $1{,}5/N$ \\
+    REQ-04 Sem estratégia dominante & Nenhum estilo ou perfil de blefe é a melhor resposta contra todas as mesas & nenhum dominante \\
+    REQ-05 Blefes bem-sucedidos & Blefes que terminam sem Alerta, sobre blefes tentados, no equilíbrio & 0,30 a 0,50 \\
+    REQ-06 Distribuição de ataques & (a) máximo sobre a média de testes recebidos; (b) fração dos testes contra o menor placar & (a) até 1,5; (b) até $\frac{1}{N-1}+0{,}10$ \\
+    REQ-07 Fichas não zeram cedo & Partidas com alguém em 0 ficha antes do ciclo~3 & até 0,10 \\
+    REQ-08 Duração & Mediana da duração estimada pelo modelo de tempos & 40 a 50 min \\
+    REQ-09 Robustez & Exceções e violações de invariantes & 0 em $\geq 50.000$ partidas \\
+    REQ-10 Tempo parado & Percentil 90 do tempo parado por jogador e ciclo & abaixo de 5 min \\
+    REQ-11 Os dois estilos aparecem & Jogadores com o sistema cheio no fim do 1º Planejamento & 0,10 a 0,90 \\
+    REQ-12 O 1º incidente não decide & Diferença de vitória entre quem começa cobrindo o incidente~1 e os demais & até 0,10 \\
+    REQ-13 Incidentes pesam & Fichas movimentadas pelos incidentes (dano e diagnóstico) sobre o total & 0,20 a 0,60 \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+Cada medida é estimada com intervalo de confiança de 95\%: o de Wilson para proporções \cite{wilson1927} e o
+\emph{bootstrap} para razões e quantis \cite{efron1993}. O veredito segue uma regra fixa:
+\begin{itemize}
+  \item \textbf{passa} quando o intervalo inteiro está dentro da zona;
+  \item \textbf{falha} quando o intervalo inteiro está fora da zona;
+  \item \textbf{inconclusivo} quando o intervalo cruza a borda.
+\end{itemize}
+Com uma zona de aceite, uma diferença mínima e sem importância prática não reprova um requisito só porque o
+número de partidas é grande. Os requisitos que dependem do comportamento dos bots, como o blefe e a ausência de
+estratégia dominante, são avaliados com uma matriz de ganhos entre perfis e com a dinâmica do replicador
+\cite{taylor1978}, que aponta o equilíbrio para onde uma população de jogadores tenderia.
+
+Toda partida é reproduzível. A aleatoriedade deriva de uma semente mestre, do número da partida e de um
+contador, o estado do motor não usa ponto flutuante, e a mesma semente gera o mesmo registro em qualquer
+plataforma. Toda partida pode gerar um registro de auditoria, em que cada evento separa a informação pública da
+oculta, cita a regra que o justificou e traz o resumo criptográfico do estado. Cada experimento oficial só roda
+com o código registrado no git e grava um manifesto com o commit, as configurações e a semente. Assim, cada
+número deste texto pode ser refeito.
+
+A Tabela~\ref{tab:experimentos} lista os experimentos. Ao todo, foram 13 execuções oficiais e 971 mil partidas,
+sem nenhuma falha. A v1 também foi implementada, mas só para ser observada e comparada, nunca ajustada.
+
+\begin{table}[ht]
+  \centering
+  \caption{Experimentos com o simulador}
+  \label{tab:experimentos}
+  \footnotesize
+  \begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}p{3.6cm} >{\raggedright\arraybackslash}X r}
+    \toprule
+    Experimento & Pergunta & Partidas \\
+    \midrule
+    Linha de base & Equidade de assento, duração e robustez, com bots aleatórios & 90.000 \\
+    Fumaça dos estilos & Os estilos de bot jogam de forma diferente? & 20.000 \\
+    1. Validação da v1 & A v1 simulada mostra o desequilíbrio do artigo? & 85.000 \\
+    2. v1 $\times$ v2.2.1 & A v2 reduz a vantagem do líder? (QP1) & 40.000 \\
+    Melhor estilo & Matriz de 6 estilos, com 4 e 5 jogadores & 140.000 \\
+    5 e 5b. Equilíbrio do blefe & Torneio entre 9 perfis puros de blefe e mesa do equilíbrio & 200.000 \\
+    6. Variantes & 9 variantes propostas para o playtest, uma de cada vez (repetido com o REQ-13 redefinido) & 160.000 \\
+    3. Ablação & O que acontece ao desfazer cada mudança da 2.2? & 36.000 \\
+    4 e 4b. Sensibilidade & Fichas iniciais, dano dos incidentes, tempos e combinações & 120.000 \\
+    7. Profundidade & Testes sem limite contra limites e custo por teste & 80.000 \\
+    \midrule
+    \textbf{Total} & & \textbf{971.000} \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\subsection{Playtest com estudantes}
+
+A versão 2.2, com o módulo opcional de Segurança Operacional, foi jogada por cerca de 30 estudantes
+\pendente{confirmar o número de participantes, a turma e as datas das sessões}. Depois da partida, os
+participantes responderam a um questionário online, anônimo e com termo de consentimento; 7 responderam, entre
+19 de outubro e 3 de novembro de 2026. O questionário tinha:
+\begin{itemize}
+  \item perguntas de perfil (curso, período, experiência com teste, frequência com jogos de mesa e
+    conhecimento prévio);
+  \item 11 afirmações baseadas nas dimensões do modelo MEEGA+ \cite{petri2017meega}, numa escala de 5 pontos;
+  \item 4 afirmações sobre a contribuição percebida para a aprendizagem e 6 sobre as regras;
+  \item a duração percebida, a parte mais confusa das regras e as impressões sobre a experiência;
+  \item 3 perguntas abertas.
+\end{itemize}
+As respostas são analisadas de forma descritiva. Elas não são publicadas, para proteger os participantes, e só
+as contagens agregadas aparecem neste texto.

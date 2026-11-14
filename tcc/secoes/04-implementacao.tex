@@ -1,0 +1,197 @@
+\section{Implementação}
+\label{sec:implementacao}
+
+\subsection{A ideia e a caracterização}
+
+Na segunda versão, cada jogador lidera uma equipe que constrói um sistema de software e, ao mesmo tempo, testa
+o sistema dos colegas. O sistema é posto à prova de duas formas: pelos colegas, na Homologação, e pelo ``mundo
+real'', na Produção, em que incidentes atingem todos ao mesmo tempo. O blefe continua no centro do jogo: quem é
+testado pode afirmar que tem o teste certo e explicá-lo com as próprias palavras, tendo ou não a carta. Um
+Auditor, que muda a cada ciclo, confere a explicação. Vence quem terminar com mais Fichas de Reputação. A
+Tabela~\ref{tab:visao-geral} resume o jogo.
+
+\begin{table}[ht]
+  \centering
+  \caption{Visão geral do Critical Failure 2.2.2}
+  \label{tab:visao-geral}
+  \small
+  \begin{tabular}{>{\raggedright\arraybackslash}p{4.2cm} >{\raggedright\arraybackslash}p{9cm}}
+    \toprule
+    Nome & Critical Failure 2.2.2 \\
+    Tipo & Competitivo, com blefe e dedução \\
+    Escopo & Testes não funcionais; 7 características de qualidade da ISO/IEC 25010:2023 \\
+    Jogadores & 4 a 5 (recomendado: 4) \\
+    Cartas de Teste & 63 (9 por categoria, 29 testes); 72 e 33 testes com o módulo \\
+    Cartas de Incidente & 14 (2 por categoria); 16 com o módulo \\
+    Estrutura & 3 ciclos (Planejamento, Homologação, Produção), Critical Failure e revelação \\
+    Duração estimada & 40 a 50 minutos (a validar no playtest) \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{As cartas do jogo}
+
+Cada categoria do jogo é um tipo de teste não funcional e corresponde a uma característica de qualidade da
+ISO/IEC 25010:2023 \cite{iso25010}. Adequação Funcional, a nona característica da norma, fica de fora por ser
+funcional. A Segurança Operacional (\emph{safety}) entra como módulo opcional. Em relação à v1, Usabilidade passa
+a se chamar Interação, Portabilidade passa a ser Flexibilidade, Segurança passa a ser Segurança da Informação,
+Escalabilidade sai de Desempenho e vai para Flexibilidade, e Manutenibilidade entra como categoria nova.
+
+As Cartas de Teste trazem só a categoria e o nome do teste. A descrição de cada teste e a lista do que não deve
+ser confundido com ele ficam no Documento do Auditor. Assim, o jogador precisa explicar o teste com as próprias
+palavras. A Tabela~\ref{tab:cartas} mostra o baralho do jogo base.
+
+\begin{table}[ht]
+  \centering
+  \caption{Cartas de Teste do jogo base (cópias de cada teste entre parênteses)}
+  \label{tab:cartas}
+  \footnotesize
+  \begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}p{3.3cm} >{\raggedright\arraybackslash}X c}
+    \toprule
+    Categoria & Testes & Cartas \\
+    \midrule
+    Desempenho & Carga (3), Estresse (2), Pico (2), Resistência (2) & 9 \\
+    Compatibilidade & Coexistência (3), Interoperabilidade (2), Contrato de API (2), Retrocompatibilidade (2) & 9 \\
+    Interação & Acessibilidade (3), Proteção contra erro do usuário (2), Teste A/B (2), Teste com usuários (2) & 9 \\
+    Confiabilidade & Recuperação (3), Tolerância a falhas (2), Disponibilidade (2), Engenharia do Caos (2) & 9 \\
+    Segurança da Informação & Autenticação (2), Confidencialidade (2), Integridade (2), Não repúdio (1), Penetração (2) & 9 \\
+    Manutenibilidade & Regressão (3), Análise estática (2), Revisão de código (2), Análise de impacto (2) & 9 \\
+    Flexibilidade & Escalabilidade (3), Adaptabilidade (2), Instalabilidade (2), Substituibilidade (2) & 9 \\
+    \midrule
+    \textbf{Total} & 29 testes & \textbf{63} \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+As Cartas de Incidente têm duas faces. A frente traz o relato de um problema, com o sintoma e a evidência, e fica
+visível desde que a carta entra no Radar de Riscos. O verso é o gabarito: a categoria-chave, uma categoria
+secundária opcional, um ou dois testes-chave, a explicação e o dano. Há dois incidentes por categoria, e três
+deles são severos. Por exemplo, o relato do incidente ``Abertura da venda de ingressos'' diz que o site ficou 15
+minutos sem responder quando 50 mil pessoas entraram no mesmo segundo, e que tudo voltou ao normal sozinho, com
+os mesmos servidores. A categoria-chave é Desempenho, os testes-chave são Pico e Estresse, e Confiabilidade
+aparece como secundária.
+
+\subsection{As regras do jogo}
+
+\textbf{Preparação.} Cada jogador recebe 5 fichas e 2 Cartas de Teste sorteadas, viradas para baixo, que formam o
+seu sistema inicial. Três incidentes e a carta Critical Failure formam a Linha do Tempo. O Radar de Riscos mostra
+o relato do incidente do ciclo (vaga Agora) e o do próximo (vaga Próximo). Cinco cartas viradas para cima formam
+o Backlog.
+
+\textbf{Planejamento.} Na sua vez, cada jogador compra 3 cartas, do Backlog ou do baralho, e coloca no sistema
+quantas quiser, até o teto de 5 cartas, sem troca. Toda carta que não vai para o sistema é munição para testar os
+colegas. Essa é a principal decisão de gestão do jogo: encher o sistema protege contra os incidentes, mas tira
+munição e engessa o sistema.
+
+\textbf{Homologação.} Na sua vez, o jogador testa qualquer colega ou passa. O atacante joga uma carta e anuncia o
+teste e a categoria. O defensor admite a falha ou nomeia um teste daquela categoria que diz ter no sistema e o
+explica com as próprias palavras, tendo ou não a carta. O Auditor compara a explicação com o Documento do
+Auditor. Se a explicação conferir, o atacante aceita ou contesta. Os resultados são:
+\begin{itemize}
+  \item \textbf{falhou} (o defensor admitiu ou a explicação não conferiu): o atacante ganha 1 ficha, e o defensor
+    recebe um Alerta na categoria;
+  \item \textbf{defesa aceita}: nada acontece;
+  \item \textbf{contestou, e o defensor tinha a carta}: o atacante paga 1 ficha ao defensor;
+  \item \textbf{contestou, e era blefe}: o defensor paga 1 ficha ao atacante, o atacante ganha mais 1 do banco, e o
+    defensor recebe Alerta.
+\end{itemize}
+Não há limite de testes, mas é proibido testar um jogador numa categoria em que ele já tem Alerta (o ``bug
+duplicado'').
+
+\textbf{Produção.} O incidente da vaga Agora atinge todos. Cada jogador diagnostica em segredo a categoria-chave a
+partir do relato, e todos revelam juntos. Quem acerta ganha 1 ficha. Em seguida, cada um paga o dano:
+\begin{itemize}
+  \item 2 fichas se não tem nenhuma carta da categoria-chave;
+  \item 1 se tem Alerta nela;
+  \item 1 se o incidente é severo e não tem nenhum teste-chave.
+\end{itemize}
+Quem acertou pode pegar do Backlog uma carta da categoria-chave (a Lição aprendida).
+
+\textbf{Fim de jogo.} Depois do terceiro ciclo, a carta Critical Failure sorteia uma categoria num dado de 8 faces
+e cobra de todos: 1 ficha sempre, mais 1 sem dois testes diferentes da categoria, mais 2 sem nenhuma carta dela e
+mais 1 por Alerta. Na revelação final, cada categoria distinta no sistema vale 1 ficha, cada categoria com dois
+testes diferentes vale mais 1, e cada Alerta ativo custa 1. Vence quem tem mais fichas.
+
+A Tabela~\ref{tab:v1v2} compara as duas versões.
+
+\begin{table}[ht]
+  \centering
+  \caption{Comparação entre a primeira e a segunda versão}
+  \label{tab:v1v2}
+  \footnotesize
+  \begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}p{2.6cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X}
+    \toprule
+    Aspecto & v1 \cite{oliveira2025critical} & v2.2.2 \\
+    \midrule
+    Jogadores & 3 a 8 & 4 a 5 (recomendado: 4) \\
+    Classificação & 6 atributos de qualidade & 7 categorias da ISO/IEC 25010:2023 e 1 em módulo \\
+    Baralho & 54 cartas: 17 testes e 3 cartas Critical Failure & 63 Cartas de Teste (29 testes), 14 incidentes e a carta Critical Failure \\
+    Estrutura & Uma rodada: montar o sistema com 3 cartas e testar com as outras 3 & 3 ciclos de Planejamento, Homologação e Produção \\
+    Placar & Pontos por cartas e combinações, contados no fim & Fichas de Reputação, ganhas e perdidas durante a partida \\
+    Ataque bem-sucedido & O atacante toma uma carta do sistema do defensor & O atacante ganha 1 ficha, e o defensor recebe Alerta \\
+    Defesa bem-sucedida & O defensor fica com a carta de ataque & Nada acontece, salvo na contestação \\
+    Blefe & Declarar ter a cor; explicar um teste se contestado & Nomear e explicar um teste; o Auditor confere \\
+    Eventos externos & Não há & Incidentes com diagnóstico e dano, e o Critical Failure no fim \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+A troca de cartas entre sistemas da v1, em que o ataque bem-sucedido tirava uma carta da vítima e a defesa
+bem-sucedida dava uma carta ao defensor, alimentava o líder. Na v2, as cartas nunca mudam de sistema, o placar é
+em fichas, e os incidentes atingem todos ao mesmo tempo.
+
+\subsection{O simulador}
+
+O simulador foi escrito em Python e segue a arquitetura da Figura~\ref{fig:arquitetura}. As regras de cada versão
+ficam num arquivo YAML, e cada número traz ao lado o identificador da regra que o define; um teste automático
+procura números no código do motor e acusa qualquer valor de regra escrito fora da configuração. O motor é uma
+função pura: recebe o estado e uma ação, valida a ação e devolve o novo estado e os eventos. Cada bot recebe só a
+observação do seu assento, isto é, o que um jogador real veria, e nunca toca no estado. A v1 foi implementada no
+mesmo núcleo, para a comparação da QP1.
+
+\begin{figure}[ht]
+  \centering
+  \resizebox{\linewidth}{!}{\input{figuras/arquitetura}}
+  \caption{Arquitetura do simulador}
+  \label{fig:arquitetura}
+\end{figure}
+
+\textbf{Bots.} Há quatro estilos de jogo:
+\begin{itemize}
+  \item o \emph{Aleatório} escolhe qualquer ação legal;
+  \item o \emph{Construtor} enche o sistema com as categorias que lê no Radar e só testa com o que não serve ao
+    sistema;
+  \item o \emph{Caçador} mantém o sistema mínimo e usa as cartas para testar, com uma de três políticas de alvo:
+    o líder, o mais fraco ou um alvo ao acaso;
+  \item o \emph{Heurístico} estima, para cada ação, o ganho esperado em fichas e escolhe com uma distribuição
+    \emph{softmax} de temperatura 0,5 ficha, o que mantém algum ruído nas decisões.
+\end{itemize}
+Os bots que jogam bem contam as cartas já vistas para estimar o que cada adversário pode ter.
+
+Cada bot também tem um perfil de blefe e um de conhecimento. O de blefe define se o bot blefa nunca, metade
+das vezes ou sempre, e se contesta nunca, sempre ou quando a chance estimada de blefe passa do limiar de 1/3 das
+regras. O de conhecimento representa o estudante: a chance de a explicação estar certa, a de o Auditor julgar
+corretamente e a de ler a categoria-chave de um relato. O perfil iniciante usa 50\%, 75\% e 40\%; o experiente,
+85\%, 95\% e 80\%.
+
+\textbf{Duração.} Como bots não gastam tempo, a duração é estimada por um modelo com o tempo de cada ação
+(comprar, colocar, testar, explicar, diagnosticar etc.). Os tempos são provisórios e serão substituídos pelos
+cronometrados no playtest.
+
+\textbf{Auditoria e ferramentas.} O registro de cada partida pode ser refeito evento a evento (\texttt{replay}),
+contado em português (\texttt{narrar}) e exportado no formato da folha de registro usada nas partidas com
+pessoas (\texttt{folha}).
+
+\textbf{Verificação do simulador.} O simulador foi verificado com técnicas de teste de software:
+\begin{itemize}
+  \item \textbf{testes por regra:} cada regra da especificação tem pelo menos um teste marcado com o seu
+    identificador, num total de 510 testes automatizados; uma matriz de rastreabilidade confere a cobertura (176
+    de 176 itens);
+  \item \textbf{testes baseados em propriedades} \cite{claessen2000,maciver2019}: invariantes conferidos em
+    partidas aleatórias, como a conservação do número de cartas e o teto do sistema;
+  \item \textbf{testes metamórficos} \cite{chen1998,segura2016}: trocar o nome das categorias, girar as faces do
+    dado ou inverter a ordem dos assentos com bots iguais não pode mudar o que não depende disso;
+  \item \textbf{fuzzing:} sequências de ações e configurações estragadas só podem gerar erros controlados;
+  \item \textbf{teste de mutação} \cite{jia2011}: 4.883 mutantes do motor; 4.508 foram mortos pelos testes, um
+    escore de 0,930.
+\end{itemize}

@@ -22,3 +22,7 @@ resultados/**
 
 # Logs do teste de mutação enviados pelo autor (2026-11-14); ficam fora do git
 mutação/
+
+# Respostas do questionário do playtest (2026-11-14): ficam só na máquina do autor
+docs/*.csv
+docs/*.csv.zip

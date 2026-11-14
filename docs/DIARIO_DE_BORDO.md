@@ -1577,3 +1577,65 @@ O resumo (`docs/RESUMO_DOS_RESULTADOS.md`) foi atualizado: v2.2.2 como versão v
 
 - As possibilidades registradas não ganharam identificador VAR, porque não estão implementadas.
 - O limite de tempo para a explicação, citado na S2, entrou na lista de possibilidades junto com a da S8.
+
+---
+
+## 2026-11-14 — Versão inicial do TCC
+
+O autor pediu uma versão inicial do TCC, com o artigo do SBQS 2025 como referência principal e a mesma estrutura dele, por orientação da professora. Também pediu uma pesquisa por TCCs parecidos no repositório da UFPB.
+
+### Decisões do autor
+
+| Assunto | Opções | Escolha |
+|---|---|---|
+| Formato | LaTeX no modelo SBC; Markdown; Word | **LaTeX no modelo SBC**, e o LaTeX instalado nesta máquina ("instale o latex em meu computador se conseguir") |
+| Idioma | português; inglês | **Português**, com Abstract em inglês |
+| Estrutura | mesmas seções do artigo, com os resultados na 5; idêntica ao artigo; artigo com Fundamentação | **Mesmas seções, resultados na 5** |
+| Perguntas de pesquisa | reformular a QP3; manter como futura; retirar | **Retirar a QP3.** Ficam a QP1 (balanceamento) e a QP2 (avaliação dos alunos) |
+| Playtest | — | Já houve um playtest, antes do simulador: cerca de 30 alunos jogaram e 7 responderam (`docs/Avaliação do jogo Critical Failure.csv`). Usar só o que o questionário perguntou |
+| Versão jogada no playtest | v2.2 com o módulo; sem o módulo; versões diferentes | **v2.2 com o módulo** |
+| CSV | fora do git; sem data e hora; como está | **Fora do git**, só tabelas agregadas no TCC |
+| Uso de IA | declarar; decidir com a orientadora; não declarar | **Declarar, sem aprofundar.** As imagens das cartas foram feitas com o GPT 6 |
+
+### O que foi feito
+
+1. **LaTeX:** MiKTeX 25.12 instalado pelo `winget`, só para o usuário, com instalação automática de pacotes e os pacotes atualizados (`miktex packages update`).
+2. **Modelo da SBC:** `sbc-template.sty` e `sbc.bst` oficiais, do pacote `modelosparapublicaodeartigos.zip` do site da SBC.
+3. **`tcc/`:**
+   - `main.tex` e `capa.tex` (capa provisória);
+   - as 6 seções do artigo e a seção de artefatos e uso de IA;
+   - 3 figuras em TikZ e pgfplots;
+   - `referencias.bib`;
+   - `README.md` com a compilação, as pendências e a fonte de cada número;
+   - `.gitignore` dos arquivos gerados pela compilação.
+   O PDF tem 22 páginas.
+4. **Referências:** as do artigo e 25 novas. DSR, balanceamento com agentes, teste metamórfico, de propriedades e de mutação, replicador, Wilson, bootstrap, Wohlin e ISO/IEC 25010:2023 foram conferidos por busca (DOI e páginas). Os 5 TCCs da UFPB foram conferidos no registro completo do repositório: GiroJampa (CI, 2023), Computer Cards, BI-NA-RI-OH, Logic Challenge e o jogo de redes avaliado com o MEEGA+ (CCAE).
+5. **`scripts/resumir_playtest.py`** (só biblioteca padrão): refaz as contagens agregadas do questionário a partir do CSV local.
+6. **`.gitignore`:** `docs/*.csv` e `docs/*.csv.zip`.
+
+### Pesquisa no repositório da UFPB
+
+Nenhum TCC junta jogo para o ensino de teste e balanceamento por simulação. Os mais próximos entraram nos trabalhos relacionados. Quatro TCCs do CCAE estão no formato artigo; o do GiroJampa (CI) é uma monografia.
+
+### Detalhes escolhidos pelo assistente, sem perguntar
+
+- **Título** (sugestão, marcada no README como a revisar).
+- **Ordem dos pacotes:** o `babel` e o `hyperref` vêm antes do `sbc-template`; na ordem inversa, o LaTeX de 2026 para em `\begin{document}`.
+- **Marcadores `\pendente`** (em vermelho) para: capa e folha de aprovação; mês e ano; participantes, turma e datas do playtest; link do repositório.
+- **Ligações entre o playtest e o simulador** na seção 5.3:
+  - a decisão entre colocar e testar, que é a fonte da profundidade;
+  - o pedido para punir mais o blefe, contra o blefe equilibrado no simulador;
+  - a sensação de ser testado demais, contra o REQ-06;
+  - o Radar.
+- **Comparação descritiva com a v1:** 7 de 7 contra 14 de 17 se divertiram; 5 de 7 contra 9 de 17 disseram que o jogo serviu como revisão.
+- **Ameaça à validade:** um respondente marcou "nem concordo nem discordo" em todos os itens.
+- **O `sbc.bst` não foi alterado:** ele escreve "and" entre autores nas citações (pendência no README).
+
+### Verificação
+
+- Compilação local: 22 páginas, sem erro, sem citação ou referência indefinida e sem caixa estourada. As páginas com figuras e tabelas foram renderizadas e conferidas.
+- `ruff`, verificador e `pytest` (510 testes) sem apontamentos. Nada mudou em `src/`.
+
+### Pendências
+
+- Do autor: os marcadores `\pendente` do texto, a revisão do título e uma leitura completa da versão inicial antes de levá-la à orientadora.

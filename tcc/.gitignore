@@ -1,0 +1,13 @@
+# Arquivos gerados pela compilação do LaTeX. O PDF fica fora até o autor decidir versioná-lo.
+*.aux
+*.log
+*.bbl
+*.blg
+*.out
+*.toc
+*.lof
+*.lot
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+main.pdf

@@ -1,0 +1,31 @@
+\section{Conclusões e Trabalhos Futuros}
+\label{sec:conclusoes}
+
+Este trabalho redesenhou as regras do Critical Failure e verificou o seu balanceamento com um simulador
+determinístico e auditável, que tratou o jogo como um sistema sob teste. O balanceamento virou um conjunto de 13
+requisitos não funcionais com critério de aceite, verificados em 971 mil partidas entre bots com estilos de jogo
+diferentes.
+
+Quanto à \textbf{QP1}, as novas regras reduzem o desequilíbrio da primeira versão. Com os mesmos bots e as mesmas
+sementes, a vantagem de quem lidera após o primeiro ciclo cai de cerca de 0,40 para cerca de 0,09, e atacar o
+líder passa a compensar. A v2 passa em 10 dos 13 requisitos, entre eles a ausência de estratégia dominante, o
+equilíbrio do blefe e o peso dos incidentes. O melhor estilo é o que mistura construir e atacar conforme o valor
+de cada jogada. Os pontos fracos são o tempo parado, sobretudo com 5 jogadores, a duração com 4 jogadores e uma
+pequena vantagem do primeiro jogador entre bots que jogam bem. Os dois primeiros dependem dos tempos reais das
+ações. A versão atual (v2.2.2) recomenda 4 jogadores, e os testes sem limite, que dão o jogo mais profundo, foram
+mantidos.
+
+Quanto à \textbf{QP2}, os 7 estudantes que responderam ao questionário avaliaram o jogo de forma positiva: todos
+marcaram que se divertiram, e a maioria viu relação clara com a disciplina e contribuição para a aprendizagem. A
+Homologação, com o blefe e a contestação, foi a parte mais confusa, e houve pedidos para punir mais o blefe. Pelo
+tamanho da amostra, esses resultados são indícios, não conclusões.
+
+Como trabalhos futuros, propõem-se:
+\begin{itemize}
+  \item um novo playtest com a v2.2.2, com as ações cronometradas, para substituir os tempos do modelo de duração
+    e julgar de fato a duração e o tempo parado, e com o registro de cada contestação;
+  \item a avaliação com o questionário completo do MEEGA+ \cite{petri2017meega} numa turma maior;
+  \item a calibração dos perfis de conhecimento dos bots com os dados das folhas de registro das partidas reais;
+  \item uma busca automática de estratégias, por exemplo evolutiva, para verificar se existe um estilo que
+    domine todos os outros além dos seis escritos à mão.
+\end{itemize}
