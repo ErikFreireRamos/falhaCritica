@@ -3,11 +3,12 @@
 # testes de regra, de propriedades, de variantes e os registros de referência contra cada mutante.
 # Para rodar, abra a aba Actions do repositório, escolha "Teste de mutação" e clique em "Run workflow".
 #
-# Os cerca de 4.900 mutantes rodam em partes, em paralelo (.github/mutacao_partes.txt), e o job "juntar"
-# soma o resultado no artefato "resultado-da-mutacao". Cada parte tem o seu runner: se um mutante
-# derrubar o runner, só aquela parte se perde. Cada processo do mutmut tem um limite de memória, para
-# um mutante que entra em laço morrer com MemoryError (conta como morto) em vez de esgotar a memória
-# do runner, como na execução de 2026-11-11, que caiu no mutante 2.045.
+# Os cerca de 4.900 mutantes rodam em partes, em paralelo (.github/mutacao_partes.txt), e o job
+# "juntar" soma o resultado no artefato "resultado-da-mutacao" e no resumo da execução. Cada parte tem
+# o seu runner: se um mutante derrubar o runner, só aquela parte se perde. Cada processo do mutmut tem
+# um limite de memória, para um mutante que entra em laço morrer com MemoryError (conta como morto) em
+# vez de esgotar a memória do runner, como na execução de 2026-11-11, que caiu no mutante 2.045. Cada
+# parte também escreve o seu resultado no resumo da execução, que não depende do serviço de artefatos.
 #
 # O campo "mutantes" aceita nomes ou padrões do mutmut, separados por espaço (por exemplo,
 # "critical_failure.regras.v1*"), e roda só eles, numa parte só; vazio, roda todas as partes.
@@ -75,60 +76,114 @@ jobs:
           uv run --with mutmut==3.8.1 mutmut run --max-children 2 $PARTE
       - name: Resumo
         if: always()
+        env:
+          PARTE: ${{ matrix.parte }}
+          INDICE: ${{ strategy.job-index }}
         run: |
           uv run --with mutmut==3.8.1 mutmut results 2>&1 | grep -v ': not checked' > mutacao.txt || true
           uv run --with mutmut==3.8.1 mutmut export-cicd-stats > /dev/null 2>&1 || true
           tail -n 40 mutacao.txt || true
           cat mutants/mutmut-cicd-stats.json || true
-      - uses: actions/upload-artifact@v4
+          # O resultado também vai para o resumo da execução, que não depende do serviço de artefatos.
+          {
+            echo "### Parte $INDICE"
+            echo
+            echo "Padrões: \`$PARTE\`"
+            echo
+            echo '```'
+            cat mutants/mutmut-cicd-stats.json 2>/dev/null || echo "sem estatísticas"
+            echo '```'
+            echo
+            echo "<details><summary>Mutantes não mortos</summary>"
+            echo
+            echo '```'
+            cat mutacao.txt 2>/dev/null || true
+            echo '```'
+            echo
+            echo "</details>"
+          } >> "$GITHUB_STEP_SUMMARY"
+      # O serviço de artefatos do GitHub às vezes responde com uma página de erro (2026-11-14: 5 das 9
+      # partes). O envio não derruba a parte e é tentado de novo depois de 2 minutos; o resultado já
+      # está no resumo da execução.
+      - name: Enviar o resultado
+        id: enviar
         if: always()
+        continue-on-error: true
+        uses: actions/upload-artifact@v4
         with:
           name: resultado-da-mutacao-${{ strategy.job-index }}
+          overwrite: true
+          path: |
+            mutacao.txt
+            mutants/mutmut-cicd-stats.json
+      - name: Esperar antes de enviar de novo
+        if: always() && steps.enviar.outcome == 'failure'
+        run: sleep 120
+      - name: Enviar o resultado (segunda tentativa)
+        if: always() && steps.enviar.outcome == 'failure'
+        continue-on-error: true
+        uses: actions/upload-artifact@v4
+        with:
+          name: resultado-da-mutacao-${{ strategy.job-index }}
+          overwrite: true
           path: |
             mutacao.txt
             mutants/mutmut-cicd-stats.json
 
   juntar:
-    needs: mutacao
+    needs: [planejar, mutacao]
     if: always()
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v4
+        continue-on-error: true
         with:
           pattern: resultado-da-mutacao-*
           path: partes
       - name: Somar as partes
+        env:
+          PARTES: ${{ needs.planejar.outputs.partes }}
         run: |
           python3 - <<'FIM'
-          import json, pathlib
+          import json, os, pathlib
+          esperadas = len(json.loads(os.environ["PARTES"]))
           campos = ["killed", "survived", "timeout", "no_tests", "suspicious", "segfault", "skipped",
                     "check_was_interrupted_by_user"]
           soma = dict.fromkeys(campos, 0)
           sem_resultado, linhas = [], []
-          for pasta in sorted(pathlib.Path("partes").iterdir()):
+          for indice in range(esperadas):
+              pasta = pathlib.Path("partes") / f"resultado-da-mutacao-{indice}"
               estatisticas = pasta / "mutants" / "mutmut-cicd-stats.json"
-              if estatisticas.exists():
-                  dados = json.loads(estatisticas.read_text(encoding="utf-8"))
-                  for campo in campos:
-                      soma[campo] += dados.get(campo, 0)
-              else:
-                  sem_resultado.append(pasta.name)
+              if not estatisticas.exists():
+                  sem_resultado.append(str(indice))
+                  continue
+              dados = json.loads(estatisticas.read_text(encoding="utf-8"))
+              for campo in campos:
+                  soma[campo] += dados.get(campo, 0)
               resultados = pasta / "mutacao.txt"
               if resultados.exists():
-                  linhas += [l for l in resultados.read_text(encoding="utf-8", errors="replace").splitlines() if l.strip()]
-          avaliados = sum(soma.values())
+                  texto = resultados.read_text(encoding="utf-8", errors="replace")
+                  linhas += [linha for linha in texto.splitlines() if linha.strip()]
           decididos = soma["killed"] + soma["survived"]
           resumo = [f"{campo}: {valor}" for campo, valor in soma.items()]
-          resumo.append(f"avaliados: {avaliados}")
+          resumo.append(f"avaliados: {sum(soma.values())}")
           if decididos:
               resumo.append(f"escore (mortos / (mortos + sobreviventes)): {soma['killed'] / decididos:.3f}")
+          resumo.append(f"partes com resultado: {esperadas - len(sem_resultado)} de {esperadas}")
           if sem_resultado:
-              resumo.append(f"partes sem resultado (o runner caiu?): {', '.join(sem_resultado)}")
+              resumo.append(
+                  f"partes sem resultado: {', '.join(sem_resultado)} (os números delas estão no resumo de cada "
+                  "parte, na página da execução)"
+              )
           texto = "\n".join(resumo + ["", "Mutantes não mortos:"] + linhas) + "\n"
           pathlib.Path("mutacao-total.txt").write_text(texto, encoding="utf-8")
           print("\n".join(resumo))
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as saida:
+              saida.write("### Soma das partes\n\n```\n" + "\n".join(resumo) + "\n```\n")
           FIM
       - uses: actions/upload-artifact@v4
+        continue-on-error: true
         with:
           name: resultado-da-mutacao
+          overwrite: true
           path: mutacao-total.txt

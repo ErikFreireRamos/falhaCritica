@@ -1305,3 +1305,25 @@ A segunda execução do workflow "Teste de mutação", já com o mutmut 3.8.1, p
 ### Pendências
 
 - Do autor: disparar de novo o workflow "Teste de mutação" e mandar o resumo do job `juntar` (ou o log, se falhar). Se o repositório for privado, as 9 partes consomem minutos do Actions em paralelo.
+
+---
+
+## 2026-11-14 — Fase 5: falha no envio dos artefatos do teste de mutação
+
+### O que aconteceu
+
+Na terceira execução, já em 9 partes, as partes 1 a 4 terminaram bem. As partes 0 e 5 a 8 falharam no envio do artefato: "Failed to CreateArtifact: Failed to make request after 5 attempts: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON". O serviço de artefatos do GitHub respondeu com uma página de erro em HTML no lugar de JSON, depois das 5 tentativas da própria ação. É falha do serviço, não do mutmut nem do código: o mutmut rodou nessas partes, e os números delas ficaram no log do passo "Resumo" de cada uma.
+
+### O que foi feito
+
+1. **O resultado de cada parte vai também para o resumo da execução** (`GITHUB_STEP_SUMMARY`): as estatísticas do mutmut e a lista dos mutantes não mortos. O resumo não depende do serviço de artefatos.
+2. **O envio do artefato não derruba a parte:** se falhar, é tentado de novo depois de 2 minutos, e uma falha no envio não marca a parte como falha.
+3. **O job `juntar` sabe quantas partes esperar:** lê a lista do job `planejar`, soma as que chegaram, diz quantas chegaram e quais faltam, e escreve a soma também no resumo da execução. O download e o envio dele também não derrubam o job.
+
+### Verificação
+
+O script do `juntar` foi rodado nesta máquina com 3 partes falsas, uma delas sem resultado: a soma, o escore, a parte faltando e a lista dos não mortos saem certos, no arquivo e no resumo. O workflow em si só roda no Actions.
+
+### Pendências
+
+- Do autor: disparar de novo o workflow "Teste de mutação". Se o serviço de artefatos falhar de novo, os números de cada parte estarão no resumo da execução.
