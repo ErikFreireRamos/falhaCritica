@@ -1609,7 +1609,7 @@ O autor pediu uma versão inicial do TCC, com o artigo do SBQS 2025 como referê
    - `README.md` com a compilação, as pendências e a fonte de cada número;
    - `.gitignore` dos arquivos gerados pela compilação.
    O PDF tem 22 páginas.
-4. **Referências:** as 22 do artigo usadas no texto e 21 novas (16 conferidas por busca e 5 TCCs da UFPB). DSR, balanceamento com agentes, teste metamórfico, de propriedades e de mutação, replicador, Wilson, bootstrap, Wohlin e ISO/IEC 25010:2023 foram conferidos por busca (DOI e páginas). Os 5 TCCs da UFPB foram conferidos no registro completo do repositório: GiroJampa (CI, 2023), Computer Cards, BI-NA-RI-OH, Logic Challenge e o jogo de redes avaliado com o MEEGA+ (CCAE).
+4. **Referências:** 22 do artigo e 21 novas no `.bib` (16 conferidas por busca e 5 TCCs da UFPB); só as citadas aparecem no PDF. DSR, balanceamento com agentes, teste metamórfico, de propriedades e de mutação, replicador, Wilson, bootstrap, Wohlin e ISO/IEC 25010:2023 foram conferidos por busca (DOI e páginas). Os 5 TCCs da UFPB foram conferidos no registro completo do repositório: GiroJampa (CI, 2023), Computer Cards, BI-NA-RI-OH, Logic Challenge e o jogo de redes avaliado com o MEEGA+ (CCAE).
 5. **`scripts/resumir_playtest.py`** (só biblioteca padrão): refaz as contagens agregadas do questionário a partir do CSV local.
 6. **`.gitignore`:** `docs/*.csv` e `docs/*.csv.zip`.
 
