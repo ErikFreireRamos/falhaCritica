@@ -41,6 +41,8 @@ LaTeX de 2026 para em `\begin{document}` com "Undefined control sequence".
 - Número de participantes do playtest, a turma e as datas das sessões (seção 3.4).
 - Link público do repositório (Disponibilidade dos artefatos).
 - Revisão do título, que é uma sugestão.
+- Conferir a Tabela 11 (mecânicas, conceitos e efeitos buscados), que responde à QP3. As relações foram escritas a
+  partir das regras e precisam refletir a intenção de projeto do autor.
 - Agradecimentos, se o modelo do curso pedir.
 - O `sbc.bst` escreve "and" entre autores nas citações (por exemplo, "Gomes and Lelli 2021"). Decidir se fica assim
   ou se o estilo é adaptado para "e".
@@ -58,12 +60,14 @@ LaTeX de 2026 para em `\begin{document}` com "Undefined control sequence".
 | Sensibilidade e combinações | `resultados/fase4_exp4_sensibilidade/20261111-082054-73762b5/` e `fase4_exp4b_combinacoes/20261111-134424-b263c34/` |
 | Profundidade (Tab. 9) | `resultados/fase4_exp7_profundidade/20261111-183119-3a2f2e0/relatorio.md` |
 | Total de partidas, teste de mutação | `docs/RESUMO_DOS_RESULTADOS.md` e `docs/DIARIO_DE_BORDO.md` |
-| Playtest (Tab. 10 e texto da 5.3) | `uv run python scripts/resumir_playtest.py`, que lê o CSV local, fora do git |
+| Playtest (Tab. 10 e 12, seções 5.3 e 5.4) | `uv run python scripts/resumir_playtest.py`, que lê o CSV local, fora do git |
 
 ## Decisões do autor para esta versão (14/11/2026)
 
 - LaTeX no modelo SBC, em português, com Abstract em inglês.
 - Mesmas seções do artigo, com os resultados na seção 5.
-- Perguntas de pesquisa: QP1 e QP2. A QP3 (pré e pós-teste) foi retirada.
+- Perguntas de pesquisa: QP1 (balanceamento) e QP2 (experiência de jogo). A QP3 original (pré e pós-teste) foi
+  retirada. Em 15/11 entrou uma QP3 nova: como as fases e os incidentes representam o desenvolvimento e a
+  operação de software, respondida pela justificativa de projeto, com o questionário só como indício.
 - Playtest com a v2.2 e o módulo; só o que o questionário perguntou; o CSV fica fora do git.
 - Uso de IA declarado de forma breve; as imagens das cartas foram feitas com o GPT 6.

@@ -198,17 +198,18 @@ maior chance de recuperação. Com 1 teste por ciclo, a partida fica cerca de 10
 mais rasa em todas as medidas. Os limites intermediários ficam no meio e não resolvem o tempo parado com 5
 jogadores. Por isso, os testes sem limite foram mantidos.
 
-\subsection{QP2: como os estudantes avaliam a experiência?}
+\subsection{QP2: como os estudantes avaliam a experiência de jogo?}
 
 O playtest (Seção~\ref{sec:metodologia}) usou a versão 2.2 com o módulo. Responderam ao questionário 7 estudantes
 de três cursos: 4 de Ciência da Computação, 2 de Ciência de Dados e Inteligência Artificial e 1 de Engenharia da
 Computação. Todos estavam do 6º período em diante, e dois tinham experiência profissional com teste. Quatro
 avaliaram o próprio conhecimento prévio sobre testes não funcionais com 4 numa escala de 5. A
-Tabela~\ref{tab:playtest} mostra as respostas às afirmações.
+Tabela~\ref{tab:playtest} mostra as respostas às afirmações sobre a experiência de jogo. As afirmações sobre
+aprendizagem, imersão e relação com a prática ficam para a QP3 (Seção~\ref{sec:qp3}).
 
 \begin{table}[ht]
   \centering
-  \caption{Respostas ao questionário do playtest (7 respondentes; DT: discordo totalmente; D: discordo; N: nem
+  \caption{Respostas sobre a experiência de jogo (7 respondentes; DT: discordo totalmente; D: discordo; N: nem
     concordo nem discordo; C: concordo; CT: concordo totalmente)}
   \label{tab:playtest}
   \scriptsize
@@ -221,24 +222,12 @@ Tabela~\ref{tab:playtest} mostra as respostas às afirmações.
     Aprender a jogar este jogo foi fácil & 0 & 0 & 2 & 2 & 3 & 5/7 \\
     As regras do jogo são claras e compreensíveis & 0 & 0 & 1 & 5 & 1 & 6/7 \\
     Este jogo é adequadamente desafiador & 0 & 0 & 3 & 3 & 1 & 4/7 \\
-    Me sinto satisfeito com o que aprendi no jogo & 0 & 1 & 1 & 1 & 4 & 5/7 \\
     Eu recomendaria este jogo para meus colegas & 1 & 0 & 2 & 1 & 3 & 4/7 \\
     O jogo promove cooperação e/ou competição & 0 & 0 & 1 & 1 & 5 & 6/7 \\
     Eu me diverti com o jogo & 0 & 0 & 1 & 1 & 5 & 6/7 \\
-    Eu estava tão envolvido que perdi a noção do tempo & 0 & 0 & 1 & 1 & 5 & 6/7 \\
-    É claro como o conteúdo se relaciona com a disciplina & 0 & 0 & 2 & 1 & 4 & 5/7 \\
-    O jogo contribuiu para a minha aprendizagem na disciplina & 0 & 1 & 1 & 1 & 4 & 5/7 \\
-    \midrule
-    \multicolumn{7}{l}{\textit{O jogo contribuiu para eu\ldots}} \\
-    \ldots lembrar os tipos de teste de cada categoria & 0 & 0 & 3 & 3 & 1 & 4/7 \\
-    \ldots explicar com minhas palavras o que um teste verifica & 0 & 1 & 2 & 3 & 1 & 4/7 \\
-    \ldots identificar a característica afetada numa falha real & 0 & 0 & 2 & 3 & 2 & 5/7 \\
-    \ldots decidir quais testes priorizar pelo contexto e pelo risco & 0 & 0 & 2 & 2 & 3 & 5/7 \\
     \midrule
     \multicolumn{7}{l}{\textit{Sobre as regras}} \\
     Acompanhar a pontuação com as fichas foi fácil & 0 & 0 & 3 & 0 & 4 & 4/7 \\
-    Explicar o teste com minhas palavras me fez pensar no conteúdo & 0 & 0 & 3 & 2 & 2 & 4/7 \\
-    O Radar me ajudou a decidir quais testes colocar no sistema & 0 & 0 & 4 & 1 & 2 & 3/7 \\
     Senti que fui testado muito mais vezes que os outros & 1 & 1 & 2 & 2 & 1 & 3/7 \\
     Até perto do fim, eu achava que ainda podia vencer & 1 & 0 & 2 & 3 & 1 & 4/7 \\
     Decidir entre colocar a carta no sistema ou testar foi interessante & 0 & 0 & 1 & 2 & 4 & 6/7 \\
@@ -247,16 +236,14 @@ Tabela~\ref{tab:playtest} mostra as respostas às afirmações.
 \end{table}
 % fonte: uv run python scripts/resumir_playtest.py (CSV local, fora do git)
 
-Os sete respondentes marcaram que se divertiram jogando. Cinco disseram que o jogo serviu como revisão de
-conteúdos que já tinham estudado, três que aprenderam conceitos novos e dois que perceberam que precisam estudar
-mais o tema. Para a duração, 5 responderam ``adequada'' e 2, ``longa demais''. A parte mais confusa foi a
-Homologação, com o blefe e a contestação, para 4 respondentes, e a pontuação com fichas para 2. Entre os pontos
-fortes, os respondentes citaram a diversão, o blefe, as ilustrações e a relação entre as categorias de teste e
-situações práticas. Entre as mudanças sugeridas, dois pediram para punir mais o blefe, um pediu para simplificar
-a pontuação das disputas, um sugeriu uma área de jogo para organizar cartas e fichas, e um sugeriu simplificar o
-jogo.
+Os sete respondentes marcaram que se divertiram jogando. Para a duração, 5 responderam ``adequada'' e 2, ``longa
+demais''. A parte mais confusa foi a Homologação, com o blefe e a contestação, para 4 respondentes, e a pontuação
+com fichas para 2. Entre os pontos fortes, os respondentes citaram a diversão, o blefe, as ilustrações e a relação
+entre as categorias de teste e situações práticas. Entre as mudanças sugeridas, dois pediram para punir mais o
+blefe, um pediu para simplificar a pontuação das disputas, um sugeriu uma área de jogo para organizar cartas e
+fichas, e um sugeriu simplificar o jogo.
 
-As respostas conversam com o simulador em quatro pontos:
+As respostas conversam com o simulador em três pontos:
 \begin{itemize}
   \item \textbf{A decisão central foi percebida.} A afirmação com mais concordância entre as de regras, ``decidir
     entre colocar a carta no sistema ou testar foi interessante'' (6 de 7), é justamente a decisão que o
@@ -268,13 +255,90 @@ As respostas conversam com o simulador em quatro pontos:
     registrar quantas contestações acontecem.
   \item \textbf{A sensação de ser testado demais} (3 de 7 concordam) contrasta com o REQ-06, que passa no
     simulador. Com poucas partidas, a variação de uma partida para outra pode explicar a impressão.
-  \item \textbf{O Radar} foi o elemento com menor concordância (3 de 7). Nos bots, a leitura do Radar orienta a
-    construção do sistema, mas os estudantes podem não ter percebido essa função.
 \end{itemize}
 
-Comparando com a v1, em que 14 de 17 respondentes disseram ter se divertido e 9 que o jogo serviu como revisão
-\cite{oliveira2025critical}, as proporções na v2 são parecidas ou maiores (7 de 7 e 5 de 7). As amostras e os
-questionários são diferentes, e a comparação é só descritiva.
+Na v1, 14 de 17 respondentes disseram ter se divertido \cite{oliveira2025critical}; na v2, foram 7 de 7. As
+amostras e os questionários são diferentes, e a comparação é só descritiva.
+
+\subsection{QP3: as mecânicas representam o desenvolvimento de software?}
+\label{sec:qp3}
+
+A QP3 trata da intenção de projeto por trás das duas maiores mudanças da v2: a divisão do ciclo em três fases e
+os incidentes. A v1 tinha uma única rodada de montar o sistema e testar os colegas, sem nada que acontecesse
+depois dos testes. A v2 acrescenta o que vem antes e o que vem depois: o planejamento do que entra no sistema e a
+operação do sistema em produção. A Tabela~\ref{tab:mecanicas} relaciona cada mecânica ao conceito de
+desenvolvimento ou de operação de software que ela representa e ao efeito buscado.
+
+\begin{table}[ht]
+  \centering
+  \caption{Mecânicas da v2, o conceito que cada uma representa e o efeito buscado}
+  \label{tab:mecanicas}
+  \footnotesize
+  \begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}p{2.9cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}p{4.0cm}}
+    \toprule
+    Mecânica & Conceito representado & Efeito buscado \\
+    \midrule
+    Planejamento: comprar do Backlog e colocar até 5 cartas, sem troca & Desenvolvimento com recursos limitados: escolher o que entra no produto, e uma decisão de arquitetura difícil de desfazer & Representar a priorização \\
+    Radar de Riscos (incidente Agora e Próximo) & Planejamento orientado a risco: antecipar o problema provável e cobrir primeiro o que mais importa & Ler um caso, deduzir a característica afetada e priorizar os testes \\
+    Homologação: testes entre colegas & Ambiente de homologação: o sistema é testado antes de chegar aos usuários \cite{humble2010} & Representar o teste antes da entrega \\
+    Explicar o teste com as próprias palavras, conferido pelo Auditor & Revisão por pares e garantia de qualidade; o Auditor lê a descrição correta para a mesa & Aprender gerando a explicação \cite{slamecka1978} \cite{bertsch2007}, com retorno imediato \\
+    Alerta e bug duplicado & Defeito reportado: o mesmo defeito não é reportado duas vezes, e um defeito em aberto custa mais quando o problema chega à produção & Representar o ciclo de vida de um defeito \\
+    Produção e incidentes & Ambiente de produção: falhas reais, descritas como relatos concretos, atingem todos ao mesmo tempo; a cobertura reduz o impacto & Imersão nos casos; aplicar o conceito a uma situação real \\
+    Diagnóstico da categoria-chave & Triagem de um incidente: identificar a característica de qualidade afetada a partir da evidência & Aprender a reconhecer as características da ISO/IEC 25010 \\
+    Lição aprendida & Análise depois do incidente: quem entendeu o problema leva para a mão uma carta daquela categoria & Recompensar o diagnóstico correto \\
+    Critical Failure & Nenhum sistema é imune a falhas; a melhor cobertura só reduz o impacto & Representar o risco que sobra \\
+    Documento do Auditor, com ``não confundir com'' & Fronteiras entre testes parecidos, como Carga, Estresse e Pico & Aprender os contrastes entre conceitos \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\pendente{conferir se cada relação da Tabela~\ref{tab:mecanicas} corresponde à intenção de projeto do autor}
+
+As fases também têm um efeito sobre a imersão. Em vez de cartas abstratas de atributos, o jogador lida com um
+sistema que cresce, com defeitos que recebem um cubo de Alerta e com incidentes que contam uma história, como a
+venda de ingressos que sai do ar quando 50 mil pessoas entram ao mesmo tempo. Os relatos não trazem alternativas:
+o jogador precisa interpretar a evidência, como faria diante de uma falha real.
+
+Os estudantes dão indícios sobre esses efeitos (Tabela~\ref{tab:qp3}), sem comprová-los:
+\begin{itemize}
+  \item seis dos sete disseram ter perdido a noção do tempo durante a partida;
+  \item cinco concordaram que o jogo contribuiu para identificar a característica afetada numa falha real e para
+    decidir quais testes priorizar pelo contexto e pelo risco;
+  \item cinco disseram que o jogo serviu como revisão de conteúdos, três que aprenderam conceitos novos e dois que
+    perceberam que precisam estudar mais o tema. Na v1, 9 de 17 apontaram a revisão \cite{oliveira2025critical},
+    com outro questionário;
+  \item o Radar teve a menor concordância: só 3 de 7 disseram que ele ajudou a decidir o que colocar no sistema.
+    A mecânica que mais representa o planejamento orientado a risco foi a menos percebida. As regras ou o material
+    do jogo podem precisar deixar essa função mais clara.
+\end{itemize}
+
+\begin{table}[ht]
+  \centering
+  \caption{Respostas relacionadas à QP3 (7 respondentes; mesma escala da Tabela~\ref{tab:playtest})}
+  \label{tab:qp3}
+  \scriptsize
+  \begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}X c c c c c c}
+    \toprule
+    Afirmação & DT & D & N & C & CT & C+CT \\
+    \midrule
+    Eu estava tão envolvido que perdi a noção do tempo & 0 & 0 & 1 & 1 & 5 & 6/7 \\
+    Me sinto satisfeito com o que aprendi no jogo & 0 & 1 & 1 & 1 & 4 & 5/7 \\
+    O jogo contribuiu para a minha aprendizagem na disciplina & 0 & 1 & 1 & 1 & 4 & 5/7 \\
+    É claro como o conteúdo se relaciona com a disciplina & 0 & 0 & 2 & 1 & 4 & 5/7 \\
+    O jogo contribuiu para eu lembrar os tipos de teste de cada categoria & 0 & 0 & 3 & 3 & 1 & 4/7 \\
+    \ldots explicar com minhas palavras o que um teste verifica & 0 & 1 & 2 & 3 & 1 & 4/7 \\
+    \ldots identificar a característica afetada numa falha real & 0 & 0 & 2 & 3 & 2 & 5/7 \\
+    \ldots decidir quais testes priorizar pelo contexto e pelo risco & 0 & 0 & 2 & 2 & 3 & 5/7 \\
+    Explicar o teste com minhas palavras me fez pensar no conteúdo & 0 & 0 & 3 & 2 & 2 & 4/7 \\
+    O Radar me ajudou a decidir quais testes colocar no sistema & 0 & 0 & 4 & 1 & 2 & 3/7 \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+% fonte: uv run python scripts/resumir_playtest.py (CSV local, fora do git)
+
+Assim, a QP3 tem uma resposta de projeto e indícios favoráveis, mas não uma comprovação. A justificativa é do
+próprio autor do jogo, e saber se a v2 é de fato mais imersiva e educativa que a v1 pede uma avaliação comparativa
+com o MEEGA+ completo e mais participantes.
 
 \subsection{Balanceamento como teste não funcional}
 
@@ -317,6 +381,9 @@ Seguindo Wohlin et al. \cite{wohlin2012}, destacam-se as seguintes ameaças:
     de o requisito falhar com experientes, por decisão do autor. As duas leituras são relatadas.
   \item \textbf{A v1 foi validada com poucas partidas.} O simulador reproduz o mecanismo da bola de neve, mas a
     referência do artigo são 6 partidas.
+  \item \textbf{A QP3 se apoia na justificativa do próprio autor.} A relação entre as mecânicas e os conceitos
+    de desenvolvimento é um argumento de projeto. A percepção dos estudantes só indica, sem comprovar, que as
+    mecânicas têm o efeito buscado, e não houve comparação direta com a v1.
   \item \textbf{O playtest é pequeno.} Foram 7 respostas de cerca de 30 participantes, uma delas com ``nem
     concordo nem discordo'' em todos os itens. As respostas são autoavaliações e dizem respeito à v2.2 com o
     módulo, anterior às correções da v2.2.1 e da v2.2.2. Os resultados não podem ser generalizados.

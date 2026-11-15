@@ -1699,3 +1699,48 @@ As ablações VAR-10 (bug duplicado permitido) e VAR-11 (1 teste por ciclo) pass
 **Ficaram como estavam** o manifest e o relatório da execução oficial da ablação (`resultados/fase4_exp3_ablacao/20261111-080955-f925943/`), que registram o texto da época.
 
 Verificação: `ruff`, `mypy`, verificador, matriz (176 de 176) e `pytest` sem apontamentos.
+
+---
+
+## 2026-11-15 — TCC: QP3 sobre imersão, aprendizagem e representatividade
+
+O autor propôs uma QP3: se o novo jogo é mais imersivo, educativo e representativo. Para ele, são esses pontos que justificam a mecânica de incidentes e a divisão em 3 fases, com a fantasia de um desenvolvedor "subindo" o sistema pelos ambientes (planejamento, homologação e produção).
+
+### Decisões do autor
+
+| Assunto | Opções | Escolha |
+|---|---|---|
+| Como responder à QP3 | percepção, sem comparar; comparativa com a v1 | Resposta livre: "escolhas de design do autor justificando as decisões por conceitos de desenvolvimento junto à percepção de estudantes; caso isso seja incorreto em um TCC, me corrija" |
+| Evidência do questionário | itens por dimensão; só o argumento de projeto | **Só o argumento de projeto**; o questionário entra como indício |
+| O que fica na QP2 | experiência geral; juntar na QP2 | **Experiência geral** (diversão, regras, desafio, duração, partes confusas, sugestões) |
+
+### Correção pedida pelo autor
+
+Justificar as decisões de projeto com conceitos da área, junto com a percepção dos estudantes, é legítimo em DSR. Mas uma pergunta de avaliação ("a v2 é mais imersiva?") não pode ser respondida pela justificativa do próprio autor, e o questionário não compara com a v1. **A redação usada no texto foi escolhida pelo assistente**, a revisar pelo autor: "QP3: como as mecânicas da segunda versão, as três fases e os incidentes, representam o desenvolvimento e a operação de software para tornar o jogo mais imersivo e educativo, e o que os estudantes indicam sobre isso?"
+
+### O que foi feito
+
+- **Resumo e abstract:** uma frase sobre as fases como o caminho de um sistema até a produção.
+- **Introdução:** o objetivo menciona a imersão e a representatividade; a QP2 passou a ser a experiência de jogo; entrou a QP3; uma contribuição nova (a justificativa das mecânicas).
+- **Metodologia:** a fonte de evidência de cada QP. A QP3 usa a justificativa de projeto (DSR, Hevner et al. 2004), com o questionário como indício.
+- **4.1:** a fantasia do desenvolvedor que "sobe" o sistema pelos ambientes, com uma referência nova, Humble e Farley (2010), *Continuous Delivery*, conferida por busca.
+- **5.3 (QP2):** a tabela do questionário ficou só com os itens de experiência.
+- **5.4 (QP3), nova:**
+  - Tabela 11, que relaciona cada mecânica a um conceito e a um efeito buscado: Planejamento, Radar de Riscos, Homologação, explicação conferida pelo Auditor, Alerta e bug duplicado, Produção e incidentes, diagnóstico, Lição aprendida, Critical Failure e Documento do Auditor;
+  - Tabela 12, com os itens do questionário como indícios;
+  - destaque para o Radar, a mecânica menos percebida (3 de 7);
+  - a conclusão de que há uma resposta de projeto, mas não uma comprovação.
+- **Limitações e conclusões:** a QP3 se apoia na justificativa do próprio autor; resposta à QP3.
+
+### Detalhes escolhidos pelo assistente, sem perguntar
+
+- **As relações da Tabela 11** foram escritas a partir das regras, por exemplo "revisão por pares" para o Auditor e "triagem" para o diagnóstico. Ficam marcadas com `\pendente` para o autor conferir.
+- **"Me diverti" ficou na QP2,** e "perdi a noção do tempo", na QP3.
+
+### Verificação
+
+- Compilação local: 28 páginas, sem erro, sem referência indefinida e sem caixa estourada.
+
+### Pendências
+
+- Do autor: a redação da QP3 e a Tabela 11.
