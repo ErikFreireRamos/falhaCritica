@@ -1639,3 +1639,51 @@ Nenhum TCC junta jogo para o ensino de teste e balanceamento por simulação. Os
 ### Pendências
 
 - Do autor: os marcadores `\pendente` do texto, a revisão do título e uma leitura completa da versão inicial antes de levá-la à orientadora.
+
+---
+
+## 2026-11-15 — Revisão do TCC: conceitos antes dos resultados
+
+O autor pediu uma revisão dos trechos em que o texto apresentava um resultado antes de explicar o problema ou os conceitos necessários para entendê-lo.
+
+### Trechos encontrados e o que mudou
+
+1. **Seção 3 usava termos da Seção 4.**
+   - A tabela de requisitos e a de experimentos usavam Alerta, ciclo, Heurístico, perfis de blefe e variantes. As duas foram para o fim da Seção 4.4, depois das regras e dos bots.
+   - A lista de mudanças da 2.0 para a 2.1 citava Homologação, bug duplicado e Hotfix sem explicá-los. Ela foi para a Seção 4.3 ("Evolução das regras"), depois das regras, com o Hotfix explicado.
+   - O mesmo vale para as correções COR-01 a COR-03.
+2. **A Seção 3 passou a explicar os conceitos do método antes de usá-los:**
+   - zona de aceite, com um exemplo;
+   - matriz de ganhos, melhor resposta, perfil dominante, dinâmica do replicador e equilíbrio.
+   Também foi corrigido que as duas correções da v2.2.1 vieram da especificação, e não dos experimentos.
+3. **Seção 4: termos definidos na primeira vez em que aparecem.**
+   - Alerta, Radar de Riscos, categoria-chave, teste-chave, incidente severo e "coberto";
+   - a estrutura de 3 ciclos com 3 fases, antes das fases;
+   - o limiar de contestação de 1 em 3;
+   - a temperatura do Heurístico e o tempo parado;
+   - mutante e teste metamórfico;
+   - a linha final do registro;
+   - as variantes, a ablação, a sensibilidade e a profundidade, com o que cada uma muda.
+   A frase que dizia que a troca de cartas da v1 "alimentava o líder", um resultado do simulador, virou a descrição da regra, com remissão à Seção 5.1.
+4. **Seção 5: os títulos em negrito eram conclusões** ("O blefe está equilibrado.", "Testes sem limite dão o jogo mais profundo.").
+   - Viraram nomes de tema: Validação da v1, Vantagem do líder, Comparação entre estilos, Equilíbrio do blefe, Ordem de jogo, Duração e tempo parado, Peso dos incidentes, Variantes, ablação e sensibilidade, Profundidade.
+   - Cada parágrafo começa pela pergunta e pelo método, e só depois traz o resultado.
+   - A profundidade é definida, com as suas medidas, antes da tabela.
+5. **Introdução e Seção 2:**
+   - o termo "bola de neve" aparece onde o problema é descrito;
+   - zona de aceite, determinístico e auditável são explicados nas contribuições;
+   - a Seção 2 não fala mais em "incidente" antes de explicá-lo.
+6. **`placeins`:** as tabelas e figuras não passam mais para a seção seguinte (a tabela de experimentos aparecia dentro da Seção 5).
+
+### Correções de conteúdo achadas na revisão
+
+- **A melhor política de alvo na v1** era "o alvo ao acaso foi a melhor resposta, ou empatou com ela", e não "a melhor contra todas as mesas".
+- **A decisão do autor sobre a ordem de jogo** é "não tratar", sem "antes do playtest".
+- **O bug duplicado permitido e o limite de 1 teste por ciclo são regras da versão 2.0.** O histórico do PDF 2.2 ("mudanças de 2.0 para 2.1") mostra:
+  - testes por ciclo: 1 na 2.0, sem limite na 2.1;
+  - teste repetido na categoria com Alerta: permitido na 2.0, proibido na 2.1.
+  O TCC agora diz 2.0. A especificação (VAR-10 e VAR-11), entradas anteriores deste diário e o resumo dos resultados chamam essas ablações de "regra da 2.1". **Aguarda o autor:** corrigir esses rótulos.
+
+### Verificação
+
+- Compilação local: 25 páginas, sem erro, sem referência indefinida e sem caixa estourada. As páginas com as tabelas movidas foram renderizadas e conferidas.

@@ -6,22 +6,29 @@ partidas são as mesmas da v2.2.1 (um teste automático confere isso evento a ev
 valem para a versão atual.
 
 \subsection{QP1: a v2 reduz o desequilíbrio da v1?}
+\label{sec:qp1}
 
-\textbf{A v1 simulada reproduz o mecanismo do artigo.} Na v1 simulada, quem lidera depois que todos fizeram o
-primeiro teste vence entre 49\% e 78\% das partidas, conforme a população de bots. Pelo critério fixado antes do
-experimento (vencedor com pelo menos 1,5 vez a média dos demais), mais de 95\% das partidas da v1 simulada são
-desequilibradas, contra 4 de 6 no artigo. Com o fator 2,0, as populações mais parecidas com estudantes ficam
-dentro do intervalo de confiança das 6 partidas do artigo (de 0,30 a 0,90).
+\textbf{Validação da v1.} Antes de comparar as versões, o Experimento 1 verificou se a v1 simulada mostra o que o
+artigo observou em sala: partidas desequilibradas e um líder que dispara. Como a v1 não tem ciclos, o líder foi
+medido depois que todos fizeram o primeiro dos seus três testes. Uma partida conta como desequilibrada quando o
+vencedor termina com pelo menos 1,5 vez a média dos demais, critério fixado antes do experimento. Foram usadas
+mesas de 6 bots iguais de cada estilo e uma mesa mista.
 % fonte: resultados/fase3_exp1_validacao_v1/20261110-205949-ad1624f/relatorio.md
-O simulador também explica por que atacar o líder não freava a bola de neve na v1. Lá, a defesa bem-sucedida
-entregava a carta de ataque ao defensor; como o líder tem um sistema grande e quase sempre tem a categoria
-atacada, quem o atacava o alimentava. Para os bots, escolher o alvo ao acaso foi a melhor resposta.
+Na v1 simulada, quem lidera nesse ponto vence entre 49\% e 78\% das partidas, conforme a mesa. Mais de 95\% das
+partidas são desequilibradas, contra 4 de 6 no artigo. Com um critério mais exigente (2 vezes a média), duas
+mesas ficam dentro do intervalo de confiança das 6 partidas do artigo (de 0,30 a 0,90): a de Aleatórios e a de
+Caçadores que atacam o mais fraco, o comportamento que o artigo relatou nos estudantes.
 
-\textbf{A v2 quase elimina a vantagem do líder.} Com os mesmos bots, as mesmas mesas e as mesmas sementes nas duas
-versões, a vantagem do líder (REQ-02) cai de 0,392 para 0,087 com 4 jogadores e de 0,419 para 0,091 com 5
-(Figura~\ref{fig:lider}). As diferenças são de 0,305 (intervalo de 0,290 a 0,319) e de 0,328 (de 0,316 a 0,342),
-bem acima da margem de 0,05 exigida. Na v2, atacar o líder passa a ser a melhor política entre os Caçadores, e
-atacar o mais fraco, a pior: o contrário da v1.
+O simulador também mostra por que atacar o líder não freava a bola de neve na v1. Lá, a defesa bem-sucedida
+entregava a carta de ataque ao defensor (Seção~\ref{sec:regras}). Como o líder tem um sistema grande e quase
+sempre tem a categoria atacada, quem o atacava o alimentava. Entre as três políticas de alvo dos Caçadores,
+escolher o alvo ao acaso foi a melhor resposta, ou empatou com ela, contra as três mesas de Caçadores.
+
+\textbf{Vantagem do líder na v1 e na v2.} A QP1 é respondida pelo REQ-02, que compara a vantagem do líder nas duas
+versões com os mesmos bots, as mesmas mesas e as mesmas sementes. A vantagem do líder cai de 0,392 para 0,087
+com 4 jogadores e de 0,419 para 0,091 com 5 (Figura~\ref{fig:lider}). As diferenças são de 0,305 (intervalo de
+0,290 a 0,319) e de 0,328 (de 0,316 a 0,342), bem acima da margem de 0,05 exigida. Na v2, a política de alvo se
+inverte: entre os Caçadores, atacar o líder passa a ser a melhor política, e atacar o mais fraco, a pior.
 % fonte: resultados/fase3_exp2_v1_contra_v2/20261110-212034-f447f4b/relatorio.md
 
 \begin{figure}[ht]
@@ -31,14 +38,10 @@ atacar o mais fraco, a pior: o contrário da v1.
   \label{fig:lider}
 \end{figure}
 
-\textbf{O melhor estilo é o Heurístico, que mistura construir e atacar.} A Tabela~\ref{tab:estilos} mostra a
-taxa de vitória de um jogador de cada estilo (linha) numa mesa em que os outros três são de outro estilo
-(coluna). O Heurístico é a melhor resposta, sozinho ou empatado, contra todas as mesas, menos a de Aleatórios. A
-dinâmica do replicador termina em 100\% de Heurísticos, com 4 e com 5 jogadores. Nenhum Caçador puro é a melhor
-resposta a mesa alguma, salvo a de Aleatórios: na v2.2.1, construir rende mais que caçar. Mesmo assim, os dois
-estilos aparecem no jogo de quem joga bem. O Heurístico enche o sistema no 1º Planejamento em cerca de metade das
-partidas e, nas outras, guarda cartas para testar (REQ-11). Habilidade importa: o Heurístico vence 0,938 das
-partidas contra três Aleatórios, bem acima do piso de 0,375 (REQ-03).
+\textbf{Comparação entre estilos.} Para saber qual estilo joga melhor na v2, os seis estilos foram comparados numa
+matriz de ganhos (Seção~\ref{sec:metodologia}). Em cada célula da Tabela~\ref{tab:estilos}, um jogador do estilo da
+linha joga contra três jogadores do estilo da coluna, com rodízio de assentos. Com 4 jogadores, quem não leva
+vantagem vence 0,250, e o valor em negrito é a melhor resposta àquela mesa.
 % fonte: resultados/fase4_melhor_estilo/20261110-221516-ccd5649/relatorio.md
 
 \begin{table}[ht]
@@ -61,18 +64,31 @@ partidas contra três Aleatórios, bem acima do piso de 0,375 (REQ-03).
   \end{tabular}
 \end{table}
 
-\textbf{O blefe está equilibrado.} Num torneio entre 9 perfis puros de blefe (blefar nunca, metade das vezes ou
-sempre; contestar nunca, sempre ou pelo limiar), nenhum perfil domina, e os perfis formam um ciclo. Blefar sempre
-ganha de quem nunca contesta, contestar pelo limiar ganha de quem blefa, e não contestar ganha numa mesa de
-honestos. O equilíbrio é uma mistura em que cerca de 1 em cada 6 jogadores blefa sempre. Nessa mistura, 39,5\% dos
-blefes dão certo com 4 jogadores (intervalo de 38,6\% a 40,3\%) e 38,5\% com 5, dentro da faixa de 30\% a 50\% que
-as regras pedem (REQ-05).
+O Heurístico é a melhor resposta, sozinho ou empatado, contra todas as mesas, menos a de Aleatórios, e a dinâmica
+do replicador termina em 100\% de Heurísticos, com 4 e com 5 jogadores. Assim, o melhor estilo é o que pesa, a
+cada jogada, se a carta vale mais no sistema ou num teste. Nenhum Caçador puro é a melhor resposta a mesa alguma,
+salvo a de Aleatórios: na v2, construir rende mais que caçar. Mesmo assim, os dois estilos aparecem no jogo de quem
+joga bem. O Heurístico enche o sistema no 1º Planejamento em cerca de metade das partidas e, nas outras, guarda
+cartas para testar (REQ-11). A habilidade também importa: um Heurístico vence 0,938 das partidas contra três
+Aleatórios, bem acima do piso de 0,375 (REQ-03).
+
+\textbf{Equilíbrio do blefe.} O blefe depende de dois comportamentos: com que frequência o defensor blefa e quando
+o atacante contesta. As regras pedem que o blefe compense às vezes, mas não sempre, e que entre 30\% e 50\% dos
+blefes deem certo (REQ-05). Para verificar isso, os 9 perfis de blefe (Seção~\ref{sec:simulador}) jogaram entre si
+numa matriz de ganhos, e o REQ-05 foi medido numa mesa sorteada da mistura do equilíbrio.
 % fonte: resultados/fase4_exp5_blefe/20261110-231109-b02b6d4 e fase4_exp5b_blefe_equilibrio/20261111-004253-e17bbf2
+Nenhum perfil domina, e os perfis formam um ciclo: blefar sempre ganha de quem nunca contesta, contestar pelo
+limiar ganha de quem blefa, e não contestar ganha numa mesa de honestos. O equilíbrio é uma mistura em que cerca
+de 1 em cada 6 jogadores blefa sempre. Nessa mistura, 39,5\% dos blefes dão certo com 4 jogadores (intervalo de
+38,6\% a 40,3\%) e 38,5\% com 5, dentro da faixa pedida.
 
 \subsection{Requisitos, variantes e profundidade}
+\label{sec:requisitos-resultados}
 
-A Tabela~\ref{tab:resultados} resume os 13 requisitos, medidos com mesas de Heurísticos sorteadas do equilíbrio
-do blefe, com conhecimento iniciante e experiente. Dez passam, dois passam em parte e um falha.
+Os requisitos foram medidos em mesas de Heurísticos. Em cada partida, o perfil de blefe de cada assento foi
+sorteado nas proporções do equilíbrio do blefe, e as mesas foram rodadas com 4 e com 5 jogadores e com
+conhecimento iniciante e experiente. A Tabela~\ref{tab:resultados} mostra o resultado: dez requisitos passam,
+dois passam em parte e um falha. Os parágrafos seguintes explicam os casos que não passam por inteiro.
 
 \begin{table}[ht]
   \centering
@@ -95,55 +111,65 @@ do blefe, com conhecimento iniciante e experiente. Dez passam, dois passam em pa
     REQ-10 Tempo parado & \textbf{falha} & Percentil 90 de 5,8 min (4 jog.) e 9,0 min (5 jog.) \\
     REQ-11 Os dois estilos aparecem & passa & De 0,50 a 0,58 \\
     REQ-12 O 1º incidente não decide & passa & De 0,03 a 0,08 \\
-    REQ-13 Incidentes pesam & passa & 0,29 (iniciantes) e 0,32 (experientes) \\
+    REQ-13 Incidentes pesam & passa & 0,29 (iniciantes) e 0,32 (experientes), com a medida redefinida (ver texto) \\
     \bottomrule
   \end{tabularx}
 \end{table}
 
-\textbf{Tempo e duração dependem de tempos ainda estimados.} Os tempos do modelo de duração são provisórios.
-Com todos eles 25\% maiores, a partida de 4 jogadores passa a durar 48 minutos; com todos 25\% menores, o tempo
-parado com 4 jogadores passa a 4,3 minutos. O resultado que não depende dos tempos é a relação entre os tamanhos de
-mesa: a de 5 jogadores dura cerca de 15\% mais e fica cerca de 55\% mais tempo parada que a de 4. Por isso, a
-v2.2.2 recomenda 4 jogadores (COR-03), mantendo o limite de 5.
+\textbf{Ordem de jogo.} O REQ-01 verifica se a posição na ordem de jogo dá vantagem. Com bots aleatórios, todas as
+posições ficam dentro da zona. Com Heurísticos, o primeiro da ordem vence cerca de 2,5 pontos percentuais acima de
+$1/N$, e o último cerca de 2,5 abaixo, na borda da zona de 2 pontos. O efeito é pequeno, e o autor decidiu não
+tratá-lo.
+
+\textbf{Duração e tempo parado.} A duração (REQ-08) e o tempo parado (REQ-10) dependem do modelo de tempos
+(Seção~\ref{sec:simulador}), cujos valores ainda são estimativas. Com eles, a partida de 4 jogadores dura 38
+minutos, abaixo da faixa de 40 a 50, e o tempo parado passa de 5 minutos por ciclo com 4 e com 5 jogadores. Para
+saber o quanto esses vereditos dependem das estimativas, o Experimento 4 refez as medidas com todos os tempos 25\%
+maiores e 25\% menores. Com os tempos maiores, a partida de 4 jogadores passa a durar 48 minutos; com os menores,
+o tempo parado com 4 jogadores cai para 4,3 minutos. O resultado que não depende dos tempos é a relação entre os
+tamanhos de mesa: a de 5 jogadores dura cerca de 15\% mais e fica cerca de 55\% mais tempo parada que a de 4. Por
+isso, a v2.2.2 recomenda 4 jogadores (COR-03), mantendo o limite de 5.
 % fonte: resultados/fase4_exp4_sensibilidade/20261111-082054-73762b5/relatorio.md
 
-\textbf{O peso dos incidentes depende do conhecimento.} Medido só pelo dano, o peso dos incidentes era de 0,22
-com iniciantes e de 0,17 com experientes, abaixo da zona. Quem sabe o conteúdo diagnostica melhor e se cobre
-melhor, e por isso perde menos. Mas ganha mais no próprio incidente: pelos perfis do simulador, o experiente acerta o diagnóstico em 80\%
-das vezes, e o iniciante em 40\%. Contando o incidente inteiro (dano e ganho do diagnóstico), o peso é de
-0,29 com iniciantes e de 0,32 com experientes, e o requisito passa nos 40 cenários do Experimento 6. Essa
-definição foi adotada pelo autor depois da primeira medição. A medida só pelo dano continua nos relatórios como
-descrição.
+\textbf{Peso dos incidentes.} O REQ-13 verifica se os incidentes pesam o bastante na partida sem decidi-la
+sozinhos. A primeira definição media a fração das fichas movimentadas que vinha do dano pago nos incidentes. Com
+ela, o peso era de 0,22 com iniciantes e de 0,17 com experientes, abaixo da zona para os experientes. A diferença
+vem do conhecimento. Quem sabe o conteúdo se cobre melhor e por isso paga menos dano, mas também ganha mais no
+próprio incidente, porque acerta mais o diagnóstico: pelos perfis do simulador, o experiente acerta 80\% das
+vezes, e o iniciante, 40\%. A primeira definição via só a perda. O autor redefiniu então a medida para contar o
+incidente inteiro, o dano e o ganho do diagnóstico. Com ela, o peso é de 0,29 com iniciantes e de 0,32 com
+experientes, e o requisito passa nos 40 cenários do Experimento 6, que foi executado de novo com a medida nova. A
+redefinição foi feita depois da primeira medição, e a medida só pelo dano continua nos relatórios como descrição.
 % fonte: resultados/fase4_exp6_variantes/20261114-145900-0564baa/relatorio.md
 
-\textbf{Nenhuma variante melhora tudo.} Das variantes propostas para o playtest:
+\textbf{Variantes, ablação e sensibilidade.} As variantes (Seção~\ref{sec:simulador}) foram comparadas com a
+regra atual nos mesmos requisitos:
 \begin{itemize}
   \item comprar 2 cartas por Planejamento torna impossível encher o sistema no ciclo 1;
   \item cobrar uma ficha a mais pela explicação errada faz os iniciantes zerarem cedo;
-  \item um Auditor externo, que não joga, piora o tempo parado;
+  \item o Auditor externo piora o tempo parado, porque ninguém da mesa fica ocupado como Auditor;
   \item o vizinho designado e o limite de 2 testes recebidos encurtam a partida, mas concentram os ataques;
   \item a punição do blefe com 0 ou 2 fichas, o palpite da plateia e o módulo quase não mudam o que o simulador
     mede.
 \end{itemize}
-A regra atual foi a melhor das 10 configurações no conjunto. A ablação mostrou que cada mudança da 2.2, quando
-desfeita, piora algum requisito ou não melhora nenhum. Com 6 jogadores (sem a COR-01), a mediana passa de 50
-minutos, e o tempo parado chega a 12 minutos por ciclo. Com o bug duplicado permitido (regra da 2.1), os ataques
-se concentram. Na sensibilidade, 5 fichas iniciais é o mínimo que passa no REQ-07: com 4 fichas, de 13\% a 23\% das
-partidas têm alguém zerado antes do ciclo 3.
+Nenhuma variante melhora tudo, e a regra atual foi a melhor das 10 configurações no conjunto. Na ablação, cada
+mudança da 2.2, quando desfeita, piorou algum requisito ou não melhorou nenhum. Com 6 jogadores (sem a COR-01), a
+mediana passa de 50 minutos, e o tempo parado chega a 12 minutos por ciclo. Com o bug duplicado permitido, como na
+versão 2.0, os ataques se concentram. Na sensibilidade, 5 fichas iniciais é o mínimo que passa no REQ-07: com 4
+fichas, de 13\% a 23\% das partidas têm alguém zerado antes do ciclo 3.
 % fonte: fase4_exp6_variantes, fase4_exp3_ablacao/20261111-080955-f925943, fase4_exp4_sensibilidade, fase4_exp4b_combinacoes/20261111-134424-b263c34
 
-\textbf{Testes sem limite dão o jogo mais profundo.} O Experimento 7 comparou a regra atual com 1 e 2 testes por
-ciclo e com um custo de 1 ficha a partir do 2º teste do ciclo (Tabela~\ref{tab:profundidade}). Os testes sem
-limite dão:
+\textbf{Profundidade.} Na v2, cada jogador pode testar quantas vezes quiser, desde que tenha cartas na mão. Isso
+alonga a Homologação e aumenta o tempo parado, e limitar os testes seria a solução mais simples. O Experimento 7
+verificou se essa solução custaria \emph{profundidade}, isto é, a quantidade de decisões que importam e o quanto
+jogar bem faz diferença. A regra atual foi comparada com 1 e 2 testes por ciclo e com um custo de 1 ficha a partir
+do 2º teste do ciclo, com estas medidas:
 \begin{itemize}
-  \item o maior número de decisões e de defesas por jogador;
-  \item a menor vantagem do líder;
-  \item a maior chance de recuperação de quem não lidera após o ciclo 1;
-  \item o maior retorno para quem joga bem, medido pela vitória de um Heurístico normal contra Heurísticos mais
-    descuidados (temperatura 4).
+  \item decisões com escolha (mais de uma opção legal) e defesas por jogador;
+  \item vantagem do líder e chance de recuperação de quem não liderava após o ciclo 1;
+  \item vitória de um Heurístico padrão contra Heurísticos descuidados, com temperatura 4, dividida por $1/N$.
+    Quanto maior, mais jogar bem rende.
 \end{itemize}
-Com 1 teste por ciclo, a partida fica cerca de 10 minutos mais curta, mas é a regra mais rasa em todas as
-medidas.
 % fonte: resultados/fase4_exp7_profundidade/20261111-183119-3a2f2e0/relatorio.md
 
 \begin{table}[ht]
@@ -166,12 +192,19 @@ medidas.
   \end{tabular}
 \end{table}
 
+A Tabela~\ref{tab:profundidade} mostra que a regra atual, sem limite, é a mais profunda. Ela tem o maior número
+de decisões e de defesas por jogador, a menor vantagem do líder e o maior retorno para quem joga bem, e também a
+maior chance de recuperação. Com 1 teste por ciclo, a partida fica cerca de 10 minutos mais curta, mas a regra é a
+mais rasa em todas as medidas. Os limites intermediários ficam no meio e não resolvem o tempo parado com 5
+jogadores. Por isso, os testes sem limite foram mantidos.
+
 \subsection{QP2: como os estudantes avaliam a experiência?}
 
-Responderam ao questionário 7 estudantes de três cursos: 4 de Ciência da Computação, 2 de Ciência de Dados e
-Inteligência Artificial e 1 de Engenharia da Computação. Todos estavam do 6º período em diante. Dois tinham
-experiência profissional com teste. Quatro avaliaram o próprio conhecimento prévio sobre testes não funcionais
-com 4 numa escala de 5. A Tabela~\ref{tab:playtest} mostra as respostas às afirmações.
+O playtest (Seção~\ref{sec:metodologia}) usou a versão 2.2 com o módulo. Responderam ao questionário 7 estudantes
+de três cursos: 4 de Ciência da Computação, 2 de Ciência de Dados e Inteligência Artificial e 1 de Engenharia da
+Computação. Todos estavam do 6º período em diante, e dois tinham experiência profissional com teste. Quatro
+avaliaram o próprio conhecimento prévio sobre testes não funcionais com 4 numa escala de 5. A
+Tabela~\ref{tab:playtest} mostra as respostas às afirmações.
 
 \begin{table}[ht]
   \centering
@@ -252,13 +285,14 @@ balanceamento como um requisito não funcional verificável. Algumas lições:
   \item \textbf{Critério antes do resultado.} Fixar a medida e a zona de aceite antes de medir evitou que o
     critério se ajustasse ao resultado. Quando o critério mudou depois da medição, como no REQ-13, a mudança
     foi registrada e as duas leituras foram mantidas.
-  \item \textbf{O problema do oráculo.} Não há um valor esperado para ``jogo balanceado''. Relações
-    metamórficas, como trocar o nome das categorias sem mudar as partidas, e invariantes, como a conservação das
-    cartas, serviram de oráculos parciais \cite{chen1998,segura2016}.
+  \item \textbf{O problema do oráculo.} Em teste de software, o oráculo é o mecanismo que diz qual é a saída
+    correta. Para um jogo, não há um valor esperado para ``balanceado''. Relações metamórficas, como trocar o nome
+    das categorias sem mudar as partidas, e invariantes, como a conservação das cartas, serviram de oráculos
+    parciais \cite{chen1998,segura2016}.
   \item \textbf{Os testes do simulador acharam defeitos reais.} O fuzzing achou uma brecha na auditoria: o
-    \texttt{replay} não conferia a linha final inteira, e um registro adulterado passava. O teste de mutação
-    apontou regras e medidas sem teste, e as invariantes nunca eram testadas com estados inválidos. Todas essas
-    lacunas foram fechadas com testes novos.
+    \texttt{replay} não conferia a linha final do registro inteira, e um registro com o critério de desempate
+    adulterado passava. O teste de mutação apontou regras e medidas sem teste, e mostrou que as invariantes nunca
+    eram testadas com estados inválidos. Todas essas lacunas foram fechadas com testes novos.
   \item \textbf{Determinismo como evidência.} O Experimento 6 foi repetido três dias depois, com outro número
     de processos e muitos commits no meio, e as 80 mil partidas saíram idênticas. Isso dá confiança de que cada
     número pode ser refeito.
@@ -274,7 +308,9 @@ Seguindo Wohlin et al. \cite{wohlin2012}, destacam-se as seguintes ameaças:
     diversão. Os perfis de conhecimento indicam se a mecânica se degrada com pouco conhecimento, mas não
     representam um estudante real. Os bots também contam cartas melhor que pessoas.
   \item \textbf{Os estilos foram escritos à mão.} ``Nenhum estilo dominante'' vale entre os seis estilos
-    implementados. O REQ-04 de estilos passou só por causa da mesa de Aleatórios.
+    implementados. Além disso, o REQ-04 de estilos passou só por causa da mesa de Aleatórios. Sem essa mesa, não
+    daria para afirmar nem descartar que o Heurístico domina, porque ele empata com o Construtor em várias mesas,
+    e o veredito seria inconclusivo.
   \item \textbf{Os tempos são estimados.} Os vereditos de duração e de tempo parado só valem de fato com os
     tempos cronometrados em partidas reais.
   \item \textbf{Um critério mudou depois da medição.} A definição do REQ-13 passou a contar o diagnóstico depois
