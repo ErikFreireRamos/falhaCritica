@@ -214,10 +214,10 @@ class Variantes(_Base):
 
 
 class Ablacoes(_Base):
-    """Ablações (Experimento 3): volta uma regra da 2.1 no lugar da regra da 2.2. Sem o bloco, vale a da versão."""
+    """Ablações (Experimento 3): volta uma regra da 2.0 no lugar da regra da 2.2. Sem o bloco, vale a da versão."""
 
     bug_duplicado_permitido: Logico
-    """VAR-10: pode testar categoria em que o alvo já tem Alerta (2.1); o atacante ganha a ficha, sem cubo novo."""
+    """VAR-10: pode testar categoria em que o alvo já tem Alerta (2.0); o atacante ganha a ficha, sem cubo novo."""
     testes_por_ciclo: Inteiro
     """VAR-11: quantos testes cada jogador pode fazer por ciclo (2.1: 1); 0 é sem limite (2.2)."""
 

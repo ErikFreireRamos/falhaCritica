@@ -118,7 +118,7 @@ class MotorV2:
         self.limite_recebidos = v.limite_de_testes_recebidos.valor if v else 0
         self.palpite_da_plateia = v.palpite_da_plateia.valor if v else False
         self.premio_do_palpite = v.premio_do_palpite.valor if v else 0
-        ab = r.ablacoes  # ablações: regras da 2.1 no lugar das da 2.2
+        ab = r.ablacoes  # ablações: regras da 2.0 no lugar das da 2.2
         self.bug_duplicado_permitido = ab.bug_duplicado_permitido.valor if ab else False
         self.testes_por_ciclo = ab.testes_por_ciclo.valor if ab else 0
         pr = r.propostas  # propostas de regra em estudo

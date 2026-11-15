@@ -462,8 +462,8 @@ Variantes que a configuração deve permitir ligar e desligar (seção 3.2 do pr
 | VAR-07 | Compras por Planejamento | 3 (atual); 2 | prompt 3.2; PDF p. 34 | `planejamento.compras` |
 | VAR-08 | Número de jogadores | 4; 5 (6 só com a COR-01 desligada, para medir o problema do baralho) | prompt 3.2; R-1.2; COR-01 | número de jogadores do cenário |
 | VAR-09 | Módulo de Segurança Operacional | desligado (jogo base); ligado | PDF seção 11 | `modulo_seguranca_operacional` |
-| VAR-10 | Bug duplicado (ablação, regra da 2.1) | proibido (atual); permitido | PDF p. 33 (histórico); R-7.4.2 | pode testar categoria em que o alvo já tem Alerta; o atacante ganha a ficha, sem cubo novo (`ablacoes.bug_duplicado_permitido`) |
-| VAR-11 | Testes por ciclo (ablação, regra da 2.1) | sem limite (atual); 1; 2 | PDF p. 33 (histórico); R-7.4.1 | cada jogador faz no máximo o número dado de testes por ciclo; depois disso passa (`ablacoes.testes_por_ciclo`). O valor 2 é o meio-termo do Experimento 7 |
+| VAR-10 | Bug duplicado (ablação, regra da 2.0) | proibido (atual); permitido | PDF p. 33 (histórico); R-7.4.2 | pode testar categoria em que o alvo já tem Alerta; o atacante ganha a ficha, sem cubo novo (`ablacoes.bug_duplicado_permitido`) |
+| VAR-11 | Testes por ciclo (ablação, regra da 2.0) | sem limite (atual); 1; 2 | PDF p. 33 (histórico); R-7.4.1 | cada jogador faz no máximo o número dado de testes por ciclo; depois disso passa (`ablacoes.testes_por_ciclo`). O valor 2 é o meio-termo do Experimento 7 |
 | VAR-12 | Custo do teste (proposta do Experimento 7) | sem custo (atual); a partir do 2º teste do ciclo, 1 ficha | autor, 2026-11-11; R-7.4.1; AMB-32 | testes sem limite, mas cada teste do ciclo a partir do indicado custa fichas ao atacante, pagas ao banco ao declarar o teste; sem fichas para pagar, não testa (`propostas.custo_do_teste`, `propostas.teste_pago_a_partir_do`) |
 
 ### Situação das variantes depois dos experimentos (autor, 2026-11-14)
@@ -480,7 +480,7 @@ Nenhuma variante virou regra, e todas continuam disponíveis na configuração. 
 | VAR-06 | Nada muda no que o bot mede; o efeito no engajamento de quem espera só se mede com pessoas | registrada como candidata ao playtest; regra atual mantida |
 | VAR-07 | Ninguém chega a 5 cartas no ciclo 1 (REQ-11 impossível); partida de 30 a 34 min | registrada como desaconselhada pelos dados; regra atual mantida |
 | VAR-09 | Quase nada muda | registrada; o módulo continua opcional |
-| VAR-10 | A regra da 2.1 concentra os ataques (Experimento 3) | registrada; a proibição da 2.2 continua |
+| VAR-10 | A regra da 2.0 concentra os ataques (Experimento 3) | registrada; a proibição da 2.2 continua |
 | VAR-11 | 1 ou 2 testes por ciclo encurtam a partida, mas tiram profundidade (Experimentos 3 e 7) | guardada como variante; testes sem limite continuam (autor) |
 | VAR-12 | O custo do teste encurta a partida e mantém a habilidade, mas zera mais jogadores (Experimento 7) | guardada como variante; testes sem limite continuam (autor) |
 
@@ -533,4 +533,4 @@ As páginas 34 e 35 do PDF definem o que o simulador deve medir. A definição e
 
 ## O que não é regra vigente
 
-As páginas 31 a 33 do PDF trazem o histórico das versões 2.0, 2.1 e 2.2. O histórico da 2.1 descreve regras que a 2.2 substituiu e não deve ser usado como regra. Ele só é fonte para as variantes VAR-04 e VAR-05.
+As páginas 31 a 33 do PDF trazem o histórico das versões 2.0, 2.1 e 2.2. O histórico da 2.1 descreve regras que a 2.2 substituiu e não deve ser usado como regra. Ele registra as mudanças da 2.0 para a 2.1 e só é fonte para as variantes que retomam regras da 2.0: VAR-04, VAR-10 e VAR-11. A VAR-05 vem da tabela de parâmetros (p. 34).

@@ -4,8 +4,8 @@
 # - COR-02: Alertas saem só ao colocar carta da categoria ou num incidente (regra impressa);
 # - COR-01: 6 jogadores (regra impressa). Com 6 jogadores, a mistura do blefe é a de 5 (não
 #   há torneio com 6);
-# - VAR-10: bug duplicado permitido (regra da 2.1);
-# - VAR-11: 1 teste por ciclo (regra da 2.1).
+# - VAR-10: bug duplicado permitido (regra da 2.0);
+# - VAR-11: 1 teste por ciclo (regra da 2.0).
 #
 # Mesas de Heurísticos sorteadas da mistura do equilíbrio do blefe (pesos do Experimento 5b),
 # conhecimento iniciante e experiente, 2.000 partidas por cenário. Os critérios foram fixados
@@ -15,7 +15,7 @@ esquema: cf-experimento/1
 nome: fase4_exp3_ablacao
 descricao: >
   Ablação na v2.2.1: cada mudança da v2.2 desfeita sozinha (as correções COR-01 e COR-02,
-  o bug duplicado e o limite de 1 teste por ciclo da 2.1), com mesas de 4 e de 5 (e de 6
+  o bug duplicado e o limite de 1 teste por ciclo da 2.0), com mesas de 4 e de 5 (e de 6
   para a COR-01), conhecimento iniciante e experiente.
 semente_mestre: 20261118
 duracao: configs/duracao.yaml

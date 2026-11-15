@@ -1,7 +1,7 @@
 # Experimento 7 (Fase 4): profundidade do jogo. Decisões do autor em 2026-11-11.
 #
 # Compara a regra atual (testes sem limite por ciclo) com três alternativas:
-# - VAR-11 com 1 teste por ciclo (a regra da 2.1, já medida na ablação);
+# - VAR-11 com 1 teste por ciclo (a regra da 2.0, já medida na ablação);
 # - VAR-11 com 2 testes por ciclo (meio-termo nunca medido);
 # - VAR-12, custo do teste: sem limite, mas do 2º teste do ciclo em diante cada teste custa
 #   1 ficha ao atacante, paga ao banco; sem ficha para pagar, não testa (AMB-32).

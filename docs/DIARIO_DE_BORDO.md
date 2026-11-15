@@ -926,8 +926,8 @@ Execução oficial no commit `f925943`, árvore limpa: 36.000 partidas em 592 s 
 
 1. **COR-01 (máximo de 5 jogadores) se confirma.** Com 6 jogadores, a mediana da duração passa de 50 min (50,8 a 51,0) e o tempo parado chega a 12 min por ciclo. Todas as partidas reembaralham o descarte, e em 0,1% delas faltou carta para comprar.
 2. **COR-02 (Alertas saem no Planejamento) muda pouco os requisitos.** Sem ela, o Alerta fica mais tempo, o dano de incidente pesa um pouco mais (REQ-13 de 0,21 para 0,25 com iniciantes) e o placar médio cai de 7,3 para 5,7 fichas. Nenhum veredito muda de lado por causa dela.
-3. **O bug duplicado da 2.2 espalha os ataques, como o PDF diz.** Com a regra da 2.1 (permitido), a razão máximo/média de testes recebidos sobe (de 1,36 a 1,43 para 1,43 a 1,52) e o REQ-06a falha com 5 jogadores experientes.
-4. **"Sem limite de testes" (2.2) contra "1 teste por ciclo" (2.1):** o limite da 2.1 resolve o tempo parado (REQ-10 passa: 3,3 e 4,9 min), mas encurta a partida para 28 a 32 min e concentra os testes no menor placar (REQ-06 falha). Na 2.2, testar mais tem custo em tempo, e o teste por ciclo não é a saída: a partida fica curta demais.
+3. **O bug duplicado da 2.2 espalha os ataques, como o PDF diz.** Com a regra da 2.0 (permitido), a razão máximo/média de testes recebidos sobe (de 1,36 a 1,43 para 1,43 a 1,52) e o REQ-06a falha com 5 jogadores experientes.
+4. **"Sem limite de testes" (2.2) contra "1 teste por ciclo" (2.0):** o limite da 2.0 resolve o tempo parado (REQ-10 passa: 3,3 e 4,9 min), mas encurta a partida para 28 a 32 min e concentra os testes no menor placar (REQ-06 falha). Na 2.2, testar mais tem custo em tempo, e o teste por ciclo não é a saída: a partida fica curta demais.
 5. **Resumo:** cada mudança da v2.2 desfeita piora algum requisito, ou não melhora nenhum. O ponto fraco que sobra, o tempo parado, vem justamente do teste sem limite, que dá valor às cartas guardadas.
 
 ### Resultado do Experimento 4 (`fase4_exp4_sensibilidade`)
@@ -1210,7 +1210,7 @@ O autor pediu para investigar a profundidade agora ("vamos fazer o teste de prof
 
 ### Detalhes escolhidos pelo assistente, sem perguntar
 
-- **Bloco `propostas`** para a VAR-12, separado de `ablacoes` (que guarda regras da 2.1) e de `variantes` (as do playtest, com todos os campos obrigatórios). O cenário base do Experimento 7 não tem bloco nenhum, ao contrário da base do Experimento 3, que tinha `ablacoes` com os valores da 2.2; o jogo é o mesmo.
+- **Bloco `propostas`** para a VAR-12, separado de `ablacoes` (que guarda regras da 2.0) e de `variantes` (as do playtest, com todos os campos obrigatórios). O cenário base do Experimento 7 não tem bloco nenhum, ao contrário da base do Experimento 3, que tinha `ablacoes` com os valores da 2.2; o jogo é o mesmo.
 - **Ordem das cartas de ataque no ajuste do bot:** pelo valor de ataque de cada carta da mão, com as de valor igual empatadas a favor da carta avaliada. É uma simplificação: uma carta que vale mais no sistema do que no ataque também entra na conta.
 - **Escolhas avaliadas:** só compra, colocação e ação na Homologação, como na definição aprovada; a Lição aprendida, que o Heurístico também avalia por valor, fica de fora.
 - **Recuperação:** na mesma amostra do REQ-02, as partidas com líder isolado no fim do ciclo 1; vitória dividida conta pela fatia.
@@ -1687,3 +1687,15 @@ O autor pediu uma revisão dos trechos em que o texto apresentava um resultado a
 ### Verificação
 
 - Compilação local: 25 páginas, sem erro, sem referência indefinida e sem caixa estourada. As páginas com as tabelas movidas foram renderizadas e conferidas.
+
+### Correção dos rótulos das ablações (decisão do autor: "sim")
+
+As ablações VAR-10 (bug duplicado permitido) e VAR-11 (1 teste por ciclo) passaram a ser chamadas de regras da 2.0, como diz o histórico do PDF 2.2. Foram corrigidos:
+- `docs/especificacao_v2_2.md`: as linhas da VAR-10 e da VAR-11, a situação da VAR-10 e a seção "O que não é regra vigente". Essa seção também dizia que o histórico é fonte da VAR-05; a VAR-05 vem da tabela de parâmetros (p. 34), como diz a própria linha dela.
+- `docs/RESUMO_DOS_RESULTADOS.md` (ablação) e três trechos de entradas anteriores deste diário (Experimentos 3 e 7).
+- Comentários em `src/critical_failure/regras/v2/motor.py` e `src/critical_failure/regras/config.py`; nenhum comportamento muda.
+- Comentários e descrição de `experimentos/fase4_exp3_ablacao.yaml` e `experimentos/fase4_exp7_profundidade.yaml`. O `cf relatorio` usa o conteúdo do experimento guardado no manifest, e não o arquivo.
+
+**Ficaram como estavam** o manifest e o relatório da execução oficial da ablação (`resultados/fase4_exp3_ablacao/20261111-080955-f925943/`), que registram o texto da época.
+
+Verificação: `ruff`, `mypy`, verificador, matriz (176 de 176) e `pytest` sem apontamentos.

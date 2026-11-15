@@ -104,8 +104,8 @@ O REQ-08 e o REQ-10 dependem dos tempos do modelo de duração (MOD-05), que ain
 |---|---|
 | COR-01 (máximo de 5 jogadores) | com 6 jogadores: 51 min e 12 min parado por ciclo; falta carta em 0,1% das partidas |
 | COR-02 (Alertas saem no Planejamento) | muda pouco; nenhum veredito vira |
-| Bug duplicado proibido | com a regra da 2.1, os ataques se concentram (REQ-06a falha com 5 experientes) |
-| Testes sem limite | com 1 teste por ciclo (2.1), o tempo parado passa, mas a partida cai para 28 a 32 min e os ataques se concentram no menor placar |
+| Bug duplicado proibido | com a regra da 2.0, os ataques se concentram (REQ-06a falha com 5 experientes) |
+| Testes sem limite | com 1 teste por ciclo (2.0), o tempo parado passa, mas a partida cai para 28 a 32 min e os ataques se concentram no menor placar |
 
 **Cada mudança da v2.2, quando desfeita, piora algum requisito ou não melhora nenhum.**
 
