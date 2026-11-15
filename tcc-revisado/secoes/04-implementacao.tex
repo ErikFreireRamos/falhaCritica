@@ -1,0 +1,351 @@
+\section{Implementação}
+\label{sec:implementacao}
+
+\subsection{A ideia e a caracterização}
+
+Na segunda versão, cada jogador lidera uma equipe que constrói um sistema de software e, ao mesmo tempo, testa
+o sistema dos colegas. O sistema é posto à prova de duas formas: pelos colegas, na Homologação, e pelo ``mundo
+real'', na Produção, em que incidentes atingem todos ao mesmo tempo. O blefe continua no centro do jogo: quem é
+testado pode afirmar que tem o teste certo e explicá-lo com as próprias palavras, tendo ou não a carta. Um
+Auditor, que muda a cada ciclo, confere a explicação. Vence quem terminar com mais Fichas de Reputação. A
+Tabela~\ref{tab:visao-geral} resume o jogo.
+
+A estrutura da partida segue a fantasia de um desenvolvedor que ``sobe'' o seu sistema pelos ambientes por onde
+um software passa até chegar aos usuários \cite{humble2010}. No Planejamento, o jogador decide o que entra no
+sistema, como numa etapa de desenvolvimento. Na Homologação, o sistema é testado pelos colegas antes de ir para
+produção, como num ambiente de homologação. Na Produção, o sistema enfrenta o mundo real: incidentes, inspirados
+em falhas em produção, atingem todos os jogadores ao mesmo tempo. A Seção~\ref{sec:qp3} detalha a relação entre
+cada mecânica e o conceito que ela representa.
+
+\begin{table}[ht]
+  \centering
+  \caption{Visão geral do Critical Failure 2.2.2}
+  \label{tab:visao-geral}
+  \small
+  \begin{tabular}{>{\raggedright\arraybackslash}p{4.2cm} >{\raggedright\arraybackslash}p{9cm}}
+    \toprule
+    Nome & Critical Failure 2.2.2 \\
+    Tipo & Competitivo, com blefe e dedução \\
+    Escopo & Testes não funcionais; 7 características de qualidade da ISO/IEC 25010:2023 \\
+    Jogadores & 4 a 5 (recomendado: 4) \\
+    Cartas de Teste & 63 (9 por categoria, 29 testes); 72 e 33 testes com o módulo \\
+    Cartas de Incidente & 14 (2 por categoria); 16 com o módulo \\
+    Estrutura & 3 ciclos (Planejamento, Homologação, Produção), Critical Failure e revelação \\
+    Duração estimada & 40 a 50 minutos \revisao{(estimativa das regras, a validar com tempos cronometrados)} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{As cartas do jogo}
+\label{sec:cartas}
+
+Cada categoria do jogo \revisao{reúne tipos de teste não funcional} e corresponde a uma característica de
+qualidade da ISO/IEC 25010:2023 \cite{iso25010}. Adequação Funcional, a nona característica da norma, fica de fora por ser
+funcional. A Segurança Operacional (\emph{safety}) entra como módulo opcional. Em relação à v1, Usabilidade passa
+a se chamar Interação, Portabilidade passa a ser Flexibilidade, Segurança passa a ser Segurança da Informação,
+Escalabilidade sai de Desempenho e vai para Flexibilidade, e Manutenibilidade entra como categoria nova.
+
+As Cartas de Teste trazem só a categoria e o nome do teste. A descrição de cada teste e a lista do que não deve
+ser confundido com ele ficam no Documento do Auditor. Assim, o jogador precisa explicar o teste com as próprias
+palavras. A Tabela~\ref{tab:cartas} mostra o baralho do jogo base.
+
+\begin{table}[ht]
+  \centering
+  \caption{Cartas de Teste do jogo base (cópias de cada teste entre parênteses)}
+  \label{tab:cartas}
+  \footnotesize
+  \begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}p{3.3cm} >{\raggedright\arraybackslash}X c}
+    \toprule
+    Categoria & Testes & Cartas \\
+    \midrule
+    Desempenho & Carga (3), Estresse (2), Pico (2), Resistência (2) & 9 \\
+    Compatibilidade & Coexistência (3), Interoperabilidade (2), Contrato de API (2), Retrocompatibilidade (2) & 9 \\
+    Interação & Acessibilidade (3), Proteção contra erro do usuário (2), Teste A/B (2), Teste com usuários (2) & 9 \\
+    Confiabilidade & Recuperação (3), Tolerância a falhas (2), Disponibilidade (2), Engenharia do Caos (2) & 9 \\
+    Segurança da Informação & Autenticação (2), Confidencialidade (2), Integridade (2), Não repúdio (1), Penetração (2) & 9 \\
+    Manutenibilidade & Regressão (3), Análise estática (2), Revisão de código (2), Análise de impacto (2) & 9 \\
+    Flexibilidade & Escalabilidade (3), Adaptabilidade (2), Instalabilidade (2), Substituibilidade (2) & 9 \\
+    \midrule
+    \textbf{Total} & 29 testes & \textbf{63} \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+As Cartas de Incidente representam problemas reais em produção e têm duas faces. A frente traz o relato do
+problema, com o sintoma e a evidência. Ela fica visível na mesa antes de o incidente acontecer, para que os
+jogadores possam se preparar. O verso é o gabarito, com:
+\begin{itemize}
+  \item a \emph{categoria-chave}, que é o foco do problema;
+  \item uma categoria secundária opcional, só explicativa;
+  \item um ou dois \emph{testes-chave}, os que melhor detectariam aquele problema;
+  \item a explicação e o dano.
+\end{itemize}
+Há dois incidentes por categoria. Três deles são \emph{severos} e cobram um dano extra de quem não tem nenhum dos
+testes-chave. Por exemplo, o relato do incidente ``Abertura da venda de ingressos'' diz que o site ficou 15
+minutos sem responder quando 50 mil pessoas entraram no mesmo segundo, e que tudo voltou ao normal sozinho, com
+os mesmos servidores. A categoria-chave é Desempenho, os testes-chave são Pico e Estresse, e Confiabilidade
+aparece como secundária.
+
+\subsection{As regras do jogo}
+\label{sec:regras}
+
+A partida tem 3 ciclos. Cada ciclo tem três fases, sempre na mesma ordem: Planejamento, Homologação e Produção.
+Depois do terceiro ciclo vêm o Critical Failure e a revelação dos sistemas.
+
+\textbf{Preparação.} Cada jogador recebe 5 fichas e 2 Cartas de Teste sorteadas, viradas para baixo, que formam o
+seu sistema inicial. Três incidentes e a carta Critical Failure formam a Linha do Tempo. O Radar de Riscos, no
+centro da mesa, tem duas vagas: a vaga Agora mostra o relato do incidente do ciclo, e a vaga Próximo, o do ciclo
+seguinte. Cinco cartas viradas para cima formam o Backlog, de onde os jogadores podem comprar.
+
+\textbf{Planejamento.} Na sua vez, cada jogador compra 3 cartas, do Backlog ou do baralho, e coloca no sistema
+quantas quiser, até o teto de 5 cartas, sem troca. Toda carta que não vai para o sistema fica na mão como munição
+para testar os colegas. Essa é a principal decisão de gestão do jogo: encher o sistema protege contra os
+incidentes, mas tira munição e \revisao{deixa o sistema sem espaço para mudar}.
+
+\textbf{Homologação.} Na sua vez, o jogador testa qualquer colega ou passa. O atacante joga uma carta e anuncia o
+teste e a categoria. O defensor admite a falha ou nomeia um teste daquela categoria que diz ter no sistema e o
+explica com as próprias palavras, tendo ou não a carta. Quem nomeia um teste que não tem está blefando. O Auditor
+compara a explicação com o Documento do Auditor. Se a explicação conferir, o atacante aceita a defesa ou a
+contesta; na contestação, o defensor precisa revelar a carta.
+
+Quando o defensor falha, ele recebe um \emph{Alerta} naquela categoria: um cubo que marca um defeito já
+encontrado. O Alerta aumenta o dano dos incidentes da mesma categoria e custa 1 ficha no fim da partida, se ainda
+estiver ativo. Todos os Alertas saem no início de cada Planejamento. Os resultados de uma disputa são:
+\begin{itemize}
+  \item \textbf{falhou} (o defensor admitiu ou a explicação não conferiu): o atacante ganha 1 ficha, e o defensor
+    recebe um Alerta na categoria;
+  \item \textbf{defesa aceita}: nada acontece;
+  \item \textbf{contestou, e o defensor tinha a carta}: o atacante paga 1 ficha ao defensor;
+  \item \textbf{contestou, e era blefe}: o defensor paga 1 ficha ao atacante, o atacante ganha mais 1 do banco, e o
+    defensor recebe Alerta.
+\end{itemize}
+Com esses valores, contestar só compensa quando o atacante acredita que a chance de blefe é de pelo menos 1 em 3.
+Não há limite de testes, mas é proibido testar um jogador numa categoria em que ele já tem Alerta (o ``bug
+duplicado''), porque aquele defeito já foi reportado.
+
+\textbf{Produção.} O incidente da vaga Agora atinge todos. Cada jogador diagnostica em segredo a categoria-chave a
+partir do relato, e todos revelam juntos. Quem acerta ganha 1 ficha. Em seguida, cada um paga o dano:
+\begin{itemize}
+  \item 2 fichas se não tem nenhuma carta da categoria-chave no sistema (ou seja, se não está \emph{coberto});
+  \item 1 se tem Alerta nela;
+  \item 1 se o incidente é severo e não tem nenhum teste-chave.
+\end{itemize}
+Quem acertou pode pegar do Backlog uma carta da categoria-chave (a Lição aprendida).
+
+\textbf{Fim de jogo.} Depois do terceiro ciclo, a carta Critical Failure sorteia uma categoria num dado de 8 faces
+\revisao{(a oitava face é a do módulo; sem ele, se sair 8, o dado é rolado de novo)}
+e cobra de todos: 1 ficha sempre, mais 1 sem dois testes diferentes da categoria, mais 2 sem nenhuma carta dela e
+mais 1 por Alerta. Na revelação final, cada categoria distinta no sistema vale 1 ficha, cada categoria com dois
+testes diferentes vale mais 1, e cada Alerta ativo custa 1. Vence quem tem mais fichas. \revisao{No empate, vence
+quem tem menos Alertas ativos e, persistindo, quem acertou mais diagnósticos; se o empate continuar, a vitória é
+dividida. Nas taxas de vitória deste texto, uma vitória dividida entre $k$ jogadores conta $1/k$ para cada um.}
+% fonte: regras/v2.2.2.md (dado de 8 faces; desempate) e a nota da taxa de vitória nos relatórios (MET-07)
+
+A Tabela~\ref{tab:v1v2} compara as duas versões.
+
+\begin{table}[ht]
+  \centering
+  \caption{Comparação entre a primeira e a segunda versão}
+  \label{tab:v1v2}
+  \footnotesize
+  \begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}p{2.6cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X}
+    \toprule
+    Aspecto & v1 \cite{oliveira2025critical} & v2.2.2 \\
+    \midrule
+    Jogadores & 3 a 8 & 4 a 5 (recomendado: 4) \\
+    Classificação & 6 atributos de qualidade & 7 categorias da ISO/IEC 25010:2023 e 1 em módulo \\
+    Baralho & 54 cartas: 17 testes e 3 cartas Critical Failure & 63 Cartas de Teste (29 testes), 14 incidentes e a carta Critical Failure \\
+    Estrutura & Uma rodada: montar o sistema com 3 cartas e testar com as outras 3 & 3 ciclos de Planejamento, Homologação e Produção \\
+    Placar & Pontos por cartas e combinações, contados no fim & Fichas de Reputação, ganhas e perdidas durante a partida \\
+    Ataque bem-sucedido & O atacante toma uma carta do sistema do defensor & O atacante ganha 1 ficha, e o defensor recebe Alerta \\
+    Defesa bem-sucedida & O defensor fica com a carta de ataque & Nada acontece, salvo na contestação \\
+    Blefe & Declarar ter a cor; explicar um teste se contestado & Nomear e explicar um teste; o Auditor confere \\
+    Eventos externos & Não há & Incidentes com diagnóstico e dano, e o Critical Failure no fim \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+Na v1, as cartas mudavam de sistema a cada teste: o ataque bem-sucedido tirava uma carta da vítima, e a defesa
+bem-sucedida dava a carta de ataque ao defensor. Na v2, as cartas nunca mudam de sistema, o placar é em fichas, e
+os incidentes atingem todos ao mesmo tempo. A Seção~\ref{sec:qp1} mostra o efeito dessa mudança no equilíbrio
+das partidas.
+
+\textbf{Evolução das regras.} As regras acima são o resultado de três versões projetadas pelo autor e de três
+correções feitas durante este trabalho. Da versão 2.0 para a 2.1, as principais mudanças foram:
+\begin{itemize}
+  \item a classificação passou para as categorias da ISO/IEC 25010:2023, e o baralho, para 63 cartas e 29 testes;
+  \item o placar passou a ser em fichas;
+  \item o alvo na Homologação, que era sempre um vizinho designado, ficou livre, e o limite de 1 teste por ciclo
+    caiu;
+  \item o bug duplicado passou a ser proibido;
+  \item foi retirado o Hotfix, que permitia colocar uma carta no sistema logo depois de receber um Alerta.
+\end{itemize}
+A versão 2.2 reescreveu os incidentes: a frente passou a trazer só o relato, e o verso, o gabarito. As correções
+feitas na especificação para o simulador foram:
+\begin{itemize}
+  \item \textbf{COR-01:} máximo de 5 jogadores, em vez de 6, porque com 6 a preparação e os três Planejamentos
+    pedem 71 cartas, e o baralho tem 63;
+  \item \textbf{COR-02:} todos os Alertas saem no início de cada Planejamento; antes, um Alerta só saía com um
+    incidente da categoria ou quando o jogador colocava uma carta dela no sistema;
+  \item \textbf{COR-03:} 4 jogadores como número recomendado, mantendo o limite de 5. Essa correção veio dos
+    resultados de duração e de tempo parado da Seção~\ref{sec:requisitos-resultados}.
+\end{itemize}
+
+\subsection{O simulador}
+\label{sec:simulador}
+
+O simulador foi escrito em Python e segue a arquitetura da Figura~\ref{fig:arquitetura}. As regras de cada versão
+ficam num arquivo YAML, e cada número traz ao lado o identificador da regra que o define; um teste automático
+procura números no código do motor e acusa qualquer valor de regra escrito fora da configuração. O motor é uma
+função pura: recebe o estado e uma ação, valida a ação e devolve o novo estado e os eventos. Cada bot recebe só a
+observação do seu assento, isto é, o que um jogador real veria, e nunca toca no estado. A v1 foi implementada no
+mesmo núcleo, para a comparação da QP1.
+
+\begin{figure}[ht]
+  \centering
+  \resizebox{\linewidth}{!}{\input{figuras/arquitetura}}
+  \caption{Arquitetura do simulador}
+  \label{fig:arquitetura}
+\end{figure}
+
+\textbf{Bots.} Há quatro estilos de jogo:
+\begin{itemize}
+  \item o \emph{Aleatório} escolhe qualquer ação legal;
+  \item o \emph{Construtor} enche o sistema com as categorias que lê no Radar e só testa com o que não serve ao
+    sistema;
+  \item o \emph{Caçador} mantém o sistema mínimo e usa as cartas para testar, com uma de três políticas de alvo:
+    o líder, o mais fraco ou um alvo ao acaso;
+  \item o \emph{Heurístico} estima, para cada ação possível, o ganho esperado em fichas e sorteia a ação com
+    probabilidades que favorecem as de maior ganho (uma distribuição \emph{softmax}).
+\end{itemize}
+Contando as três políticas do Caçador, são seis estilos. O sorteio do Heurístico tem um parâmetro, a
+\emph{temperatura}, medido em fichas. Com temperatura baixa, o bot quase sempre escolhe a melhor ação; com
+temperatura alta, joga de forma mais descuidada, perto do acaso. O Heurístico padrão usa 0,5 ficha. Os bots que
+jogam bem contam as cartas já vistas para estimar o que cada adversário pode ter.
+
+Cada bot também tem um perfil de blefe e um de conhecimento. O de blefe define se o bot blefa nunca, metade
+das vezes ou sempre, e se contesta nunca, sempre ou pelo limiar, isto é, quando a chance estimada de blefe é de
+pelo menos 1 em 3. Combinados, são 9 perfis de blefe. O de conhecimento representa o estudante: a chance de a
+explicação estar certa, a de o Auditor julgar corretamente e a de ler a categoria-chave de um relato. O perfil
+iniciante usa 50\%, 75\% e 40\%; o experiente, 85\%, 95\% e 80\%. \revisao{Esses valores são suposições, ainda não
+calibradas com dados de partidas reais (Seção~\ref{sec:ameacas}).}
+
+\textbf{Duração.} Como bots não gastam tempo, a duração é estimada por um modelo com o tempo de cada ação
+(comprar, colocar, testar, explicar, diagnosticar etc.). O mesmo modelo estima o \emph{tempo parado} de cada
+jogador, o tempo em que ele só espera, sem participar da jogada. Os tempos são provisórios\revisao{: são
+estimativas, ainda não medidas, e devem ser substituídos pelos tempos cronometrados num próximo playtest}.
+
+\textbf{Auditoria e ferramentas.} O registro de cada partida tem um cabeçalho, os eventos e uma linha final com
+o placar e os vencedores. Ele pode ser refeito evento a evento (\texttt{replay}), contado em português
+(\texttt{narrar}) e exportado no formato da folha de registro usada nas partidas com pessoas (\texttt{folha}).
+
+\textbf{Verificação do simulador.} O simulador foi verificado com técnicas de teste de software:
+\begin{itemize}
+  \item \textbf{testes por regra:} cada regra da especificação tem pelo menos um teste marcado com o seu
+    identificador, num total de 510 testes automatizados; uma matriz de rastreabilidade confere a cobertura (176
+    de 176 itens);
+  \item \textbf{testes baseados em propriedades} \cite{claessen2000,maciver2019}: propriedades que devem valer em
+    qualquer partida (invariantes), como a conservação do número de cartas e o teto do sistema, conferidas em
+    partidas aleatórias;
+  \item \textbf{testes metamórficos} \cite{chen1998,segura2016}: quando não se sabe a saída correta, confere-se a
+    relação entre duas execuções. Trocar o nome das categorias, girar as faces do dado ou inverter a ordem dos
+    assentos com bots iguais não pode mudar o que não depende disso;
+  \item \textbf{fuzzing:} sequências de ações e configurações \revisao{inválidas ou corrompidas} só podem gerar
+    erros controlados;
+  \item \textbf{teste de mutação} \cite{jia2011}: o motor é copiado com um pequeno defeito inserido de propósito
+    (um mutante), e a suíte de testes precisa falhar, ``matando'' o mutante. De 4.883 mutantes, 4.508 foram
+    mortos\revisao{, 342 sobreviveram, 13 esgotaram o tempo e 20 não tinham teste que os alcançasse. O escore,
+    calculado como mortos sobre a soma de mortos e sobreviventes, é de 0,930; com os 4.883 no denominador, é de
+    0,923}.
+    % fonte: docs/DIARIO_DE_BORDO.md, "as partes 0 e 7 do teste de mutação": 4.508 / (4.508 + 342) = 0,930
+\end{itemize}
+
+\subsection{\texorpdfstring{\revisao{Requisitos e experimentos}}{Requisitos e experimentos}}
+\label{sec:requisitos-experimentos}
+
+\notarev{os requisitos e os experimentos são o desenho experimental do trabalho e estavam como parágrafos dentro
+da seção do simulador. A sugestão é dar a eles uma subseção própria, no mesmo lugar, o que mantém a ordem pedida
+pelo autor (conceitos do jogo antes dos requisitos).}
+
+\textbf{Requisitos de balanceamento.} A Tabela~\ref{tab:requisitos} lista os 13 requisitos, com as medidas e as
+zonas de aceite\revisao{, no formato definido na Seção~\ref{sec:metodologia}}. A \emph{vantagem do líder} é a chance de vencer de quem
+lidera sozinho no fim do primeiro ciclo, menos $1/N$: zero quer dizer que liderar cedo não ajuda, e valores altos
+indicam bola de neve.
+
+\begin{table}[ht]
+  \centering
+  \caption{Requisitos de balanceamento e zonas de aceite}
+  \label{tab:requisitos}
+  \footnotesize
+  \begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}p{3.1cm} >{\raggedright\arraybackslash}X
+      >{\raggedright\arraybackslash}p{3.3cm}}
+    \toprule
+    Requisito & Medida & Zona de aceite \\
+    \midrule
+    REQ-01 Equidade de assento & Taxa de vitória de cada posição na ordem, com bots iguais & $1/N \pm 0{,}02$ \\
+    REQ-02 Anti bola de neve & Vantagem do líder & v2 menor que a v1 por $\geq 0{,}05$ \\
+    REQ-03 Habilidade importa & Vitória de 1 Heurístico numa mesa de Aleatórios & acima de $1{,}5/N$ \\
+    REQ-04 Sem estratégia dominante & Existe estilo ou perfil de blefe dominante? & nenhum dominante \\
+    REQ-05 Blefes bem-sucedidos & Blefes que terminam sem Alerta, sobre blefes tentados, no equilíbrio & 0,30 a 0,50 \\
+    REQ-06 Distribuição de ataques & (a) máximo sobre a média de testes recebidos; (b) fração dos testes contra o menor placar & (a) até 1,5; (b) até $\frac{1}{N-1}+0{,}10$ \\
+    REQ-07 Fichas não zeram cedo & Partidas com alguém em 0 ficha antes do ciclo~3 & até 0,10 \\
+    REQ-08 Duração & Mediana da duração estimada & 40 a 50 min \\
+    REQ-09 Robustez & Exceções e violações de invariantes & 0 em $\geq 50.000$ partidas \\
+    REQ-10 Tempo parado & Percentil 90 do tempo parado por jogador e ciclo & abaixo de 5 min \\
+    REQ-11 Os dois estilos aparecem & Jogadores com o sistema cheio no fim do 1º Planejamento & 0,10 a 0,90 \\
+    REQ-12 O 1º incidente não decide & Diferença de vitória entre quem começa coberto contra o incidente~1 e os demais & até 0,10 \\
+    REQ-13 Incidentes pesam & Fichas movimentadas pelos incidentes (dano e diagnóstico) sobre o total & 0,20 a 0,60 \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\textbf{Experimentos.} A Tabela~\ref{tab:experimentos} lista os experimentos. Ao todo, foram 13 execuções oficiais
+e 971 mil partidas. Além da validação da v1 e da comparação entre as versões, quatro tipos de experimento
+exploram as regras:
+\begin{itemize}
+  \item \textbf{variantes:} alternativas de regra sugeridas no próprio texto da v2.2 para o playtest, testadas uma
+    de cada vez. São elas:
+    \begin{itemize}
+      \item punir o blefe descoberto com 0 ou 2 fichas, em vez de 1;
+      \item cobrar 1 ficha a mais quando a explicação não confere;
+      \item um Auditor externo, que não joga;
+      \item o alvo fixo num vizinho designado, em vez de livre;
+      \item no máximo 2 testes recebidos por jogador em cada ciclo;
+      \item o palpite da plateia, em que quem está fora da disputa vota se a defesa é blefe e ganha 1 ficha se
+        acertar;
+      \item 2 compras por Planejamento, em vez de 3;
+      \item o módulo de Segurança Operacional;
+    \end{itemize}
+  \item \textbf{ablação:} desfaz uma mudança de cada vez (as correções COR-01 e COR-02, a proibição do bug
+    duplicado e os testes sem limite) para ver se ela se justifica;
+  \item \textbf{sensibilidade:} varia as fichas iniciais (de 3 a 7), o dano dos incidentes e os tempos do modelo
+    de duração (25\% a mais e a menos);
+  \item \textbf{profundidade:} compara a regra atual, sem limite de testes, com limites ao número de testes por
+    ciclo e com um custo por teste (Seção~\ref{sec:requisitos-resultados}).
+\end{itemize}
+
+\begin{table}[ht]
+  \centering
+  \caption{Experimentos com o simulador\revisao{. Os números são os identificadores dos experimentos no
+    repositório; as linhas estão na ordem em que foram executados}}
+  \label{tab:experimentos}
+  \footnotesize
+  \begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}p{3.6cm} >{\raggedright\arraybackslash}X r}
+    \toprule
+    Experimento & Pergunta & Partidas \\
+    \midrule
+    Linha de base & Equidade de assento, duração e robustez, com bots aleatórios & 90.000 \\
+    Teste rápido dos estilos & Os estilos de bot jogam de forma diferente? & 20.000 \\
+    1. Validação da v1 & A v1 simulada mostra o desequilíbrio do artigo? & 85.000 \\
+    2. v1 $\times$ v2.2.1 & A v2 reduz a vantagem do líder? (QP1) & 40.000 \\
+    Melhor estilo & Matriz de ganhos entre os 6 estilos, com 4 e 5 jogadores & 140.000 \\
+    5 e 5b. Equilíbrio do blefe & Matriz entre os 9 perfis de blefe e mesa do equilíbrio & 200.000 \\
+    6. Variantes & Cada variante, uma de cada vez (executado duas vezes) & 160.000 \\
+    3. Ablação & \revisao{Cada mudança de regra desfeita (COR-01, COR-02, bug duplicado e testes sem limite) se justifica?} & 36.000 \\
+    4 e 4b. Sensibilidade & Fichas iniciais, dano, tempos e combinações & 120.000 \\
+    7. Profundidade & Limitar os testes tira profundidade? & 80.000 \\
+    \midrule
+    \textbf{Total} & & \textbf{971.000} \\
+    \bottomrule
+  \end{tabularx}
+\end{table}

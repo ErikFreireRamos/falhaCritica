@@ -21,6 +21,11 @@ novembro de 2026. Em seguida, as regras foram especificadas para o simulador, e 
 correções (versão 2.2.1). O simulador verificou a versão 2.2.1, e os resultados levaram a uma recomendação sobre o
 número de jogadores (versão 2.2.2).
 
+Portanto, o ciclo da Figura~\ref{fig:ciclo} foi percorrido uma vez, e fora da ordem planejada. O
+playtest avaliou a versão 2.2, anterior à verificação pelo simulador, e a versão verificada (2.2.2) ainda não foi
+jogada por pessoas. As respostas do playtest não levaram a mudanças de regra neste trabalho; elas são
+confrontadas com os resultados do simulador na Seção~\ref{sec:qp2}.
+
 Cada pergunta de pesquisa tem a sua fonte de evidência:
 \begin{itemize}
   \item a \textbf{QP1} é respondida pelo simulador, com requisitos de balanceamento verificados em milhares de
@@ -50,23 +55,35 @@ Para resolver esses problemas, o autor projetou as versões 2.0, 2.1 e 2.2, que 
 e trocam a pontuação por cartas por um placar em fichas. A Seção~\ref{sec:implementacao} descreve as regras da
 versão atual e, no fim da Seção~\ref{sec:regras}, resume o que mudou entre as versões.
 
-Para servir de base ao simulador, cada regra virou um item numerado de uma especificação (por exemplo,
-R-7.3.4). Cada ponto ambíguo ou omisso do texto virou uma entrada num registro de ambiguidades, com as
-interpretações possíveis e a decisão do autor: foram 30, sendo 10 da v1. Quando uma decisão mudava a regra, e não
-só a esclarecia, ela virava uma correção numerada (COR-01, COR-02 e COR-03) e gerava uma nova versão, com o seu
+Para servir de base ao simulador, cada regra foi reescrita como um item numerado de uma especificação
+(por exemplo, R-7.3.4). Cada ponto ambíguo ou omisso do texto gerou uma entrada num registro de
+ambiguidades, com as interpretações possíveis e a decisão do autor: foram 30, sendo 10 da v1. Quando uma decisão
+mudava a regra, e não só a esclarecia, ela era registrada como uma correção numerada (COR-01, COR-02 e
+COR-03) e gerava uma nova versão, com o seu
 arquivo de texto e o seu arquivo de configuração. Toda correção fica atrás de uma chave de configuração, de modo
 que a regra anterior continua disponível para medir o efeito da mudança. As três correções estão descritas na
 Seção~\ref{sec:regras}, junto com as regras que elas alteram.
 
 \subsection{O simulador como sistema sob teste}
 
-O simulador trata o jogo como um sistema sob teste. Os bots fazem o papel de usuários virtuais, como num teste de
-carga, e o balanceamento é escrito como um conjunto de requisitos não funcionais. Cada requisito tem uma
+O simulador trata o jogo como um sistema sob teste. Os bots fazem o papel de usuários virtuais, numa
+analogia com o teste de carga: aqui o objetivo não é medir o desempenho de um sistema, e sim repetir as regras
+muitas vezes para estimar propriedades estatísticas das partidas. O balanceamento é escrito como um conjunto
+de requisitos não funcionais. Cada requisito tem uma
 \emph{medida}, calculada sobre as partidas simuladas, e uma \emph{zona de aceite}, a faixa de valores em que o
 requisito é considerado atendido. Por exemplo, um requisito de equidade pode medir a taxa de vitória de cada
 posição à mesa e aceitar valores a até 2 pontos percentuais de $1/N$, em que $N$ é o número de jogadores. A
 medida e a zona de cada requisito foram confirmadas pelo autor antes do primeiro experimento que o mede, para que
 o critério não fosse escolhido depois de ver o resultado.
+
+As zonas têm duas origens. Nove requisitos (REQ-04 a REQ-08 e REQ-10 a REQ-13) partem da tabela de
+parâmetros do próprio texto das regras 2.2, que diz, para cada parâmetro, o que observar no playtest: por
+exemplo, duração de 40 a 50 minutos, menos de 5 minutos parado por ciclo e incidentes que ``pesam, mas não
+decidem a partida sozinhos''. Quando o texto traz só a intenção, sem um número, a faixa foi proposta na
+especificação do simulador e confirmada pelo autor antes da medição. Os outros quatro (REQ-01 a REQ-03 e REQ-09)
+foram propostos na especificação do simulador. As zonas são, portanto, metas de projeto do autor, e não valores
+tirados da literatura. A Seção~\ref{sec:requisitos-experimentos} explica a razão de cada faixa.
+% fonte: configs/requisitos.yaml (campo "fonte" de cada requisito) e regras/v2.2.2.md, tabela de parâmetros
 
 Cada medida é estimada com intervalo de confiança de 95\%: o de Wilson para proporções \cite{wilson1927} e o
 \emph{bootstrap} para razões e quantis \cite{efron1993}. O veredito compara o intervalo com a zona de aceite:
@@ -78,18 +95,28 @@ Cada medida é estimada com intervalo de confiança de 95\%: o de Wilson para pr
 Com uma zona de aceite, uma diferença mínima e sem importância prática não reprova um requisito só porque o
 número de partidas é grande.
 
+Cada requisito é medido em vários cenários (por exemplo, com 4 e com 5 jogadores, e com bots iniciantes
+e experientes), e cada cenário recebe o seu veredito. No resumo dos resultados (Tabela~\ref{tab:resultados}), um
+requisito \textbf{passa} quando passa em todos os cenários da regra atual. Quando os vereditos diferem, a tabela
+diz em quais cenários o requisito passa, falha ou fica inconclusivo.
+
 Alguns requisitos dependem do comportamento dos jogadores, e não só das regras. Um exemplo é saber se existe
 uma estratégia que vence todas as outras. Para esses casos, o trabalho usa conceitos de teoria dos jogos:
 \begin{itemize}
   \item numa \textbf{matriz de ganhos}, cada célula é a taxa de vitória de um jogador de um perfil (o foco) numa
-    mesa em que todos os outros jogadores são de um segundo perfil;
+    mesa em que todos os outros jogadores são de um segundo perfil. Só essas mesas homogêneas são
+    simuladas para a matriz; o desempenho em mesas com vários perfis é aproximado de forma linear a partir
+    dela;
   \item a \textbf{melhor resposta} a uma mesa é o perfil que mais vence contra ela;
   \item um perfil é \textbf{dominante} quando é a melhor resposta contra todas as mesas, inclusive a do próprio
     perfil;
   \item a \textbf{dinâmica do replicador} \cite{taylor1978} simula uma população de jogadores em que, a cada
     passo, crescem os perfis que vencem acima da média e encolhem os outros. O ponto em que a população para de
-    mudar é o \textbf{equilíbrio}, a mistura de comportamentos para onde a população tenderia.
+    mudar é o \textbf{equilíbrio}, a mistura de comportamentos para onde a população tenderia. Neste
+    trabalho, a dinâmica parte de uma população com todos os perfis em partes iguais, e o ponto final só é aceito
+    como equilíbrio se, nele, nenhum perfil vence acima da média da população.
 \end{itemize}
+% fonte: docs/DIARIO_DE_BORDO.md, "Defeito achado no Experimento 5", e os relatórios de fase4_melhor_estilo e fase4_exp5_blefe
 
 Toda partida é reproduzível. A aleatoriedade deriva de uma semente mestre, do número da partida e de um
 contador, o estado do motor não usa ponto flutuante, e a mesma semente gera o mesmo registro em qualquer
@@ -99,15 +126,17 @@ com o código registrado no git e grava um manifesto com o commit, as configura�
 número deste texto pode ser refeito. A v1 também foi implementada, mas só para ser observada e comparada, nunca
 ajustada.
 
-Os requisitos e os experimentos usam termos do jogo e dos bots. Por isso, eles são apresentados no fim da
-Seção~\ref{sec:simulador}, depois da descrição das regras e do simulador.
+Os requisitos e os experimentos usam termos do jogo e dos bots. Por isso, eles são apresentados na
+Seção~\ref{sec:requisitos-experimentos}, depois da descrição das regras e do simulador.
 
 \subsection{Playtest com estudantes}
 
 A versão 2.2 foi jogada com o módulo opcional de Segurança Operacional, uma oitava categoria de teste
-(Seção~\ref{sec:cartas}), por cerca de 30 estudantes \pendente{confirmar o número de participantes, a turma e as
-datas das sessões}. Depois da partida, os participantes responderam a um questionário online, anônimo e com
-termo de consentimento; 7 responderam, entre 19 de outubro e 3 de novembro de 2026. O questionário tinha:
+(Seção~\ref{sec:cartas}), por 19 estudantes da turma de Teste de Software da UFPB, numa sessão em 19 de outubro
+de 2026. Depois da partida, os participantes responderam a um questionário online, anônimo e com termo de
+consentimento; 7 responderam. Como a resposta era voluntária e só 7 dos 19 participantes responderam, a amostra
+está sujeita a viés de autosseleção.
+O questionário tinha:
 \begin{itemize}
   \item perguntas de perfil (curso, período, experiência com teste, frequência com jogos de mesa e
     conhecimento prévio);
@@ -117,5 +146,7 @@ termo de consentimento; 7 responderam, entre 19 de outubro e 3 de novembro de 20
   \item a duração percebida, a parte mais confusa das regras e as impressões sobre a experiência;
   \item 3 perguntas abertas.
 \end{itemize}
-As respostas são analisadas de forma descritiva. Elas não são publicadas, para proteger os participantes, e só
-as contagens agregadas aparecem neste texto.
+O questionário é uma adaptação reduzida, e não o instrumento completo e validado do MEEGA+. As respostas
+são analisadas de forma descritiva. Elas não são publicadas, para proteger os participantes, e só as contagens
+agregadas aparecem neste texto.
+

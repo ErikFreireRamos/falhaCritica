@@ -17,9 +17,11 @@ ergonomia de software \cite{jeandaubias2023jade}. Experiências com gamificaçã
 também mostram ganho de engajamento \cite{straubinger2024ci,jesus2020,blanco2023}.
 
 A primeira versão do Critical Failure \cite{oliveira2025critical} ocupou uma lacuna desses trabalhos, voltados
-principalmente ao teste funcional: é um jogo de cartas competitivo sobre teste não funcional e atributos de
-qualidade. Os jogos citados foram avaliados pela percepção dos estudantes. Nenhum deles relata uma verificação
-sistemática do equilíbrio entre os jogadores antes da aplicação em sala.
+principalmente ao teste funcional (o JADE, sobre ergonomia de software, é a exceção): é um jogo de
+cartas competitivo sobre teste não funcional e atributos de qualidade. Os jogos citados foram avaliados pela
+percepção dos estudantes. Entre eles, só o GreaTest é competitivo, e o trabalho não relata uma
+verificação sistemática do equilíbrio entre os jogadores antes da aplicação em sala. Nos jogos cooperativos e
+individuais, esse tipo de equilíbrio não se aplica.
 
 \subsection{Jogos educacionais em trabalhos de conclusão de curso da UFPB}
 
@@ -55,7 +57,8 @@ a comparação.
 
 \begin{table}[ht]
   \centering
-  \caption{Comparação entre os trabalhos relacionados e este trabalho}
+  \caption{Comparação entre os trabalhos relacionados e este trabalho. ``Não se aplica'': jogo
+    cooperativo ou individual, sem disputa entre jogadores}
   \label{tab:relacionados}
   \small
   \begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}p{3.9cm} >{\raggedright\arraybackslash}p{2.2cm}
@@ -63,11 +66,11 @@ a comparação.
     \toprule
     Trabalho & Tipo & Modo & Escopo & Balanceamento verificado \\
     \midrule
-    Debug \cite{costa2024debug} & Analógico (cartas) & Cooperativo & Níveis e tipos de teste & Não \\
-    GAMUT \cite{gomes2021gamut} & Digital (narrativa web) & Individual & Teste de unidade & Não \\
+    Debug \cite{costa2024debug} & Analógico (cartas) & Cooperativo & Níveis e tipos de teste & Não se aplica \\
+    GAMUT \cite{gomes2021gamut} & Digital (narrativa web) & Individual & Teste de unidade & Não se aplica \\
     GreaTest \cite{beppe2018greatest} & Analógico (cartas) & Competitivo & Teste funcional em geral & Não \\
-    Sojourner under Sabotage \cite{straubinger2025sojourner} & Digital (jogo sério) & Individual & Teste de unidade e depuração & Não \\
-    JADE \cite{jeandaubias2023jade} & Analógico (tabuleiro) & Cooperativo & Ergonomia de software & Não \\
+    Sojourner under Sabotage \cite{straubinger2025sojourner} & Digital (jogo sério) & Individual & Teste de unidade e depuração & Não se aplica \\
+    JADE \cite{jeandaubias2023jade} & Analógico (tabuleiro) & Cooperativo & Ergonomia de software & Não se aplica \\
     Critical Failure v1 \cite{oliveira2025critical} & Analógico (cartas) & Competitivo & Teste não funcional e atributos de qualidade & Por observação (6 partidas) \\
     Agentes para balanceamento \cite{jaffe2012} \cite{silva2017ttr} \cite{volz2016} & Jogos de entretenimento & Competitivo & Projeto de jogos & Por simulação \\
     \textbf{Este trabalho} & Analógico (cartas) e simulador & Competitivo & Teste não funcional (ISO/IEC 25010:2023) & Por simulação, com requisitos e critério de aceite \\

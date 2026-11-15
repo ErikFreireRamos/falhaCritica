@@ -1744,3 +1744,129 @@ Justificar as decisões de projeto com conceitos da área, junto com a percepç�
 ### Pendências
 
 - Do autor: a redação da QP3 e a Tabela 11.
+
+---
+
+## 2026-11-15 — Revisão crítica do TCC: parecer e cópia revisada
+
+O autor pediu uma avaliação do `tcc/main.pdf` (problemas lógicos, conceituais e de dissertação) e um veredito sobre a validade como TCC. Condição: qualquer alteração vai para uma cópia, sem tocar no original.
+
+### Decisões do autor
+
+| Assunto | Opções | Escolha |
+|---|---|---|
+| Entrega | parecer e cópia revisada; só o parecer; só a cópia | **Parecer e cópia revisada** |
+| Alcance das alterações na cópia | corrigir o comprovável e marcar o resto; aplicar também as sugestões de conteúdo; só linguagem e forma | **Aplicar também as sugestões de conteúdo**, cada trecho marcado para aceitar ou rejeitar |
+| Local | `tcc-revisado/` na raiz; `tcc/revisao/`; fora do repositório | **`tcc-revisado/` na raiz** |
+
+### O que foi feito
+
+1. **Leitura e conferência.** O PDF foi lido inteiro, e os números foram comparados com o resumo dos resultados, este diário, `configs/requisitos.yaml`, `regras/v2.2.2.md` e os relatórios de `resultados/`.
+2. **`tcc-revisado/`:** cópia das fontes de `tcc/`, com as alterações em azul (`\revisao`) e as notas do revisor em verde (`\notarev`). Uma chave em `main.tex` (`\revisaocoloridafalse`) desliga as cores e as notas.
+3. **`tcc-revisado/PARECER.md`:** veredito, pontos fortes, problemas por gravidade com a evidência, o que mudou em cada arquivo, as decisões que ficam com o autor e uma lista de conferência antes da defesa.
+4. **Nada em `tcc/` foi alterado.** Este diário é o único arquivo existente modificado. Não houve commit.
+
+### Veredito
+
+O trabalho é válido como TCC no conteúdo, mas ainda não está pronto para depósito: faltam os marcadores `[Pendente]`, a confirmação do formato com a coordenação e o tratamento dos problemas abaixo.
+
+### Principais problemas achados (detalhe no parecer)
+
+- **Tabela 8 fora da regra de veredito do próprio texto.** "Em parte" não é definido. Pelos relatórios, o REQ-01 é inconclusivo com Heurísticos, o REQ-06(b) é inconclusivo com 5 experientes, e o REQ-08 falha com 4 e passa com 5. "10 de 13" aparecia sem as ressalvas do REQ-04, do REQ-06 e do REQ-13.
+- **"O melhor estilo mistura construir e atacar" sem ressalva.** Heurístico e Construtor empatam no confronto direto, e nas mesas mistas do Experimento 2 o Construtor vence mais (0,455 contra 0,370 com 4 jogadores).
+- **QP1: a medida de partidas desequilibradas não trazia o valor da v2** (0,93 e 0,94 com o fator 1,5; 0,55 e 0,53 com o fator 2), e a vantagem do líder de 0,09 vale para mesas mistas (entre Heurísticos, de 0,15 a 0,19).
+- **As QPs não cobriam os requisitos, os estilos, as variantes, a ablação e a profundidade.**
+- **"7 de 7 se divertiram" contra 6/7 na Tabela 10:** são duas perguntas diferentes do questionário.
+- **Escore de mutação:** 0,930 é 4.508 / (4.508 + 342), e não 4.508 / 4.883.
+
+### Detalhes escolhidos pelo assistente, sem perguntar
+
+- **Nova redação da QP1 e da QP3**, a origem das zonas de aceite (Seção 3.2), a subseção 4.5 (requisitos e experimentos), a subseção 5.5 com a Tabela 13 (os quatro problemas da v1) e as ameaças à validade nos quatro tipos de Wohlin. Tudo está marcado em azul para o autor aceitar ou rejeitar.
+- **Rótulos dos vereditos na Tabela 8:** "passa, com ressalva" e a descrição por cenário, no lugar de "em parte".
+- **A coluna "Situação" da Tabela 13** é leitura do revisor.
+
+### Correção em relação ao plano da revisão
+
+O plano dizia que o fator 2 da validação da v1 era análise posterior ao resultado. Não é: a sensibilidade de 1,25 a 2 foi fixada com o critério, antes do Experimento 1 (MET-01). O parecer registra a correção.
+
+### Verificação
+
+- `tcc/` intacto: o SHA-256 de `tcc/main.pdf` é o mesmo de antes, e o `git status` só mostra `tcc-revisado/` e este diário.
+- Compilação de `tcc-revisado/`: 32 páginas, sem erro, sem referência indefinida e sem caixa estourada. As páginas alteradas foram renderizadas e conferidas.
+- A chave `\revisaocoloridafalse` foi testada numa cópia temporária.
+- Não foram conferidas as referências em fontes externas nem as normas de TCC do curso.
+
+### Pendências
+
+- Do autor: as sete decisões da seção 6 do parecer, as figuras do jogo, os apêndices e a conferência das referências.
+
+---
+
+## 2026-11-15 — Revisão aplicada ao TCC e pendências preenchidas
+
+O autor pediu para aplicar a maioria das mudanças da revisão (`tcc-revisado/`), avaliar se ela faz sentido e perguntar sobre o que estava pendente.
+
+### Avaliação da revisão
+
+A revisão se sustenta. Foram conferidos nas fontes:
+- os números novos: partidas desequilibradas na v2 (0,93/0,94 com o fator 1,5 e 0,55/0,53 com o fator 2, nas mesas mistas; de 0,67 a 0,77 e de 0,21 a 0,30 entre Heurísticos);
+- o REQ-06(b) inconclusivo com 5 experientes (0,347);
+- o tempo parado do Experimento 7;
+- o escore de mutação (4.508 / (4.508 + 342));
+- a origem das zonas (campo `fonte` de `configs/requisitos.yaml`);
+- o replicador, que parte da população uniforme (`np.full(n, 1 / n)` em `metricas/matrizes.py`).
+
+Os problemas críticos são reais:
+- a Tabela 8 usava "em parte", um veredito que o texto não define;
+- o texto apresentava o Heurístico como o melhor estilo sem dizer que ele empata com o Construtor no confronto direto (e que o Construtor vence mais nas mesas mistas);
+- o 0,09 da vantagem do líder vale só para mesas mistas;
+- "7 de 7 se divertiram" e "6/7" vêm de duas perguntas diferentes;
+- o escore de mutação estava com a conta errada.
+
+### O que foi feito
+
+1. **Todos os trechos marcados em azul** (125) foram aceitos em `tcc/`, e as 8 notas do revisor foram retiradas e viraram perguntas ao autor.
+2. **Respostas do autor:**
+
+| Assunto | Escolha |
+|---|---|
+| QP1 e QP3 reescritas pela revisão | **Aceitar as duas** |
+| O que o blefe representa (Tabela 11) | **Cobertura declarada sem existir**: linha nova "Blefe e contestação", com a contestação como a auditoria que exige a evidência |
+| Coluna "Situação" da Tabela 13 | **Concordo com as quatro** |
+| Contagem dos requisitos | **Manter a da revisão**: 10 passam (três com ressalva), 2 dependem do cenário e 1 falha |
+| Playtest | **19 estudantes da turma de Teste de Software da UFPB, todos em 19/10/2026.** Os dias em que as respostas chegaram não entram no texto |
+| Ética | **Não mencionar CEP/CONEP**; fica o termo de consentimento |
+| Repositório | **Link do GitHub** |
+| Uso de IA | **GPT 6 (OpenAI) nas imagens; Claude (Anthropic) no código e no rascunho** |
+| Tabela 11 | **Confirmada**; o marcador saiu |
+| Zonas de aceite | "Como justificar? Se possível justificar seria melhor" |
+| Título | **Manter** |
+| Capa e data da defesa | **Ainda não** |
+| Figuras do jogo | **Ainda não**: marcador na Seção 4.2 |
+| Apêndices | **Nenhum por enquanto** |
+| Citação de Ahamed (2010) | **Trocar por livro-texto**: Delamaro, Jino e Maldonado, *Introdução ao Teste de Software*, 2. ed., LTC, 2016, conferido por busca. Sem ISBN, porque as fontes divergem |
+| "and" nas citações | **Trocar por "e"** |
+
+3. **Justificativa das zonas** (proposta pelo assistente, na Seção 4.5, "Por que essas faixas"):
+   - as faixas que vêm das regras repetem a intenção do texto (REQ-04, 05, 06, 07, 08, 10, 11, 12 e 13);
+   - as outras usam a diferença que tem importância prática. Por exemplo, ±0,02 no REQ-01 equivale a uma vitória a mais em 50 partidas;
+   - o REQ-09 usa a regra de três da estatística: 0 falha em 50 mil partidas dá uma taxa de falha abaixo de 6 em 100 mil (Hanley e Lippman-Hand, 1983, conferido por busca).
+4. **`tcc/sbc-ptbr.bst`:** cópia renomeada do `sbc.bst`, como pede a licença do apalike, com "e" no lugar de "and" entre autores e sem a vírgula antes do "e". O `main.tex` passa a usá-la. A edição do livro de Delamaro vai em `note` ("2. ed."), porque o estilo escreveria "2 edition".
+5. **`tcc/README.md`:** pendências atualizadas.
+6. **`tcc-revisado/`** entra no git como registro da revisão (o parecer e a cópia marcada), junto com a entrada da revisão neste diário.
+
+### Detalhes escolhidos pelo assistente, sem perguntar
+
+- O texto da justificativa das zonas, item por item.
+- A redação da linha do blefe na Tabela 11.
+- "Uma única turma e uma única sessão" nas ameaças, no lugar de "uma única aplicação".
+- Retirar a vírgula antes do "e" no estilo de citação, junto com a troca de "and".
+
+### Verificação
+
+- Compilação local: 32 páginas, sem erro, sem referência indefinida e sem caixa estourada.
+
+### Pendências
+
+- Do autor: capa, ficha catalográfica e folha de aprovação do CI, e mês e ano da defesa; figura do jogo; agradecimentos, se o modelo pedir.
+- Antes do depósito: confirmar o formato artigo com a coordenação, decidir os apêndices, conferir as referências uma a uma e reler o texto compilado.

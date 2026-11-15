@@ -1,0 +1,15 @@
+% Ciclo de Design Science Research do trabalho: regras -> simulador -> pessoas -> regras.
+\begin{tikzpicture}[
+    etapa/.style={draw, rounded corners, thick, align=center, minimum width=3.6cm, minimum height=1.4cm,
+      font=\small},
+    seta/.style={-{Stealth[length=3mm]}, thick},
+    rotulo/.style={font=\footnotesize, align=center}
+  ]
+  \node[etapa, fill=blue!8] (regras) at (0,0) {\textbf{1. Regras}\\v2.2 $\rightarrow$ v2.2.1 $\rightarrow$ v2.2.2};
+  \node[etapa, fill=orange!10] (simulador) at (7.8,0) {\textbf{2. Simulador}\\971 mil partidas entre bots};
+  \node[etapa, fill=green!8] (pessoas) at (3.9,-3.2) {\textbf{3. Pessoas}\\playtest e aplicação em sala};
+  \draw[seta] (regras) -- node[above, rotulo] {requisitos com\\critério de aceite} (simulador);
+  \draw[seta] (simulador) -- node[right, rotulo, xshift=2mm] {regras\\verificadas} (pessoas);
+  \draw[seta] (pessoas) -- node[left, rotulo, xshift=-2mm] {percepções\\e tempos reais} (regras);
+  \draw[seta, dashed] (simulador.north) to[bend right=25] node[above, rotulo] {correções (COR) e ajustes} (regras.north);
+\end{tikzpicture}

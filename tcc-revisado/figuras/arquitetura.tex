@@ -1,0 +1,22 @@
+% Arquitetura do simulador: regras em YAML, motor puro, bots, registro e executor.
+\begin{tikzpicture}[
+    caixa/.style={draw, rounded corners, thick, align=center, font=\footnotesize, minimum height=1.1cm,
+      text width=3.7cm},
+    seta/.style={-{Stealth[length=2.5mm]}, thick},
+    rotulo/.style={font=\scriptsize, align=center}
+  ]
+  \node[caixa, fill=blue!8] (regras) at (0,0) {Regras de cada versão\\(YAML com o identificador\\de cada regra)};
+  \node[caixa, fill=orange!12] (motor) at (5.6,0) {Motor puro\\\texttt{aplicar}(estado, ação)\\$\rightarrow$ (estado, eventos)};
+  \node[caixa, fill=green!8] (bots) at (11.2,0) {Bots e perfis\\(veem só a observação\\do seu assento)};
+  \node[caixa, fill=gray!10] (registro) at (5.6,-2.6) {Registro de auditoria em JSONL\\(público, oculto, regra\\e hash do estado)};
+  \node[caixa, fill=gray!10] (ferramentas) at (0,-2.6) {\texttt{replay}, \texttt{narrar}\\e \texttt{folha}};
+  \node[caixa, fill=purple!8] (executor) at (11.2,-2.6) {Executor paralelo\\(sementes, tabela Parquet\\e manifesto)};
+  \node[caixa, fill=purple!8] (relatorio) at (11.2,-5.0) {Métricas, intervalos,\\veredito e relatório};
+  \draw[seta] (regras) -- (motor);
+  \draw[seta] ([yshift=2mm]motor.east) -- node[above, rotulo] {observação} ([yshift=2mm]bots.west);
+  \draw[seta] ([yshift=-2mm]bots.west) -- node[below, rotulo] {ação} ([yshift=-2mm]motor.east);
+  \draw[seta] (motor) -- node[right, rotulo] {eventos} (registro);
+  \draw[seta] (registro) -- (ferramentas);
+  \draw[seta] (motor.south east) -- node[below left, rotulo] {resumo da partida} (executor.north west);
+  \draw[seta] (executor) -- (relatorio);
+\end{tikzpicture}

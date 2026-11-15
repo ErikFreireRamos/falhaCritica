@@ -51,9 +51,12 @@ o ensino de testes não funcionais}
   ISO/IEC 25010. Its first classroom use showed unbalanced matches: the leader tended to keep winning.
   This work redesigns the rules (version 2) and verifies their balance before new classroom sessions, treating
   balance as a set of non-functional requirements with acceptance criteria. A deterministic, auditable
-  simulator played 971,000 matches between bots with different playing styles. The leader's advantage after the
-  first cycle fell from about 0.40 in version 1 to about 0.09 in version 2; 10 of 13 balance requirements pass,
-  and the best style mixes building and attacking. The game phases follow a system from planning through the
+  simulator played 971,000 matches between bots with different playing styles. In mixed tables, with the
+  same bots and seeds, the leader's advantage after the first cycle fell from about 0.40 in version 1 to about
+  0.09 in version 2. Of 13 balance requirements, 10 pass (three with caveats), 2 have verdicts that
+  depend on the scenario and 1 fails (idle time). Among the six styles compared, the strongest are the one that
+  weighs building against attacking at each move and the one that only builds, tied head to head; attacking
+  without building loses to both. The game phases follow a system from planning through the
   staging environment to production, where incidents hit every player. A playtest with 7 respondents reported fun
   and clear links to the course content, with the bluffing phase as the most confusing part.
 \end{abstract}
@@ -64,8 +67,11 @@ o ensino de testes não funcionais}
   tendia a continuar vencendo. Este trabalho redesenha as regras (versão 2) e verifica o seu balanceamento antes
   de novas aplicações, tratando o balanceamento como um conjunto de requisitos não funcionais com critério de
   aceite. Um simulador determinístico e auditável jogou 971 mil partidas entre bots com estilos diferentes.
-  A vantagem de quem lidera após o primeiro ciclo caiu de cerca de 0,40 na versão 1 para cerca de 0,09 na
-  versão 2; 10 de 13 requisitos de balanceamento passam, e o melhor estilo mistura construir e atacar. As fases
+  Em mesas mistas, com os mesmos bots e as mesmas sementes, a vantagem de quem lidera após o primeiro
+  ciclo caiu de cerca de 0,40 na versão 1 para cerca de 0,09 na versão 2. Dos 13 requisitos de
+  balanceamento, 10 passam (três deles com ressalvas), 2 têm vereditos que dependem do cenário e 1 falha, o do
+  tempo parado. Entre os seis estilos comparados, os mais fortes são o que pondera construir e atacar a cada
+  jogada e o que só constrói, empatados no confronto direto; atacar sem construir perde para os dois. As fases
   do jogo acompanham o caminho de um sistema do planejamento à homologação e à produção, onde incidentes atingem
   todos os jogadores. Um playtest com 7 respondentes relatou diversão e relação clara com a disciplina, com a
   fase de blefe como a parte mais confusa.
@@ -82,7 +88,8 @@ simulação; ISO/IEC 25010.
 \input{secoes/06-conclusoes}
 \input{secoes/07-artefatos}
 
-\bibliographystyle{sbc}
+% sbc-ptbr: o sbc.bst oficial com "e" no lugar de "and" entre autores (ver o cabeçalho do arquivo).
+\bibliographystyle{sbc-ptbr}
 \bibliography{referencias}
 
 \end{document}

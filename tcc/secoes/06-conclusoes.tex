@@ -2,22 +2,29 @@
 \label{sec:conclusoes}
 
 Este trabalho redesenhou as regras do Critical Failure e verificou o seu balanceamento com um simulador
-determinístico e auditável, que tratou o jogo como um sistema sob teste. O balanceamento virou um conjunto de 13
+determinístico e auditável, que tratou o jogo como um sistema sob teste. O balanceamento foi escrito
+como um conjunto de 13
 requisitos não funcionais com critério de aceite, verificados em 971 mil partidas entre bots com estilos de jogo
 diferentes.
 
-Quanto à \textbf{QP1}, as novas regras reduzem o desequilíbrio da primeira versão. Com os mesmos bots e as mesmas
-sementes, a vantagem de quem lidera após o primeiro ciclo cai de cerca de 0,40 para cerca de 0,09, e atacar o
-líder passa a compensar. A v2 passa em 10 dos 13 requisitos, entre eles a ausência de estratégia dominante, o
-equilíbrio do blefe e o peso dos incidentes. O melhor estilo é o que mistura construir e atacar conforme o valor
-de cada jogada. Os pontos fracos são o tempo parado, sobretudo com 5 jogadores, a duração com 4 jogadores e uma
+Quanto à \textbf{QP1}, as novas regras reduzem o desequilíbrio da primeira versão. Em mesas mistas, com
+os mesmos bots e as mesmas sementes, a vantagem de quem lidera após o primeiro ciclo cai de cerca de 0,40 para
+cerca de 0,09, e atacar o líder passa a ser a melhor política de alvo. Entre bots que jogam bem, essa
+vantagem fica entre 0,15 e 0,19: a bola de neve foi reduzida, não eliminada. A v2 passa em 10 dos 13
+requisitos, três deles com ressalva: a ausência de estratégia dominante depende da mesa de Aleatórios, a
+distribuição dos ataques fica no limite com 5 jogadores experientes, e o peso dos incidentes passa com a medida
+redefinida depois da primeira medição. O equilíbrio do blefe passa sem ressalva. Entre os seis estilos
+comparados, os mais fortes são o que pondera construir e atacar conforme o valor de cada jogada e o que só
+constrói, empatados no confronto direto; atacar sem construir perde para os dois. Os pontos fracos são o tempo
+parado, sobretudo com 5 jogadores, a duração com 4 jogadores e uma
 pequena vantagem do primeiro jogador entre bots que jogam bem. Os dois primeiros dependem dos tempos reais das
 ações. A versão atual (v2.2.2) recomenda 4 jogadores, e os testes sem limite, que dão o jogo mais profundo, foram
 mantidos.
 
 Quanto à \textbf{QP2}, os 7 estudantes que responderam ao questionário avaliaram o jogo de forma positiva: todos
-marcaram que se divertiram, e a maioria viu relação clara com a disciplina e contribuição para a aprendizagem. A
-Homologação, com o blefe e a contestação, foi a parte mais confusa, e houve pedidos para punir mais o blefe. Pelo
+marcaram a opção ``Me diverti jogando'' (6 de 7 concordaram com a afirmação equivalente), e a maioria
+viu relação clara com a disciplina e contribuição para a aprendizagem. A Homologação, com o blefe e a
+contestação, foi a parte mais confusa, e dois respondentes pediram punição maior para o blefe. Pelo
 tamanho da amostra, esses resultados são indícios, não conclusões.
 
 Quanto à \textbf{QP3}, as três fases e os incidentes levam para o jogo o caminho de um sistema até a produção: o
@@ -33,5 +40,7 @@ Como trabalhos futuros, propõem-se:
   \item a avaliação com o questionário completo do MEEGA+ \cite{petri2017meega} numa turma maior;
   \item a calibração dos perfis de conhecimento dos bots com os dados das folhas de registro das partidas reais;
   \item uma busca automática de estratégias, por exemplo evolutiva, para verificar se existe um estilo que
-    domine todos os outros além dos seis escritos à mão.
+    domine todos os outros além dos seis implementados manualmente;
+  \item a simulação de mesas com composições mistas de estilos, para conferir a aproximação linear da
+    matriz de ganhos.
 \end{itemize}

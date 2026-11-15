@@ -1,0 +1,159 @@
+\section{Metodologia}
+\label{sec:metodologia}
+
+O trabalho segue a abordagem de \emph{Design Science Research} (DSR), em que artefatos são projetados para
+resolver um problema prático e avaliados em ciclos iterativos \cite{hevner2004,wieringa2014}. Os artefatos são as
+regras da segunda versão do Critical Failure e o simulador de partidas. Cada ciclo tem três etapas
+(Figura~\ref{fig:ciclo}): as regras são redesenhadas; o simulador verifica o balanceamento com milhares de
+partidas entre bots; e as regras verificadas vão para pessoas, em playtests e aplicações em sala. O que cada
+etapa encontra volta para ajustar as regras.
+
+\begin{figure}[ht]
+  \centering
+  \input{figuras/ciclo-dsr}
+  \caption{Ciclo de Design Science Research do trabalho}
+  \label{fig:ciclo}
+\end{figure}
+
+A ordem real das etapas neste trabalho foi a seguinte. As versões 2.0, 2.1 e 2.2 das regras foram projetadas a
+partir dos problemas da primeira versão. A versão 2.2 foi jogada num playtest com estudantes, entre outubro e
+novembro de 2026. Em seguida, as regras foram especificadas para o simulador, e essa especificação levou a duas
+correções (versão 2.2.1). O simulador verificou a versão 2.2.1, e os resultados levaram a uma recomendação sobre o
+número de jogadores (versão 2.2.2).
+
+\revisao{Portanto, o ciclo da Figura~\ref{fig:ciclo} foi percorrido uma vez, e fora da ordem planejada. O
+playtest avaliou a versão 2.2, anterior à verificação pelo simulador, e a versão verificada (2.2.2) ainda não foi
+jogada por pessoas. As respostas do playtest não levaram a mudanças de regra neste trabalho; elas são
+confrontadas com os resultados do simulador na Seção~\ref{sec:qp2}.}
+
+Cada pergunta de pesquisa tem a sua fonte de evidência:
+\begin{itemize}
+  \item a \textbf{QP1} é respondida pelo simulador, com requisitos de balanceamento verificados em milhares de
+    partidas;
+  \item a \textbf{QP2} é respondida pelo questionário do playtest, nas afirmações sobre a experiência de jogo;
+  \item a \textbf{QP3} é respondida pela justificativa de projeto, que relaciona cada mecânica a um conceito do
+    desenvolvimento e da operação de software, como a DSR pede que o artefato se apoie no conhecimento da área
+    \cite{hevner2004}. As afirmações do questionário sobre aprendizagem, imersão e relação com a prática entram
+    como indícios, e não como comprovação.
+\end{itemize}
+
+\subsection{Redesenho das regras}
+
+O ponto de partida foi a primeira versão (v1), descrita no artigo do SBQS 2025 \cite{oliveira2025critical}. Nela,
+cada jogador monta um sistema com 3 cartas viradas para baixo e usa as outras 3, que ficam na mão, para testar os
+sistemas dos colegas. A v1 deixou quatro problemas:
+\begin{itemize}
+  \item partidas desequilibradas, em que o líder acumulava vantagem;
+  \item jogadores atacando os mais fracos, e não o líder;
+  \item regras confusas para quem jogava pela primeira vez, sobretudo a diferença entre as cartas do sistema e
+    as da mão, e a pontuação;
+  \item inconsistências na tabela de cartas publicada, como testes de Desempenho listados em Usabilidade e a
+    categoria Compatibilidade com 6 cartas em vez de 9.
+\end{itemize}
+
+Para resolver esses problemas, o autor projetou as versões 2.0, 2.1 e 2.2, que reorganizam a partida em ciclos
+e trocam a pontuação por cartas por um placar em fichas. A Seção~\ref{sec:implementacao} descreve as regras da
+versão atual e, no fim da Seção~\ref{sec:regras}, resume o que mudou entre as versões.
+
+Para servir de base ao simulador, cada regra \revisao{foi reescrita como} um item numerado de uma especificação
+(por exemplo, R-7.3.4). Cada ponto ambíguo ou omisso do texto \revisao{gerou} uma entrada num registro de
+ambiguidades, com as interpretações possíveis e a decisão do autor: foram 30, sendo 10 da v1. Quando uma decisão
+mudava a regra, e não só a esclarecia, ela \revisao{era registrada como} uma correção numerada (COR-01, COR-02 e
+COR-03) e gerava uma nova versão, com o seu
+arquivo de texto e o seu arquivo de configuração. Toda correção fica atrás de uma chave de configuração, de modo
+que a regra anterior continua disponível para medir o efeito da mudança. As três correções estão descritas na
+Seção~\ref{sec:regras}, junto com as regras que elas alteram.
+
+\subsection{O simulador como sistema sob teste}
+
+O simulador trata o jogo como um sistema sob teste. Os bots fazem o papel de usuários virtuais, \revisao{numa
+analogia com o teste de carga: aqui o objetivo não é medir o desempenho de um sistema, e sim repetir as regras
+muitas vezes para estimar propriedades estatísticas das partidas}. O balanceamento é escrito como um conjunto
+de requisitos não funcionais. Cada requisito tem uma
+\emph{medida}, calculada sobre as partidas simuladas, e uma \emph{zona de aceite}, a faixa de valores em que o
+requisito é considerado atendido. Por exemplo, um requisito de equidade pode medir a taxa de vitória de cada
+posição à mesa e aceitar valores a até 2 pontos percentuais de $1/N$, em que $N$ é o número de jogadores. A
+medida e a zona de cada requisito foram confirmadas pelo autor antes do primeiro experimento que o mede, para que
+o critério não fosse escolhido depois de ver o resultado.
+
+\revisao{As zonas têm duas origens. Nove requisitos (REQ-04 a REQ-08 e REQ-10 a REQ-13) partem da tabela de
+parâmetros do próprio texto das regras 2.2, que diz, para cada parâmetro, o que observar no playtest: por
+exemplo, duração de 40 a 50 minutos, menos de 5 minutos parado por ciclo e incidentes que ``pesam, mas não
+decidem a partida sozinhos''. Quando o texto traz só a intenção, sem um número, a faixa foi proposta na
+especificação do simulador e confirmada pelo autor antes da medição. Os outros quatro (REQ-01 a REQ-03 e REQ-09)
+foram propostos na especificação do simulador. As zonas são, portanto, metas de projeto do autor, e não valores
+tirados da literatura.}
+% fonte: configs/requisitos.yaml (campo "fonte" de cada requisito) e regras/v2.2.2.md, tabela de parâmetros
+
+\notarev{conferir se esta descrição da origem das zonas está correta e, se possível, justificar as faixas
+propostas na especificação (por exemplo, por que $\pm 0{,}02$ no REQ-01 e 0,20 a 0,60 no REQ-13). A banca tende a
+perguntar de onde vêm os números.}
+
+Cada medida é estimada com intervalo de confiança de 95\%: o de Wilson para proporções \cite{wilson1927} e o
+\emph{bootstrap} para razões e quantis \cite{efron1993}. O veredito compara o intervalo com a zona de aceite:
+\begin{itemize}
+  \item \textbf{passa} quando o intervalo inteiro está dentro da zona;
+  \item \textbf{falha} quando o intervalo inteiro está fora da zona;
+  \item \textbf{inconclusivo} quando o intervalo cruza a borda.
+\end{itemize}
+Com uma zona de aceite, uma diferença mínima e sem importância prática não reprova um requisito só porque o
+número de partidas é grande.
+
+\revisao{Cada requisito é medido em vários cenários (por exemplo, com 4 e com 5 jogadores, e com bots iniciantes
+e experientes), e cada cenário recebe o seu veredito. No resumo dos resultados (Tabela~\ref{tab:resultados}), um
+requisito \textbf{passa} quando passa em todos os cenários da regra atual. Quando os vereditos diferem, a tabela
+diz em quais cenários o requisito passa, falha ou fica inconclusivo.}
+
+Alguns requisitos dependem do comportamento dos jogadores, e não só das regras. Um exemplo é saber se existe
+uma estratégia que vence todas as outras. Para esses casos, o trabalho usa conceitos de teoria dos jogos:
+\begin{itemize}
+  \item numa \textbf{matriz de ganhos}, cada célula é a taxa de vitória de um jogador de um perfil (o foco) numa
+    mesa em que todos os outros jogadores são de um segundo perfil\revisao{. Só essas mesas homogêneas são
+    simuladas para a matriz; o desempenho em mesas com vários perfis é aproximado de forma linear a partir
+    dela};
+  \item a \textbf{melhor resposta} a uma mesa é o perfil que mais vence contra ela;
+  \item um perfil é \textbf{dominante} quando é a melhor resposta contra todas as mesas, inclusive a do próprio
+    perfil;
+  \item a \textbf{dinâmica do replicador} \cite{taylor1978} simula uma população de jogadores em que, a cada
+    passo, crescem os perfis que vencem acima da média e encolhem os outros. O ponto em que a população para de
+    mudar é o \textbf{equilíbrio}, a mistura de comportamentos para onde a população tenderia. \revisao{Neste
+    trabalho, a dinâmica parte de uma população com todos os perfis em partes iguais, e o ponto final só é aceito
+    como equilíbrio se, nele, nenhum perfil vence acima da média da população.}
+\end{itemize}
+% fonte: docs/DIARIO_DE_BORDO.md, "Defeito achado no Experimento 5", e os relatórios de fase4_melhor_estilo e fase4_exp5_blefe
+
+Toda partida é reproduzível. A aleatoriedade deriva de uma semente mestre, do número da partida e de um
+contador, o estado do motor não usa ponto flutuante, e a mesma semente gera o mesmo registro em qualquer
+plataforma. Toda partida pode gerar um registro de auditoria, em que cada evento separa a informação pública da
+oculta, cita a regra que o justificou e traz o resumo criptográfico do estado. Cada experimento oficial só roda
+com o código registrado no git e grava um manifesto com o commit, as configurações e a semente. Assim, cada
+número deste texto pode ser refeito. A v1 também foi implementada, mas só para ser observada e comparada, nunca
+ajustada.
+
+Os requisitos e os experimentos usam termos do jogo e dos bots. Por isso, eles são apresentados \revisao{na
+Seção~\ref{sec:requisitos-experimentos}}, depois da descrição das regras e do simulador.
+
+\subsection{Playtest com estudantes}
+
+A versão 2.2 foi jogada com o módulo opcional de Segurança Operacional, uma oitava categoria de teste
+(Seção~\ref{sec:cartas}), por cerca de 30 estudantes \pendente{confirmar o número de participantes, a turma e as
+datas das sessões}. Depois da partida, os participantes responderam a um questionário online, anônimo e com
+termo de consentimento; 7 responderam, entre 19 de outubro e 3 de novembro de 2026. \revisao{Como a resposta era
+voluntária e só cerca de um quarto dos participantes respondeu, a amostra está sujeita a viés de autosseleção.}
+O questionário tinha:
+\begin{itemize}
+  \item perguntas de perfil (curso, período, experiência com teste, frequência com jogos de mesa e
+    conhecimento prévio);
+  \item 11 afirmações baseadas nas dimensões do MEEGA+, um modelo de avaliação de jogos para o ensino de
+    computação \cite{petri2017meega}, numa escala de 5 pontos;
+  \item 4 afirmações sobre a contribuição percebida para a aprendizagem e 6 sobre as regras;
+  \item a duração percebida, a parte mais confusa das regras e as impressões sobre a experiência;
+  \item 3 perguntas abertas.
+\end{itemize}
+\revisao{O questionário é uma adaptação reduzida, e não o instrumento completo e validado do MEEGA+.} As respostas
+são analisadas de forma descritiva. Elas não são publicadas, para proteger os participantes, e só as contagens
+agregadas aparecem neste texto.
+
+\notarev{dizer aqui o enquadramento ético da coleta. Conferir com a orientadora se ela se encaixa na dispensa de
+registro no sistema CEP/CONEP para pesquisa de opinião com participantes não identificados (Resolução CNS
+nº~510/2016, art.~1º, parágrafo único) e citar a resolução.}

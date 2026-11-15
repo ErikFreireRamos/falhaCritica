@@ -1,0 +1,81 @@
+\section{Introdução}
+\label{sec:introducao}
+
+O teste de software é uma das principais atividades para garantir a qualidade e a confiabilidade de um
+sistema \cite{ahamed2010}. Dentro dele, o teste não funcional, que verifica desempenho, segurança,
+confiabilidade, usabilidade e outras características de qualidade, ainda recebe pouco espaço nos cursos de
+graduação, apesar da sua relevância na indústria \cite{garousi2020}. Diferentemente do teste funcional, que
+verifica se o sistema faz o que foi especificado, o teste não funcional avalia \emph{como} o sistema se comporta
+sob diferentes condições, o que o torna mais abstrato e mais difícil de ensinar \cite{paschoal2018}. Aulas
+expositivas e exercícios isolados costumam ser insuficientes para que os estudantes liguem as definições dos
+livros a decisões práticas \cite{valle2015,vanhanen2018}.
+
+Jogos educacionais vêm sendo usados para enfrentar esse problema no ensino de teste de software
+\cite{costa2024debug,gomes2021gamut,beppe2018greatest,jesus2020}. Nesse contexto, a primeira versão do
+\emph{Critical Failure} foi criada na disciplina de Teste de Software do Centro de Informática da UFPB
+\cite{oliveira2025critical}. Nela, os jogadores montam um ``sistema'' com cartas de testes não funcionais, testam
+os sistemas dos colegas e podem blefar ao se defender. Dezessete estudantes jogaram e avaliaram o jogo de forma
+positiva, mas a aplicação também revelou um problema de projeto: em quatro das seis partidas observadas, o
+vencedor terminou com pontuação muito acima dos demais. Quem saía na frente acumulava vantagem, num efeito de
+bola de neve, e os jogadores tendiam a atacar os mais fracos, e não o líder \cite{oliveira2025critical}. O próprio artigo sugeriu
+investigar se esse comportamento vinha da inexperiência dos jogadores ou de uma falha da dinâmica do jogo.
+
+Corrigir o balanceamento de um jogo pede muitas partidas. Com pessoas, cada partida leva \revisao{de 40 a 50
+minutos, pela estimativa das próprias regras,} e
+algumas dezenas de partidas não bastam para separar o efeito de uma regra do acaso, do estilo dos jogadores ou
+da ordem à mesa. Este trabalho trata o jogo como um \emph{sistema sob teste}: o balanceamento é escrito como um
+conjunto de requisitos não funcionais com critério de aceite, e um simulador joga milhares de partidas entre
+bots para verificar esses requisitos antes de levar as regras de volta à sala de aula. Assim, o trabalho aplica
+teste não funcional ao próprio jogo que ensina teste não funcional.
+
+\subsection{Objetivo e perguntas de pesquisa}
+
+O objetivo deste trabalho é redesenhar as regras do Critical Failure e verificar, por simulação, se a nova versão
+é balanceada, comparando estilos de jogo diferentes para identificar o melhor estilo e as fraquezas das regras.
+O redesenho também buscou um jogo mais imersivo, mais educativo e mais representativo do trabalho real com
+software. Para isso, a partida passou a seguir o caminho de um sistema pelos ambientes de desenvolvimento,
+homologação e produção, onde incidentes atingem todos os jogadores. Três perguntas de pesquisa orientam o
+trabalho:
+
+\begin{itemize}
+  \item \textbf{QP1:} as novas regras reduzem o desequilíbrio observado na primeira versão \revisao{e atendem aos
+    requisitos de balanceamento definidos para a segunda}?
+  \item \textbf{QP2:} como os estudantes avaliam a experiência de jogo com a segunda versão?
+  \item \textbf{QP3:} \revisao{que conceitos do desenvolvimento e da operação de software as mecânicas da segunda
+    versão (as três fases e os incidentes) representam, e que indícios de imersão e de aprendizagem os
+    estudantes relatam?}
+\end{itemize}
+
+\notarev{QP1: a redação anterior cobria só a comparação com a v1; os 13 requisitos, os estilos, as variantes, a
+ablação e a profundidade, que são a maior parte dos resultados, ficavam sem pergunta. A alternativa é criar uma
+pergunta própria (``a v2 atende aos requisitos de balanceamento, e que estilo de jogo ela favorece?''). QP3: a
+redação anterior já trazia a resposta (``para tornar o jogo mais imersivo e educativo'') e juntava duas
+perguntas. A nova redação pede só o que o texto de fato responde: a justificativa de projeto e os indícios do
+questionário.}
+
+\subsection{Contribuições}
+
+As contribuições deste trabalho são:
+\begin{enumerate}
+  \item a segunda versão das regras do Critical Failure (v2.2.2), alinhada à ISO/IEC 25010:2023
+    \cite{iso25010}, com cada correção e cada interpretação registradas;
+  \item um simulador de partidas determinístico, em que a mesma semente gera sempre a mesma partida, e
+    auditável, em que cada partida pode ser conferida evento a evento e cada evento cita a regra que o
+    justificou;
+  \item um conjunto de 13 requisitos de balanceamento, cada um com uma zona de aceite (a faixa de valores em que
+    o requisito é considerado atendido) fixada antes da medição, e a verificação deles em 971 mil partidas
+    \revisao{(a medida de um deles, o REQ-13, foi redefinida depois da primeira medição, como relata a
+    Seção~\ref{sec:requisitos-resultados})};
+  \item a comparação de seis estilos de jogo dos bots e de diferentes formas de blefar, de regras alternativas
+    (variantes), da retirada de cada mudança de regra (ablação) e da sensibilidade dos parâmetros;
+  \item a justificativa das mecânicas de fases e de incidentes como representação do desenvolvimento e da
+    operação de software;
+  \item a avaliação de um playtest com estudantes, ligada aos resultados do simulador.
+\end{enumerate}
+
+\subsection{Organização do texto}
+
+A Seção~\ref{sec:relacionados} apresenta os trabalhos relacionados. A Seção~\ref{sec:metodologia} descreve a
+metodologia, baseada em \emph{Design Science Research}. A Seção~\ref{sec:implementacao} apresenta as regras da
+segunda versão e o simulador. A Seção~\ref{sec:resultados} traz os resultados, as lições aprendidas e as
+limitações. A Seção~\ref{sec:conclusoes} conclui o trabalho e aponta trabalhos futuros.

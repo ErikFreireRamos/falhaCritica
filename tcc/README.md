@@ -31,6 +31,7 @@ com pdfLaTeX.
 | `figuras/` | Figuras em TikZ e pgfplots: ciclo de DSR, arquitetura do simulador, vantagem do líder |
 | `referencias.bib` | As referências do artigo e as novas; os DOIs vão no campo `note`, porque o `sbc.bst` não imprime `doi` |
 | `sbc-template.sty`, `sbc.bst` | Modelo oficial da SBC, baixado de `https://www.sbc.org.br/wp-content/uploads/2024/07/modelosparapublicaodeartigos.zip` |
+| `sbc-ptbr.bst` | Cópia renomeada do `sbc.bst`, com "e" no lugar de "and" entre autores; é o estilo usado pelo `main.tex` |
 
 Nota técnica: o `babel` e o `hyperref` precisam ser carregados **antes** do `sbc-template`. Na ordem inversa, o
 LaTeX de 2026 para em `\begin{document}` com "Undefined control sequence".
@@ -38,14 +39,14 @@ LaTeX de 2026 para em `\begin{document}` com "Undefined control sequence".
 ## Pendências do autor (marcadas em vermelho no PDF com `\pendente`)
 
 - Capa, ficha catalográfica e folha de aprovação do modelo do CI; mês e ano da defesa.
-- Número de participantes do playtest, a turma e as datas das sessões (seção 3.4).
-- Link público do repositório (Disponibilidade dos artefatos).
-- Revisão do título, que é uma sugestão.
-- Conferir a Tabela 11 (mecânicas, conceitos e efeitos buscados), que responde à QP3. As relações foram escritas a
-  partir das regras e precisam refletir a intenção de projeto do autor.
+- Figura com uma Carta de Teste, uma Carta de Incidente (frente e verso) e a mesa montada (Seção 4.2), quando as
+  imagens estiverem disponíveis.
 - Agradecimentos, se o modelo do curso pedir.
-- O `sbc.bst` escreve "and" entre autores nas citações (por exemplo, "Gomes and Lelli 2021"). Decidir se fica assim
-  ou se o estilo é adaptado para "e".
+
+Fora do texto, antes do depósito (do parecer de revisão de 15/11/2026, em `tcc-revisado/PARECER.md`):
+- confirmar com a orientadora e a coordenação que o formato artigo é aceito no CI;
+- decidir se haverá apêndices (questionário, referência rápida das regras); por enquanto, nenhum;
+- conferir as referências uma a uma e reler o texto compilado do início ao fim.
 
 ## De onde vem cada número
 
