@@ -1870,3 +1870,22 @@ Os problemas críticos são reais:
 
 - Do autor: capa, ficha catalográfica e folha de aprovação do CI, e mês e ano da defesa; figura do jogo; agradecimentos, se o modelo pedir.
 - Antes do depósito: confirmar o formato artigo com a coordenação, decidir os apêndices, conferir as referências uma a uma e reler o texto compilado.
+
+---
+
+## 2026-11-16 — TCC: comparação com o modelo de monografia do CI
+
+O autor trouxe o modelo de TCC do CI (`tcc/template/CI-TEMPLATE-TCC (1).doc`, monografia) e pediu uma comparação com o texto atual e o que pode mudar nos elementos de cabeçalho e de estrutura. Ele não quer converter o texto em monografia, e sim estruturá-lo adequadamente.
+
+### O que foi feito
+
+- O modelo foi aberto só para leitura pelo Word e exportado em PDF e texto na pasta temporária. Nada em `tcc/` mudou.
+- **O que o modelo tem:**
+  - elementos pré-textuais: capa com o logotipo do CI, folha de rosto, ficha catalográfica (feita pela biblioteca, no verso da folha de rosto), folha de aprovação (banca de 3 professores e coordenador), epígrafe, dedicatória e agradecimentos (opcionais), resumo e abstract em páginas próprias (um parágrafo, até 200 palavras, até 5 palavras-chave), listas de figuras, de tabelas e de abreviaturas, e sumário;
+  - corpo em capítulos, referências em ABNT e anexos;
+  - formatação ABNT: margens de 3 cm (superior e esquerda) e 2 cm (inferior e direita), Times 12, espaçamento 1,5, recuo de 1,25 cm, texto justificado e número da página no rodapé, junto à margem externa.
+- **Diferenças principais do TCC atual:** não há folha de rosto, ficha, folha de aprovação, sumário nem listas; o modelo da SBC não numera as páginas; o resumo tem 222 palavras (o limite é 200) e fica na primeira página, junto com o abstract e depois dele; o abstract não tem palavras-chave em inglês; as referências estão no estilo autor-data da SBC, e não em ABNT.
+
+### Pendências
+
+- Do autor: decidir o que aplicar (ver a resposta desta sessão).
