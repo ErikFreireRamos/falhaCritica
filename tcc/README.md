@@ -28,7 +28,8 @@ com pdfLaTeX.
 | `capa.tex` | Capa provisória: substituir pela capa, ficha catalográfica e folha de aprovação do CI |
 | `secoes/01-introducao.tex` a `06-conclusoes.tex` | As 6 seções do artigo |
 | `secoes/07-artefatos.tex` | Disponibilidade dos artefatos e uso de IA |
-| `figuras/` | Figuras em TikZ e pgfplots: ciclo de DSR, arquitetura do simulador, vantagem do líder |
+| `figuras/` | Figuras em TikZ e pgfplots (ciclo de DSR, arquitetura do simulador, vantagem do líder) e as imagens do jogo: seis Cartas de Teste, o incidente 01 (frente e verso), uma ficha e a foto do playtest |
+| `figuras/originais/` | PDFs das cartas, dos incidentes e das fichas, e a foto do playtest em tamanho original. Ficam fora do git (cerca de 32 MB); os recortes foram feitos a partir deles |
 | `referencias.bib` | As referências do artigo e as novas; os DOIs vão no campo `note`, porque o `sbc.bst` não imprime `doi` |
 | `sbc-template.sty`, `sbc.bst` | Modelo oficial da SBC, baixado de `https://www.sbc.org.br/wp-content/uploads/2024/07/modelosparapublicaodeartigos.zip` |
 | `sbc-ptbr.bst` | Cópia renomeada do `sbc.bst`, com "e" no lugar de "and" entre autores; é o estilo usado pelo `main.tex` |
@@ -39,8 +40,8 @@ LaTeX de 2026 para em `\begin{document}` com "Undefined control sequence".
 ## Pendências do autor (marcadas em vermelho no PDF com `\pendente`)
 
 - Capa, ficha catalográfica e folha de aprovação do modelo do CI; mês e ano da defesa.
-- Figura com uma Carta de Teste, uma Carta de Incidente (frente e verso) e a mesa montada (Seção 4.2), quando as
-  imagens estiverem disponíveis.
+- A Figura 3 não tem carta de Desempenho: o PDF `testes-novos-29-frentes.pdf` não traz Carga, Estresse, Pico e
+  Resistência. Se houver essas cartas em outro arquivo, uma delas pode entrar na figura.
 - Agradecimentos, se o modelo do curso pedir.
 
 Fora do texto, antes do depósito (do parecer de revisão de 15/11/2026, em `tcc-revisado/PARECER.md`):

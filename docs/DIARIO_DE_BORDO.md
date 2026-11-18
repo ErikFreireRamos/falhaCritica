@@ -1889,3 +1889,35 @@ O autor trouxe o modelo de TCC do CI (`tcc/template/CI-TEMPLATE-TCC (1).doc`, mo
 ### Pendências
 
 - Do autor: decidir o que aplicar (ver a resposta desta sessão).
+
+---
+
+## 2026-11-18 — TCC: estilo da SBC mantido e imagens do jogo
+
+### Decisões do autor
+
+| Assunto | Opções | Escolha |
+|---|---|---|
+| Formatação, depois da comparação com o modelo de monografia do CI | estilo SBC (artigo); ABNT do modelo | **Manter o estilo SBC** |
+| Imagens | — | O autor mandou os PDFs das Cartas de Teste, dos incidentes e das fichas, e uma foto do playtest, para incluir no texto, "não necessariamente todas as cartas ou todos os incidentes" |
+
+As outras perguntas da comparação com o modelo do CI seguem abertas: capa e folha de rosto, folha de aprovação, listas e sumário, elementos opcionais e objetivos específicos.
+
+### O que foi feito
+
+- **Recortes** a partir dos PDFs em `tcc/figuras/originais/`, pelos retângulos de 63 × 88 mm de cada carta, a 220 dpi: seis Cartas de Teste (uma de cada categoria presente no PDF), a frente e o verso do incidente 01 e uma Ficha de Reputação. A foto do playtest foi reduzida à metade (1080 × 1440).
+- **Figuras novas no texto:**
+  - Seção 3.4: a mesa do playtest (Figura 2);
+  - Seção 4.2: as seis Cartas de Teste (Figura 3), e o incidente 01, frente e verso, com uma ficha (Figura 4), no lugar do marcador pendente.
+- **`tcc/figuras/originais/` fica fora do git** (cerca de 32 MB); os recortes, cerca de 1 MB, vão para o git.
+
+### Detalhes escolhidos pelo assistente, sem perguntar
+
+- **A escolha das cartas:** Coexistência, Acessibilidade, Recuperação, Autenticação, Regressão e Escalabilidade.
+- **O incidente 01,** que já é o exemplo do texto.
+- **Desempenho ficou sem carta na figura:** o PDF `testes-novos-29-frentes.pdf` não tem Carga, Estresse, Pico nem Resistência.
+- **A foto** mostra mãos e pernas de um participante, sem o rosto.
+
+### Verificação
+
+- Compilação local: 35 páginas, sem erro, sem referência indefinida e sem caixa estourada. As páginas com as figuras foram renderizadas e conferidas.

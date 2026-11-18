@@ -11,3 +11,7 @@
 *.fls
 *.fdb_latexmk
 main.pdf
+
+# PDFs e fotos originais das cartas, das fichas e do playtest (cerca de 32 MB): ficam só na máquina do autor.
+# Os recortes usados no texto estão em figuras/ e vão para o git.
+figuras/originais/

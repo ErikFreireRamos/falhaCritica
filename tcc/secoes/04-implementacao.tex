@@ -47,7 +47,22 @@ Escalabilidade sai de Desempenho e vai para Flexibilidade, e Manutenibilidade en
 
 As Cartas de Teste trazem só a categoria e o nome do teste. A descrição de cada teste e a lista do que não deve
 ser confundido com ele ficam no Documento do Auditor. Assim, o jogador precisa explicar o teste com as próprias
-palavras. A Tabela~\ref{tab:cartas} mostra o baralho do jogo base.
+palavras. A Figura~\ref{fig:cartas} mostra exemplos de Cartas de Teste, e a Tabela~\ref{tab:cartas}, o baralho
+do jogo base.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.24\linewidth]{figuras/carta-coexistencia}\hfill
+  \includegraphics[width=0.24\linewidth]{figuras/carta-acessibilidade}\hfill
+  \includegraphics[width=0.24\linewidth]{figuras/carta-recuperacao}\\[2mm]
+  \includegraphics[width=0.24\linewidth]{figuras/carta-autenticacao}\hfill
+  \includegraphics[width=0.24\linewidth]{figuras/carta-regressao}\hfill
+  \includegraphics[width=0.24\linewidth]{figuras/carta-escalabilidade}
+  \caption{Cartas de Teste de seis categorias: Coexistência (Compatibilidade), Acessibilidade (Interação),
+    Recuperação (Confiabilidade), Autenticação (Segurança da Informação), Regressão (Manutenibilidade) e
+    Escalabilidade (Flexibilidade)}
+  \label{fig:cartas}
+\end{figure}
 
 \begin{table}[ht]
   \centering
@@ -84,9 +99,18 @@ Há dois incidentes por categoria. Três deles são \emph{severos} e cobram um d
 testes-chave. Por exemplo, o relato do incidente ``Abertura da venda de ingressos'' diz que o site ficou 15
 minutos sem responder quando 50 mil pessoas entraram no mesmo segundo, e que tudo voltou ao normal sozinho, com
 os mesmos servidores. A categoria-chave é Desempenho, os testes-chave são Pico e Estresse, e Confiabilidade
-aparece como secundária.
+aparece como secundária. A Figura~\ref{fig:incidente} mostra as duas faces dessa carta, ao lado de uma Ficha de
+Reputação, a unidade do placar.
 
-\pendente{figura com uma Carta de Teste, uma Carta de Incidente (frente e verso) e a mesa montada}
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.3\linewidth]{figuras/incidente-01-frente}\hspace{4mm}
+  \includegraphics[width=0.3\linewidth]{figuras/incidente-01-verso}\hspace{6mm}
+  \raisebox{0.18\linewidth}{\includegraphics[width=0.15\linewidth]{figuras/ficha}}
+  \caption{Carta de Incidente 01, ``Abertura da venda de ingressos'': a frente, com o relato, e o verso, com o
+    gabarito; à direita, uma Ficha de Reputação}
+  \label{fig:incidente}
+\end{figure}
 
 \subsection{As regras do jogo}
 \label{sec:regras}
