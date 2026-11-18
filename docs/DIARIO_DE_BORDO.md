@@ -1967,3 +1967,7 @@ Não estava correto. O método (medida, zona de aceite, veredito) pode vir na Se
 ### Verificação
 
 - Compilação local: 35 páginas, sem erro, sem referência indefinida e sem caixa estourada.
+
+### Reversão da Seção 4.5 (pedido do autor)
+
+O autor pediu: "reverta a seção 4.5, deixe como estava anteriormente". O parágrafo que abre "Por que essas faixas" voltou ao texto anterior, sem a origem das zonas com os códigos (REQ-04 a REQ-08…). A Seção 3.2 continua com o panorama dos requisitos e a origem das zonas em termos gerais. Compilação: 35 páginas, sem avisos.
