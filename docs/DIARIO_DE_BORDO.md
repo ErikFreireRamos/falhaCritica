@@ -1921,3 +1921,49 @@ As outras perguntas da comparação com o modelo do CI seguem abertas: capa e fo
 ### Verificação
 
 - Compilação local: 35 páginas, sem erro, sem referência indefinida e sem caixa estourada. As páginas com as figuras foram renderizadas e conferidas.
+
+---
+
+## 2026-11-18 — TCC: pacote para o Overleaf
+
+O autor perguntou em que outra plataforma poderia editar o TCC. A sugestão foi o Overleaf, que o `tcc/README.md` já cita, e o autor pediu o `.zip` para subir lá.
+
+### O que foi feito
+
+- **`tcc-overleaf.zip`,** na pasta Downloads do autor e fora do repositório: os 26 arquivos de `tcc/` que estão no git no commit `b81799e`, com os mesmos caminhos (`main.tex`, `capa.tex`, `secoes/`, `figuras/` com os `.tex` e as imagens, `referencias.bib`, `sbc-template.sty`, `sbc-ptbr.bst` e `sbc.bst`).
+- **Ficaram de fora:** os arquivos gerados pela compilação, o `main.pdf`, o `README.md`, o `.gitignore`, `template/` (o modelo do CI) e `figuras/originais/`, que não vai para o git.
+
+### Detalhes escolhidos pelo assistente, sem perguntar
+
+- **Onde salvar o zip:** em Downloads, para não deixar arquivo novo na árvore do git.
+
+### Verificação
+
+- O zip foi extraído numa pasta vazia e compilado com `pdflatex`, `bibtex`, `pdflatex` e `pdflatex`: 35 páginas, sem erro e sem referência ou citação indefinida.
+
+### Cuidado
+
+- O plano gratuito do Overleaf não sincroniza com o GitHub. O que for editado lá precisa ser baixado e copiado de volta para `tcc/` antes do commit; editar nos dois lugares ao mesmo tempo faz um sobrescrever o outro.
+
+---
+
+## 2026-11-18 — TCC: requisitos apresentados na Seção 3.2 e seção de uso de IA retirada
+
+### Pedidos do autor
+
+- "Em 3.2 requisitos são mencionados, porém não são definidos; os requisitos aparecem apenas posteriormente na tabela 5. Isso está correto?"
+- "Apague a seção de uso de IA no final do texto." A decisão de 15/11 era declarar de forma breve; agora a seção sai.
+
+### Avaliação
+
+Não estava correto. O método (medida, zona de aceite, veredito) pode vir na Seção 3.2, mas a seção não dizia o que os 13 requisitos verificam, e o parágrafo sobre a origem das zonas citava os códigos (REQ-04 a REQ-08…) antes de eles serem definidos.
+
+### O que foi feito
+
+- **Seção 3.2:** um panorama, sem os códigos, dos 13 requisitos em quatro grupos: justiça entre os jogadores; habilidade e estratégia; dinâmica da partida; tempo e robustez. Diz de onde vêm as zonas e remete à Tabela 5 (Seção 4.5), que usa termos do jogo e dos bots.
+- **Seção 4.5:** o parágrafo da origem das zonas, com os códigos, passou para o começo de "Por que essas faixas", junto com a justificativa de cada faixa.
+- **Seção "Uso de inteligência artificial" retirada** de `tcc/secoes/07-artefatos.tex`; a "Disponibilidade dos artefatos" fica. O `tcc/README.md` registra a retirada.
+
+### Verificação
+
+- Compilação local: 35 páginas, sem erro, sem referência indefinida e sem caixa estourada.

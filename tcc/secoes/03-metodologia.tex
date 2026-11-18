@@ -76,14 +76,22 @@ posição à mesa e aceitar valores a até 2 pontos percentuais de $1/N$, em que
 medida e a zona de cada requisito foram confirmadas pelo autor antes do primeiro experimento que o mede, para que
 o critério não fosse escolhido depois de ver o resultado.
 
-As zonas têm duas origens. Nove requisitos (REQ-04 a REQ-08 e REQ-10 a REQ-13) partem da tabela de
-parâmetros do próprio texto das regras 2.2, que diz, para cada parâmetro, o que observar no playtest: por
-exemplo, duração de 40 a 50 minutos, menos de 5 minutos parado por ciclo e incidentes que ``pesam, mas não
-decidem a partida sozinhos''. Quando o texto traz só a intenção, sem um número, a faixa foi proposta na
-especificação do simulador e confirmada pelo autor antes da medição. Os outros quatro (REQ-01 a REQ-03 e REQ-09)
-foram propostos na especificação do simulador. As zonas são, portanto, metas de projeto do autor, e não valores
-tirados da literatura. A Seção~\ref{sec:requisitos-experimentos} explica a razão de cada faixa.
-% fonte: configs/requisitos.yaml (campo "fonte" de cada requisito) e regras/v2.2.2.md, tabela de parâmetros
+São 13 requisitos, em quatro grupos:
+\begin{itemize}
+  \item \textbf{justiça entre os jogadores:} a posição na ordem de jogo não dá vantagem, e quem lidera no começo
+    não dispara (o efeito de bola de neve);
+  \item \textbf{habilidade e estratégia:} quem joga bem vence mais, nenhuma estratégia vence todas as outras, e
+    o blefe dá certo às vezes, mas não sempre;
+  \item \textbf{dinâmica da partida:} os ataques se distribuem entre os jogadores, ninguém fica sem fichas cedo,
+    construir e atacar aparecem como estilos, o primeiro incidente não decide a partida, e os incidentes pesam
+    sem decidir sozinhos;
+  \item \textbf{tempo e robustez:} a partida dura de 40 a 50 minutos, ninguém fica muito tempo parado esperando
+    a vez, e o simulador não falha.
+\end{itemize}
+As zonas vêm das metas do próprio texto das regras, quando ele as dá, ou foram propostas na especificação do
+simulador; em todos os casos, foram confirmadas pelo autor antes da medição. A medida exata e a zona de cada
+requisito usam termos do jogo e dos bots, e por isso estão na Seção~\ref{sec:requisitos-experimentos}
+(Tabela~\ref{tab:requisitos}), depois da descrição das regras e do simulador, junto com a razão de cada faixa.
 
 Cada medida é estimada com intervalo de confiança de 95\%: o de Wilson para proporções \cite{wilson1927} e o
 \emph{bootstrap} para razões e quantis \cite{efron1993}. O veredito compara o intervalo com a zona de aceite:
@@ -124,10 +132,7 @@ plataforma. Toda partida pode gerar um registro de auditoria, em que cada evento
 oculta, cita a regra que o justificou e traz o resumo criptográfico do estado. Cada experimento oficial só roda
 com o código registrado no git e grava um manifesto com o commit, as configurações e a semente. Assim, cada
 número deste texto pode ser refeito. A v1 também foi implementada, mas só para ser observada e comparada, nunca
-ajustada.
-
-Os requisitos e os experimentos usam termos do jogo e dos bots. Por isso, eles são apresentados na
-Seção~\ref{sec:requisitos-experimentos}, depois da descrição das regras e do simulador.
+ajustada. Os experimentos também estão descritos na Seção~\ref{sec:requisitos-experimentos}.
 
 \subsection{Playtest com estudantes}
 

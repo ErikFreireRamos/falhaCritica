@@ -27,7 +27,7 @@ com pdfLaTeX.
 | `main.tex` | Preâmbulo, título, resumo, abstract e a ordem das seções |
 | `capa.tex` | Capa provisória: substituir pela capa, ficha catalográfica e folha de aprovação do CI |
 | `secoes/01-introducao.tex` a `06-conclusoes.tex` | As 6 seções do artigo |
-| `secoes/07-artefatos.tex` | Disponibilidade dos artefatos e uso de IA |
+| `secoes/07-artefatos.tex` | Disponibilidade dos artefatos |
 | `figuras/` | Figuras em TikZ e pgfplots (ciclo de DSR, arquitetura do simulador, vantagem do líder) e as imagens do jogo: seis Cartas de Teste, o incidente 01 (frente e verso), uma ficha e a foto do playtest |
 | `figuras/originais/` | PDFs das cartas, dos incidentes e das fichas, e a foto do playtest em tamanho original. Ficam fora do git (cerca de 32 MB); os recortes foram feitos a partir deles |
 | `referencias.bib` | As referências do artigo e as novas; os DOIs vão no campo `note`, porque o `sbc.bst` não imprime `doi` |
@@ -72,4 +72,4 @@ Fora do texto, antes do depósito (do parecer de revisão de 15/11/2026, em `tcc
   retirada. Em 15/11 entrou uma QP3 nova: como as fases e os incidentes representam o desenvolvimento e a
   operação de software, respondida pela justificativa de projeto, com o questionário só como indício.
 - Playtest com a v2.2 e o módulo; só o que o questionário perguntou; o CSV fica fora do git.
-- Uso de IA declarado de forma breve; as imagens das cartas foram feitas com o GPT 6.
+- Uso de IA: declarado de forma breve em 15/11; a seção foi retirada do texto pelo autor em 18/11.
