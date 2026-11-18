@@ -1971,3 +1971,7 @@ Não estava correto. O método (medida, zona de aceite, veredito) pode vir na Se
 ### Reversão da Seção 4.5 (pedido do autor)
 
 O autor pediu: "reverta a seção 4.5, deixe como estava anteriormente". O parágrafo que abre "Por que essas faixas" voltou ao texto anterior, sem a origem das zonas com os códigos (REQ-04 a REQ-08…). A Seção 3.2 continua com o panorama dos requisitos e a origem das zonas em termos gerais. Compilação: 35 páginas, sem avisos.
+
+### Duas ameaças à validade retiradas (pedido do autor)
+
+O autor pediu para apagar, na validade de construto (Seção 5.7), os itens "O simulador implementa uma interpretação das regras" e "A QP3 se apoia na justificativa do próprio autor". Os dois foram retirados de `tcc/secoes/05-resultados.tex`. A ressalva sobre a QP3 continua no fim da Seção 5.4 ("uma resposta de projeto e indícios favoráveis, mas não uma comprovação"). Compilação: 35 páginas, sem avisos.
